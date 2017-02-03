@@ -5,11 +5,9 @@ import { LoadingController } from 'ionic-angular';
 
 import { Page1 } from '../pages/page1/page1';
 import { Page2 } from '../pages/page2/page2';
+import { HomePage } from '../pages/dashboard/dashboard';
 import { LoginPage } from '../pages/login/login';
-
 import { Auth } from '../providers/auth';
-
-
 
 @Component({
   templateUrl: 'app.html'
@@ -19,7 +17,7 @@ export class MyApp {
 
   rootPage: any = LoginPage;
   loader: any;
-
+  activePage: any;
   pages: Array<{ title: string, component: any }>;
 
   constructor(public platform: Platform, public auth: Auth, public loadingCtrl: LoadingController) {
@@ -27,17 +25,19 @@ export class MyApp {
 
     // used for an example of ngFor and navigation
     this.pages = [
+      { title: 'Dashboard', component: HomePage },
       { title: 'Page One', component: Page1 },
-      { title: 'Page Two', component: Page2 }
+      { title: 'Page Two', component: Page2 },
     ];
 
+    this.activePage = this.pages[0];
   }
 
   initializeApp() {
     this.presentLoading();
     this.auth.login().then((isLoggedIn) => {
       if (isLoggedIn) {
-        this.rootPage = Page1;
+        this.rootPage = HomePage;
       } else {
         this.rootPage = LoginPage;
       }
@@ -62,5 +62,10 @@ export class MyApp {
     // Reset the content nav to have just this page
     // we wouldn't want the back button to show in this scenario
     this.nav.setRoot(page.component);
+    this.activePage = page;
+  }
+
+  checkActive(page) {
+    return page == this.activePage;
   }
 }
