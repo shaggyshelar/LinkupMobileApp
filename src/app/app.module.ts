@@ -42,6 +42,9 @@ import { SkillSetPage } from '../pages/Corporate/MyProfile/skill-set/skill-set';
 // Providers
 import { Auth } from '../providers/auth';
 import { AuthService } from '../providers/index';
+import { LeaveService } from '../pages/LeaveManagement/index';
+import { HolidayService } from '../pages/LeaveManagement/index';
+import { UserService } from '../pages/LeaveManagement/index';
 
 
 @NgModule({
@@ -107,6 +110,6 @@ import { AuthService } from '../providers/index';
     ProfileDetailsPage,
     SkillSetPage
   ],
-  providers: [{ provide: ErrorHandler, useClass: IonicErrorHandler }, Auth, AuthService]
+  providers: [{ provide: ErrorHandler, useClass: IonicErrorHandler }, Auth, AuthService, LeaveService, HolidayService, UserService]
 })
 export class AppModule { }
