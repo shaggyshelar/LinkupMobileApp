@@ -6,6 +6,12 @@ import { LoadingController } from 'ionic-angular';
 import { Page1 } from '../pages/page1/page1';
 import { Page2 } from '../pages/page2/page2';
 import { HomePage } from '../pages/home/home';
+// Leave Management
+import { ApplyForLeavePage } from '../pages/LeaveManagement/apply-for-leave/apply-for-leave';
+import { HolidaysPage } from '../pages/LeaveManagement/holidays/holidays';
+import { LeaveApprovalPage } from '../pages/LeaveManagement/leave-approval/leave-approval';
+import { MyLeavesPage } from '../pages/LeaveManagement/my-leaves/my-leaves';
+
 import { LoginPage } from '../pages/login/login';
 import { Auth } from '../providers/auth';
 
@@ -25,7 +31,11 @@ export class MyApp {
 
     // used for an example of ngFor and navigation
     this.pages = [
-      { title: 'Dashboard', component: HomePage },
+      { title: 'Home', component: HomePage },
+      { title: 'Holidays', component: HolidaysPage },
+      { title: 'My Leaves', component: MyLeavesPage },
+      { title: 'Apply Leave', component: ApplyForLeavePage },
+      { title: 'Approve Leave', component: LeaveApprovalPage },
       { title: 'Page One', component: Page1 },
       { title: 'Page Two', component: Page2 },
     ];
