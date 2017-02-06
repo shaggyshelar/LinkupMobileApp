@@ -41,6 +41,8 @@ import { SkillSetPage } from '../pages/Corporate/MyProfile/skill-set/skill-set';
 
 // Providers
 import { Auth } from '../providers/auth';
+import { AuthService } from '../providers/index';
+
 
 @NgModule({
   declarations: [
@@ -105,6 +107,6 @@ import { Auth } from '../providers/auth';
     ProfileDetailsPage,
     SkillSetPage
   ],
-  providers: [{ provide: ErrorHandler, useClass: IonicErrorHandler }, Auth]
+  providers: [{ provide: ErrorHandler, useClass: IonicErrorHandler }, Auth, AuthService]
 })
 export class AppModule { }

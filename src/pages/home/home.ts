@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
+import { AuthService } from '../../providers/index';
 
 /*
   Generated class for the Dashboard page.
@@ -13,7 +14,9 @@ import { NavController, NavParams } from 'ionic-angular';
 })
 export class HomePage {
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) { }
+  constructor(public navCtrl: NavController, public navParams: NavParams, public authService: AuthService) { 
+    console.log('Is Authenticated =',this.authService.isAuthenticated());
+  }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad HomePage');
