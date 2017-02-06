@@ -13,7 +13,7 @@ import { LeaveApprovalPage } from '../pages/LeaveManagement/leave-approval/leave
 import { MyLeavesPage } from '../pages/LeaveManagement/my-leaves/my-leaves';
 
 import { LoginPage } from '../pages/login/login';
-import { Auth } from '../providers/auth';
+import { AuthService } from '../providers/index';
 
 @Component({
   templateUrl: 'app.html'
@@ -26,7 +26,7 @@ export class MyApp {
   activePage: any;
   pages: Array<{ title: string, component: any }>;
 
-  constructor(public platform: Platform, public auth: Auth, public loadingCtrl: LoadingController) {
+  constructor(public platform: Platform, public auth: AuthService, public loadingCtrl: LoadingController) {
     this.initializeApp();
 
     // used for an example of ngFor and navigation
@@ -45,13 +45,11 @@ export class MyApp {
 
   initializeApp() {
     this.presentLoading();
-    this.auth.login().then((isLoggedIn) => {
-      if (isLoggedIn) {
-        this.rootPage = HomePage;
-      } else {
-        this.rootPage = LoginPage;
-      }
-    });
+    if (this.auth.isAuthenticated()) {
+      this.rootPage = HomePage;
+    } else {
+      this.rootPage = LoginPage;
+    }
     this.loader.dismiss();
     this.platform.ready().then(() => {
       // Okay, so the platform is ready and our plugins are available.

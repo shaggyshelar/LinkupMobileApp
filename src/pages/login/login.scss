@@ -1,3 +1,60 @@
-page-login {
+// Styles for all of the user pages:
+// Login, Signup, Support
 
+page-user {
+
+  .masters {
+    background: url('../../assets/images/background.png') no-repeat;
+    background-size: cover;
+    background-position: center; 
+    margin: auto; 
+    z-index: 2; 
+}
+  .logo {
+    padding: 20px 0;
+    min-height: 200px;
+    text-align: center;
+
+    img {
+      max-width: 150px;
+    }
+  }
+
+  .scroll-content {
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+   
+
+  .list {
+    margin-bottom: 0;
+    margin-top: 120px;
+  }
+
+  ion-row {
+        align-items: center;
+        text-align: center;
+      }
+
+  ion-item {
+          border-radius: 40px !important;
+          padding-left: 20px !important;
+          padding-right: 20px !important;
+          max-height: 70px;
+          margin-top: 20px;
+          background-color:transparent;
+          opacity: 0.5;
+          font-size: 0.9em;
+      }
+
+  .login-button {
+          width: 100%;
+          border-radius: 20px;
+          height: 44px;
+          font-size: 0.9em;
+          border: 1px solid #fff;
+          background-color: #39acdc;
+      }
 }
