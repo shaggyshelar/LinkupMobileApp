@@ -47,17 +47,19 @@
 
     <ion-item-sliding *ngFor="let leave of leaveObs | async" #slidingItem [attr.status]="leave.Status | lowercase">
 
-      <button ion-item (click)="goToSessionDetail(session)">
+      <button ion-item (click)="goToLeaveDetail(leave)">
           <h3>{{leave.Employee.Name}}</h3>
           <p>
-            {{leave.StartDate}} &mdash;
-            {{leave.EndDate}}:
+            {{leave.StartDate | date:"MM/dd/yyyy"}} &mdash;
+            {{leave.EndDate | date:"MM/dd/yyyy"}}:
             {{leave.Reason}}
           </p>
         </button>
 
+        <ion-badge item-right>2</ion-badge>
+
       <ion-item-options>
-        <button ion-button color="favorite" (click)="addFavorite(slidingItem, session)">
+        <button ion-button color="favorite" (click)="editLeave(slidingItem, leave)">
             Edit
           </button>
       </ion-item-options>
@@ -66,9 +68,9 @@
 
   </ion-list>
 
-  <!--<ion-list-header [hidden]="(leaveObs | async)?.length > 0">
+  <ion-list-header [hidden]="(leaveObs | async)?.length > 0">
     No Records Found
-  </ion-list-header>-->
+  </ion-list-header>
 
   <ion-fab bottom right #fab>
     <button ion-fab><ion-icon name="share"></ion-icon></button>
