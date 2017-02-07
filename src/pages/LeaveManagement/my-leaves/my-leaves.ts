@@ -30,7 +30,6 @@ export class MyLeavesPage {
   }
 
   ionViewWillUnload() {
-    alert('Leaving')
     // stop disconnect watch
   }
 
