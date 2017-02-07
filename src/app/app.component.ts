@@ -1,10 +1,8 @@
 import { Component, ViewChild } from '@angular/core';
 import { Nav, Platform } from 'ionic-angular';
-import { StatusBar, Splashscreen } from 'ionic-native';
+import { StatusBar, Splashscreen, Network } from 'ionic-native';
 import { LoadingController } from 'ionic-angular';
 
-import { Page1 } from '../pages/page1/page1';
-import { Page2 } from '../pages/page2/page2';
 import { HomePage } from '../pages/home/home';
 // Leave Management
 import { ApplyForLeavePage } from '../pages/LeaveManagement/apply-for-leave/apply-for-leave';
@@ -15,6 +13,7 @@ import { MyLeavesPage } from '../pages/LeaveManagement/my-leaves/my-leaves';
 import { LoginPage } from '../pages/login/login';
 import { AuthService } from '../providers/index';
 
+
 @Component({
   templateUrl: 'app.html'
 })
@@ -24,6 +23,8 @@ export class MyApp {
   rootPage: any = LoginPage;
   loader: any;
   activePage: any;
+  disconnectSubscription: any;
+  isDisconnected: boolean = false;
   pages: Array<{ title: string, component: any }>;
 
   constructor(public platform: Platform, public auth: AuthService, public loadingCtrl: LoadingController) {
@@ -35,9 +36,7 @@ export class MyApp {
       { title: 'Holidays', component: HolidaysPage },
       { title: 'My Leaves', component: MyLeavesPage },
       { title: 'Apply Leave', component: ApplyForLeavePage },
-      { title: 'Approve Leave', component: LeaveApprovalPage },
-      { title: 'Page One', component: Page1 },
-      { title: 'Page Two', component: Page2 },
+      { title: 'Approve Leave', component: LeaveApprovalPage }
     ];
 
     this.activePage = this.pages[0];
@@ -57,6 +56,20 @@ export class MyApp {
       StatusBar.styleDefault();
       Splashscreen.hide();
     });
+  }
+
+  ionViewDidLoad() {
+    console.warn('Registering Network')
+    // watch network for a disconnect
+    this.disconnectSubscription = Network.onDisconnect().subscribe(() => {
+      this.isDisconnected = true;
+    });
+  }
+
+  ionViewWillUnload() {
+    console.warn('Unregistered Network')
+    // stop disconnect watch
+    this.disconnectSubscription.unsubscribe();
   }
 
   presentLoading() {

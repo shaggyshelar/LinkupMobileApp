@@ -29,6 +29,11 @@ export class MyLeavesPage {
     console.log('ionViewDidLoad MyLeavesPage');
   }
 
+  ionViewWillUnload() {
+    alert('Leaving')
+    // stop disconnect watch
+  }
+
   goToLeaveDetail(leaveData: any) {
     // go to the session detail page
     // and pass in the session data
