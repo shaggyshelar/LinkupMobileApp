@@ -21,6 +21,7 @@ export class MyApp {
   @ViewChild(Nav) nav: Nav;
 
   rootPage: any = LoginPage;
+  isAuthenticated: boolean = false;
   loader: any;
   activePage: any;
   disconnectSubscription: any;
@@ -44,6 +45,7 @@ export class MyApp {
 
   initializeApp() {
     this.presentLoading();
+    this.isAuthenticated = this.auth.isAuthenticated();
     if (this.auth.isAuthenticated()) {
       this.rootPage = HomePage;
     } else {
