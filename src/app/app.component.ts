@@ -26,18 +26,18 @@ export class MyApp {
   activePage: any;
   disconnectSubscription: any;
   isDisconnected: boolean = false;
-  pages: Array<{ title: string, component: any }>;
+  pages: Array<{ title: string, component: any, icon: string }>;
 
   constructor(public platform: Platform, public auth: AuthService, public loadingCtrl: LoadingController) {
     this.initializeApp();
 
     // used for an example of ngFor and navigation
     this.pages = [
-      { title: 'Home', component: HomePage },
-      { title: 'Holidays', component: HolidaysPage },
-      { title: 'My Leaves', component: MyLeavesPage },
-      { title: 'Apply Leave', component: ApplyForLeavePage },
-      { title: 'Approve Leave', component: LeaveApprovalPage }
+      { title: 'Home', component: HomePage, icon: 'home' },
+      { title: 'Holidays', component: HolidaysPage, icon: 'calendar' },
+      { title: 'My Leaves', component: MyLeavesPage, icon: 'contacts' },
+      { title: 'Apply Leave', component: ApplyForLeavePage, icon: 'map' },
+      { title: 'Approve Leave', component: LeaveApprovalPage, icon: 'information-circle' }
     ];
 
     this.activePage = this.pages[0];
