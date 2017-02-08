@@ -12,6 +12,7 @@ import { MyLeavesPage } from '../pages/LeaveManagement/my-leaves/my-leaves';
 
 import { LoginPage } from '../pages/login/login';
 import { AuthService } from '../providers/index';
+import { Subscription } from 'rxjs/Subscription';
 
 
 @Component({
@@ -27,6 +28,7 @@ export class MyApp {
   disconnectSubscription: any;
   isDisconnected: boolean = false;
   pages: Array<{ title: string, component: any, icon: string }>;
+  subscription: Subscription;
 
   constructor(public platform: Platform, public auth: AuthService, public loadingCtrl: LoadingController) {
     this.initializeApp();
@@ -41,6 +43,14 @@ export class MyApp {
     ];
 
     this.activePage = this.pages[0];
+    this.subscription = this.auth.onAuthStatusChanged$.subscribe(
+      astronaut => {
+        alert('Received' + astronaut);
+      });
+  }
+
+  onLogout(): void {
+    this.auth.onAuthenticate('from logout');
   }
 
   initializeApp() {
@@ -53,25 +63,20 @@ export class MyApp {
     }
     this.loader.dismiss();
     this.platform.ready().then(() => {
-      // Okay, so the platform is ready and our plugins are available.
-      // Here you can do any higher level native things you might need.
       StatusBar.styleDefault();
       Splashscreen.hide();
     });
   }
 
   ionViewDidLoad() {
-    console.warn('Registering Network')
-    // watch network for a disconnect
     this.disconnectSubscription = Network.onDisconnect().subscribe(() => {
       this.isDisconnected = true;
     });
   }
 
   ionViewWillUnload() {
-    console.warn('Unregistered Network')
-    // stop disconnect watch
     this.disconnectSubscription.unsubscribe();
+    this.subscription.unsubscribe();
   }
 
   presentLoading() {
@@ -82,8 +87,6 @@ export class MyApp {
   }
 
   openPage(page) {
-    // Reset the content nav to have just this page
-    // we wouldn't want the back button to show in this scenario
     this.nav.setRoot(page.component);
     this.activePage = page;
   }

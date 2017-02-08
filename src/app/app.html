@@ -17,7 +17,11 @@
   <ion-footer>
     <ion-toolbar>
       <ion-title>
-        <ion-icon item-left [name]="log-out"></ion-icon>Logout</ion-title>
+        <button menuClose ion-item *ngFor="let p of pages" (click)="onLogout()">
+         <ion-icon item-left [name]="log-out"></ion-icon>Logout
+        {{p.title}}
+      </button>
+      </ion-title>
     </ion-toolbar>
   </ion-footer>
 

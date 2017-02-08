@@ -84,6 +84,7 @@ export class LoginPage {
     if (form.valid) {
       //this.userData.login(this.login.username);
       //this.navCtrl.push(HomePage);
+      //this.authService.onAuthenticate('Hello mission');
 
       this.authService.authenticate(this.model)
         .subscribe(
