@@ -82,10 +82,6 @@ export class LoginPage {
     this.submitted = true;
 
     if (form.valid) {
-      //this.userData.login(this.login.username);
-      //this.navCtrl.push(HomePage);
-      //this.authService.onAuthenticate('Hello mission');
-
       this.authService.authenticate(this.model)
         .subscribe(
         results => {
@@ -103,7 +99,7 @@ export class LoginPage {
       .subscribe(
       results => {
         //this._router.navigate(['/']);
-        this.navCtrl.push(HomePage);
+        //this.navCtrl.push(HomePage);
       },
       error => {
         this.showError = true;

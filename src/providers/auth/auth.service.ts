@@ -26,15 +26,18 @@ export class AuthService extends BaseService {
     isAuthenticated() {
         if (localStorage.getItem('accessToken')) {
             this.authenticated = true;
+            this.authStatusChangeSource.next('true');
             return true;
         } else {
             this.authenticated = false;
+            this.authStatusChangeSource.next('false');
             return false;
         }
     }
     logout() {
         localStorage.clear();
         this.authenticated = false;
+        this.authStatusChangeSource.next('false');
     }
     getCurrentUser() {
         return JSON.parse(localStorage.getItem('loggedInUserDetails'));
@@ -64,7 +67,7 @@ export class AuthService extends BaseService {
         let body = res.json();
         localStorage.setItem('accessToken', body.access_token);
         this.authenticated = true;
-        this.authStatusChangeSource.next('Login Success');
+        this.authStatusChangeSource.next('true');
     }
     private setLoggedInUserPermission(res: Response) {
         if (res.status < 200 || res.status >= 300) {

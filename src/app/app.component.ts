@@ -44,13 +44,19 @@ export class MyApp {
 
     this.activePage = this.pages[0];
     this.subscription = this.auth.onAuthStatusChanged$.subscribe(
-      astronaut => {
-        alert('Received' + astronaut);
+      isAuthenticated => {
+        if (isAuthenticated == "true") {
+          this.isAuthenticated = true;
+          this.rootPage = HomePage;
+        } else {
+          this.isAuthenticated = false;
+          this.rootPage = LoginPage;
+        }
       });
   }
 
   onLogout(): void {
-    this.auth.onAuthenticate('from logout');
+    this.auth.logout();
   }
 
   initializeApp() {

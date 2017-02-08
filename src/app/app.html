@@ -15,16 +15,12 @@
   </ion-content>
 
   <ion-footer>
-    <ion-toolbar>
       <ion-title>
-        <button menuClose ion-item *ngFor="let p of pages" (click)="onLogout()">
+        <button menuClose ion-item (click)="onLogout()">
          <ion-icon item-left [name]="log-out"></ion-icon>Logout
-        {{p.title}}
       </button>
       </ion-title>
-    </ion-toolbar>
   </ion-footer>
-
 </ion-menu>
 
 <!-- Disable swipe-to-go-back because it's poor UX to combine STGB with side menus -->
