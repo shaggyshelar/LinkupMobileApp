@@ -3,6 +3,7 @@ import { Http, Response, Headers, RequestOptions } from '@angular/http';
 import { Observable } from 'rxjs/Rx';
 import { BaseService } from '../shared/index';
 import { Subject } from 'rxjs/Subject';
+import { MessageService } from '../shared/services/message.service';
 
 /** Context for service calls */
 const CONTEXT = 'auth';
@@ -10,13 +11,18 @@ const CONTEXT = 'auth';
 @Injectable()
 export class AuthService extends BaseService {
     public currentUser: any;
+    public authStatusChangeSource = new Subject<string>();
+    onAuthStatusChanged$ = this.authStatusChangeSource.asObservable();
     private authenticated = false;
 
-    private authStatusChangeSource = new Subject<string>();
-    onAuthStatusChanged$ = this.authStatusChangeSource.asObservable();
+    constructor(httpService: Http, private http: Http, messageService: MessageService) {
+        super(httpService, CONTEXT, messageService);
+    }
 
-    constructor(httpService: Http, private http: Http) {
-        super(httpService, CONTEXT);
+    blockUI(): any {
+    }
+
+    unblockUI(): any {
     }
 
     onAuthenticate(isAuthenticated: string) {
@@ -48,17 +54,34 @@ export class AuthService extends BaseService {
         let credentialString: string = 'grant_type=password&UserName=' + credentials.UserName + '&Password=' + credentials.Password;
         headers.append('Content-Type', 'application/x-www-form-urlencoded');
         let options = new RequestOptions({ headers: headers });
-        return this.http.post('/api/auth/Token', credentialString, options)
-            .map((res: Response) => { this.setToken(res); })
-            .catch(this.handleError);
+        this.blockUI();
+        return this.http.post(this.baseUrl + 'auth/Token', credentialString, options)
+            .map((res: Response) => {
+                this.unblockUI();
+                this.setToken(res);
+            })
+            .catch(err => {
+                this.unblockUI();
+                return this.handleError(err);
+            });
     }
     getLoggedInUserPermission() {
         return this.getChildList$('permissions', 0, 0, true).map((res: Response) => { this.setLoggedInUserPermission(res); });
     }
     getCurrentUserDetails() {
-        return this.getChildList$('currentusername', 0, 0, true).map((res: Response) => {
-            this.setLoggedInUserDetail(res);
-        });
+        let headers = new Headers();
+        headers.append('Authorization', 'Bearer ' + localStorage.getItem('accessToken'));
+        let options = new RequestOptions({ headers: headers });
+        this.blockUI();
+        return this.http.get(this.baseUrl + 'Employee/currentuser', options)
+            .map((res: Response) => {
+                this.unblockUI();
+                this.setLoggedInUserDetail(res);
+            })
+            .catch(err => {
+                this.unblockUI();
+                return this.handleError(err);
+            });
     }
     private setToken(res: Response) {
         if (res.status < 200 || res.status >= 300) {

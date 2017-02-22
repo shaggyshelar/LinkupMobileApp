@@ -45,6 +45,7 @@ import { AuthService } from '../providers/index';
 import { LeaveService } from '../pages/LeaveManagement/index';
 import { HolidayService } from '../pages/LeaveManagement/index';
 import { UserService } from '../pages/LeaveManagement/index';
+import { MessageService } from '../providers/index';
 
 
 @NgModule({
@@ -110,6 +111,6 @@ import { UserService } from '../pages/LeaveManagement/index';
     ProfileDetailsPage,
     SkillSetPage
   ],
-  providers: [{ provide: ErrorHandler, useClass: IonicErrorHandler }, Auth, AuthService, LeaveService, HolidayService, UserService]
+  providers: [{ provide: ErrorHandler, useClass: IonicErrorHandler }, Auth, AuthService, LeaveService, HolidayService, UserService, MessageService]
 })
 export class AppModule { }
