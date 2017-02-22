@@ -1,0 +1,48 @@
+<ion-content>
+  <div padding [@flyInBottomFast]="cloudState" id="cloud-layer">
+    <form #loginForm="ngForm" novalidate>
+
+      <ion-row>
+        <ion-col>
+          <img [@flyInBottomSlow]="logoState" src="assets/img/splash.png" />
+        </ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-col>
+          <ion-list inset [@bounceInBottom]="formState">
+
+            <ion-item>
+              <ion-label>Username</ion-label>
+              <ion-input [(ngModel)]="model.UserName" name="username" type="text" #username="ngModel" spellcheck="false" autocapitalize="off"
+                required>
+                </ion-input>
+            </ion-item>
+            <p ion-text [hidden]="username.valid || submitted == false" color="danger" padding-left>
+              Username is required
+            </p>
+            <br>
+
+            <ion-item>
+              <ion-label>Password</ion-label>
+              <ion-input [(ngModel)]="model.Password" name="password" type="password" #password="ngModel" required>
+              </ion-input>
+            </ion-item>
+            <p ion-text [hidden]="password.valid || submitted == false" color="danger" padding-left>
+              Password is required
+            </p>
+
+          </ion-list>
+        </ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-col>
+          <button ion-button class="login-button" (click)="onLogin(loginForm)" type="submit" [@fadeIn]="loginState">Login</button>
+        </ion-col>
+      </ion-row>
+
+    </form>
+  </div>
+
+</ion-content>

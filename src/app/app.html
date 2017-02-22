@@ -1,4 +1,4 @@
-<ion-menu [content]="content">
+<ion-menu [content]="content" [hidden]="isAuthenticated == false">
   <ion-header>
     <ion-toolbar>
       <ion-title>Menu</ion-title>
@@ -7,12 +7,69 @@
 
   <ion-content>
     <ion-list>
-      <button menuClose ion-item *ngFor="let p of pages" (click)="openPage(p)">
+      <!--<button menuClose ion-item *ngFor="let p of pages" (click)="openPage(p)">
+         <ion-icon item-left [name]="p.icon" [class.activeHighlight]="checkActive(p)"></ion-icon>
         {{p.title}}
-      </button>
+      </button>-->
+      <ion-list-header (click)="toggleLeaveMenu()" [ngStyle]="{'height': 36}">
+        <ion-icon *ngIf="showLeaveSubmenus == false" name="arrow-dropdown" item-right></ion-icon>
+        <ion-icon *ngIf="showLeaveSubmenus == true" name="arrow-dropleft" item-right></ion-icon>
+        <h2 style="display: inline-block;">Leave Management</h2>
+      </ion-list-header>
+      <ion-item class="animated fadeInUp" ion-item menuClose *ngFor="let leavePage of leavePages" (click)="openPage(leavePage)">
+         <ion-icon item-left [name]="leavePage.icon" [class.activeHighlight]="checkActive(leavePage)"></ion-icon>
+        {{leavePage.title}}
+      </ion-item>
+      
+      <ion-list-header (click)="toggleTimesheetMenu()" [ngStyle]="{'height': 36}">
+        <ion-icon *ngIf="showTimesheetSubmenus == false" name="arrow-dropdown" item-right></ion-icon>
+        <ion-icon *ngIf="showTimesheetSubmenus == true" name="arrow-dropleft" item-right></ion-icon>
+        <h2 style="display: inline-block;">Timesheet</h2>
+      </ion-list-header>
+      <ion-item class="animated fadeInUp" ion-item menuClose *ngFor="let timesheetPage of timesheetPages" (click)="openPage(timesheetPage)">
+         <ion-icon item-left [name]="timesheetPage.icon" [class.activeHighlight]="checkActive(timesheetPage)"></ion-icon>
+        {{timesheetPage.title}}
+      </ion-item>
+
+      <ion-list-header (click)="toggleCorporateMenu()" [ngStyle]="{'height': 36}">
+        <ion-icon *ngIf="showCorporateSubmenus == false" name="arrow-dropdown" item-right></ion-icon>
+        <ion-icon *ngIf="showCorporateSubmenus == true" name="arrow-dropleft" item-right></ion-icon>
+        <h2 style="display: inline-block;">Corporate</h2>
+      </ion-list-header>
+      <ion-item class="animated fadeInUp" ion-item menuClose *ngFor="let corporatePage of corporatePages" (click)="openPage(corporatePage)">
+         <ion-icon item-left [name]="corporatePage.icon" [class.activeHighlight]="checkActive(corporatePage)"></ion-icon>
+        {{corporatePage.title}}
+      </ion-item>
+
+      <ion-list-header (click)="toggleCertificationMenu()" [ngStyle]="{'height': 36}">
+        <ion-icon *ngIf="showCertificationSubmenus == false" name="arrow-dropdown" item-right></ion-icon>
+        <ion-icon *ngIf="showCertificationSubmenus == true" name="arrow-dropleft" item-right></ion-icon>
+        <h2 style="display: inline-block;">Certification</h2>
+      </ion-list-header>
+      <ion-item class="animated fadeInUp" ion-item menuClose *ngFor="let certificationPage of certificationPages" (click)="openPage(certificationPage)">
+         <ion-icon item-left [name]="certificationPage.icon" [class.activeHighlight]="checkActive(certificationPage)"></ion-icon>
+        {{certificationPage.title}}
+      </ion-item>
+
+      <ion-list-header (click)="toggleProjectsMenu()" [ngStyle]="{'height': 36}">
+        <ion-icon *ngIf="showProjectsSubmenus == false" name="arrow-dropdown" item-right></ion-icon>
+        <ion-icon *ngIf="showProjectsSubmenus == true" name="arrow-dropleft" item-right></ion-icon>
+        <h2 style="display: inline-block;">Projects</h2>
+      </ion-list-header>
+      <ion-item class="animated fadeInUp" ion-item menuClose *ngFor="let projectsPage of projectsPages" (click)="openPage(projectsPage)">
+         <ion-icon item-left [name]="projectsPage.icon" [class.activeHighlight]="checkActive(projectsPage)"></ion-icon>
+        {{projectsPage.title}}
+      </ion-item>
     </ion-list>
   </ion-content>
 
+  <ion-footer>
+    <ion-title>
+      <button menuClose ion-item (click)="onLogout()">
+         <ion-icon item-left [name]="log-out"></ion-icon>Logout
+      </button>
+    </ion-title>
+  </ion-footer>
 </ion-menu>
 
 <!-- Disable swipe-to-go-back because it's poor UX to combine STGB with side menus -->
