@@ -30,6 +30,36 @@
          <ion-icon item-left [name]="timesheetPage.icon" [class.activeHighlight]="checkActive(timesheetPage)"></ion-icon>
         {{timesheetPage.title}}
       </ion-item>
+
+      <ion-list-header (click)="toggleCorporateMenu()" [ngStyle]="{'height': 36}">
+        <ion-icon *ngIf="showCorporateSubmenus == false" name="arrow-dropdown" item-right></ion-icon>
+        <ion-icon *ngIf="showCorporateSubmenus == true" name="arrow-dropleft" item-right></ion-icon>
+        <h2 style="display: inline-block;">Corporate</h2>
+      </ion-list-header>
+      <ion-item class="animated fadeInUp" ion-item menuClose *ngFor="let corporatePage of corporatePages" (click)="openPage(corporatePage)">
+         <ion-icon item-left [name]="corporatePage.icon" [class.activeHighlight]="checkActive(corporatePage)"></ion-icon>
+        {{corporatePage.title}}
+      </ion-item>
+
+      <ion-list-header (click)="toggleCertificationMenu()" [ngStyle]="{'height': 36}">
+        <ion-icon *ngIf="showCertificationSubmenus == false" name="arrow-dropdown" item-right></ion-icon>
+        <ion-icon *ngIf="showCertificationSubmenus == true" name="arrow-dropleft" item-right></ion-icon>
+        <h2 style="display: inline-block;">Certification</h2>
+      </ion-list-header>
+      <ion-item class="animated fadeInUp" ion-item menuClose *ngFor="let certificationPage of certificationPages" (click)="openPage(certificationPage)">
+         <ion-icon item-left [name]="certificationPage.icon" [class.activeHighlight]="checkActive(certificationPage)"></ion-icon>
+        {{certificationPage.title}}
+      </ion-item>
+
+      <ion-list-header (click)="toggleProjectsMenu()" [ngStyle]="{'height': 36}">
+        <ion-icon *ngIf="showProjectsSubmenus == false" name="arrow-dropdown" item-right></ion-icon>
+        <ion-icon *ngIf="showProjectsSubmenus == true" name="arrow-dropleft" item-right></ion-icon>
+        <h2 style="display: inline-block;">Projects</h2>
+      </ion-list-header>
+      <ion-item class="animated fadeInUp" ion-item menuClose *ngFor="let projectsPage of projectsPages" (click)="openPage(projectsPage)">
+         <ion-icon item-left [name]="projectsPage.icon" [class.activeHighlight]="checkActive(projectsPage)"></ion-icon>
+        {{projectsPage.title}}
+      </ion-item>
     </ion-list>
   </ion-content>
 

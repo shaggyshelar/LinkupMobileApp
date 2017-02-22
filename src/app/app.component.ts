@@ -18,6 +18,16 @@ import { ApprovedTimesheetPage } from '../pages/Timesheet/approved-timesheet/app
 import { TimesheetReportPage } from '../pages/Timesheet/timesheet-report/timesheet-report';
 import { BiometricDiscrepancyApprovalPage } from '../pages/Timesheet/biometric-discrepancy-approval/biometric-discrepancy-approval';
 
+// Certification
+import { MyCertificationPage } from '../pages/Certification/my-certification/my-certification';
+
+// Corporate
+import { LogATicketPage } from '../pages/Corporate/log-a-ticket/log-a-ticket';
+import { ConferenceBookingPage } from '../pages/Corporate/conference-booking/conference-booking';
+
+// Projects
+import { ManageMyProjectsPage } from '../pages/Projects/manage-my-projects/manage-my-projects';
+import { EmployeeProjectManagementPage } from '../pages/Projects/employee-project-management/employee-project-management';
 
 import { LoginPage } from '../pages/login/login';
 import { AuthService } from '../providers/index';
@@ -36,6 +46,9 @@ export class MyApp {
   @ViewChild(Nav) nav: Nav;
   public showLeaveSubmenus: boolean = true;
   public showTimesheetSubmenus: boolean = false;
+  public showCorporateSubmenus: boolean = false;
+  public showCertificationSubmenus: boolean = false;
+  public showProjectsSubmenus: boolean = false;
   rootPage: any = LoginPage;
   isAuthenticated: boolean = false;
   loader: any;
@@ -45,6 +58,9 @@ export class MyApp {
   subscription: Subscription;
   leavePages: PageInterface[] = [];
   timesheetPages: PageInterface[] = [];
+  corporatePages: PageInterface[] = [];
+  certificationPages: PageInterface[] = [];
+  projectsPages: PageInterface[] = [];
 
   constructor(public platform: Platform, public auth: AuthService, public loadingCtrl: LoadingController) {
     this.initializeApp();
@@ -57,6 +73,9 @@ export class MyApp {
           this.rootPage = HomePage;
           this.toggleLeaveMenu();
           this.toggleTimesheetMenu()
+          this.toggleCertificationMenu();
+          this.toggleCorporateMenu();
+          this.toggleProjectsMenu();
         } else {
           this.isAuthenticated = false;
           this.rootPage = LoginPage;
@@ -141,6 +160,47 @@ export class MyApp {
     else {
       this.timesheetPages = [];
       this.showTimesheetSubmenus = true;
+    }
+  }
+
+  toggleCorporateMenu() {
+    if (this.showCorporateSubmenus) {
+      this.corporatePages = [
+        { title: 'Log A Ticket', component: LogATicketPage, icon: 'calendar' },
+        { title: 'Conference Booking', component: ConferenceBookingPage, icon: 'contacts' }
+      ];
+      this.showCorporateSubmenus = false;
+    }
+    else {
+      this.corporatePages = [];
+      this.showCorporateSubmenus = true;
+    }
+  }
+
+  toggleCertificationMenu() {
+    if (this.showCertificationSubmenus) {
+      this.certificationPages = [
+        { title: 'My Certifications', component: MyCertificationPage, icon: 'calendar' },
+      ];
+      this.showCertificationSubmenus = false;
+    }
+    else {
+      this.certificationPages = [];
+      this.showCertificationSubmenus = true;
+    }
+  }
+
+  toggleProjectsMenu() {
+    if (this.showProjectsSubmenus) {
+      this.projectsPages = [
+        { title: 'Manage My Projects', component: ManageMyProjectsPage, icon: 'calendar' },
+        { title: 'Employee Project Management', component: EmployeeProjectManagementPage, icon: 'contacts' }
+      ];
+      this.showProjectsSubmenus = false;
+    }
+    else {
+      this.projectsPages = [];
+      this.showProjectsSubmenus = true;
     }
   }
 }

@@ -27,7 +27,10 @@ import { MyLeavesPage } from '../pages/LeaveManagement/my-leaves/my-leaves';
 // Certification
 import { MyCertificationPage } from '../pages/Certification/my-certification/my-certification';
 
-// Certification
+import { ManageMyProjectsPage } from '../pages/Projects/manage-my-projects/manage-my-projects';
+import { EmployeeProjectManagementPage } from '../pages/Projects/employee-project-management/employee-project-management';
+
+// Profile
 import { AchievementPage } from '../pages/Corporate/MyProfile/achievement/achievement';
 import { CertificationPage } from '../pages/Corporate/MyProfile/certification/certification';
 import { EducationPage } from '../pages/Corporate/MyProfile/education/education';
@@ -67,6 +70,8 @@ import { MessageService } from '../providers/index';
     HolidaysPage,
     LeaveApprovalPage,
     MyLeavesPage,
+    ManageMyProjectsPage,
+    EmployeeProjectManagementPage,
     MyCertificationPage,
     AchievementPage,
     CertificationPage,
@@ -101,6 +106,8 @@ import { MessageService } from '../providers/index';
     LeaveApprovalPage,
     MyLeavesPage,
     MyCertificationPage,
+    ManageMyProjectsPage,
+    EmployeeProjectManagementPage,
     AchievementPage,
     CertificationPage,
     EducationPage,
