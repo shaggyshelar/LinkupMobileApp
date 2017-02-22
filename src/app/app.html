@@ -11,7 +11,7 @@
          <ion-icon item-left [name]="p.icon" [class.activeHighlight]="checkActive(p)"></ion-icon>
         {{p.title}}
       </button>-->
-      <ion-list-header (click)="showLeaveMenu()" [ngStyle]="{'height': 36}">
+      <ion-list-header (click)="toggleLeaveMenu()" [ngStyle]="{'height': 36}">
         <ion-icon *ngIf="showLeaveSubmenus == false" name="arrow-dropdown" item-right></ion-icon>
         <ion-icon *ngIf="showLeaveSubmenus == true" name="arrow-dropleft" item-right></ion-icon>
         <h2 style="display: inline-block;">Leave Management</h2>
@@ -19,6 +19,16 @@
       <ion-item class="animated fadeInUp" ion-item menuClose *ngFor="let leavePage of leavePages" (click)="openPage(leavePage)">
          <ion-icon item-left [name]="leavePage.icon" [class.activeHighlight]="checkActive(leavePage)"></ion-icon>
         {{leavePage.title}}
+      </ion-item>
+      
+      <ion-list-header (click)="toggleTimesheetMenu()" [ngStyle]="{'height': 36}">
+        <ion-icon *ngIf="showTimesheetSubmenus == false" name="arrow-dropdown" item-right></ion-icon>
+        <ion-icon *ngIf="showTimesheetSubmenus == true" name="arrow-dropleft" item-right></ion-icon>
+        <h2 style="display: inline-block;">Timesheet</h2>
+      </ion-list-header>
+      <ion-item class="animated fadeInUp" ion-item menuClose *ngFor="let timesheetPage of timesheetPages" (click)="openPage(timesheetPage)">
+         <ion-icon item-left [name]="timesheetPage.icon" [class.activeHighlight]="checkActive(timesheetPage)"></ion-icon>
+        {{timesheetPage.title}}
       </ion-item>
     </ion-list>
   </ion-content>

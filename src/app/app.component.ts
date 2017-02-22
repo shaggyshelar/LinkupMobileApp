@@ -2,13 +2,22 @@ import { Component, ViewChild } from '@angular/core';
 import { Nav, Platform } from 'ionic-angular';
 import { StatusBar, Splashscreen, Network } from 'ionic-native';
 import { LoadingController } from 'ionic-angular';
-
 import { HomePage } from '../pages/home/home';
+
 // Leave Management
 import { ApplyForLeavePage } from '../pages/LeaveManagement/apply-for-leave/apply-for-leave';
 import { HolidaysPage } from '../pages/LeaveManagement/holidays/holidays';
 import { LeaveApprovalPage } from '../pages/LeaveManagement/leave-approval/leave-approval';
 import { MyLeavesPage } from '../pages/LeaveManagement/my-leaves/my-leaves';
+
+// Timesheet
+import { MyTimesheetPage } from '../pages/Timesheet/my-timesheet/my-timesheet';
+import { EnterTimesheetPage } from '../pages/Timesheet/enter-timesheet/enter-timesheet';
+import { ApproveTimesheetPage } from '../pages/Timesheet/approve-timesheet/approve-timesheet';
+import { ApprovedTimesheetPage } from '../pages/Timesheet/approved-timesheet/approved-timesheet';
+import { TimesheetReportPage } from '../pages/Timesheet/timesheet-report/timesheet-report';
+import { BiometricDiscrepancyApprovalPage } from '../pages/Timesheet/biometric-discrepancy-approval/biometric-discrepancy-approval';
+
 
 import { LoginPage } from '../pages/login/login';
 import { AuthService } from '../providers/index';
@@ -33,7 +42,6 @@ export class MyApp {
   activePage: any;
   disconnectSubscription: any;
   isDisconnected: boolean = false;
-  pages: Array<{ title: string, component: any, icon: string }>;
   subscription: Subscription;
   leavePages: PageInterface[] = [];
   timesheetPages: PageInterface[] = [];
@@ -41,21 +49,14 @@ export class MyApp {
   constructor(public platform: Platform, public auth: AuthService, public loadingCtrl: LoadingController) {
     this.initializeApp();
 
-    // used for an example of ngFor and navigation
-    this.pages = [
-      { title: 'Home', component: HomePage, icon: 'home' },
-      { title: 'Holidays', component: HolidaysPage, icon: 'calendar' },
-      { title: 'My Leaves', component: MyLeavesPage, icon: 'contacts' },
-      { title: 'Apply Leave', component: ApplyForLeavePage, icon: 'map' },
-      { title: 'Approve Leave', component: LeaveApprovalPage, icon: 'information-circle' }
-    ];
-
-    this.activePage = this.pages[0];
+    //this.activePage = this.pages[0];
     this.subscription = this.auth.onAuthStatusChanged$.subscribe(
       isAuthenticated => {
         if (isAuthenticated == "true") {
           this.isAuthenticated = true;
           this.rootPage = HomePage;
+          this.toggleLeaveMenu();
+          this.toggleTimesheetMenu()
         } else {
           this.isAuthenticated = false;
           this.rootPage = LoginPage;
@@ -109,7 +110,7 @@ export class MyApp {
     return page == this.activePage;
   }
 
-  showLeaveMenu() {
+  toggleLeaveMenu() {
     if (this.showLeaveSubmenus) {
       this.leavePages = [
         { title: 'Holidays', component: HolidaysPage, icon: 'calendar' },
@@ -122,6 +123,24 @@ export class MyApp {
     else {
       this.leavePages = [];
       this.showLeaveSubmenus = true;
+    }
+  }
+
+  toggleTimesheetMenu() {
+    if (this.showTimesheetSubmenus) {
+      this.timesheetPages = [
+        { title: 'My Timesheets', component: MyTimesheetPage, icon: 'calendar' },
+        { title: 'Enter Timesheets', component: EnterTimesheetPage, icon: 'contacts' },
+        { title: 'Approve Timesheets', component: ApproveTimesheetPage, icon: 'map' },
+        { title: 'Approved Timesheets', component: ApprovedTimesheetPage, icon: 'information-circle' },
+        { title: 'Timesheets Report', component: TimesheetReportPage, icon: 'information-circle' },
+        { title: 'Biometric Discrepancy Approval', component: BiometricDiscrepancyApprovalPage, icon: 'information-circle' }
+      ];
+      this.showTimesheetSubmenus = false;
+    }
+    else {
+      this.timesheetPages = [];
+      this.showTimesheetSubmenus = true;
     }
   }
 }
