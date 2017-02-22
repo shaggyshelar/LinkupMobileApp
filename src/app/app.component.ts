@@ -14,13 +14,19 @@ import { LoginPage } from '../pages/login/login';
 import { AuthService } from '../providers/index';
 import { Subscription } from 'rxjs/Subscription';
 
+export interface PageInterface {
+  title: string;
+  component: any;
+  icon?: string;
+}
 
 @Component({
   templateUrl: 'app.html'
 })
 export class MyApp {
   @ViewChild(Nav) nav: Nav;
-
+  public showLeaveSubmenus: boolean = true;
+  public showTimesheetSubmenus: boolean = false;
   rootPage: any = LoginPage;
   isAuthenticated: boolean = false;
   loader: any;
@@ -29,6 +35,8 @@ export class MyApp {
   isDisconnected: boolean = false;
   pages: Array<{ title: string, component: any, icon: string }>;
   subscription: Subscription;
+  leavePages: PageInterface[] = [];
+  timesheetPages: PageInterface[] = [];
 
   constructor(public platform: Platform, public auth: AuthService, public loadingCtrl: LoadingController) {
     this.initializeApp();
@@ -99,5 +107,21 @@ export class MyApp {
 
   checkActive(page) {
     return page == this.activePage;
+  }
+
+  showLeaveMenu() {
+    if (this.showLeaveSubmenus) {
+      this.leavePages = [
+        { title: 'Holidays', component: HolidaysPage, icon: 'calendar' },
+        { title: 'My Leaves', component: MyLeavesPage, icon: 'contacts' },
+        { title: 'Apply Leave', component: ApplyForLeavePage, icon: 'map' },
+        { title: 'Approve Leave', component: LeaveApprovalPage, icon: 'information-circle' }
+      ];
+      this.showLeaveSubmenus = false;
+    }
+    else {
+      this.leavePages = [];
+      this.showLeaveSubmenus = true;
+    }
   }
 }

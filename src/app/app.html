@@ -7,19 +7,28 @@
 
   <ion-content>
     <ion-list>
-      <button menuClose ion-item *ngFor="let p of pages" (click)="openPage(p)">
+      <!--<button menuClose ion-item *ngFor="let p of pages" (click)="openPage(p)">
          <ion-icon item-left [name]="p.icon" [class.activeHighlight]="checkActive(p)"></ion-icon>
         {{p.title}}
-      </button>
+      </button>-->
+      <ion-list-header (click)="showLeaveMenu()" [ngStyle]="{'height': 36}">
+        <ion-icon *ngIf="showLeaveSubmenus == false" name="arrow-dropdown" item-right></ion-icon>
+        <ion-icon *ngIf="showLeaveSubmenus == true" name="arrow-dropleft" item-right></ion-icon>
+        <h2 style="display: inline-block;">Leave Management</h2>
+      </ion-list-header>
+      <ion-item class="animated fadeInUp" ion-item menuClose *ngFor="let leavePage of leavePages" (click)="openPage(leavePage)">
+         <ion-icon item-left [name]="leavePage.icon" [class.activeHighlight]="checkActive(leavePage)"></ion-icon>
+        {{leavePage.title}}
+      </ion-item>
     </ion-list>
   </ion-content>
 
   <ion-footer>
-      <ion-title>
-        <button menuClose ion-item (click)="onLogout()">
+    <ion-title>
+      <button menuClose ion-item (click)="onLogout()">
          <ion-icon item-left [name]="log-out"></ion-icon>Logout
       </button>
-      </ion-title>
+    </ion-title>
   </ion-footer>
 </ion-menu>
 
