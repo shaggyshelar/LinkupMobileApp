@@ -4,7 +4,8 @@ import { ModalController } from 'ionic-angular';
 import { AuthService } from '../../providers/index';
 import { PersonalInfoPage } from '../Corporate/MyProfile/personal-info/personal-info';
 import { CertificationPage } from '../Corporate/MyProfile/certification/certification';
-
+import { SkillSetPage } from '../Corporate/MyProfile/skill-set/skill-set';
+import { ExperiencePage } from '../Corporate/MyProfile/experience/experience';
 /*
   Generated class for the Dashboard page.
 
@@ -32,6 +33,14 @@ export class HomePage {
   }
   gotoCertification() {
     let modal = this.modalCtrl.create(CertificationPage);
+    modal.present();
+  }
+  gotoSkill() {
+    let modal = this.modalCtrl.create(SkillSetPage);
+    modal.present();
+  }
+   gotoExperience() {
+    let modal = this.modalCtrl.create(ExperiencePage);
     modal.present();
   }
 }

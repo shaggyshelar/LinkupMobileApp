@@ -5,14 +5,66 @@
   Ionic pages and navigation.
 -->
 <ion-header>
-
   <ion-navbar>
-    <ion-title>skillSet</ion-title>
+    <ion-buttons start>
+      <button *ngIf="showForm" (click)="onSave()" ion-button icon-only>
+        <ion-icon name="checkmark"></ion-icon>
+      </button>
+    </ion-buttons>
+    <ion-buttons start>
+      <button *ngIf="showForm === false" (click)="onAddForm(showForm)" ion-button icon-only>
+        <ion-icon name="add"></ion-icon>
+      </button>
+    </ion-buttons>
+    <ion-buttons start>
+      <button (click)="dismiss()" ion-button icon-only>
+        <ion-icon name="close"></ion-icon>
+      </button>
+    </ion-buttons>
+    <ion-title>Skill Set</ion-title>
   </ion-navbar>
-
 </ion-header>
 
 
 <ion-content padding>
-
+  <ion-card *ngIf="showForm">
+    <ion-card-header class="cardHeader">
+            <ion-row>
+              <ion-col width-90>
+              </ion-col>
+              <ion-col width-10 style="text-align:right;" (click)="onCloseForm()">
+                <ion-icon name="close"></ion-icon>
+              </ion-col>
+            </ion-row>
+        </ion-card-header>
+    <form name="SkillForm">
+    <ion-list>
+      <ion-item>
+        <ion-label floating>Skill Type <span class="required">*</span></ion-label>
+        <ion-select required name="selectSkillType" name="selectSkills" [(ngModel)]="skill.SkillType">
+          <ion-option value="Language/Technology">Language/Technology</ion-option>
+          <ion-option value="Operating System">Operating System</ion-option>
+          <ion-option value="Database">Database</ion-option>
+          <ion-option value="Tools">Tools</ion-option>
+        </ion-select>
+      </ion-item>
+      <p *ngIf="isSkillType" class="error">Please select skill type</p>
+      <ion-item>
+        <ion-label floating>Skills <span class="required">*</span></ion-label>
+        <ion-textarea name = "txtSkill" [(ngModel)]="skill.Skills"></ion-textarea>
+    </ion-item>
+    <p *ngIf="isSkill" class="error">Please Enter Skills</p>
+    </ion-list>
+</form>
+</ion-card>
+<ion-list>
+  <ion-item (click)="editList()">
+    <h2>Language/Technology</h2>
+    <p>AngujarJS, AngularJS 2, HTML5, CSS, Javascript, JQuery, Ionic framework, Asp.net, MVC</p>
+  </ion-item>
+  <ion-item>
+    <h2>Operating Systems</h2>
+    <p>Windows, Linux</p>
+  </ion-item>
+</ion-list>
 </ion-content>

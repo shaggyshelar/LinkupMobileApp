@@ -8,8 +8,13 @@
 
   <ion-navbar>
     <ion-buttons start>
-      <button (click)="onSave()" ion-button icon-only>
+      <button *ngIf="showForm" (click)="onSave()" ion-button icon-only>
         <ion-icon name="checkmark"></ion-icon>
+      </button>
+    </ion-buttons>
+    <ion-buttons start>
+      <button *ngIf="showForm === false" (click)="onAddForm(showForm)" ion-button icon-only>
+        <ion-icon name="add"></ion-icon>
       </button>
     </ion-buttons>
     <ion-buttons start>
@@ -24,6 +29,16 @@
 
 
 <ion-content padding>
+  <ion-card  *ngIf="showForm">
+  <ion-card-header class="cardHeader">
+            <ion-row>
+              <ion-col width-90>
+              </ion-col>
+              <ion-col width-10 style="text-align:right;" (click)="onCloseForm()">
+                <ion-icon name="close"></ion-icon>
+              </ion-col>
+            </ion-row>
+  </ion-card-header>
   <form name="CertificationForm">
     <ion-list>
       <ion-item>
@@ -36,9 +51,10 @@
           <ion-option value="PHP">PHP</ion-option>
         </ion-select>
       </ion-item>
+      <p *ngIf="isCertification" class="error">Please select Certification</p>
       <ion-item>
         <ion-label floating>Certification Code <span class="required">*</span></ion-label>
-        <ion-select disabled="true" >
+        <ion-select disabled="true">
           <ion-option value="70-470">70-470</ion-option>
           <ion-option value="70-411">70-490</ion-option>
           <ion-option value="70-456">70-410</ion-option>
@@ -54,13 +70,27 @@
         <ion-label floating>Certification Date <span class="required">*</span></ion-label>
         <ion-datetime displayFormat="DD/MM/YYYY" name="dateCareer" [(ngModel)]="Certification.certificationDate"></ion-datetime>
       </ion-item>
+      <p *ngIf="isCertificationDate" class="error">Please select certification date</p>
     </ion-list>
     <ion-row style="margin-left:5%;">
-          <ion-label>Upload Certificate <span class="required">*</span></ion-label>
+      <ion-label>Upload Certificate <span class="required">*</span></ion-label>
     </ion-row>
-    <ion-row style="border:1px solid">
-            <ion-col width-50 style="padding-left:5%;"><ion-label>No File Choosen</ion-label></ion-col>
-            <ion-col width-50><button ion-button>Choose file</button></ion-col>
+    <ion-row>
+      <ion-col width-50 style="padding-left:5%;">
+        <ion-label>No File Choosen</ion-label>
+      </ion-col>
+      <ion-col width-50><button ion-button>Choose file</button></ion-col>
     </ion-row>
-  </form>
+</form>
+  </ion-card>
+<ion-list>
+  <ion-item (click)="editList()">
+    <h2>Cerification In Java</h2>
+    <p>Certification Code : 14-555</p>
+  </ion-item>
+  <ion-item>
+    <h2>Cerification In C#</h2>
+    <p>Certification Code : 14-555</p>
+  </ion-item>
+</ion-list>
 </ion-content>

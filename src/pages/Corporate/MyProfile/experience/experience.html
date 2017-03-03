@@ -7,12 +7,95 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title>experience</ion-title>
+    <ion-buttons start>
+      <button *ngIf="showForm" (click)="onSave()" ion-button icon-only>
+        <ion-icon name="checkmark"></ion-icon>
+      </button>
+    </ion-buttons>
+    <ion-buttons start>
+      <button *ngIf="showForm === false" (click)="onAddForm(showForm)" ion-button icon-only>
+        <ion-icon name="add"></ion-icon>
+      </button>
+    </ion-buttons>
+    <ion-buttons start>
+      <button (click)="dismiss()" ion-button icon-only>
+        <ion-icon name="close"></ion-icon>
+      </button>
+    </ion-buttons>
+    <ion-title>Experience</ion-title>
   </ion-navbar>
 
 </ion-header>
 
 
 <ion-content padding>
-
+  <ion-card *ngIf="showForm">
+    <ion-card-header class="cardHeader">
+            <ion-row>
+              <ion-col width-90>
+              </ion-col>
+              <ion-col width-10 style="text-align:right;" (click)="onCloseForm()">
+                <ion-icon name="close"></ion-icon>
+              </ion-col>
+            </ion-row>
+  </ion-card-header>
+  <form name="ExperienceForm">
+    <ion-list>
+      <ion-item>
+        <ion-label floating>Project <span class="required">*</span></ion-label>
+        <ion-input type="text" name="txtProject" [(ngModel)]="Experience.Project"></ion-input>
+      </ion-item>
+      <p *ngIf="isProject" class="error">Please Enter Project</p>
+      <ion-item>
+        <ion-label floating>Client <span class="required">*</span></ion-label>
+        <ion-input type="text" name="txtClient" [(ngModel)]="Experience.Client"></ion-input>
+      </ion-item>
+      <p *ngIf="isClient" class="error">Please Enter Client</p>
+      <ion-item>
+        <ion-label floating>Role <span class="required">*</span></ion-label>
+        <ion-input type="text" name="txtRole" [(ngModel)]="Experience.Role"></ion-input>
+      </ion-item>
+      <p *ngIf="isRole" class="error">Please Enter Role</p>
+      <ion-item>
+        <ion-label>Current Project</ion-label>
+        <ion-checkbox color="blue" checked="true" name="ChkCurrentProject" [(ngModel)]="Experience.Currentproject"></ion-checkbox>
+      </ion-item>
+      <ion-item>
+        <ion-label floating>Start Date <span class="required">*</span></ion-label>
+        <ion-datetime displayFormat="DD/MM/YYYY" name="dateStart" [(ngModel)]="Experience.Startdate"></ion-datetime>
+      </ion-item>
+      <p *ngIf="isEnddate" class="error">Please select end date</p>
+      <ion-item>
+        <ion-label floating>End Date <span class="required">*</span></ion-label>
+        <ion-datetime displayFormat="DD/MM/YYYY" name="dateEnd" [(ngModel)]="Experience.Enddate"></ion-datetime>
+      </ion-item>
+      <p *ngIf="isStartdate" class="error">Please select start date</p>
+      <ion-item>
+        <ion-label floating>Environment</ion-label>
+        <ion-textarea name="txtEnvironment" [(ngModel)]="Experience.Environment"></ion-textarea>
+      </ion-item>
+      <ion-item>
+        <ion-label floating>Responsibilities <span class="required">*</span></ion-label>
+        <ion-textarea name="txtResponsibility" [(ngModel)]="Experience.Responsibilities"></ion-textarea>
+      </ion-item>
+      <p *ngIf="isResponsibilities" class="error">Please Enter Responsibilities</p>
+      <ion-item>
+        <ion-label floating>Description</ion-label>
+        <ion-textarea name="txtDescription" [(ngModel)]="Experience.Description"></ion-textarea>
+      </ion-item>
+    </ion-list>
+  </form>
+  </ion-card>
+  <ion-list>
+  <ion-item (click)="editList()">
+    <h2>Linkup Mobile</h2>
+    <p>Angular-JS, Bootstrap, Jquery, ASP.NET MVC, CSS3, HTML5</p>
+    <p>Role : Software developer</p>
+  </ion-item>
+  <ion-item>
+    <h2>JA Mobile</h2>
+    <p>Angular-JS, Bootstrap, Jquery, ASP.NET MVC, CSS3, HTML5</p>
+    <p>Role : Software developer</p>
+  </ion-item>
+</ion-list>
 </ion-content>

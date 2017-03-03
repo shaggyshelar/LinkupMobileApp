@@ -18,9 +18,6 @@
       </button>
     </ion-buttons>
     <ion-buttons start>
-      <!--<button (click)="dismiss()" ion-button clear>
-      Cancel
-      </button>-->
       <button (click)="dismiss()" ion-button icon-only>
         <ion-icon name="close"></ion-icon>
       </button>
@@ -76,15 +73,15 @@
     <ion-item>
       <ion-label floating>Blood Group</ion-label>
       <ion-select disabled={{MakeEnable}} [(ngModel)]="Personal.BloodGroup">
-      <ion-option value="A+">A+</ion-option>
-      <ion-option value="A-">A-</ion-option>
-      <ion-option value="B+">B+</ion-option>
-      <ion-option value="B-">B-</ion-option>
-      <ion-option value="O+">O+</ion-option>
-      <ion-option value="O-">O-</ion-option>
-      <ion-option value="AB+">AB+</ion-option>
-      <ion-option value="AB-">AB-</ion-option>
-    </ion-select>
+        <ion-option value="A+">A+</ion-option>
+        <ion-option value="A-">A-</ion-option>
+        <ion-option value="B+">B+</ion-option>
+        <ion-option value="B-">B-</ion-option>
+        <ion-option value="O+">O+</ion-option>
+        <ion-option value="O-">O-</ion-option>
+        <ion-option value="AB+">AB+</ion-option>
+        <ion-option value="AB-">AB-</ion-option>
+      </ion-select>
     </ion-item>
     <ion-item>
       <ion-label floating>Emergency Contact Name</ion-label>
@@ -96,7 +93,7 @@
     </ion-item>
     <ion-item>
       <ion-label floating>Emergency Contact Number</ion-label>
-      <ion-input type="number" limit-to="10" disabled ={{MakeEnable}} [(ngModel)]="Personal.EmergencyContactNo"></ion-input>
+      <ion-input type="number" limit-to="10" disabled={{MakeEnable}} [(ngModel)]="Personal.EmergencyContactNo"></ion-input>
     </ion-item>
   </ion-list>
 </ion-content>

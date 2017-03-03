@@ -14,12 +14,12 @@ import { LimitToDirective } from '../../../../directives/limit-to';
   templateUrl: 'personal-info.html'
 })
 export class PersonalInfoPage {
-  MakeEnable : boolean = true;
-  Personal : PersonalInfo = new PersonalInfo();
-  constructor(public navCtrl: NavController, 
-  public navParams: NavParams,
-  public viewCtrl: ViewController,
-  public loadingCtrl: LoadingController) {
+  MakeEnable: boolean = true;
+  Personal: PersonalInfo = new PersonalInfo();
+  constructor(public navCtrl: NavController,
+    public navParams: NavParams,
+    public viewCtrl: ViewController,
+    public loadingCtrl: LoadingController) {
     this.MakeEnable = true;
     this.Personal.EmpID = 10355;
     this.Personal.BloodGroup = "AB+";
@@ -29,19 +29,19 @@ export class PersonalInfoPage {
     this.Personal.Email = "chetan.badgujar@eternussolutions.com";
     this.Personal.DOB = "25/06/1992";
     this.Personal.PreviousPFNo = "PU/PUN/0305291/000/0000325";
-   }
-   ngOnInit() {
-     let loader = this.loadingCtrl.create({
+  }
+  ngOnInit() {
+    let loader = this.loadingCtrl.create({
       content: "Loading...",
       duration: 3000
     });
     loader.present();
-   }
+  }
   ionViewDidLoad() {
     console.log('ionViewDidLoad PersonalInfoPage');
   }
   dismiss(data) {
-      this.viewCtrl.dismiss(data);
+    this.viewCtrl.dismiss(data);
   }
   onEdit() {
     this.MakeEnable = false;
