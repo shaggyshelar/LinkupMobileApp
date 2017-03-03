@@ -49,6 +49,8 @@ export class MyApp {
   public showCorporateSubmenus: boolean = false;
   public showCertificationSubmenus: boolean = false;
   public showProjectsSubmenus: boolean = false;
+  public currentSelected:any;
+  public userdetails : any;
   rootPage: any = LoginPage;
   isAuthenticated: boolean = false;
   loader: any;
@@ -61,6 +63,7 @@ export class MyApp {
   corporatePages: PageInterface[] = [];
   certificationPages: PageInterface[] = [];
   projectsPages: PageInterface[] = [];
+  
 
   constructor(public platform: Platform, public auth: AuthService, public loadingCtrl: LoadingController) {
     this.initializeApp();
@@ -70,7 +73,9 @@ export class MyApp {
       isAuthenticated => {
         if (isAuthenticated == "true") {
           this.isAuthenticated = true;
+          
           this.rootPage = HomePage;
+         
           this.toggleLeaveMenu();
           this.toggleTimesheetMenu()
           this.toggleCertificationMenu();
@@ -91,6 +96,7 @@ export class MyApp {
     this.presentLoading();
     this.isAuthenticated = this.auth.isAuthenticated();
     if (this.auth.isAuthenticated()) {
+       this.userdetails = JSON.parse(localStorage.getItem('loggedInUserDetails'));
       this.rootPage = HomePage;
     } else {
       this.rootPage = LoginPage;
@@ -121,6 +127,7 @@ export class MyApp {
   }
 
   openPage(page) {
+    this.currentSelected = page;
     this.nav.setRoot(page.component);
     this.activePage = page;
   }

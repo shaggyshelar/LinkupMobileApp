@@ -85,7 +85,9 @@ export class LoginPage {
       this.authService.authenticate(this.model)
         .subscribe(
         results => {
+          this.getCurrentUserDetails();
           this.getLoggedInUserPermission();
+          //this.getCurrentUserDetails();
         },
         error => {
           this.showError = true;
@@ -100,15 +102,28 @@ export class LoginPage {
       results => {
         //this._router.navigate(['/']);
         //this.navCtrl.push(HomePage);
+        
       },
       error => {
         this.showError = true;
         this.errorMessage = error.message;
       });
   }
+
+  getCurrentUserDetails(): void {
+        this.authService.getCurrentUserDetails()
+            .subscribe(
+            results => {
+            
+            },
+            error => {
+                this.showError = true;
+                this.errorMessage = error.message;
+            });
+    }
   initializeApp() {
     if (localStorage.getItem('accessToken')) {
-      this.navCtrl.push(HomePage);
+      //this.navCtrl.push(HomePage);
     }
   }
 

@@ -17,5 +17,7 @@
 
 
 <ion-content padding>
-  <p-schedule [events]="events"></p-schedule>
+  <p-schedule [options] = "calenderoption" [events]="events" (onDayClick)="handleDayClick($event)" (onEventClick)="handleEventClick($event)"
+  ></p-schedule>
+  <!--[events]="events" [editable]="true"-->
 </ion-content>
