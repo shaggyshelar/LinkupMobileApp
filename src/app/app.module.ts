@@ -53,6 +53,8 @@ import { HolidayService } from '../pages/LeaveManagement/index';
 import { UserService } from '../pages/LeaveManagement/index';
 import { MessageService } from '../providers/index';
 
+// Direrctives
+import { LimitToDirective } from '../directives/limit-to';
 
 @NgModule({
   declarations: [
@@ -84,7 +86,8 @@ import { MessageService } from '../providers/index';
     MyProfilePage,
     PersonalInfoPage,
     ProfileDetailsPage,
-    SkillSetPage
+    SkillSetPage,
+    LimitToDirective
   ],
   imports: [
     IonicModule.forRoot(MyApp),

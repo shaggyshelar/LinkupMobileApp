@@ -7,12 +7,60 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title>certification</ion-title>
+    <ion-buttons start>
+      <button (click)="onSave()" ion-button icon-only>
+        <ion-icon name="checkmark"></ion-icon>
+      </button>
+    </ion-buttons>
+    <ion-buttons start>
+      <button (click)="dismiss()" ion-button icon-only>
+        <ion-icon name="close"></ion-icon>
+      </button>
+    </ion-buttons>
+    <ion-title>Certification</ion-title>
   </ion-navbar>
 
 </ion-header>
 
 
 <ion-content padding>
-
+  <form name="CertificationForm">
+    <ion-list>
+      <ion-item>
+        <ion-label floating>Certification <span class="required">*</span></ion-label>
+        <ion-select required name="selectCertification" [(ngModel)]="Certification.certification">
+          <ion-option value="Java">Java</ion-option>
+          <ion-option value="C#">C#</ion-option>
+          <ion-option value="C++">C++</ion-option>
+          <ion-option value="Angularjs">Angularjs</ion-option>
+          <ion-option value="PHP">PHP</ion-option>
+        </ion-select>
+      </ion-item>
+      <ion-item>
+        <ion-label floating>Certification Code <span class="required">*</span></ion-label>
+        <ion-select disabled="true" >
+          <ion-option value="70-470">70-470</ion-option>
+          <ion-option value="70-411">70-490</ion-option>
+          <ion-option value="70-456">70-410</ion-option>
+          <ion-option value="70-409">70-498</ion-option>
+          <ion-option value="70-490">70-487</ion-option>
+        </ion-select>
+      </ion-item>
+      <ion-item>
+        <ion-label>From ESPL</ion-label>
+        <ion-checkbox color="blue" checked="true"></ion-checkbox>
+      </ion-item>
+      <ion-item>
+        <ion-label floating>Certification Date <span class="required">*</span></ion-label>
+        <ion-datetime displayFormat="DD/MM/YYYY" name="dateCareer" [(ngModel)]="Certification.certificationDate"></ion-datetime>
+      </ion-item>
+    </ion-list>
+    <ion-row style="margin-left:5%;">
+          <ion-label>Upload Certificate <span class="required">*</span></ion-label>
+    </ion-row>
+    <ion-row style="border:1px solid">
+            <ion-col width-50 style="padding-left:5%;"><ion-label>No File Choosen</ion-label></ion-col>
+            <ion-col width-50><button ion-button>Choose file</button></ion-col>
+    </ion-row>
+  </form>
 </ion-content>

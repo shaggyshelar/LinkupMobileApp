@@ -7,12 +7,96 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title>personalInfo</ion-title>
+    <ion-buttons start *ngIf="MakeEnable === false">
+      <button (click)="onSave()" ion-button icon-only>
+        <ion-icon name="checkmark"></ion-icon>
+      </button>
+    </ion-buttons>
+    <ion-buttons start *ngIf="MakeEnable">
+      <button ion-button icon-only (click)="onEdit()">
+        <ion-icon name="create"></ion-icon>
+      </button>
+    </ion-buttons>
+    <ion-buttons start>
+      <!--<button (click)="dismiss()" ion-button clear>
+      Cancel
+      </button>-->
+      <button (click)="dismiss()" ion-button icon-only>
+        <ion-icon name="close"></ion-icon>
+      </button>
+    </ion-buttons>
+    <ion-title>Personal Info</ion-title>
   </ion-navbar>
 
 </ion-header>
 
 
 <ion-content padding>
-
+  <ion-list>
+    <ion-item>
+      <ion-label floating>Employee ID</ion-label>
+      <ion-input type="text" disabled="true" [(ngModel)]="Personal.EmpID"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label floating>Employee Name</ion-label>
+      <ion-input type="text" disabled="true" [(ngModel)]="Personal.EmpName"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label floating>Current Address</ion-label>
+      <ion-textarea disabled="true" [(ngModel)]="Personal.CurrentAddress"></ion-textarea>
+    </ion-item>
+    <ion-item>
+      <ion-label floating>Contact Number</ion-label>
+      <ion-input type="number" limit-to="10" disabled={{MakeEnable}} [(ngModel)]="Personal.ContactNumber"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label floating>Email</ion-label>
+      <ion-input type="text" disabled="true" [(ngModel)]="Personal.Email"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label floating>Previous PF No.</ion-label>
+      <ion-input type="text" disabled={{MakeEnable}} [(ngModel)]="Personal.PreviousPFNo"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label floating>Date of Birth (DD/MM/YYYY)</ion-label>
+      <ion-input type="text" disabled="true" [(ngModel)]="Personal.DOB"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label floating>ESPL PF No.</ion-label>
+      <ion-input type="text" disabled={{MakeEnable}} [(ngModel)]="Personal.ESPLPFNo"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label floating>Last working day of previous employer</ion-label>
+      <ion-datetime displayFormat="DD/MM/YYYY" disabled={{MakeEnable}} [(ngModel)]="Personal.LastWorkingDay"></ion-datetime>
+    </ion-item>
+    <ion-item>
+      <ion-label floating>Career Start Date (DD/MM/YYYY)</ion-label>
+      <ion-datetime displayFormat="DD/MM/YYYY" disabled={{MakeEnable}} [(ngModel)]="Personal.CareerStartDate"></ion-datetime>
+    </ion-item>
+    <ion-item>
+      <ion-label floating>Blood Group</ion-label>
+      <ion-select disabled={{MakeEnable}} [(ngModel)]="Personal.BloodGroup">
+      <ion-option value="A+">A+</ion-option>
+      <ion-option value="A-">A-</ion-option>
+      <ion-option value="B+">B+</ion-option>
+      <ion-option value="B-">B-</ion-option>
+      <ion-option value="O+">O+</ion-option>
+      <ion-option value="O-">O-</ion-option>
+      <ion-option value="AB+">AB+</ion-option>
+      <ion-option value="AB-">AB-</ion-option>
+    </ion-select>
+    </ion-item>
+    <ion-item>
+      <ion-label floating>Emergency Contact Name</ion-label>
+      <ion-input type="text" disabled={{MakeEnable}} [(ngModel)]="Personal.EmergencyContactName"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label floating>Skype ID</ion-label>
+      <ion-input type="text" disabled={{MakeEnable}} [(ngModel)]="Personal.SkypeID"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label floating>Emergency Contact Number</ion-label>
+      <ion-input type="number" limit-to="10" disabled ={{MakeEnable}} [(ngModel)]="Personal.EmergencyContactNo"></ion-input>
+    </ion-item>
+  </ion-list>
 </ion-content>

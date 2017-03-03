@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
-
+import { NavController, NavParams,ViewController } from 'ionic-angular';
+import { CertificationInfo } from '../../../../models/certification-model';
 /*
   Generated class for the Certification page.
 
@@ -12,11 +12,23 @@ import { NavController, NavParams } from 'ionic-angular';
   templateUrl: 'certification.html'
 })
 export class CertificationPage {
-
-  constructor(public navCtrl: NavController, public navParams: NavParams) { }
+  Certification : CertificationInfo = new CertificationInfo();
+  constructor(public navCtrl: NavController, 
+              public navParams: NavParams,
+              public viewCtrl: ViewController) { }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad CertificationPage');
   }
-
+  dismiss(data) {
+      this.viewCtrl.dismiss(data);
+  }
+  onSave(){
+    if(this.Certification.certification === ""){
+      console.log('invalid name');
+    }
+    if(this.Certification.certificationDate === ""){
+       console.log('invalid date');
+    }
+  }
 }
