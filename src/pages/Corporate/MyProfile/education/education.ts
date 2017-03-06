@@ -113,7 +113,7 @@ export class EducationPage {
 
   viewEditEducation(item) {
     if (item) {
-      this.isDisabled = item.status !== 'Pending' ? false : true;
+      this.isDisabled = item.status !== 'Pending' ? true : false;
       this.showDetails = true;
       this.isAddMode ? this.toggleAddMode() : null;
       this.currentItem = item;
