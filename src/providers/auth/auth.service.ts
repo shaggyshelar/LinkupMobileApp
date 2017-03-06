@@ -32,11 +32,9 @@ export class AuthService extends BaseService {
     isAuthenticated() {
         if (localStorage.getItem('accessToken')) {
             this.authenticated = true;
-            this.authStatusChangeSource.next('true');
             return true;
         } else {
             this.authenticated = false;
-            this.authStatusChangeSource.next('false');
             return false;
         }
     }
@@ -49,7 +47,6 @@ export class AuthService extends BaseService {
         return JSON.parse(localStorage.getItem('loggedInUserDetails'));
     }
     authenticate(credentials: any): Observable<any> {
-        // return this.post$('/auth/Token',credentials).map((res: Response) => { this.setToken(res); });
         let headers = new Headers();
         let credentialString: string = 'grant_type=password&UserName=' + credentials.UserName + '&Password=' + credentials.Password;
         headers.append('Content-Type', 'application/x-www-form-urlencoded');
@@ -57,15 +54,16 @@ export class AuthService extends BaseService {
         this.blockUI();
         return this.http.post(this.baseUrl + 'auth/Token', credentialString, options)
             .map((res: Response) => {
-                this.unblockUI();
                 this.setToken(res);
+                this.storeLoggedInUserPermission().subscribe();
+                this.unblockUI();
             })
             .catch(err => {
                 this.unblockUI();
                 return this.handleError(err);
             });
     }
-    getLoggedInUserPermission() {
+    storeLoggedInUserPermission() {
         return this.getChildList$('permissions', 0, 0, true).map((res: Response) => { this.setLoggedInUserPermission(res); });
     }
     getCurrentUserDetails() {
@@ -89,8 +87,6 @@ export class AuthService extends BaseService {
         }
         let body = res.json();
         localStorage.setItem('accessToken', body.access_token);
-        this.authenticated = true;
-        this.authStatusChangeSource.next('true');
     }
     private setLoggedInUserPermission(res: Response) {
         if (res.status < 200 || res.status >= 300) {
@@ -98,6 +94,8 @@ export class AuthService extends BaseService {
         }
         let body = res.json();
         localStorage.setItem('loggedInUserPermission', JSON.stringify(body));
+        this.authenticated = true;
+        this.authStatusChangeSource.next('true');
     }
     private setLoggedInUserDetail(res: Response) {
         if (res.status < 200 || res.status >= 300) {
