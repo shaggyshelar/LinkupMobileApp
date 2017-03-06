@@ -49,7 +49,6 @@ export class MyApp {
   public showCorporateSubmenus: boolean = false;
   public showCertificationSubmenus: boolean = false;
   public showProjectsSubmenus: boolean = false;
-  public currentSelected:any;
   public userdetails : any;
   rootPage: any = LoginPage;
   isAuthenticated: boolean = false;
@@ -127,7 +126,6 @@ export class MyApp {
   }
 
   openPage(page) {
-    this.currentSelected = page;
     this.nav.setRoot(page.component);
     this.activePage = page;
   }

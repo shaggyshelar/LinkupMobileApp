@@ -123,7 +123,7 @@ export class LoginPage {
     }
   initializeApp() {
     if (localStorage.getItem('accessToken')) {
-      //this.navCtrl.push(HomePage);
+      this.navCtrl.push(HomePage);
     }
   }
 
