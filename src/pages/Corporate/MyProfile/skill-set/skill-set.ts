@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams, ViewController } from 'ionic-angular';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { SkillInfo } from './skill-set-model';
 
 /*
@@ -13,6 +14,7 @@ import { SkillInfo } from './skill-set-model';
   templateUrl: 'skill-set.html'
 })
 export class SkillSetPage {
+  complexForm : FormGroup;
   skill: SkillInfo = new SkillInfo();
   showForm: boolean = false;
   isSkillType: boolean = false;
@@ -20,7 +22,13 @@ export class SkillSetPage {
   MakeEnable: boolean = true;
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
-    public viewCtrl: ViewController) { }
+    public viewCtrl: ViewController,
+    public fb: FormBuilder) { 
+      this.complexForm = fb.group({
+      'skilltype' : [null, Validators.required],
+      'skills' : [null, Validators.required]
+    })
+    }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad SkillSetPage');
@@ -33,28 +41,8 @@ export class SkillSetPage {
     this.skill.SkillType = "";
     this.skill.Skills = "";
   }
-  validate() {
-    let submitFlag = true;
-    if (this.skill.SkillType === "" || this.skill.SkillType === undefined) {
-      this.isSkillType = true;
-      submitFlag = false;
-    }
-    else {
-      this.isSkillType = false;
-    }
-    if (this.skill.Skills === "" || this.skill.Skills === undefined) {
-      this.isSkill = true;
-      submitFlag = false;
-    }
-    else {
-      this.isSkill = false;
-    }
-    return submitFlag;
-  }
   onSave() {
-    if (this.validate()) {
-      console.log('data saved sucessfully')
-    }
+      console.log('data saved sucessfully');
   }
   onCloseForm() {
     this.showForm = false;

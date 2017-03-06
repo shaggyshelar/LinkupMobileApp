@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams, ViewController } from 'ionic-angular';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ExperienceInfo } from './experience-model';
 
 /*
@@ -13,6 +14,7 @@ import { ExperienceInfo } from './experience-model';
   templateUrl: 'experience.html'
 })
 export class ExperiencePage {
+  complexForm : FormGroup;
   Experience: ExperienceInfo = new ExperienceInfo();
   showForm: boolean = false;
   isProject: boolean = false;
@@ -23,7 +25,20 @@ export class ExperiencePage {
   isResponsibilities: boolean = false;
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
-    public viewCtrl: ViewController) { }
+    public viewCtrl: ViewController,
+    public fb: FormBuilder) { 
+      this.complexForm = fb.group({
+      'project' : [null, Validators.required],
+      'client' : [null, Validators.required],
+      'role' : [null, Validators.required],
+      'startdate' : [null, Validators.required],
+      'enddate' : [null, Validators.required],
+      'responsibility' : [null, Validators.required],
+      'description':[null],
+      'currentproject':[null],
+      'environment':[null]
+    })
+    }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad ExperiencePage');
@@ -39,56 +54,8 @@ export class ExperiencePage {
     this.Experience.Description = "";
     this.Experience.Role = "";
   }
-  validate() {
-    let submitFlag = true;
-    if (this.Experience.Project === "" || this.Experience.Project === undefined) {
-      this.isProject = true;
-      submitFlag = false;
-    }
-    else {
-      this.isProject = false;
-    }
-    if (this.Experience.Client === "" || this.Experience.Client === undefined) {
-      this.isClient = true;
-      submitFlag = false;
-    }
-    else {
-      this.isClient = false;
-    }
-    if (this.Experience.Role === "" || this.Experience.Role === undefined) {
-      this.isRole = true;
-      submitFlag = false;
-    }
-    else {
-      this.isRole = false;
-    }
-    if (this.Experience.Startdate === "" || this.Experience.Startdate === undefined) {
-      this.isEnddate = true;
-      submitFlag = false;
-    }
-    else {
-      this.isEnddate = false;
-    }
-    if (this.Experience.Enddate === "" || this.Experience.Enddate === undefined) {
-      this.isStartdate = true;
-      submitFlag = false;
-    }
-    else {
-      this.isStartdate = false;
-    }
-    if (this.Experience.Responsibilities === "" || this.Experience.Responsibilities === undefined) {
-      this.isResponsibilities = true;
-      submitFlag = false;
-    }
-    else {
-      this.isResponsibilities = false;
-    }
-    return submitFlag;
-  }
   onSave() {
-    if (this.validate()) {
-      console.log('data saved sucessfully')
-    }
+      console.log('data saved sucessfully');
   }
   onCloseForm() {
     this.showForm = false;

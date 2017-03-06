@@ -8,7 +8,7 @@
 
   <ion-navbar>
     <ion-buttons start>
-      <button *ngIf="showForm" (click)="onSave()" ion-button icon-only>
+      <button *ngIf="showForm" (click)="onSave()" [disabled]="!complexForm.valid" ion-button icon-only>
         <ion-icon name="checkmark"></ion-icon>
       </button>
     </ion-buttons>
@@ -39,49 +39,49 @@
               </ion-col>
             </ion-row>
   </ion-card-header>
-  <form name="ExperienceForm">
+  <form name="ExperienceForm" [formGroup]="complexForm">
     <ion-list>
       <ion-item>
         <ion-label floating>Project <span class="required">*</span></ion-label>
-        <ion-input type="text" name="txtProject" [(ngModel)]="Experience.Project"></ion-input>
+        <ion-input type="text" [(ngModel)]="Experience.Project" formControlName="project" [class.invalid]="!complexForm.controls.project.valid"></ion-input>
       </ion-item>
-      <p *ngIf="isProject" class="error">Please Enter Project</p>
+      <p *ngIf="!complexForm.controls.project.valid" class="error">Please Enter Project</p>
       <ion-item>
         <ion-label floating>Client <span class="required">*</span></ion-label>
-        <ion-input type="text" name="txtClient" [(ngModel)]="Experience.Client"></ion-input>
+        <ion-input type="text" name="txtClient" [(ngModel)]="Experience.Client" formControlName="client" [class.invalid]="!complexForm.controls.client.valid"></ion-input>
       </ion-item>
-      <p *ngIf="isClient" class="error">Please Enter Client</p>
+      <p *ngIf="!complexForm.controls.client.valid" class="error">Please Enter Client</p>
       <ion-item>
         <ion-label floating>Role <span class="required">*</span></ion-label>
-        <ion-input type="text" name="txtRole" [(ngModel)]="Experience.Role"></ion-input>
+        <ion-input type="text" [(ngModel)]="Experience.Role" formControlName="role" [class.invalid]="!complexForm.controls.role.valid"></ion-input>
       </ion-item>
-      <p *ngIf="isRole" class="error">Please Enter Role</p>
+      <p *ngIf="!complexForm.controls.role.valid" class="error">Please Enter Role</p>
       <ion-item>
         <ion-label>Current Project</ion-label>
-        <ion-checkbox color="blue" checked="true" name="ChkCurrentProject" [(ngModel)]="Experience.Currentproject"></ion-checkbox>
+        <ion-checkbox color="blue" checked="true" name="ChkCurrentProject" [(ngModel)]="Experience.Currentproject" formControlName="currentproject"></ion-checkbox>
       </ion-item>
       <ion-item>
         <ion-label floating>Start Date <span class="required">*</span></ion-label>
-        <ion-datetime displayFormat="DD/MM/YYYY" name="dateStart" [(ngModel)]="Experience.Startdate"></ion-datetime>
+        <ion-datetime displayFormat="DD/MM/YYYY" name="dateStart" [(ngModel)]="Experience.Startdate" formControlName="startdate" [class.invalid]="!complexForm.controls.startdate.valid"></ion-datetime>
       </ion-item>
-      <p *ngIf="isEnddate" class="error">Please select end date</p>
+      <p *ngIf="!complexForm.controls.startdate.valid" class="error">Please select end date</p>
       <ion-item>
         <ion-label floating>End Date <span class="required">*</span></ion-label>
-        <ion-datetime displayFormat="DD/MM/YYYY" name="dateEnd" [(ngModel)]="Experience.Enddate"></ion-datetime>
+        <ion-datetime displayFormat="DD/MM/YYYY" name="dateEnd" [(ngModel)]="Experience.Enddate" formControlName="enddate" [class.invalid]="!complexForm.controls.enddate.valid"></ion-datetime>
       </ion-item>
-      <p *ngIf="isStartdate" class="error">Please select start date</p>
+      <p *ngIf="!complexForm.controls.enddate.valid" class="error">Please select start date</p>
       <ion-item>
         <ion-label floating>Environment</ion-label>
-        <ion-textarea name="txtEnvironment" [(ngModel)]="Experience.Environment"></ion-textarea>
+        <ion-textarea name="txtEnvironment" [(ngModel)]="Experience.Environment" formControlName="environment"></ion-textarea>
       </ion-item>
       <ion-item>
         <ion-label floating>Responsibilities <span class="required">*</span></ion-label>
-        <ion-textarea name="txtResponsibility" [(ngModel)]="Experience.Responsibilities"></ion-textarea>
+        <ion-textarea name="txtResponsibility" [(ngModel)]="Experience.Responsibilities" formControlName="responsibility" [class.invalid]="!complexForm.controls.responsibility.valid"></ion-textarea>
       </ion-item>
-      <p *ngIf="isResponsibilities" class="error">Please Enter Responsibilities</p>
+      <p *ngIf="!complexForm.controls.responsibility.valid" class="error">Please Enter Responsibilities</p>
       <ion-item>
         <ion-label floating>Description</ion-label>
-        <ion-textarea name="txtDescription" [(ngModel)]="Experience.Description"></ion-textarea>
+        <ion-textarea name="txtDescription" [(ngModel)]="Experience.Description" formControlName="description"></ion-textarea>
       </ion-item>
     </ion-list>
   </form>

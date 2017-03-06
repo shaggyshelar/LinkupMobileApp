@@ -7,7 +7,7 @@
 <ion-header>
   <ion-navbar>
     <ion-buttons start>
-      <button *ngIf="showForm" (click)="onSave()" ion-button icon-only>
+      <button *ngIf="showForm" (click)="onSave()" [disabled]="!complexForm.valid" ion-button icon-only>
         <ion-icon name="checkmark"></ion-icon>
       </button>
     </ion-buttons>
@@ -37,23 +37,23 @@
               </ion-col>
             </ion-row>
         </ion-card-header>
-    <form name="SkillForm">
+    <form name="SkillForm" [formGroup]="complexForm">
     <ion-list>
       <ion-item>
         <ion-label floating>Skill Type <span class="required">*</span></ion-label>
-        <ion-select required name="selectSkillType" name="selectSkills" [(ngModel)]="skill.SkillType">
+        <ion-select formControlName="skilltype" [(ngModel)]="skill.SkillType" [class.invalid]="!complexForm.controls.skilltype.valid">
           <ion-option value="Language/Technology">Language/Technology</ion-option>
           <ion-option value="Operating System">Operating System</ion-option>
           <ion-option value="Database">Database</ion-option>
           <ion-option value="Tools">Tools</ion-option>
         </ion-select>
       </ion-item>
-      <p *ngIf="isSkillType" class="error">Please select skill type</p>
+      <p *ngIf="!complexForm.controls.skilltype.valid" class="error">Please select skill type</p>
       <ion-item>
         <ion-label floating>Skills <span class="required">*</span></ion-label>
-        <ion-textarea name = "txtSkill" [(ngModel)]="skill.Skills"></ion-textarea>
+        <ion-textarea formControlName="skills" [(ngModel)]="skill.Skills" [class.invalid]="!complexForm.controls.skills.valid"></ion-textarea>
     </ion-item>
-    <p *ngIf="isSkill" class="error">Please Enter Skills</p>
+    <p *ngIf="!complexForm.controls.skills.valid" class="error">Please Enter Skills</p>
     </ion-list>
 </form>
 </ion-card>

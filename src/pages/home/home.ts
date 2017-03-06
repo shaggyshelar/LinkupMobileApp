@@ -6,6 +6,7 @@ import { PersonalInfoPage } from '../Corporate/MyProfile/personal-info/personal-
 import { CertificationPage } from '../Corporate/MyProfile/certification/certification';
 import { SkillSetPage } from '../Corporate/MyProfile/skill-set/skill-set';
 import { ExperiencePage } from '../Corporate/MyProfile/experience/experience';
+import { EmploymentHistoryPage } from '../Corporate/MyProfile/employment-history/employment-history';
 /*
   Generated class for the Dashboard page.
 
@@ -41,6 +42,10 @@ export class HomePage {
   }
    gotoExperience() {
     let modal = this.modalCtrl.create(ExperiencePage);
+    modal.present();
+  }
+   gotoEmploymentHistory() {
+    let modal = this.modalCtrl.create(EmploymentHistoryPage);
     modal.present();
   }
 }

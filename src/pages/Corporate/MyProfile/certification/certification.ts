@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams, ViewController } from 'ionic-angular';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { CertificationInfo } from './certification-model';
 /*
   Generated class for the Certification page.
@@ -12,13 +13,22 @@ import { CertificationInfo } from './certification-model';
   templateUrl: 'certification.html'
 })
 export class CertificationPage {
+  complexForm : FormGroup;
   Certification: CertificationInfo = new CertificationInfo();
   isCertification: boolean = false;
   isCertificationDate: boolean = false;
   showForm: boolean = false;
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
-    public viewCtrl: ViewController) { }
+    public viewCtrl: ViewController,
+    public fb: FormBuilder) { 
+      this.complexForm = fb.group({
+      'certification' : [null, Validators.required],
+      'certificationcode' : [null, Validators.required],
+      'certificationdate' : [null, Validators.required],
+      'uploadcertificate' : [null, Validators.required]
+    })
+    }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad CertificationPage');
@@ -26,32 +36,12 @@ export class CertificationPage {
   dismiss(data) {
     this.viewCtrl.dismiss(data);
   }
-  validate() {
-    let submitFlag = true;
-    if (this.Certification.certification === "" || this.Certification.certification === undefined) {
-      this.isCertification = true;
-      submitFlag = false;
-    }
-    else {
-      this.isCertification = false;
-    }
-    if (this.Certification.certificationDate === "" || this.Certification.certificationDate === undefined) {
-      this.isCertificationDate = true;
-      submitFlag = false;
-    }
-    else {
-      this.isCertificationDate = false;
-    }
-    return submitFlag;
-  }
   onSave() {
-    if (this.validate()) {
-      console.log('data saved sucessfully')
-    }
+      console.log('data saved sucessfully');
   }
   onAddForm() {
     this.showForm = true;
-    this.Certification.cerificationcode = "";
+    this.Certification.certificationcode = "";
     this.Certification.certification = "";
     this.Certification.certificationDate = "";
     this.Certification.fromESPL = true;
@@ -61,7 +51,7 @@ export class CertificationPage {
   }
   editList() {
     this.showForm = true;
-    this.Certification.cerificationcode = "411-0342";
+    this.Certification.certificationcode = "411-0342";
     this.Certification.certification = "Java";
     this.Certification.certificationDate = "25/06/1992";
     this.Certification.fromESPL = true;

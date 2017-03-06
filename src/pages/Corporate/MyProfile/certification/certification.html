@@ -8,7 +8,7 @@
 
   <ion-navbar>
     <ion-buttons start>
-      <button *ngIf="showForm" (click)="onSave()" ion-button icon-only>
+      <button *ngIf="showForm" (click)="onSave()" [disabled]="!complexForm.valid" ion-button icon-only>
         <ion-icon name="checkmark"></ion-icon>
       </button>
     </ion-buttons>
@@ -39,11 +39,11 @@
               </ion-col>
             </ion-row>
   </ion-card-header>
-  <form name="CertificationForm">
+  <form name="CertificationForm" [formGroup]="complexForm">
     <ion-list>
       <ion-item>
         <ion-label floating>Certification <span class="required">*</span></ion-label>
-        <ion-select required name="selectCertification" [(ngModel)]="Certification.certification">
+        <ion-select formControlName="certification" [(ngModel)]="Certification.certification" [class.invalid]="!complexForm.controls.certification.valid">
           <ion-option value="Java">Java</ion-option>
           <ion-option value="C#">C#</ion-option>
           <ion-option value="C++">C++</ion-option>
@@ -51,10 +51,10 @@
           <ion-option value="PHP">PHP</ion-option>
         </ion-select>
       </ion-item>
-      <p *ngIf="isCertification" class="error">Please select Certification</p>
+      <p *ngIf="!complexForm.controls.certification.valid" class="error">Please select Certification</p>
       <ion-item>
         <ion-label floating>Certification Code <span class="required">*</span></ion-label>
-        <ion-select disabled="true">
+        <ion-select disabled="true" [(ngModel)]="Certification.certificationcode" formControlName="certificationcode" [class.invalid]="!complexForm.controls.certificationcode.valid">
           <ion-option value="70-470">70-470</ion-option>
           <ion-option value="70-411">70-490</ion-option>
           <ion-option value="70-456">70-410</ion-option>
@@ -62,15 +62,16 @@
           <ion-option value="70-490">70-487</ion-option>
         </ion-select>
       </ion-item>
+      <p *ngIf="!complexForm.controls.certificationcode.valid" class="error">Please select certification code</p>
       <ion-item>
         <ion-label>From ESPL</ion-label>
         <ion-checkbox color="blue" checked="true"></ion-checkbox>
       </ion-item>
       <ion-item>
         <ion-label floating>Certification Date <span class="required">*</span></ion-label>
-        <ion-datetime displayFormat="DD/MM/YYYY" name="dateCareer" [(ngModel)]="Certification.certificationDate"></ion-datetime>
+        <ion-datetime displayFormat="DD/MM/YYYY" name="dateCareer" [(ngModel)]="Certification.certificationDate" formControlName="certificationdate" [class.invalid]="!complexForm.controls.certificationdate.valid"></ion-datetime>
       </ion-item>
-      <p *ngIf="isCertificationDate" class="error">Please select certification date</p>
+      <p *ngIf="!complexForm.controls.certificationdate.valid" class="error">Please select certification date</p>
     </ion-list>
     <ion-row style="margin-left:5%;">
       <ion-label>Upload Certificate <span class="required">*</span></ion-label>
