@@ -59,15 +59,17 @@ export class AuthService extends BaseService {
             .map((res: Response) => {
                 this.unblockUI();
                 this.setToken(res);
+                this.storeLoggedInUserPermission().subscribe();
             })
             .catch(err => {
                 this.unblockUI();
                 return this.handleError(err);
             });
     }
-    getLoggedInUserPermission() {
-        return this.getChildList$('permissions', 0, 0, true).map((res: Response) => { this.setLoggedInUserPermission(res); });
-    }
+
+    storeLoggedInUserPermission() {
+        return this.getChildList$('permissions', 0, 0, true).map((res: Response) => { this.setLoggedInUserPermission(res); });
+    }
     getCurrentUserDetails() {
         let headers = new Headers();
         headers.append('Authorization', 'Bearer ' + localStorage.getItem('accessToken'));
