@@ -32,6 +32,7 @@ export class AchievementPage {
 
   addAchievement() {
     this.showAddEditView = !this.showAddEditView;
+    this.achievement = '';
   }
 
   close() {
@@ -41,7 +42,7 @@ export class AchievementPage {
   cancelTapped() {
     this.achievement = '';
     this.addAchievement();
-    this.editAchievement();
+    this.isEditable = false;
   }
 
   submitTapped(item) {
@@ -50,7 +51,7 @@ export class AchievementPage {
       console.log('submit value => ',item.achievement);
       this.achievements.push(item.achievement);
       this.addAchievement();
-      this.editAchievement();
+      this.isEditable = false;
     }
 
     /**
@@ -67,7 +68,7 @@ export class AchievementPage {
   }
 
   editAchievement() {
-    this.isEditable = true;
+    this.isEditable = !this.isEditable;
   }
 
 }
