@@ -41,7 +41,7 @@
         <form [formGroup]="educationForm">
           <ion-item>
             <ion-label stacked>Class <span class="docs-pending">*</span> </ion-label>
-            <ion-select formControlName="class" [(ngModel)]="currentItem.class" >
+            <ion-select formControlName="class" [(ngModel)]="currentItem.class" [disabled]="isPendingEntry()">
               <ion-option *ngFor="let item of classDDL">{{item}}</ion-option>
             </ion-select>
             <!--TODO: DDL-->
@@ -50,13 +50,13 @@
 
           <ion-item>
             <ion-label stacked>Degree <span class="docs-pending">*</span> </ion-label>
-            <ion-input type="text" formControlName="degree" [(ngModel)]="currentItem.degree"></ion-input>
+            <ion-input type="text" formControlName="degree" [(ngModel)]="currentItem.degree" [disabled]="isPendingEntry()"></ion-input>
           </ion-item>
           <p *ngIf="!educationForm.controls.degree.valid && (educationForm.controls.degree.dirty || educationForm.controls.degree.touched)" class="warning">Field required</p>
 
           <ion-item>
             <ion-label stacked>Grade <span class="docs-pending">*</span> </ion-label>
-            <ion-select formControlName="grade" [(ngModel)]="currentItem.grade" >
+            <ion-select formControlName="grade" [(ngModel)]="currentItem.grade" [disabled]="isPendingEntry()">
               <ion-option *ngFor="let item of gradeDDL">{{item}}</ion-option>
             </ion-select>
             <!--TODO: DDL-->
@@ -65,19 +65,19 @@
 
           <ion-item>
             <ion-label stacked>Percentage <span class="docs-pending">*</span> </ion-label>
-            <ion-input type="number" formControlName="percentage" [(ngModel)]="currentItem.percentage" ></ion-input>
+            <ion-input type="number" formControlName="percentage" [(ngModel)]="currentItem.percentage" [disabled]="isPendingEntry()" ></ion-input>
           </ion-item>
           <p *ngIf="!educationForm.controls.percentage.valid && (educationForm.controls.percentage.dirty || educationForm.controls.percentage.touched)" class="warning">Required field, should be less than 100 and not a decimal</p>
 
           <ion-item>
             <ion-label stacked>Year of Passing <span class="docs-pending">*</span> </ion-label>
-            <ion-input type="number" formControlName="yearOfPassing" [(ngModel)]="currentItem.yearOfPassing" ></ion-input>
+            <ion-input type="number" formControlName="yearOfPassing" [(ngModel)]="currentItem.yearOfPassing" [disabled]="isPendingEntry()"></ion-input>
           </ion-item>
           <p *ngIf="!educationForm.controls.yearOfPassing.valid && (educationForm.controls.yearOfPassing.dirty || educationForm.controls.yearOfPassing.touched)" class="warning">Field required with proper input</p>
 
           <ion-item>
             <ion-label stacked>Certificate <span class="docs-pending">*</span> </ion-label>
-            <ion-input type="text" formControlName="certificate" [(ngModel)]="currentItem.certificate" ></ion-input>
+            <ion-input type="text" formControlName="certificate" [(ngModel)]="currentItem.certificate" [disabled]="isPendingEntry()"></ion-input>
             <!--<ion-input type="file" [(ngModel)]="currentItem.certificate" ></ion-input>-->
           </ion-item>
           <p *ngIf="!educationForm.controls.certificate.valid && (educationForm.controls.certificate.dirty || educationForm.controls.certificate.touched)" class="warning">Field required with min 3 characters</p>

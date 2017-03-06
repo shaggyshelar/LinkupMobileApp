@@ -43,11 +43,12 @@ export class EducationPage {
   , public navParams: NavParams
   , private formBuilder: FormBuilder
   ) {
+
     /** API call to show list */
     this.education = [
       {
         canEdit: false,
-        class: 'Degree',
+        class: 'Graduation',
         degree: 'Batchelor of Engineering',
         grade: 'First Class',
         percentage: 64,
@@ -112,7 +113,7 @@ export class EducationPage {
 
   viewEditEducation(item) {
     if (item) {
-      this.isDisabled = item.status !== 'Approved' ? false : true;
+      this.isDisabled = item.status !== 'Pending' ? false : true;
       this.showDetails = true;
       this.isAddMode ? this.toggleAddMode() : null;
       this.currentItem = item;
@@ -125,7 +126,7 @@ export class EducationPage {
   }
 
   isPendingEntry() {
-    return this.currentItem.status !== 'Pending' ? true : false;
+    return this.currentItem.status === 'Pending' ? false : true;
   }
 
   submitClicked(item) {
