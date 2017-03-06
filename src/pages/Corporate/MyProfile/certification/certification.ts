@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams, ViewController } from 'ionic-angular';
-import { CertificationInfo } from '../../../../models/certification-model';
+import { CertificationInfo } from './certification-model';
 /*
   Generated class for the Certification page.
 

@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams, ViewController } from 'ionic-angular';
-import { ExperienceInfo } from '../../../../models/experience-model';
+import { ExperienceInfo } from './experience-model';
 
 /*
   Generated class for the Experience page.

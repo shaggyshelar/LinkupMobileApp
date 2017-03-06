@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams, ViewController } from 'ionic-angular';
 import { LoadingController } from 'ionic-angular';
-import { PersonalInfo } from '../../../../models/personal-model';
-import { LimitToDirective } from '../../../../directives/limit-to';
+import { PersonalInfo } from './personal-info-model';
+import { LimitToDirective } from '../../../../providers/shared/directives/limit-to';
 /*
   Generated class for the PersonalInfo page.
 
@@ -11,7 +11,7 @@ import { LimitToDirective } from '../../../../directives/limit-to';
 */
 @Component({
   selector: 'page-personal-info',
-  templateUrl: 'personal-info.html'
+  templateUrl: 'personal-info.html',
 })
 export class PersonalInfoPage {
   MakeEnable: boolean = true;

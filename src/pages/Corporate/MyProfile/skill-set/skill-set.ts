@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams, ViewController } from 'ionic-angular';
-import { SkillInfo } from '../../../../models/skill-model';
+import { SkillInfo } from './skill-set-model';
 
 /*
   Generated class for the SkillSet page.

@@ -54,7 +54,7 @@ import { UserService } from '../pages/LeaveManagement/index';
 import { MessageService } from '../providers/index';
 
 // Direrctives
-import { LimitToDirective } from '../directives/limit-to';
+import { LimitToDirective } from '../providers/shared/directives/limit-to';
 
 @NgModule({
   declarations: [
@@ -125,6 +125,6 @@ import { LimitToDirective } from '../directives/limit-to';
     ProfileDetailsPage,
     SkillSetPage
   ],
-  providers: [{ provide: ErrorHandler, useClass: IonicErrorHandler }, Auth, AuthService, LeaveService, HolidayService, UserService, MessageService]
+  providers: [{ provide: ErrorHandler, useClass: IonicErrorHandler }, Auth, AuthService, LeaveService, HolidayService, UserService, MessageService,LimitToDirective]
 })
 export class AppModule { }
