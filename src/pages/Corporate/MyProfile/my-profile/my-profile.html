@@ -19,17 +19,19 @@
 <ion-content no-overflow>
   <div class="avatar-bg">
     <div class="profilephoto">
-      <img />
+      <img class="img-pos"/>
     </div>
-    <div class="centeralign">
-      <h4>Kunal Adhikari</h4>
-      <p class="less-margin">Delivery Manager</p>
-      <p class="less-margin">10431</p>
+    <div class="user-details">
+      <div class="push-down">
+        <h4>Kunal Adhikari</h4>
+        <p class="less-margin">Delivery Manager</p>
+        <p class="less-margin">10431</p>
+      </div>
     </div>
   </div>
   <ion-card>
     <ion-item>
-      <div class="centeralign">
+      <div class="profile-completeness">
         <span>Profile Completeness </span>
         <progress-bar [progress]="loadProgress"></progress-bar>
       </div>
