@@ -4,13 +4,92 @@
       <ion-icon name="menu"></ion-icon>
     </button>
     <ion-toolbar>
-    <ion-title>
+    <ion-title *ngIf="isSearchShow == false">
       Home
     </ion-title>
+    <ion-searchbar *ngIf="isSearchShow == true" (ionInput)="getItems($event)"
+    (ionClear)="onClear($event)"
+    (ionCancel)="onCancel($event)"
+     showCancelButton="true" animated = "true">
+    </ion-searchbar>
+    <ion-buttons *ngIf="isSearchShow == false" end>
+      <button ion-button icon-only (click)="showSearch()">
+        <ion-icon name="search"></ion-icon>
+      </button>
+    </ion-buttons>
     </ion-toolbar>
   </ion-navbar>
   
 </ion-header>
 <ion-content padding>
-  <h5>Home Page</h5>
+
+
+<ion-list >
+  <ion-item *ngFor="let item of filters">
+    {{ item }}
+  </ion-item>
+</ion-list>
+
+<ion-grid>
+  <ion-row>
+    <ion-col width=50 class="col-padding">
+      <div class="my-timesheet-card">
+        <p class="card-center-text white-text"> My Timesheets </p>
+          <p class="center-text white-text"> Pending - 0 </p>
+          <p class="center-text white-text"> Submitted - 0 </p>
+          <p class="center-text white-text"> Not Submitted - 0 </p>
+      </div>
+    </ion-col>
+    <ion-col width=50 class="col-padding">
+       <div class="team-timesheet-card">
+         <p class="card-center-text white-text">Team Timesheets</p>
+          <p class="center-text white-text"> TS For Approval - 0 </p>
+          <p class="center-text white-text"> Partially Approved - 0 </p>
+      </div>
+    </ion-col>
+  </ion-row>  
+
+   <ion-row>
+    <ion-col width=50 class="col-padding">
+      <div class="my-leaves-card">
+        <p class="card-center-text white-text"> My Leaves </p>
+          <p class="center-text white-text"> 7.45 </p>
+      </div>
+    </ion-col>
+    <ion-col width=50 class="col-padding">
+       <div class="team-leaves-card">
+         <p class="card-center-text white-text">Team Leaves</p>
+          <p class="center-text white-text"> To Approve </p>
+          <p class="center-text white-text"> 2 </p>
+      </div>
+    </ion-col>
+  </ion-row>  
+
+</ion-grid>
+<ion-slides class="slide-height">
+<ion-slide>
+    <ion-card >
+      <ion-card-header >
+        My Timesheets
+      </ion-card-header>
+      <ion-card-content>
+        <canvas #pieMyTimesheetCanvas></canvas>
+      </ion-card-content>
+    </ion-card>
+</ion-slide>
+
+<ion-slide>
+    <ion-card >
+      <ion-card-header >
+        Team Timesheets
+      </ion-card-header>
+      <ion-card-content>
+        <canvas #pieTeamTimesheetCanvas></canvas>
+      </ion-card-content>
+    </ion-card>
+</ion-slide>
+</ion-slides>
+
+
+  
 </ion-content>
