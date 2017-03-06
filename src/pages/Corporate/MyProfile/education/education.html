@@ -15,7 +15,7 @@
       </button>-->
     </ion-buttons>
     <ion-buttons end>
-      <button *ngIf="true" ion-button end>
+      <button *ngIf="true" ion-button end (click)="addEducationClicked()">
           <ion-icon name="add"></ion-icon>
       </button>
     </ion-buttons>
@@ -23,18 +23,60 @@
 
 </ion-header>
 
-
 <ion-content padding>
-  <ion-card *ngIf="showDetails">
-    <button ion-button icon-left clear end>
-      <ion-icon name="close"></ion-icon>
-    </button>
+  <ion-card *ngIf="isAddMode || showDetails">
+    <ion-list>
+      <ion-item>
+        <ion-label stacked>Class <span class="docs-pending">*</span> </ion-label>
+        <ion-select [(ngModel)]="currentItem.class" [disabled]="isDisabled">
+          <ion-option *ngFor="let item of classDDL">{{item}}</ion-option>
+        </ion-select>
+        <!--TODO: DDL-->
+      </ion-item>
+      <ion-item>
+        <ion-label stacked>Degree <span class="docs-pending">*</span> </ion-label>
+        <ion-input type="text" [(ngModel)]="currentItem.degree" [disabled]="isDisabled"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label stacked>Grade <span class="docs-pending">*</span> </ion-label>
+        <ion-select [(ngModel)]="currentItem.grade" [disabled]="isDisabled">
+          <ion-option *ngFor="let item of gradeDDL">{{item}}</ion-option>
+        </ion-select>
+        <!--TODO: DDL-->
+      </ion-item>
+      <ion-item>
+        <ion-label stacked>Percentage <span class="docs-pending">*</span> </ion-label>
+        <ion-input type="text" [(ngModel)]="currentItem.percentage" [disabled]="isDisabled"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label stacked>Year of Passing <span class="docs-pending">*</span> </ion-label>
+        <ion-input type="number" [(ngModel)]="currentItem.yearOfPassing" [disabled]="isDisabled"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label stacked>Certificate <span class="docs-pending">*</span> </ion-label>
+        <ion-input type="text" [(ngModel)]="currentItem.certificate" [disabled]="isDisabled"></ion-input>
+        <!--<ion-input type="file" [(ngModel)]="currentItem.certificate" [disabled]="isDisabled"></ion-input>-->
+      </ion-item>
+    </ion-list>
+    <ion-row>
+      <button clear ion-button (click)="submitClicked()" *ngIf="!isDisabled">Submit</button>
+      <button clear ion-button (click)="cancelClicked()" end>Cancel</button>
+    </ion-row>
   </ion-card>
 
-  <ion-list >
+  <ion-list>
     <ion-item *ngFor="let item of education" (click)="viewEditEducation(item)">
-      <h4>{{item.class}}</h4>
-      <p>{{item.degree}} </p>
+      <p>{{item.class}} : {{item.degree}}</p>
+      <p>{{item.percentage}}% {{item.grade}} </p>
+      <ion-row class="details">
+        <ion-col width-70>
+          <p>{{item.yearOfPassing}}</p>
+        </ion-col>
+        <ion-col width-30>
+          <p class="push-text-right">{{item.status}}</p>
+        </ion-col>
+      </ion-row>
+
     </ion-item>
 
   </ion-list>

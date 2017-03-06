@@ -1,22 +1,33 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 
-/*
-  Generated class for the Education page.
+var educationField = {
+  canEdit: Boolean,
+  class: String,
+  degree: String,
+  grade: String,
+  percentage: Number,
+  yearOfPassing: Number,
+  certificate: String,
+  status: String,
+  hrComments: String
+}
 
-  See http://ionicframework.com/docs/v2/components/#navigation for more info on
-  Ionic pages and navigation.
-*/
 @Component({
   selector: 'page-education',
   templateUrl: 'education.html'
 })
+
 export class EducationPage {
 
   isDisabled: Boolean = false;
   showDetails: Boolean = false;
-  selectedItem: any = {};
+  isAddMode: Boolean = false;
+  currentItem: any = educationField;
   education: any[] = [];
+  addEducationField: any = educationField;
+  classDDL: any[] = ['SSC', 'HSC', 'Diploma', 'Graduation', 'Post-Graduation'];
+  gradeDDL: any[] = ['Distinction', 'First Class', 'Second Class', 'Pass'];
 
   constructor(public navCtrl: NavController, public navParams: NavParams) {
     this.education = [
@@ -25,16 +36,18 @@ export class EducationPage {
         class: 'Degree',
         degree: 'Batchelor of Engineering',
         grade: 'First Class',
+        percentage: 64,
         yearOfPassing: 2016,
         certificate: 'filename.jpg',
-        status: 'Approved',
+        status: 'Pending',
         hrComments: 'Ok'
       },
       {
         canEdit: false,
         class: 'Diploma',
-        degree: 'Batchelor of Engineering',
+        degree: 'Computer Engineering',
         grade: 'First Class',
+        percentage: 68,
         yearOfPassing: 2013,
         certificate: 'filename.jpg',
         status: 'Approved',
@@ -47,15 +60,74 @@ export class EducationPage {
     console.log('ionViewDidLoad EducationPage');
   }
 
-  addEducation() {
+  toggleShowDetails() {
+    this.showDetails = !this.showDetails;
+  }
+
+  toggleAddMode() {
+    this.isAddMode = !this.isAddMode;
+  }
+
+  addEducationClicked() {
+    if (this.showDetails) this.toggleShowDetails();
+    this.toggleAddMode();
+    this.currentItem = this.addEducationField = {
+      canEdit: false,
+      class: '',
+      degree: '',
+      grade: '',
+      percentage: null,
+      yearOfPassing: null,
+      certificate: '',
+      status: '',
+      hrComments: ''
+    }
+    this.isDisabled = false;
+
     /** Add Button Clicked */
   }
 
   viewEditEducation(item) {
     if (item) {
-      item.status != 'Approved' ? this.isDisabled = true : this.isDisabled = false;
+      this.isDisabled = item.status !== 'Approved' ? false : true;
       this.showDetails = true;
-      this.selectedItem = item;
+      this.isAddMode ? this.toggleAddMode() : null;
+      this.currentItem = item;
+    }
+  }
+
+  closeTapped() {
+    this.showDetails = false;
+    this.currentItem = {};
+  }
+
+  isPendingEntry() {
+    return this.currentItem.status !== 'Pending' ? true : false;
+  }
+
+  submitClicked() {
+    this.currentItem.status = 'Pending';
+    this.education.push(this.currentItem);
+    /** 
+     * API call
+     */
+    this.cancelClicked();
+  }
+
+  cancelClicked() {
+    this.showDetails = false;
+    this.isAddMode = false;
+    this.currentItem = educationField;
+    this.addEducationField = {
+      canEdit: false,
+      class: '',
+      degree: '',
+      grade: '',
+      percentage: null,
+      yearOfPassing: null,
+      certificate: '',
+      status: '',
+      hrComments: ''
     }
   }
 
