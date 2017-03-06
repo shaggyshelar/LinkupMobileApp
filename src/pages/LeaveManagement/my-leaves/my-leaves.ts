@@ -76,4 +76,8 @@ export class MyLeavesPage {
     });
     alert.present();
   }
+
+  handleDayClick(event: any) {
+    alert(' Show Apply Leave Page');
+  }
 }
