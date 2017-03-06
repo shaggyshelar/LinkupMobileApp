@@ -8,6 +8,7 @@ import { HomePage } from '../pages/home/home';
 import { ApplyForLeavePage } from '../pages/LeaveManagement/apply-for-leave/apply-for-leave';
 import { HolidaysPage } from '../pages/LeaveManagement/holidays/holidays';
 import { MyCalendarPage } from '../pages/my-calendar/my-calendar';
+import { ApprovalsPage } from '../pages/approvals/approvals';
 import { LeaveApprovalPage } from '../pages/LeaveManagement/leave-approval/leave-approval';
 import { MyLeavesPage } from '../pages/LeaveManagement/my-leaves/my-leaves';
 
@@ -135,6 +136,7 @@ export class MyApp {
     if (this.showLeaveSubmenus) {
       this.leavePages = [
         { title: 'My Calendar', component: MyCalendarPage, icon: 'calendar' },
+        { title: 'Approvals', component: ApprovalsPage, icon: 'calendar' },
         { title: 'Holidays', component: HolidaysPage, icon: 'calendar' },
         { title: 'My Leaves', component: MyLeavesPage, icon: 'contacts' },
         { title: 'Apply Leave', component: ApplyForLeavePage, icon: 'map' },

@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 import { HolidaysPage } from '../LeaveManagement/holidays/holidays';
+import { MyLeavesPage } from '../LeaveManagement/my-leaves/my-leaves';
 
 @Component({
   selector: 'page-my-calendar',
@@ -12,7 +13,7 @@ export class MyCalendarPage {
   myLeavesTab: any;
   constructor(public navCtrl: NavController, public navParams: NavParams) {
     this.holidaysTab = HolidaysPage;
-    this.myLeavesTab = HolidaysPage;
+    this.myLeavesTab = MyLeavesPage;
 
     this.events = [
       {

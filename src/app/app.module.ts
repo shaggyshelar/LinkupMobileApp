@@ -25,6 +25,7 @@ import { BiometricDiscrepancyApprovalPage } from '../pages/Timesheet/biometric-d
 import { ApplyForLeavePage } from '../pages/LeaveManagement/apply-for-leave/apply-for-leave';
 import { HolidaysPage } from '../pages/LeaveManagement/holidays/holidays';
 import { MyCalendarPage } from '../pages/my-calendar/my-calendar';
+import { ApprovalsPage } from '../pages/approvals/approvals';
 import { LeaveApprovalPage } from '../pages/LeaveManagement/leave-approval/leave-approval';
 import { MyLeavesPage } from '../pages/LeaveManagement/my-leaves/my-leaves';
 
@@ -76,6 +77,7 @@ import { ProgressBarComponent } from '../components/progress-bar/progress-bar';
     ApplyForLeavePage,
     HolidaysPage,
     MyCalendarPage,
+    ApprovalsPage,
     LeaveApprovalPage,
     MyLeavesPage,
     ManageMyProjectsPage,
@@ -114,6 +116,7 @@ import { ProgressBarComponent } from '../components/progress-bar/progress-bar';
     ApplyForLeavePage,
     HolidaysPage,
     MyCalendarPage,
+    ApprovalsPage,
     LeaveApprovalPage,
     MyLeavesPage,
     MyCertificationPage,
