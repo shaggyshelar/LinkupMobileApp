@@ -1,6 +1,11 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+
+import { PercentValidator } from './percent-validatior';
+import { YearValidator } from './year-validator';
+
 var educationField = {
   canEdit: Boolean,
   class: String,
@@ -26,10 +31,19 @@ export class EducationPage {
   currentItem: any = educationField;
   education: any[] = [];
   addEducationField: any = educationField;
+
+  educationForm : FormGroup;
+  
+
+  /** From API call for Master */
   classDDL: any[] = ['SSC', 'HSC', 'Diploma', 'Graduation', 'Post-Graduation'];
   gradeDDL: any[] = ['Distinction', 'First Class', 'Second Class', 'Pass'];
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  constructor(public navCtrl: NavController
+  , public navParams: NavParams
+  , private formBuilder: FormBuilder
+  ) {
+    /** API call to show list */
     this.education = [
       {
         canEdit: false,
@@ -54,6 +68,15 @@ export class EducationPage {
         hrComments: 'Ok'
       }
     ];
+
+    this.educationForm = this.formBuilder.group({
+      class:['',Validators.compose([Validators.required])],
+      degree:['',Validators.compose([Validators.minLength(3), Validators.required])],
+      grade:['',Validators.compose([Validators.required])],
+      percentage:[null,Validators.compose([Validators.minLength(2), Validators.maxLength(3), Validators.required, PercentValidator.isValid])],
+      yearOfPassing: [null,Validators.compose([Validators.minLength(4),Validators.maxLength(4), Validators.required, YearValidator.isValid])],
+      certificate: ['',Validators.compose([Validators.minLength(3), Validators.required])]
+    });
   }
 
   ionViewDidLoad() {
@@ -105,13 +128,16 @@ export class EducationPage {
     return this.currentItem.status !== 'Pending' ? true : false;
   }
 
-  submitClicked() {
-    this.currentItem.status = 'Pending';
-    this.education.push(this.currentItem);
+  submitClicked(item) {
+    item.status = 'Pending';
+    this.education.push(item);
+    console.log('controls=> ',this.educationForm.controls);
+    console.log('ok=> ', item);
     /** 
      * API call
      */
     this.cancelClicked();
+    this.educationForm.reset();
   }
 
   cancelClicked() {
@@ -128,7 +154,8 @@ export class EducationPage {
       certificate: '',
       status: '',
       hrComments: ''
-    }
+    };
+    this.educationForm.reset();
   }
 
 }

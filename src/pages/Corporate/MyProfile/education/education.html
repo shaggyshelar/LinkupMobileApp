@@ -15,8 +15,11 @@
       </button>-->
     </ion-buttons>
     <ion-buttons end>
-      <button *ngIf="true" ion-button end (click)="addEducationClicked()">
+      <button *ngIf="!isAddMode || showDetails" ion-button end (click)="addEducationClicked()">
           <ion-icon name="add"></ion-icon>
+      </button>
+      <button *ngIf="isAddMode || showDetails" ion-button end (click)="submitClicked(educationForm.value)" [disabled]="!educationForm.valid">
+          <ion-icon name="checkmark"></ion-icon>
       </button>
     </ion-buttons>
   </ion-navbar>
@@ -25,43 +28,62 @@
 
 <ion-content padding>
   <ion-card *ngIf="isAddMode || showDetails">
-    <ion-list>
-      <ion-item>
-        <ion-label stacked>Class <span class="docs-pending">*</span> </ion-label>
-        <ion-select [(ngModel)]="currentItem.class" [disabled]="isDisabled">
-          <ion-option *ngFor="let item of classDDL">{{item}}</ion-option>
-        </ion-select>
-        <!--TODO: DDL-->
-      </ion-item>
-      <ion-item>
-        <ion-label stacked>Degree <span class="docs-pending">*</span> </ion-label>
-        <ion-input type="text" [(ngModel)]="currentItem.degree" [disabled]="isDisabled"></ion-input>
-      </ion-item>
-      <ion-item>
-        <ion-label stacked>Grade <span class="docs-pending">*</span> </ion-label>
-        <ion-select [(ngModel)]="currentItem.grade" [disabled]="isDisabled">
-          <ion-option *ngFor="let item of gradeDDL">{{item}}</ion-option>
-        </ion-select>
-        <!--TODO: DDL-->
-      </ion-item>
-      <ion-item>
-        <ion-label stacked>Percentage <span class="docs-pending">*</span> </ion-label>
-        <ion-input type="text" [(ngModel)]="currentItem.percentage" [disabled]="isDisabled"></ion-input>
-      </ion-item>
-      <ion-item>
-        <ion-label stacked>Year of Passing <span class="docs-pending">*</span> </ion-label>
-        <ion-input type="number" [(ngModel)]="currentItem.yearOfPassing" [disabled]="isDisabled"></ion-input>
-      </ion-item>
-      <ion-item>
-        <ion-label stacked>Certificate <span class="docs-pending">*</span> </ion-label>
-        <ion-input type="text" [(ngModel)]="currentItem.certificate" [disabled]="isDisabled"></ion-input>
-        <!--<ion-input type="file" [(ngModel)]="currentItem.certificate" [disabled]="isDisabled"></ion-input>-->
-      </ion-item>
-    </ion-list>
     <ion-row>
-      <button clear ion-button (click)="submitClicked()" *ngIf="!isDisabled">Submit</button>
-      <button clear ion-button (click)="cancelClicked()" end>Cancel</button>
+      <ion-col width-90></ion-col>
+      <ion-col width-10>
+        <button clear ion-button (click)="cancelClicked()" class="close-button" >
+          <ion-icon name="close"></ion-icon>
+        </button>
+      </ion-col>
     </ion-row>
+    
+      <ion-list>
+        <form [formGroup]="educationForm">
+          <ion-item>
+            <ion-label stacked>Class <span class="docs-pending">*</span> </ion-label>
+            <ion-select formControlName="class" [(ngModel)]="currentItem.class" >
+              <ion-option *ngFor="let item of classDDL">{{item}}</ion-option>
+            </ion-select>
+            <!--TODO: DDL-->
+          </ion-item>
+          <p *ngIf="!educationForm.controls.class.valid && (educationForm.controls.class.dirty || educationForm.controls.class.touched)" class="warning">Field required</p>
+
+          <ion-item>
+            <ion-label stacked>Degree <span class="docs-pending">*</span> </ion-label>
+            <ion-input type="text" formControlName="degree" [(ngModel)]="currentItem.degree"></ion-input>
+          </ion-item>
+          <p *ngIf="!educationForm.controls.degree.valid && (educationForm.controls.degree.dirty || educationForm.controls.degree.touched)" class="warning">Field required</p>
+
+          <ion-item>
+            <ion-label stacked>Grade <span class="docs-pending">*</span> </ion-label>
+            <ion-select formControlName="grade" [(ngModel)]="currentItem.grade" >
+              <ion-option *ngFor="let item of gradeDDL">{{item}}</ion-option>
+            </ion-select>
+            <!--TODO: DDL-->
+          </ion-item>
+          <p *ngIf="!educationForm.controls.grade.valid && (educationForm.controls.grade.dirty || educationForm.controls.grade.touched)" class="warning">Field required</p>
+
+          <ion-item>
+            <ion-label stacked>Percentage <span class="docs-pending">*</span> </ion-label>
+            <ion-input type="number" formControlName="percentage" [(ngModel)]="currentItem.percentage" ></ion-input>
+          </ion-item>
+          <p *ngIf="!educationForm.controls.percentage.valid && (educationForm.controls.percentage.dirty || educationForm.controls.percentage.touched)" class="warning">Required field, should be less than 100 and not a decimal</p>
+
+          <ion-item>
+            <ion-label stacked>Year of Passing <span class="docs-pending">*</span> </ion-label>
+            <ion-input type="number" formControlName="yearOfPassing" [(ngModel)]="currentItem.yearOfPassing" ></ion-input>
+          </ion-item>
+          <p *ngIf="!educationForm.controls.yearOfPassing.valid && (educationForm.controls.yearOfPassing.dirty || educationForm.controls.yearOfPassing.touched)" class="warning">Field required with proper input</p>
+
+          <ion-item>
+            <ion-label stacked>Certificate <span class="docs-pending">*</span> </ion-label>
+            <ion-input type="text" formControlName="certificate" [(ngModel)]="currentItem.certificate" ></ion-input>
+            <!--<ion-input type="file" [(ngModel)]="currentItem.certificate" ></ion-input>-->
+          </ion-item>
+          <p *ngIf="!educationForm.controls.certificate.valid && (educationForm.controls.certificate.dirty || educationForm.controls.certificate.touched)" class="warning">Field required with min 3 characters</p>
+
+        </form>
+      </ion-list>
   </ion-card>
 
   <ion-list>
