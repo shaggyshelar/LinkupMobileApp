@@ -1,19 +1,19 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
+import { HolidaysPage } from '../LeaveManagement/holidays/holidays';
 
-/*
-  Generated class for the Holidays page.
-
-  See http://ionicframework.com/docs/v2/components/#navigation for more info on
-  Ionic pages and navigation.
-*/
 @Component({
-  selector: 'page-holidays',
-  templateUrl: 'holidays.html'
+  selector: 'page-my-calendar',
+  templateUrl: 'my-calendar.html'
 })
-export class HolidaysPage {
+export class MyCalendarPage {
   events: any[];
+  holidaysTab: any;
+  myLeavesTab: any;
   constructor(public navCtrl: NavController, public navParams: NavParams) {
+    this.holidaysTab = HolidaysPage;
+    this.myLeavesTab = HolidaysPage;
+
     this.events = [
       {
         "title": "All Day Event",
@@ -41,7 +41,7 @@ export class HolidaysPage {
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad HolidaysPage');
+    console.log('ionViewDidLoad MyCalendarPage');
   }
 
 }

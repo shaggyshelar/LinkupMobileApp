@@ -85,7 +85,6 @@ export class LoginPage {
       this.authService.authenticate(this.model)
         .subscribe(
         results => {
-          this.getLoggedInUserPermission();
         },
         error => {
           this.showError = true;
@@ -93,23 +92,4 @@ export class LoginPage {
         });
     }
   }
-
-  getLoggedInUserPermission(): void {
-    this.authService.getLoggedInUserPermission()
-      .subscribe(
-      results => {
-        //this._router.navigate(['/']);
-        //this.navCtrl.push(HomePage);
-      },
-      error => {
-        this.showError = true;
-        this.errorMessage = error.message;
-      });
-  }
-  initializeApp() {
-    if (localStorage.getItem('accessToken')) {
-      this.navCtrl.push(HomePage);
-    }
-  }
-
 }

@@ -12,7 +12,6 @@ import 'rxjs/add/operator/map';
 export class Auth {
 
   constructor(public http: Http) {
-    console.log('Hello Auth Provider');
   }
 
   login() {
