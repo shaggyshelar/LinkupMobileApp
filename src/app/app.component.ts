@@ -24,6 +24,7 @@ import { MyCertificationPage } from '../pages/Certification/my-certification/my-
 // Corporate
 import { LogATicketPage } from '../pages/Corporate/log-a-ticket/log-a-ticket';
 import { ConferenceBookingPage } from '../pages/Corporate/conference-booking/conference-booking';
+import { MyProfilePage } from '../pages/Corporate/MyProfile/my-profile/my-profile';
 
 // Projects
 import { ManageMyProjectsPage } from '../pages/Projects/manage-my-projects/manage-my-projects';
@@ -167,7 +168,8 @@ export class MyApp {
     if (this.showCorporateSubmenus) {
       this.corporatePages = [
         { title: 'Log A Ticket', component: LogATicketPage, icon: 'calendar' },
-        { title: 'Conference Booking', component: ConferenceBookingPage, icon: 'contacts' }
+        { title: 'Conference Booking', component: ConferenceBookingPage, icon: 'contacts' },
+        { title: 'My Profile', component: MyProfilePage, icon: 'person' }
       ];
       this.showCorporateSubmenus = false;
     }

@@ -12,6 +12,7 @@ import { NavController, NavParams } from 'ionic-angular';
   templateUrl: 'my-profile.html'
 })
 export class MyProfilePage {
+  loadProgress = 50;
 
   constructor(public navCtrl: NavController, public navParams: NavParams) { }
 

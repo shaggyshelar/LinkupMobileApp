@@ -53,6 +53,9 @@ import { HolidayService } from '../pages/LeaveManagement/index';
 import { UserService } from '../pages/LeaveManagement/index';
 import { MessageService } from '../providers/index';
 
+//Custom Components
+import { ProgressBarComponent } from '../components/progress-bar/progress-bar';
+
 
 @NgModule({
   declarations: [
@@ -84,7 +87,8 @@ import { MessageService } from '../providers/index';
     MyProfilePage,
     PersonalInfoPage,
     ProfileDetailsPage,
-    SkillSetPage
+    SkillSetPage,
+    ProgressBarComponent
   ],
   imports: [
     IonicModule.forRoot(MyApp),
