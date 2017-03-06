@@ -7,6 +7,8 @@ import { HomePage } from '../pages/home/home';
 // Leave Management
 import { ApplyForLeavePage } from '../pages/LeaveManagement/apply-for-leave/apply-for-leave';
 import { HolidaysPage } from '../pages/LeaveManagement/holidays/holidays';
+import { MyCalendarPage } from '../pages/my-calendar/my-calendar';
+import { ApprovalsPage } from '../pages/approvals/approvals';
 import { LeaveApprovalPage } from '../pages/LeaveManagement/leave-approval/leave-approval';
 import { MyLeavesPage } from '../pages/LeaveManagement/my-leaves/my-leaves';
 
@@ -24,6 +26,7 @@ import { MyCertificationPage } from '../pages/Certification/my-certification/my-
 // Corporate
 import { LogATicketPage } from '../pages/Corporate/log-a-ticket/log-a-ticket';
 import { ConferenceBookingPage } from '../pages/Corporate/conference-booking/conference-booking';
+import { MyProfilePage } from '../pages/Corporate/MyProfile/my-profile/my-profile';
 
 // Projects
 import { ManageMyProjectsPage } from '../pages/Projects/manage-my-projects/manage-my-projects';
@@ -132,6 +135,8 @@ export class MyApp {
   toggleLeaveMenu() {
     if (this.showLeaveSubmenus) {
       this.leavePages = [
+        { title: 'My Calendar', component: MyCalendarPage, icon: 'calendar' },
+        { title: 'Approvals', component: ApprovalsPage, icon: 'calendar' },
         { title: 'Holidays', component: HolidaysPage, icon: 'calendar' },
         { title: 'My Leaves', component: MyLeavesPage, icon: 'contacts' },
         { title: 'Apply Leave', component: ApplyForLeavePage, icon: 'map' },
@@ -167,7 +172,8 @@ export class MyApp {
     if (this.showCorporateSubmenus) {
       this.corporatePages = [
         { title: 'Log A Ticket', component: LogATicketPage, icon: 'calendar' },
-        { title: 'Conference Booking', component: ConferenceBookingPage, icon: 'contacts' }
+        { title: 'Conference Booking', component: ConferenceBookingPage, icon: 'contacts' },
+        { title: 'My Profile', component: MyProfilePage, icon: 'person' }
       ];
       this.showCorporateSubmenus = false;
     }

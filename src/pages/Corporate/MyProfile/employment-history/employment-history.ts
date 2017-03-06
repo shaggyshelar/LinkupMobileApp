@@ -60,12 +60,12 @@ export class EmploymentHistoryPage {
       console.log('data saved sucessfully');
   }
   editEmployementDetails() {
-    this.showForm = true;
     this.Employer.EmployementDetails = 'Eternus solutions';
     this.Employer.Designation = 'System Executive';
     this.Employer.CurrentEmployer = true;
-    this.Employer.Startdate = '23/06/2010';
-    this.Employer.Enddate = '23/06/2012';
+    //this.Employer.Startdate = '23/06/2010';
+    //this.Employer.Enddate = '23/06/2012';
+    this.showForm = true;
   }
   editLastEmployer() {
     this.showLastEmployerForm = true;

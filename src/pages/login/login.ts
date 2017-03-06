@@ -1,7 +1,6 @@
 import { Component, ViewChild, trigger, state, style, transition, animate, keyframes } from '@angular/core';
 import { NavController, NavParams, Nav } from 'ionic-angular';
 import { NgForm } from '@angular/forms';
-import { HomePage } from '../home/home';
 import { AuthService } from '../../providers/index';
 import { User } from './user.model';
 
@@ -85,7 +84,6 @@ export class LoginPage {
       this.authService.authenticate(this.model)
         .subscribe(
         results => {
-          this.getLoggedInUserPermission();
         },
         error => {
           this.showError = true;
@@ -93,23 +91,4 @@ export class LoginPage {
         });
     }
   }
-
-  getLoggedInUserPermission(): void {
-    this.authService.getLoggedInUserPermission()
-      .subscribe(
-      results => {
-        //this._router.navigate(['/']);
-        //this.navCtrl.push(HomePage);
-      },
-      error => {
-        this.showError = true;
-        this.errorMessage = error.message;
-      });
-  }
-  initializeApp() {
-    if (localStorage.getItem('accessToken')) {
-      this.navCtrl.push(HomePage);
-    }
-  }
-
 }

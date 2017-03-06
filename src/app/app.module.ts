@@ -24,6 +24,8 @@ import { BiometricDiscrepancyApprovalPage } from '../pages/Timesheet/biometric-d
 // Leave Management
 import { ApplyForLeavePage } from '../pages/LeaveManagement/apply-for-leave/apply-for-leave';
 import { HolidaysPage } from '../pages/LeaveManagement/holidays/holidays';
+import { MyCalendarPage } from '../pages/my-calendar/my-calendar';
+import { ApprovalsPage } from '../pages/approvals/approvals';
 import { LeaveApprovalPage } from '../pages/LeaveManagement/leave-approval/leave-approval';
 import { MyLeavesPage } from '../pages/LeaveManagement/my-leaves/my-leaves';
 
@@ -53,8 +55,14 @@ import { HolidayService } from '../pages/LeaveManagement/index';
 import { UserService } from '../pages/LeaveManagement/index';
 import { MessageService } from '../providers/index';
 
+
 // Direrctives
 import { LimitToDirective } from '../providers/shared/directives/limit-to';
+
+//Custom Components
+import { ProgressBarComponent } from '../components/progress-bar/progress-bar';
+
+
 
 @NgModule({
   declarations: [
@@ -73,6 +81,8 @@ import { LimitToDirective } from '../providers/shared/directives/limit-to';
     BiometricDiscrepancyApprovalPage,
     ApplyForLeavePage,
     HolidaysPage,
+    MyCalendarPage,
+    ApprovalsPage,
     LeaveApprovalPage,
     MyLeavesPage,
     ManageMyProjectsPage,
@@ -87,7 +97,11 @@ import { LimitToDirective } from '../providers/shared/directives/limit-to';
     PersonalInfoPage,
     ProfileDetailsPage,
     SkillSetPage,
-    LimitToDirective
+
+    LimitToDirective,
+
+    ProgressBarComponent
+
   ],
   imports: [
     IonicModule.forRoot(MyApp),
@@ -110,6 +124,8 @@ import { LimitToDirective } from '../providers/shared/directives/limit-to';
     BiometricDiscrepancyApprovalPage,
     ApplyForLeavePage,
     HolidaysPage,
+    MyCalendarPage,
+    ApprovalsPage,
     LeaveApprovalPage,
     MyLeavesPage,
     MyCertificationPage,
