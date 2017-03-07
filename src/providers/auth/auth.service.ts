@@ -63,9 +63,10 @@ export class AuthService extends BaseService {
                 return this.handleError(err);
             });
     }
-    storeLoggedInUserPermission() {
-        return this.getChildList$('permissions', 0, 0, true).map((res: Response) => { this.setLoggedInUserPermission(res); });
-    }
+    storeLoggedInUserPermission() {
+        return this.getChildList$('permissions', 0, 0, true).map((res: Response) => { this.setLoggedInUserPermission(res); });
+    }
+
     getCurrentUserDetails() {
         let headers = new Headers();
         headers.append('Authorization', 'Bearer ' + localStorage.getItem('accessToken'));
@@ -103,5 +104,6 @@ export class AuthService extends BaseService {
         }
         let body = res.json();
         localStorage.setItem('loggedInUserDetails', JSON.stringify(body));
+        
     }
 }
