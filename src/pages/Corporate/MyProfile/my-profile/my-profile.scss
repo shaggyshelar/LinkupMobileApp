@@ -1,9 +1,15 @@
 page-my-profile {
 
     .avatar-bg {
-    background-color: lightslategray;
-    height: 33vh;
-}
+        background-color: lightslategray;
+        height: 160px;
+        display: block;
+        overflow: hidden;
+    }
+
+    .push-down {
+        vertical-align: middle;
+    }
 
     .no-overflow {
         overflow: hidden;
@@ -15,9 +21,17 @@ page-my-profile {
         margin: 0 auto;
         border-radius: 80px !important;
         background-color: whitesmoke;
+        display: inline-block;
+        vertical-align: middle;
+        margin-left: 15px;
     }
 
-    .centeralign {
+    .user-details {
+        text-align: center;
+        display: inline-block;
+        margin-left: 65px;
+    }
+    .profile-completeness {
         text-align: center;
         display: block;
     }
