@@ -20,6 +20,7 @@ import { ApproveTimesheetPage } from '../pages/Timesheet/approve-timesheet/appro
 import { ApprovedTimesheetPage } from '../pages/Timesheet/approved-timesheet/approved-timesheet';
 import { TimesheetReportPage } from '../pages/Timesheet/timesheet-report/timesheet-report';
 import { BiometricDiscrepancyApprovalPage } from '../pages/Timesheet/biometric-discrepancy-approval/biometric-discrepancy-approval';
+import { TimesheetDetailsPage } from '../pages/Timesheet/timesheet-details/timesheet-details';
 
 // Leave Management
 import { ApplyForLeavePage } from '../pages/LeaveManagement/apply-for-leave/apply-for-leave';
@@ -81,6 +82,7 @@ import { CacheService, CacheStorageAbstract, CacheLocalStorage } from 'ng2-cache
     ApprovedTimesheetPage,
     TimesheetReportPage,
     BiometricDiscrepancyApprovalPage,
+    TimesheetDetailsPage,
     ApplyForLeavePage,
     HolidaysPage,
     MyCalendarPage,
@@ -124,6 +126,7 @@ import { CacheService, CacheStorageAbstract, CacheLocalStorage } from 'ng2-cache
     ApprovedTimesheetPage,
     TimesheetReportPage,
     BiometricDiscrepancyApprovalPage,
+    TimesheetDetailsPage,
     ApplyForLeavePage,
     HolidaysPage,
     MyCalendarPage,
