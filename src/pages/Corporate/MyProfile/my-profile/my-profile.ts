@@ -1,6 +1,9 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
+import { NavController, NavParams, ModalController, ViewController } from 'ionic-angular';
 
+/** Framework Level Imports */
+import { AchievementPage } from '../achievement/achievement';
+import { EducationPage } from '../education/education';
 /*
   Generated class for the MyProfile page.
 
@@ -12,11 +15,30 @@ import { NavController, NavParams } from 'ionic-angular';
   templateUrl: 'my-profile.html'
 })
 export class MyProfilePage {
+  loadProgress = 50;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) { }
+  constructor(public navCtrl: NavController
+  , public navParams: NavParams
+  , public modalCtrl: ModalController
+  , public viewCtrl: ViewController
+  ) { }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad MyProfilePage');
+  }
+  
+  achievementsTapped() {
+    let modal = this.modalCtrl.create(AchievementPage,{message:'Welcome'});
+    modal.onDidDismiss((data)=> {
+      console.log(data);
+    });
+    modal.present();
+    // this.navCtrl.push(AchievementPage,{message:'Welcome'});
+
+  }
+
+  educationTapped() {
+    this.navCtrl.push(EducationPage);
   }
 
 }
