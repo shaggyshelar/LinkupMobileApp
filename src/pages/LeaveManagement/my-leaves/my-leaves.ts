@@ -6,6 +6,8 @@ import { Leave } from '../models/leave';
 import { LeaveDetail } from '../models/leaveDetail';
 import { AlertController, ItemSliding } from 'ionic-angular';
 
+import { ApplyForLeavePage } from '../apply-for-leave/apply-for-leave';
+
 @Component({
   selector: 'page-my-leaves',
   templateUrl: 'my-leaves.html'
@@ -78,6 +80,7 @@ export class MyLeavesPage {
   }
 
   handleDayClick(event: any) {
-    alert(' Show Apply Leave Page');
+    // alert(' Show Apply Leave Page');
+    this.navCtrl.push(ApplyForLeavePage,{date:event.date._d});
   }
 }
