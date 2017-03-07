@@ -55,9 +55,14 @@ import { HolidayService } from '../pages/LeaveManagement/index';
 import { UserService } from '../pages/LeaveManagement/index';
 import { MessageService } from '../providers/index';
 
+
+// Direrctives
+import { LimitToDirective } from '../providers/shared/directives/limit-to';
+
 //Custom Components
 import { ProgressBarComponent } from '../components/progress-bar/progress-bar';
 import { CacheService, CacheStorageAbstract, CacheLocalStorage } from 'ng2-cache/ng2-cache';
+
 
 
 @NgModule({
@@ -93,7 +98,11 @@ import { CacheService, CacheStorageAbstract, CacheLocalStorage } from 'ng2-cache
     PersonalInfoPage,
     ProfileDetailsPage,
     SkillSetPage,
+
+    LimitToDirective,
+
     ProgressBarComponent
+
   ],
   imports: [
     IonicModule.forRoot(MyApp),
@@ -137,7 +146,7 @@ import { CacheService, CacheStorageAbstract, CacheLocalStorage } from 'ng2-cache
     {
       provide: ErrorHandler,
       useClass: IonicErrorHandler
-    }, Auth, AuthService, LeaveService, HolidayService, UserService, MessageService,
+    }, Auth, AuthService, LeaveService, HolidayService, UserService, MessageService, LimitToDirective,
     CacheService, { provide: CacheStorageAbstract, useClass: CacheLocalStorage }]
 })
 export class AppModule { }
