@@ -17,7 +17,7 @@
 
 
 <ion-content padding>
-  <p-schedule [events]="events"></p-schedule>
+  <p-schedule [events]="events" (onEventClick)="handleEventClick($event)" ></p-schedule>
   <ion-list #scheduleList [hidden]="(pendingHoliday )?.length === 0">
     <ion-item *ngFor="let holiday of pendingHoliday"  [attr.holidaytype]="holiday.HolidayType.Value | lowercase">
         <h3>{{holiday.Title}}</h3>

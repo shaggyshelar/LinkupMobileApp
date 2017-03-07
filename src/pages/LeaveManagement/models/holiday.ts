@@ -8,6 +8,7 @@ export interface Holiday {
 
 export class MyEvent {
   id: number;
+  ID:string;
   title: string;
   start: string;
   end: string;

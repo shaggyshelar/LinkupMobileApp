@@ -1,9 +1,10 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
+import { NavController, NavParams ,AlertController } from 'ionic-angular';
 /** Module Level Dependencies */
 import { HolidayService } from '../services/holiday.service';
 import { Holiday } from '../models/holiday';
 import { MyEvent } from '../models/holiday';
+import { SpinnerService } from '../../../providers/index'
 
 import * as moment from 'moment/moment';
 
@@ -18,7 +19,7 @@ import * as moment from 'moment/moment';
 @Component({
   selector: 'page-holidays',
   templateUrl: 'holidays.html',
-  providers:[HolidayService]
+  providers:[HolidayService,SpinnerService]
 })
 export class HolidaysPage {
   events: any[];
@@ -29,7 +30,9 @@ export class HolidaysPage {
   // eventDay: MyEvent;
   constructor(public navCtrl: NavController, 
   public navParams: NavParams,
-  private holidayService: HolidayService) {
+  private holidayService: HolidayService,
+  public spinnerService:SpinnerService,
+  public alertCtrl: AlertController) {
     // this.events = [
     //    {
     //     "title": "17 Grapes Daily call",
@@ -65,7 +68,9 @@ export class HolidaysPage {
     this.holidayList = [];
     this.pendingHoliday = [];
     this.events = [];
+    this.spinnerService.createSpinner('Please wait..');
      this.holidayService.getHolidays().subscribe((res:any) => {
+       this.spinnerService.stopSpinner();
         this.holidaysObs = res;
         this.holidaysObs.reverse();
           for (let i = 0; i < res.length; i++) {
@@ -77,6 +82,7 @@ export class HolidaysPage {
       this.getCalandarEvents();
     },
     error =>{
+      this.spinnerService.stopSpinner();
     });
   }
 
@@ -86,8 +92,8 @@ export class HolidaysPage {
      for (let i = 0; i < this.holidaysObs.length; i++) {
        var event:MyEvent = new MyEvent();
        var holidaytype:any = this.holidaysObs[i].HolidayType;
-         event.start  = this.holidaysObs[i].HolidayDate;
-         event.end = this.holidaysObs[i].HolidayDate;
+         event.start  = moment(this.holidaysObs[i].HolidayDate).format('YYYY-MM-DD');
+         event.end = moment(this.holidaysObs[i].HolidayDate).format('YYYY-MM-DD');;
          event.title = this.holidaysObs[i].Title;
          if(holidaytype.Value == 'Floating')
          event.color = 'orange';
@@ -98,5 +104,14 @@ export class HolidaysPage {
         }
   }
 
+  handleEventClick(event:any){
+    console.log(event + 'event clicked');
+     let alert = this.alertCtrl.create({
+      title: 'Holiday',
+      subTitle: event.calEvent.title,
+      buttons: ['OK']
+    });
+    alert.present();
+  }
 
 }

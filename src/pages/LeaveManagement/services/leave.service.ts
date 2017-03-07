@@ -1,6 +1,6 @@
 /** Angular Dependencies */
 import { Injectable } from '@angular/core';
-import { Http } from '@angular/http';
+import { Http,RequestOptions,Headers } from '@angular/http';
 
 /** Third Party Dependencies */
 import { Observable } from 'rxjs/Rx';
@@ -18,6 +18,7 @@ const CONTEXT = 'Leave';
 /** Service Definition */
 @Injectable()
 export class LeaveService extends BaseService {
+    editableLeave: any;
     constructor(public http: Http) {
         super(http, CONTEXT);
     }
@@ -84,9 +85,63 @@ export class LeaveService extends BaseService {
      * Delete request to delete a record.
      * @ID : Parameter : ID of entity to update
      */
-    deleteLeaveRecord(ID: any): Observable<boolean> {
-        return this.delete$(ID).map((res) => {
-            return res.status === 200 ? true : false;
-        });
+    deleteLeaveRecord(leavePayload: any): Observable<boolean> {
+        let headers = new Headers();
+        let body = JSON.stringify(leavePayload);
+        headers.append('Authorization', 'Bearer ' + localStorage.getItem('accessToken'));
+        headers.append('Content-Type', 'application/json');
+        let options = new RequestOptions({ headers: headers });
+        return this.http.post(this.baseUrl + 'Leave/cancel', body, options)
+            .map(res => {
+                return res.json();
+            })
+            .catch(err => {
+                return this.handleError(err);
+            });
+    }
+
+      getLeaveDetailByRefID(refId: any): Observable<Leave[]> {
+        let headers = new Headers();
+        headers.append('Authorization', 'Bearer ' + localStorage.getItem('accessToken'));
+        let options = new RequestOptions({ headers: headers });
+        return this.http.get(this.baseUrl + 'LeaveDetails/' + refId, options)
+            .map(res => {
+                return res.json();
+            })
+            .catch(err => {
+                return this.handleError(err);
+            });
+    }
+
+     getApproverListByRefID(refId: any): Observable<any> {
+        let headers = new Headers();
+        headers.append('Authorization', 'Bearer ' + localStorage.getItem('accessToken'));
+        let options = new RequestOptions({ headers: headers });
+        return this.http.get(this.baseUrl + 'LeaveApprovers/' + refId, options)
+            .map(res => {
+                return res.json();
+            })
+            .catch(err => {
+                return this.handleError(err);
+            });
+    }
+    getActiveProjects(): Observable<any> {
+        let headers = new Headers();
+        headers.append('Authorization', 'Bearer ' + localStorage.getItem('accessToken'));
+        let options = new RequestOptions({ headers: headers });
+        return this.http.get(this.baseUrl + 'Project/GetMyActiveProjects', options)
+            .map(res => {
+                return res.json();
+            })
+            .catch(err => {
+                return this.handleError(err);
+            });
+    }
+
+     setEditableLeave(leave: any) {
+        this.editableLeave = leave;
+    }
+    getEditableLeave() {
+        return this.editableLeave;
     }
 }

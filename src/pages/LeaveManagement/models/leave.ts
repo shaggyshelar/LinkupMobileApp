@@ -11,6 +11,7 @@ export interface Leave {
     Status: string;
     Reason: string;
     Comment: string;
+    LeaveRequestMasterId:string;
     Approvers: [
         {
             Project: string,
