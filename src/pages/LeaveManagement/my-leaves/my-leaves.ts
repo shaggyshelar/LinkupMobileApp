@@ -14,9 +14,33 @@ export class MyLeavesPage {
   public leaveObs: Observable<Leave>;
   public leaveDetObs: Observable<LeaveDetail>;
   public leaveDetail: LeaveDetail;
+  events: any[];
   constructor(public navCtrl: NavController, public navParams: NavParams, public leaveService: LeaveService,
     public alertCtrl: AlertController) {
-
+    this.events = [
+      {
+        "title": "All Day Event",
+        "start": "2017-02-01"
+      },
+      {
+        "title": "Long Event",
+        "start": "2017-02-07",
+        "end": "2017-02-10"
+      },
+      {
+        "title": "Repeating Event",
+        "start": "2017-02-09T16:00:00"
+      },
+      {
+        "title": "Repeating Event",
+        "start": "2017-02-16T16:00:00"
+      },
+      {
+        "title": "Conference",
+        "start": "2017-02-11",
+        "end": "2017-02-13"
+      }
+    ];
   }
 
   ionViewDidLoad() {
@@ -51,5 +75,9 @@ export class MyLeavesPage {
       }]
     });
     alert.present();
+  }
+
+  handleDayClick(event: any) {
+    alert(' Show Apply Leave Page');
   }
 }

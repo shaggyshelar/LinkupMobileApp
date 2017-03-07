@@ -24,6 +24,8 @@ import { BiometricDiscrepancyApprovalPage } from '../pages/Timesheet/biometric-d
 // Leave Management
 import { ApplyForLeavePage } from '../pages/LeaveManagement/apply-for-leave/apply-for-leave';
 import { HolidaysPage } from '../pages/LeaveManagement/holidays/holidays';
+import { MyCalendarPage } from '../pages/my-calendar/my-calendar';
+import { ApprovalsPage } from '../pages/approvals/approvals';
 import { LeaveApprovalPage } from '../pages/LeaveManagement/leave-approval/leave-approval';
 import { MyLeavesPage } from '../pages/LeaveManagement/my-leaves/my-leaves';
 
@@ -54,6 +56,15 @@ import { UserService } from '../pages/LeaveManagement/index';
 import { MessageService } from '../providers/index';
 
 
+// Direrctives
+import { LimitToDirective } from '../providers/shared/directives/limit-to';
+
+//Custom Components
+import { ProgressBarComponent } from '../components/progress-bar/progress-bar';
+import { CacheService, CacheStorageAbstract, CacheLocalStorage } from 'ng2-cache/ng2-cache';
+
+
+
 @NgModule({
   declarations: [
     MyApp,
@@ -71,6 +82,8 @@ import { MessageService } from '../providers/index';
     BiometricDiscrepancyApprovalPage,
     ApplyForLeavePage,
     HolidaysPage,
+    MyCalendarPage,
+    ApprovalsPage,
     LeaveApprovalPage,
     MyLeavesPage,
     ManageMyProjectsPage,
@@ -84,7 +97,12 @@ import { MessageService } from '../providers/index';
     MyProfilePage,
     PersonalInfoPage,
     ProfileDetailsPage,
-    SkillSetPage
+    SkillSetPage,
+
+    LimitToDirective,
+
+    ProgressBarComponent
+
   ],
   imports: [
     IonicModule.forRoot(MyApp),
@@ -107,6 +125,8 @@ import { MessageService } from '../providers/index';
     BiometricDiscrepancyApprovalPage,
     ApplyForLeavePage,
     HolidaysPage,
+    MyCalendarPage,
+    ApprovalsPage,
     LeaveApprovalPage,
     MyLeavesPage,
     MyCertificationPage,
@@ -122,6 +142,11 @@ import { MessageService } from '../providers/index';
     ProfileDetailsPage,
     SkillSetPage
   ],
-  providers: [{ provide: ErrorHandler, useClass: IonicErrorHandler }, Auth, AuthService, LeaveService, HolidayService, UserService, MessageService]
+  providers: [
+    {
+      provide: ErrorHandler,
+      useClass: IonicErrorHandler
+    }, Auth, AuthService, LeaveService, HolidayService, UserService, MessageService, LimitToDirective,
+    CacheService, { provide: CacheStorageAbstract, useClass: CacheLocalStorage }]
 })
 export class AppModule { }

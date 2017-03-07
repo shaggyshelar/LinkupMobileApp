@@ -1,3 +1,86 @@
 page-my-profile {
 
+    .avatar-bg {
+        background-color: lightslategray;
+        height: 160px;
+        display: block;
+        overflow: hidden;
+    }
+
+    .push-down {
+        vertical-align: middle;
+    }
+
+    .no-overflow {
+        overflow: hidden;
+    }
+
+    .profilephoto {
+        height: 120px !important;
+        width: 120px !important;
+        margin: 0 auto;
+        border-radius: 80px !important;
+        background-color: whitesmoke;
+        display: inline-block;
+        vertical-align: middle;
+        margin-left: 15px;
+    }
+
+    .user-details {
+        text-align: center;
+        display: inline-block;
+        margin-left: 65px;
+    }
+    .profile-completeness {
+        text-align: center;
+        display: block;
+    }
+
+    .less-margin {
+        margin: 5px !important;
+    }
+
+    .profile-container{
+        ion-grid {
+            overflow: scroll;
+            overflow-x: auto;
+            overflow-y: auto;
+        }
+        
+    }
+
+    .grid-icons{
+        ion-icon {
+            font-size: 5rem !important;
+            color: black;
+            margin: 0 auto;
+            width: 50px;
+            height: 50px;
+            margin-top: inherit !important;
+        }
+        button {
+            margin: 5px;
+            width: 100px;
+            height: 100px;
+            flex-flow: column;
+            text-align: center;
+        }
+        span {
+            display: block;
+            text-align: center;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+        }
+    }
+
+    .text-margin {
+        margin: auto;
+        float:left;
+        display: block;
+        clear: both;
+        word-wrap: break-word;
+    }
+
+
 }
+

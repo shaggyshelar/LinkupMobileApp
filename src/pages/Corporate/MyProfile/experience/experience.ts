@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
+import { NavController, NavParams, ViewController } from 'ionic-angular';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { ExperienceInfo } from './experience-model';
 
 /*
   Generated class for the Experience page.
@@ -12,11 +14,58 @@ import { NavController, NavParams } from 'ionic-angular';
   templateUrl: 'experience.html'
 })
 export class ExperiencePage {
-
-  constructor(public navCtrl: NavController, public navParams: NavParams) { }
+  complexForm : FormGroup;
+  Experience: ExperienceInfo = new ExperienceInfo();
+  showForm: boolean = false;
+  isProject: boolean = false;
+  isClient: boolean = false;
+  isRole: boolean = false;
+  isEnddate: boolean = false;
+  isStartdate: boolean = false;
+  isResponsibilities: boolean = false;
+  constructor(public navCtrl: NavController,
+    public navParams: NavParams,
+    public viewCtrl: ViewController,
+    public fb: FormBuilder) { 
+      this.complexForm = fb.group({
+      'project' : [null, Validators.required],
+      'client' : [null, Validators.required],
+      'role' : [null, Validators.required],
+      'startdate' : [null, Validators.required],
+      'enddate' : [null, Validators.required],
+      'responsibility' : [null, Validators.required],
+      'description':[null],
+      'currentproject':[null],
+      'environment':[null]
+    })
+    }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad ExperiencePage');
   }
-
+  dismiss(data) {
+    this.viewCtrl.dismiss(data);
+  }
+  onAddForm() {
+    this.showForm = true;
+    this.Experience.Project = "";
+    this.Experience.Client = "";
+    this.Experience.Currentproject;
+    this.Experience.Description = "";
+    this.Experience.Role = "";
+  }
+  onSave() {
+      console.log('data saved sucessfully');
+  }
+  onCloseForm() {
+    this.showForm = false;
+  }
+  editList() {
+    this.showForm = true;
+    this.Experience.Project = "Linkup Portal";
+    this.Experience.Client = "Eternus solutions";
+    this.Experience.Currentproject = true;
+    this.Experience.Description = " Linkup Portal Linkup PortalLinkup Portal Linkup Portal Linkup Portal";
+    this.Experience.Role = "software developer";
+  }
 }

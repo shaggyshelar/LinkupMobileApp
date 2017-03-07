@@ -7,12 +7,146 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title>employmentHistory</ion-title>
+    <ion-buttons start>
+      <button *ngIf="showForm" (click)="onSave()" [disabled]="!complexForm.valid" ion-button icon-only>
+        <ion-icon name="checkmark"></ion-icon>
+      </button>
+    </ion-buttons>
+    <ion-buttons start>
+      <button *ngIf="showForm === false" (click)="onAddForm()" ion-button icon-only>
+        <ion-icon name="add"></ion-icon>
+      </button>
+    </ion-buttons>
+    <ion-buttons start>
+      <button (click)="dismiss()" ion-button icon-only>
+        <ion-icon name="close"></ion-icon>
+      </button>
+    </ion-buttons>
+    <ion-title>Employment History</ion-title>
   </ion-navbar>
 
 </ion-header>
 
 
 <ion-content padding>
-
+  <div padding>
+    <ion-segment [(ngModel)]="Employment">
+      <ion-segment-button value="EmployementHistory" (click)="onEmpHistorySegment()">
+        Employment History
+      </ion-segment-button>
+      <ion-segment-button value="LastEmployer" (click)="onLastEmpSegment()">
+        Last Employer
+      </ion-segment-button>
+    </ion-segment>
+  </div>
+  <div [ngSwitch]="Employment">
+    <!--Employment History Segment Start-->
+    <div *ngSwitchCase="'EmployementHistory'">
+      <ion-card *ngIf="showForm">
+          <ion-card-header class="cardHeader">
+            <ion-row>
+              <ion-col width-90>
+              </ion-col>
+              <ion-col width-10 style="text-align:right;" (click)="onCloseForm('EmployementHistory')">
+                <ion-icon name="close"></ion-icon>
+              </ion-col>
+            </ion-row>
+          </ion-card-header>
+          <form name="EmployementHistoryForm" [formGroup]="complexForm">
+            <ion-list>
+              <ion-item>
+                <ion-label floating>Employement Details <span class="required">*</span></ion-label>
+                <ion-input type="text" name="txtEmpDetails" [(ngModel)]="Employer.EmployementDetails" formControlName="empdetails" [class.invalid]="!complexForm.controls.empdetails.valid"></ion-input>
+              </ion-item>
+              <p *ngIf="!complexForm.controls.empdetails.valid" class="error">Please Enter Employement Details</p>
+              <ion-item>
+                <ion-label floating>Designation <span class="required">*</span></ion-label>
+                <ion-input type="text" name="txtDesignation" [(ngModel)]="Employer.Designation" formControlName="designation" [class.invalid]="!complexForm.controls.designation.valid"></ion-input>
+              </ion-item>
+              <p *ngIf="!complexForm.controls.designation.valid" class="error">Please Enter Designation</p>
+              <ion-item>
+                <ion-label>Current Employer</ion-label>
+                <ion-checkbox color="blue" name="ckhCurrent" checked="true" [(ngModel)]="Employer.CurrentEmployer" formControlName="currentemp"></ion-checkbox>
+              </ion-item>
+              <ion-item>
+                <ion-label floating>Start Date <span class="required">*</span></ion-label>
+                <ion-datetime displayFormat="DD/MM/YYYY" name="dateStart" [(ngModel)]="Employer.Startdate" formControlName="startdate" [class.invalid]="!complexForm.controls.startdate.valid"></ion-datetime>
+              </ion-item>
+              <p *ngIf="!complexForm.controls.startdate.valid" class="error">Please select start date</p>
+              <ion-item>
+                <ion-label floating>End Date <span class="required">*</span></ion-label>
+                <ion-datetime displayFormat="DD/MM/YYYY" name="dateEnd" [(ngModel)]="Employer.Enddate" formControlName="enddate" [class.invalid]="!complexForm.controls.enddate.valid"></ion-datetime>
+              </ion-item>
+              <p *ngIf="!complexForm.controls.enddate.valid" class="error">Please select end date</p>
+            </ion-list>
+          </form>
+      </ion-card>
+      <ion-list>
+        <ion-item (click)="editEmployementDetails()">
+          <h2>Eternus solutions</h2>
+          <p>System Executive</p>
+          <p>15-06-2015	- Till Date</p>
+        </ion-item>
+        <ion-item>
+          <h2>Capgemini</h2>
+          <p>System Executive</p>
+          <p>15-06-2015	- Till Date</p>
+        </ion-item>
+      </ion-list>
+    </div>
+    <!--Employment History Segment End-->
+    <!--Last Employer Segment Start-->
+    <div *ngSwitchCase="'LastEmployer'">
+      <ion-card *ngIf="showLastEmployerForm">
+        <ion-card-header class="cardHeader">
+            <ion-row>
+              <ion-col width-90>
+              </ion-col>
+              <ion-col width-10 style="text-align:right;" (click)="onCloseForm('LastEmployer')">
+                <ion-icon name="close"></ion-icon>
+              </ion-col>
+            </ion-row>
+          </ion-card-header>
+          <form name="formLastEmployer">
+            <ion-row style="margin-left:5%;">
+              <ion-label>Upload Certificate <span class="required">*</span></ion-label>
+            </ion-row>
+            <ion-row>
+              <ion-col width-50 style="padding-left:5%;">
+                <ion-label>No File Choosen</ion-label>
+              </ion-col>
+              <ion-col width-50><button ion-button>Choose file</button></ion-col>
+            </ion-row>
+          </form>
+      </ion-card>
+      <ion-list>
+        <ion-item >
+          <h2>1st Month Salary Slip</h2>
+          <p>Not submitted yet...</p>
+            <ion-icon item-right name="create" (click)="editLastEmployer()"></ion-icon>
+        </ion-item>
+        <ion-item>
+          <h2>2nd Month Salary Slip</h2>
+          <p>Not submitted yet...</p>
+          <ion-icon item-right name="create" (click)="editLastEmployer()"></ion-icon>
+        </ion-item>
+        <ion-item>
+          <h2>3rd Month Salary Slip</h2>
+          <p>Not submitted yet...</p>
+          <ion-icon item-right name="create" (click)="editLastEmployer()"></ion-icon>
+        </ion-item>
+        <ion-item>
+          <h2>Employer Relieving/Exp Letter One</h2>
+          <p>Not submitted yet...</p>
+          <ion-icon item-right name="create" (click)="editLastEmployer()"></ion-icon>
+        </ion-item>
+        <ion-item>
+          <h2>Employer Relieving/Exp Letter Two</h2>
+          <p>Not submitted yet...</p>
+          <ion-icon item-right name="create" (click)="editLastEmployer()"></ion-icon>
+        </ion-item>
+      </ion-list>
+    </div>
+    <!--Last Employer Segment End-->
+</div>
 </ion-content>

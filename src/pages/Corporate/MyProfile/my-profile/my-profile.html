@@ -7,12 +7,84 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title>myProfile</ion-title>
+    <button ion-button icon-only menuToggle>
+      <ion-icon name="menu" large></ion-icon>
+    </button>
+    <ion-title>My Profile</ion-title>
   </ion-navbar>
 
 </ion-header>
 
 
-<ion-content padding>
+<ion-content no-overflow>
+  <div class="avatar-bg">
+    <div class="profilephoto">
+      <img class="img-pos"/>
+    </div>
+    <div class="user-details">
+      <div class="push-down">
+        <h4>Kunal Adhikari</h4>
+        <p class="less-margin">Delivery Manager</p>
+        <p class="less-margin">10431</p>
+      </div>
+    </div>
+  </div>
+  <ion-card>
+    <ion-item>
+      <div class="profile-completeness">
+        <span>Profile Completeness </span>
+        <progress-bar [progress]="loadProgress"></progress-bar>
+      </div>
+    </ion-item>
+    <ion-item>
+      <div class="profile-container">
+        <ion-grid>
+          <ion-row class="grid-icons">
+            <ion-col width-33>
+              <div>
+                <button clear ion-button>
+                  <ion-icon name="card" ></ion-icon>
+                  <label class="text-margin">Personal<br>Info</label>
+                </button><br>
+              </div>
+              <button clear ion-button>
+                <ion-icon name="people" ></ion-icon>
+                <label class="text-margin">Employme- <br>nt History</label>
+              </button><br>
+              <button clear ion-button>
+                <ion-icon name="alert" item-left></ion-icon>
+                <label class="text-margin">Certificat- <br>ions</label>
+              </button><br>
+            </ion-col>
+            <ion-col width-33>
+              <button clear ion-button>
+                  <ion-icon name="briefcase"></ion-icon>
+                  <label class="text-margin">Details</label>
+              </button><br>
+              <button clear ion-button>
+                <ion-icon name="clipboard"></ion-icon>
+                <label class="text-margin">Experience</label>
+              </button><br>
+              <button clear ion-button (click)="achievementsTapped()">
+                <ion-icon name="trophy"></ion-icon>
+                <label class="text-margin">Achieveme- <br>nts</label>
+              </button><br>
+            </ion-col>
+            <ion-col width-33>
+              <button clear ion-button (click)="educationTapped()">
+                  <ion-icon name="book"></ion-icon>
+                  <label class="text-margin">Education</label>
+              </button><br>
+              <button clear ion-button>
+                <ion-icon name="alert"></ion-icon>
+                <label class="text-margin">Skill Set</label>
+              </button><br>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </div>
+    </ion-item>
+  </ion-card>
+
 
 </ion-content>

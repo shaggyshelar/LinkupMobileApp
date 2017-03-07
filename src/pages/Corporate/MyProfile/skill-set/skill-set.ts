@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
+import { NavController, NavParams, ViewController } from 'ionic-angular';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { SkillInfo } from './skill-set-model';
 
 /*
   Generated class for the SkillSet page.
@@ -12,11 +14,42 @@ import { NavController, NavParams } from 'ionic-angular';
   templateUrl: 'skill-set.html'
 })
 export class SkillSetPage {
-
-  constructor(public navCtrl: NavController, public navParams: NavParams) { }
+  complexForm : FormGroup;
+  skill: SkillInfo = new SkillInfo();
+  showForm: boolean = false;
+  isSkillType: boolean = false;
+  isSkill: boolean = false;
+  MakeEnable: boolean = true;
+  constructor(public navCtrl: NavController,
+    public navParams: NavParams,
+    public viewCtrl: ViewController,
+    public fb: FormBuilder) { 
+      this.complexForm = fb.group({
+      'skilltype' : [null, Validators.required],
+      'skills' : [null, Validators.required]
+    })
+    }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad SkillSetPage');
   }
-
+  dismiss(data) {
+    this.viewCtrl.dismiss(data);
+  }
+  onAddForm() {
+    this.showForm = true;
+    this.skill.SkillType = "";
+    this.skill.Skills = "";
+  }
+  onSave() {
+      console.log('data saved sucessfully');
+  }
+  onCloseForm() {
+    this.showForm = false;
+  }
+  editList() {
+    this.showForm = true;
+    this.skill.SkillType = "Language/Technology";
+    this.skill.Skills = "AngujarJS, AngularJS 2, HTML5, CSS, Javascript, JQuery, Ionic framework, Asp.net, MVC";
+  }
 }

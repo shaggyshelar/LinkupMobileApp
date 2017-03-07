@@ -1,7 +1,6 @@
 import { Component, ViewChild, trigger, state, style, transition, animate, keyframes } from '@angular/core';
 import { NavController, NavParams, Nav } from 'ionic-angular';
 import { NgForm } from '@angular/forms';
-import { HomePage } from '../home/home';
 import { AuthService } from '../../providers/index';
 import { User } from './user.model';
 
@@ -92,6 +91,4 @@ export class LoginPage {
         });
     }
   }
-
-
 }

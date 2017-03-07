@@ -189,7 +189,6 @@ export class BaseService implements HttpServices {
     private onUnAuthorized() {
         localStorage.clear();
         if (location.pathname !== '/login') {
-            alert('Now navigate to Login Page');
             this.messageService.setSessionTimeOutMessage(true);
         }
     }

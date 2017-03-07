@@ -1,7 +1,14 @@
+
 import { Component ,ViewChild} from '@angular/core';
 import { NavController, NavParams,Slides } from 'ionic-angular';
 import { AuthService } from '../../providers/index';
 import { Chart } from 'chart.js';
+import { ModalController } from 'ionic-angular';
+import { PersonalInfoPage } from '../Corporate/MyProfile/personal-info/personal-info';
+import { CertificationPage } from '../Corporate/MyProfile/certification/certification';
+import { SkillSetPage } from '../Corporate/MyProfile/skill-set/skill-set';
+import { ExperiencePage } from '../Corporate/MyProfile/experience/experience';
+import { EmploymentHistoryPage } from '../Corporate/MyProfile/employment-history/employment-history';
 
 /*
   Generated class for the Dashboard page.
@@ -15,6 +22,7 @@ import { Chart } from 'chart.js';
 })
 export class HomePage {
 
+
   @ViewChild('pieMyTimesheetCanvas') pieMyTimesheetCanvas;
   @ViewChild('pieTeamTimesheetCanvas') pieTeamTimesheetCanvas;
   @ViewChild('Slides') slides: Slides;
@@ -27,7 +35,12 @@ export class HomePage {
   
 
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public authService: AuthService) { 
+
+
+  constructor(public navCtrl: NavController, public navParams: NavParams, 
+              public authService: AuthService,
+              public modalCtrl: ModalController) { 
+
     console.log('Is Authenticated =',this.authService.isAuthenticated());
     this.isSearchShow = false;
     this.initializeItems();
@@ -157,5 +170,24 @@ export class HomePage {
     console.log('ionViewDidLoad HomePage');
      this.createCharts();
   }
-
+  gotoMyprofile() {
+    let modal = this.modalCtrl.create(PersonalInfoPage);
+    modal.present();
+  }
+  gotoCertification() {
+    let modal = this.modalCtrl.create(CertificationPage);
+    modal.present();
+  }
+  gotoSkill() {
+    let modal = this.modalCtrl.create(SkillSetPage);
+    modal.present();
+  }
+   gotoExperience() {
+    let modal = this.modalCtrl.create(ExperiencePage);
+    modal.present();
+  }
+   gotoEmploymentHistory() {
+    let modal = this.modalCtrl.create(EmploymentHistoryPage);
+    modal.present();
+  }
 }
