@@ -57,6 +57,7 @@ import { MessageService } from '../providers/index';
 
 //Custom Components
 import { ProgressBarComponent } from '../components/progress-bar/progress-bar';
+import { CacheService, CacheStorageAbstract, CacheLocalStorage } from 'ng2-cache/ng2-cache';
 
 
 @NgModule({
@@ -132,6 +133,11 @@ import { ProgressBarComponent } from '../components/progress-bar/progress-bar';
     ProfileDetailsPage,
     SkillSetPage
   ],
-  providers: [{ provide: ErrorHandler, useClass: IonicErrorHandler }, Auth, AuthService, LeaveService, HolidayService, UserService, MessageService]
+  providers: [
+    {
+      provide: ErrorHandler,
+      useClass: IonicErrorHandler
+    }, Auth, AuthService, LeaveService, HolidayService, UserService, MessageService,
+    CacheService, { provide: CacheStorageAbstract, useClass: CacheLocalStorage }]
 })
 export class AppModule { }
