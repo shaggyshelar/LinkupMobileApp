@@ -7,10 +7,6 @@
 
   <ion-content>
     <ion-list>
-      <!--<button menuClose ion-item *ngFor="let p of pages" (click)="openPage(p)">
-         <ion-icon item-left [name]="p.icon" [class.activeHighlight]="checkActive(p)"></ion-icon>
-        {{p.title}}
-      </button>-->
       <ion-list-header (click)="toggleLeaveMenu()" [ngStyle]="{'height': 36}">
         <ion-icon *ngIf="showLeaveSubmenus == false" name="arrow-dropdown" item-right></ion-icon>
         <ion-icon *ngIf="showLeaveSubmenus == true" name="arrow-dropleft" item-right></ion-icon>
@@ -70,6 +66,7 @@
       </button>
     </ion-title>
   </ion-footer>
+
 </ion-menu>
 
 <!-- Disable swipe-to-go-back because it's poor UX to combine STGB with side menus -->

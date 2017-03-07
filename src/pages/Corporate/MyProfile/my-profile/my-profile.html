@@ -19,17 +19,19 @@
 <ion-content no-overflow>
   <div class="avatar-bg">
     <div class="profilephoto">
-      <img />
+      <img class="img-pos"/>
     </div>
-    <div class="centeralign">
-      <h4>Kunal Adhikari</h4>
-      <p class="less-margin">Delivery Manager</p>
-      <p class="less-margin">10431</p>
+    <div class="user-details">
+      <div class="push-down">
+        <h4>Kunal Adhikari</h4>
+        <p class="less-margin">Delivery Manager</p>
+        <p class="less-margin">10431</p>
+      </div>
     </div>
   </div>
   <ion-card>
     <ion-item>
-      <div class="centeralign">
+      <div class="profile-completeness">
         <span>Profile Completeness </span>
         <progress-bar [progress]="loadProgress"></progress-bar>
       </div>
@@ -63,13 +65,13 @@
                 <ion-icon name="clipboard"></ion-icon>
                 <label class="text-margin">Experience</label>
               </button><br>
-              <button clear ion-button>
+              <button clear ion-button (click)="achievementsTapped()">
                 <ion-icon name="trophy"></ion-icon>
                 <label class="text-margin">Achieveme- <br>nts</label>
               </button><br>
             </ion-col>
             <ion-col width-33>
-              <button clear ion-button>
+              <button clear ion-button (click)="educationTapped()">
                   <ion-icon name="book"></ion-icon>
                   <label class="text-margin">Education</label>
               </button><br>

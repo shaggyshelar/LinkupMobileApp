@@ -5,14 +5,71 @@
   Ionic pages and navigation.
 -->
 <ion-header>
+  <ion-toolbar>
+    <ion-buttons start>
+      <button ion-button (click)="close()">
+        <span showWhen="ios">Cancel</span>
+        <ion-icon name="md-close" showWhen="android,windows"></ion-icon>
+      </button>
+    </ion-buttons>
+    <ion-title>Achievements</ion-title>
+    
+    <ion-buttons end>
+      <button *ngIf="!showAddEditView" (click)="addAchievement()" ion-button end>
+          <ion-icon name="add"></ion-icon>
+      </button>
+      <button *ngIf="!showAddEditView" (click)="editAchievement()" ion-button end>
+          <ion-icon name="create"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-toolbar>
 
-  <ion-navbar>
-    <ion-title>achievement</ion-title>
-  </ion-navbar>
+  <!--<ion-navbar>
+    <ion-buttons start>
+      <button (click)="close()" ion-button clear start>
+          Cancel
+      </button>
+    </ion-buttons>
+    <ion-title>Achievements</ion-title>
+    <ion-buttons end >
+      
+    </ion-buttons>
+  </ion-navbar>-->
 
 </ion-header>
 
 
 <ion-content padding>
+  <ion-card *ngIf="showAddEditView">
+
+    <ion-card-header>
+      <h3>Add Achievement</h3>
+    </ion-card-header>
+
+    <ion-card-content>
+      <ion-list inset>
+        <form [formGroup]="achievementForm">
+          <ion-input class="around" formControlName="achievement" type="text" [ngModel]="achievement"></ion-input>
+          <p *ngIf="!achievementForm.controls.achievement.valid && (achievementForm.controls.achievement.dirty || achievementForm.controls.achievement.touched)" class="warning">Field required.</p>
+        </form>
+      </ion-list>
+
+      <ion-buttons>
+        <button ion-button (click)="cancelTapped()">Cancel</button>
+        <button ion-button (click)="submitTapped(achievementForm.value)" [disabled]="!achievementForm.controls.achievement.valid">Submit</button>
+      </ion-buttons>
+
+    </ion-card-content>
+
+  </ion-card>
+
+    <ion-list>
+      <p class="list-content" *ngFor="let item of achievements" (click)="listItemTapped(item)" class="list-content">
+        {{item}}
+      </p>
+    </ion-list>
+
+
+  
 
 </ion-content>

@@ -1,3 +1,28 @@
 page-education {
-
+    .push-text-right {
+        text-align: right;
+    }
+    .docs-approved {
+        color: seagreen;
+    }
+    .docs-pending {
+        color: red;
+    }
+    .gap-left {
+        margin-left : 15px;
+    }
+    .close-button {
+        padding: 0px;
+        margin-right: 10px;
+        display: inline-block !important;
+    }
+    .details {
+            ion-col {
+            padding: 0px;
+        }
+    }
+    .warning {
+        margin-left: 15px;
+        color: red;
+    }
 }

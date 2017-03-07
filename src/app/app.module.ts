@@ -61,6 +61,7 @@ import { LimitToDirective } from '../providers/shared/directives/limit-to';
 
 //Custom Components
 import { ProgressBarComponent } from '../components/progress-bar/progress-bar';
+import { CacheService, CacheStorageAbstract, CacheLocalStorage } from 'ng2-cache/ng2-cache';
 
 
 
@@ -141,6 +142,11 @@ import { ProgressBarComponent } from '../components/progress-bar/progress-bar';
     ProfileDetailsPage,
     SkillSetPage
   ],
-  providers: [{ provide: ErrorHandler, useClass: IonicErrorHandler }, Auth, AuthService, LeaveService, HolidayService, UserService, MessageService,LimitToDirective]
+  providers: [
+    {
+      provide: ErrorHandler,
+      useClass: IonicErrorHandler
+    }, Auth, AuthService, LeaveService, HolidayService, UserService, MessageService, LimitToDirective,
+    CacheService, { provide: CacheStorageAbstract, useClass: CacheLocalStorage }]
 })
 export class AppModule { }
