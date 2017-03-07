@@ -25,10 +25,10 @@ export class BaseService implements HttpServices {
     private messageService: MessageService;
 
     /** Base Service constructor : Accepts Analytics Service, Http Service, Context path, Log service */
-    constructor(_httpService: Http, _context: string, messageService?: MessageService) {
+    constructor(_httpService: Http, _context: string) {
         this.httpService = _httpService;
         this.requestUrl = this.baseUrl.concat(_context);
-        this.messageService = messageService;
+        this.messageService = new MessageService();
     }
 
     blockUI(): any {

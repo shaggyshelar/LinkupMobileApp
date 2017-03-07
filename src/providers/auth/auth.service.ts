@@ -3,7 +3,6 @@ import { Http, Response, Headers, RequestOptions } from '@angular/http';
 import { Observable } from 'rxjs/Rx';
 import { BaseService } from '../shared/index';
 import { Subject } from 'rxjs/Subject';
-import { MessageService } from '../shared/services/message.service';
 
 /** Context for service calls */
 const CONTEXT = 'auth';
@@ -15,8 +14,8 @@ export class AuthService extends BaseService {
     onAuthStatusChanged$ = this.authStatusChangeSource.asObservable();
     private authenticated = false;
 
-    constructor(httpService: Http, private http: Http, messageService: MessageService) {
-        super(httpService, CONTEXT, messageService);
+    constructor(httpService: Http, private http: Http) {
+        super(httpService, CONTEXT);
     }
 
     blockUI(): any {
