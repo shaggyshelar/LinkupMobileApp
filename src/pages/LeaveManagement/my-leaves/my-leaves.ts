@@ -4,14 +4,16 @@ import { LeaveService } from '../index';
 import { Observable } from 'rxjs/Rx';
 import { Leave } from '../models/leave';
 import { LeaveDetail } from '../models/leaveDetail';
+import { MyEvent } from '../models/holiday';
 import { AlertController, ItemSliding } from 'ionic-angular';
+import * as moment from 'moment/moment';
 
 @Component({
   selector: 'page-my-leaves',
   templateUrl: 'my-leaves.html'
 })
 export class MyLeavesPage {
-  public leaveObs: Observable<Leave>;
+  public leaveObs: Leave[];
   public leaveDetObs: Observable<LeaveDetail>;
   public leaveDetail: LeaveDetail;
   events: any[];
@@ -44,12 +46,14 @@ export class MyLeavesPage {
   }
 
   ionViewDidLoad() {
-    this.leaveObs = this.leaveService.getMyLeaves();
-    // this.leaveService.getMyLeaves().subscribe(
-    //   res => {
-    //     console.log("Data from server", res); 
-    //     this.leaveObs = res;
-    //   });
+    //this.leaveObs = this.leaveService.getMyLeaves();
+    this.leaveObs = [];
+    this.leaveService.getMyLeaves().subscribe(
+      (res:any) => {
+        console.log("Data from server", res); 
+        this.leaveObs = res;
+        this.leaveObs.reverse();
+      });
     console.log('ionViewDidLoad MyLeavesPage');
   }
 

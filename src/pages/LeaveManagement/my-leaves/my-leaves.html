@@ -40,7 +40,7 @@
 
 <ion-content padding>
   <p-schedule [events]="events" (onDayClick)="handleDayClick($event)"></p-schedule>
-  <ion-list #scheduleList [hidden]="(leaveObs | async)?.length === 0">
+  <ion-list #scheduleList [hidden]="(leaveObs)?.length === 0">
 
     <!--<ion-item-divider sticky>
         <ion-label>
@@ -48,7 +48,7 @@
         </ion-label>
       </ion-item-divider>-->
 
-    <ion-item-sliding *ngFor="let leave of leaveObs | async" #slidingItem [attr.status]="leave.Status | lowercase">
+    <ion-item-sliding *ngFor="let leave of leaveObs " #slidingItem [attr.status]="leave.Status | lowercase">
 
       <button ion-item (click)="goToLeaveDetail(leave)">
           <h3>{{leave.Employee.Name}}</h3>
@@ -71,7 +71,7 @@
 
   </ion-list>
 
-  <ion-list-header [hidden]="(leaveObs | async)?.length > 0">
+  <ion-list-header [hidden]="(leaveObs)?.length > 0">
     No Records Found
   </ion-list-header>
 </ion-content>
