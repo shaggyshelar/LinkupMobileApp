@@ -1,18 +1,18 @@
 import { Component, ViewChild } from '@angular/core';
 import { NavController, NavParams, Slides } from 'ionic-angular';
 import { AuthService } from '../../providers/index';
-<<<<<<< HEAD
+
 /*
   Generated class for the Dashboard page.
 
   See http://ionicframework.com/docs/v2/components/#navigation for more info on
   Ionic pages and navigation.
 */
-=======
+
 import { Chart } from 'chart.js';
 import { ModalController } from 'ionic-angular';
 
->>>>>>> 547f81bbe5097d94fe497465951c1ff0d7aa09f1
+
 @Component({
   selector: 'page-home',
   templateUrl: 'home.html'
@@ -49,8 +49,7 @@ export class HomePage {
   showSearch() {
     this.isSearchShow = true;
   }
-<<<<<<< HEAD
-=======
+
 
   createCharts() {
 
@@ -153,5 +152,5 @@ export class HomePage {
     console.log('ionViewDidLoad HomePage');
     this.createCharts();
   }
->>>>>>> 547f81bbe5097d94fe497465951c1ff0d7aa09f1
+
 }
