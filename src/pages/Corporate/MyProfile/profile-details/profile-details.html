@@ -7,12 +7,356 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title>profileDetails</ion-title>
+    <ion-buttons start>
+      <!--[disabled]="!complexForm.valid"-->
+      <button *ngIf="showHide" (click)="onSave()" ion-button icon-only> 
+        <ion-icon name="checkmark"></ion-icon>
+      </button>
+    </ion-buttons>
+    <ion-buttons start>
+      <button *ngIf="showHide === false" (click)="onAddForm(profileDetails)" ion-button icon-only>
+        <ion-icon name="add"></ion-icon>
+      </button>
+    </ion-buttons>
+    <ion-buttons start>
+      <button (click)="dismiss()" ion-button icon-only>
+        <ion-icon name="close"></ion-icon>
+      </button>
+    </ion-buttons>
+    <ion-title>Profile Details</ion-title>
   </ion-navbar>
 
 </ion-header>
 
 
 <ion-content padding>
+  <div padding>
+  <ion-segment [(ngModel)]="profileDetails">
+    <ion-segment-button value="Address">
+      Address
+    </ion-segment-button>
+    <ion-segment-button value="Visa">
+      Visa
+    </ion-segment-button>
+    <ion-segment-button value="Passport">
+      Passport
+    </ion-segment-button>
+    <ion-segment-button value="UAN">
+      UAN
+    </ion-segment-button>
+    <ion-segment-button value="Nominees">
+      Nominees
+    </ion-segment-button>
+    <ion-segment-button value="ID proof">
+      ID proof
+    </ion-segment-button>
+  </ion-segment>
+</div>
+<div [ngSwitch]="profileDetails">
+  <!--Address Segment Begin-->
+  <div *ngSwitchCase="'Address'">
+    <ion-card *ngIf="showAddressForm">
+        <ion-card-header class="cardHeader">
+            <ion-row>
+              <ion-col width-90>
+              </ion-col>
+              <ion-col width-10 style="text-align:right;" (click)="onCloseForm(profileDetails)">
+                <ion-icon name="close"></ion-icon>
+              </ion-col>
+            </ion-row>
+          </ion-card-header>
+          <form name="formLastEmployer" [formGroup]="AddressForm">
+            <ion-list>
+              <ion-item>
+                <ion-label floating>Current Address <span class="required">*</span></ion-label>
+                <ion-textarea type="text" name="txtCurrentAddr" [(ngModel)]="ProfileDetails.CurrentAddress" formControlName="currentaddress" [class.invalid]="!AddressForm.controls.currentaddress.valid"></ion-textarea>
+              </ion-item>
+              <p *ngIf="!AddressForm.controls.currentaddress.valid" class="error">Please Enter Current address</p>
+              <ion-item>
+              <ion-label floating>Permanent Address <span class="required">*</span></ion-label>
+                <ion-textarea type="text" name="txtPermanentAddr" [(ngModel)]="ProfileDetails.PermanentAddress" formControlName="permanentaddress" [class.invalid]="!AddressForm.controls.permanentaddress.valid"></ion-textarea>
+              </ion-item>
+              <p *ngIf="!AddressForm.controls.permanentaddress.valid" class="error">Please Enter Permanent address</p>
+            </ion-list>
+             <ion-row style="margin-left:5%;">
+                  <ion-label>Current Address Proof <span class="required">*</span></ion-label>
+              </ion-row>
+              <ion-row>
+                  <ion-col width-50 style="padding-left:5%;">
+                    <ion-label>No File Choosen</ion-label>
+                  </ion-col>
+                  <ion-col width-50><button ion-button>Choose file</button></ion-col>
+              </ion-row>
+              <ion-row style="margin-left:5%;">
+                  <ion-label>Permanent Address Proof <span class="required">*</span></ion-label>
+              </ion-row>
+              <ion-row>
+                  <ion-col width-50 style="padding-left:5%;">
+                    <ion-label>No File Choosen</ion-label>
+                  </ion-col>
+                  <ion-col width-50><button ion-button>Choose file</button></ion-col>
+              </ion-row>
+          </form>
+      </ion-card>
+      <ion-list>
+        <ion-item (click)="editAddressList()">
+          <h2>Current address</h2>
+          <p>Audumber B SNo 15/7 +BA warje jakat naka, karve nagar, Pune - 411052</p>
+        </ion-item>
+        <ion-item>
+          <h2>Permanent address</h2>
+          <p>53, shivparvati colony, karwand naka, Shirpur	Shirpur - 425405</p>
+        </ion-item>
+      </ion-list>
+  </div>
+  <!--Address Segment end-->
 
+  <!--Visa Segment Begin-->
+  <div *ngSwitchCase="'Visa'">
+    <ion-card *ngIf="showVisaForm">
+      <ion-card-header class="cardHeader">
+        <ion-row>
+          <ion-col width-90>
+          </ion-col>
+          <ion-col width-10 style="text-align:right;" (click)="onCloseForm(profileDetails)">
+            <ion-icon name="close"></ion-icon>
+          </ion-col>
+        </ion-row>
+      </ion-card-header>
+      <form name="formLastEmployer" [formGroup]="VisaForm">
+        <ion-list>
+          <ion-item>
+            <ion-label floating>Visa Number <span class="required">*</span></ion-label>
+            <ion-input type="text" name="txtVisaNumber" [(ngModel)]="ProfileDetails.VisaNumber" formControlName="visanumber" [class.invalid]="!VisaForm.controls.visanumber.valid"></ion-input>
+          </ion-item>
+          <p *ngIf="!VisaForm.controls.visanumber.valid" class="error">Please enter visa number</p>
+          <ion-item>
+            <ion-label floating>Visa Expiry Date <span class="required">*</span></ion-label>
+            <ion-datetime displayFormat="DD/MM/YYYY" name="dateStart" [(ngModel)]="ProfileDetails.VisaExpiryDate" formControlName="visaexpirydate" [class.invalid]="!VisaForm.controls.visaexpirydate.valid"></ion-datetime>
+          </ion-item>
+            <p *ngIf="!VisaForm.controls.visaexpirydate.valid" class="error">Please select visa expiry date</p>
+            <ion-item>
+            <ion-label floating>Visa Type <span class="required">*</span></ion-label>
+            <ion-input type="text" name="txtVisaType" [(ngModel)]="ProfileDetails.VisaType" formControlName="visatype" [class.invalid]="!VisaForm.controls.visatype.valid"></ion-input>
+          </ion-item>
+          <p *ngIf="!VisaForm.controls.visatype.valid" class="error">Please enter visa type</p>
+        </ion-list>
+        <ion-row style="margin-left:5%;">
+          <ion-label>Scanned copy <span class="required">*</span></ion-label>
+        </ion-row>
+        <ion-row>
+          <ion-col width-50 style="padding-left:5%;">
+            <ion-label>No File Choosen</ion-label>
+          </ion-col>
+          <ion-col width-50><button ion-button>Choose file</button></ion-col>
+        </ion-row>
+      </form>
+    </ion-card>
+    <ion-list>
+      <ion-item (click)="editVisaList()">
+        <h2>AZK9876767KJP</h2>
+        <p>20/12/1020</p>
+        <p>H1</p>
+      </ion-item>
+      <ion-item>
+        <h2>AZK9876767KJP</h2>
+        <p>20/12/1020</p>
+        <p>H1</p>
+      </ion-item>
+    </ion-list>
+  </div>
+  <!--Visa Segment End-->
+
+  <!--Passport Segment Begin-->
+  <div *ngSwitchCase="'Passport'">
+    <ion-card *ngIf="showPassportForm">
+      <ion-card-header class="cardHeader">
+        <ion-row>
+          <ion-col width-90>
+          </ion-col>
+          <ion-col width-10 style="text-align:right;" (click)="onCloseForm(profileDetails)">
+            <ion-icon name="close"></ion-icon>
+          </ion-col>
+        </ion-row>
+      </ion-card-header>
+      <form name="formLastEmployer" [formGroup]="PassportForm">
+        <ion-list>
+          <ion-item>
+            <ion-label floating>Passport Number <span class="required">*</span></ion-label>
+            <ion-input type="text" name="txtPassportNumber" [(ngModel)]="ProfileDetails.PassportNumber" formControlName="passportnumber" [class.invalid]="!PassportForm.controls.passportnumber.valid"></ion-input>
+          </ion-item>
+           <p *ngIf="!PassportForm.controls.passportnumber.valid" class="error">Please enter passport number</p>
+          <ion-item>
+            <ion-label floating>Passport Expiry Date <span class="required">*</span></ion-label>
+            <ion-datetime displayFormat="DD/MM/YYYY" name="dateStart" [(ngModel)]="ProfileDetails.PassportExpiryDate" formControlName="passportexpirydate" [class.invalid]="!PassportForm.controls.passportexpirydate.valid"></ion-datetime>
+          </ion-item>
+            <p *ngIf="!PassportForm.controls.passportexpirydate.valid" class="error">Please select passport expiry date</p>
+        </ion-list>
+        <ion-row style="margin-left:5%;">
+          <ion-label>Scanned copy <span class="required">*</span></ion-label>
+        </ion-row>
+        <ion-row>
+          <ion-col width-50 style="padding-left:5%;">
+            <ion-label>No File Choosen</ion-label>
+          </ion-col>
+          <ion-col width-50><button ion-button>Choose file</button></ion-col>
+        </ion-row>
+      </form>
+    </ion-card>
+    <ion-list>
+      <ion-item (click)="editPassportList()">
+        <h2>AZK9876767KJP</h2>
+        <p>20/12/1020</p>
+      </ion-item>
+      <ion-item>
+        <h2>AZK9876767KJP</h2>
+        <p>20/12/1020</p>
+      </ion-item>
+    </ion-list>
+  </div>
+  <!--Passport Segment End-->
+
+  <!--UAN Segment Begin-->
+    <div *ngSwitchCase="'UAN'">
+      <ion-card *ngIf="showUANForm">
+        <ion-card-header class="cardHeader">
+          <ion-row>
+            <ion-col width-90>
+            </ion-col>
+            <ion-col width-10 style="text-align:right;" (click)="onCloseForm(profileDetails)">
+              <ion-icon name="close"></ion-icon>
+            </ion-col>
+          </ion-row>
+        </ion-card-header>
+        <form name="formLastEmployer" [formGroup]="UANForm">
+          <ion-list>
+            <ion-item>
+              <ion-label floating>UAN Number <span class="required">*</span></ion-label>
+              <ion-input type="number" name="txtPassportNumber" [(ngModel)]="ProfileDetails.UANNumber" formControlName="UANnumber" [class.invalid]="!UANForm.controls.UANnumber.valid"></ion-input>
+            </ion-item>
+            <p *ngIf="!UANForm.controls.UANnumber.valid" class="error">Please enter passport number</p>
+            <ion-item>
+                <ion-label>From ESPL</ion-label>
+                <ion-checkbox formControlName="fromespl"></ion-checkbox>
+            </ion-item>
+          </ion-list>
+        </form>
+      </ion-card>
+      <ion-list>
+        <ion-item (click)="editUANList()">
+          <h2>100546693860</h2>
+          <p>From Eternus: Yes</p>
+        </ion-item>
+      </ion-list>
+    </div>
+  <!--UAN Segment End-->
+  <!--Nominees Segment Begin-->
+    <div *ngSwitchCase="'Nominees'">
+      <ion-card *ngIf="showNomineesForm">
+        <ion-card-header class="cardHeader">
+          <ion-row>
+            <ion-col width-90>
+            </ion-col>
+            <ion-col width-10 style="text-align:right;" (click)="onCloseForm(profileDetails)">
+              <ion-icon name="close"></ion-icon>
+            </ion-col>
+          </ion-row>
+        </ion-card-header>
+        <form name="formLastEmployer" [formGroup]="NomineesForm">
+          <ion-list>
+            <ion-item>
+              <ion-label floating>Nominee Name <span class="required">*</span></ion-label>
+              <ion-input type="text" name="txtNomineeName" [(ngModel)]="ProfileDetails.NomineeName" formControlName="nomineename" [class.invalid]="!NomineesForm.controls.nomineename.valid"></ion-input>
+            </ion-item>
+            <p *ngIf="!NomineesForm.controls.nomineename.valid" class="error">Please enter passport number</p>
+            <ion-item>
+              <ion-label floating>Nominee relationship with employee <span class="required">*</span></ion-label>
+              <ion-input type="text" name="txtNomineeRelation" [(ngModel)]="ProfileDetails.NomineeRelation" formControlName="nomineerelationship" [class.invalid]="!NomineesForm.controls.nomineerelationship.valid"></ion-input>
+            </ion-item>
+            <p *ngIf="!NomineesForm.controls.nomineerelationship.valid" class="error">Please enter passport number</p>
+          </ion-list>
+        </form>
+      </ion-card>
+      <ion-list>
+        <ion-item (click)="editNomineesList()">
+          <h2>Nominee 1</h2>
+          <p>Tukaram Henry Shaikh</p>
+          <p>Father</p>
+        </ion-item>
+        <ion-item (click)="editNomineesList()">
+          <h2>Nominee 2</h2>
+          <p>salima Henry Shaikh</p>
+          <p>Mother</p>
+        </ion-item>
+      </ion-list>
+    </div>
+  <!--Nominees Segment End-->
+
+  <!--ID Proof Segment Start-->
+    <div *ngSwitchCase="'ID proof'">
+      <ion-card *ngIf="showIDProofForm">
+        <ion-card-header class="cardHeader">
+          <ion-row>
+            <ion-col width-90>
+            </ion-col>
+            <ion-col width-10 style="text-align:right;" (click)="onCloseForm(profileDetails)">
+              <ion-icon name="close"></ion-icon>
+            </ion-col>
+          </ion-row>
+        </ion-card-header>
+        <form name="formLastEmployer" [formGroup]="IDProofForm">
+          <ion-list>
+            <ion-item *ngIf="showIdentityType">
+              <ion-label floating>Identity Type <span class="required">*</span></ion-label>
+              <ion-select [(ngModel)]="ProfileDetails.IdentityType" formControlName="identitytype" (ionChange)="selectID(ProfileDetails.IdentityType)" [class.invalid]="!IDProofForm.controls.identitytype.valid">
+                <ion-option value="Aadhar Card">Aadhar Card</ion-option>
+                <ion-option value="Voter ID">Voter ID</ion-option>
+                <ion-option value="Driving Licence">Driving Licence</ion-option>
+              </ion-select>
+            </ion-item>
+            <p *ngIf="!IDProofForm.controls.identitytype.valid && showIdentityType" class="error">Please select identity type</p>
+            <ion-item *ngIf="showVoterID">
+              <ion-label floating>Voter ID <span class="required">*</span></ion-label>
+              <ion-input type="text" name="txtNomineeName" [(ngModel)]="ProfileDetails.VoterID" formControlName="voterid" [class.invalid]="!IDProofForm.controls.voterid.valid"></ion-input>
+            </ion-item>
+            <p *ngIf="!IDProofForm.controls.voterid.valid && showVoterID" class="error">Please enter Voter ID</p>
+            <ion-item *ngIf="showAadharID">
+              <ion-label floating>Aadhar Card Number <span class="required">*</span></ion-label>
+              <ion-input type="text" name="txtNomineeName" [(ngModel)]="ProfileDetails.AadharCard" formControlName="aadharcard" [class.invalid]="!IDProofForm.controls.aadharcard.valid"></ion-input>
+            </ion-item>
+            <p *ngIf="!IDProofForm.controls.aadharcard.valid && showAadharID" class="error">Please enter Aadhar Card Number</p>
+            <ion-item *ngIf="showDrivingID">
+              <ion-label floating>Driving Licence Number <span class="required">*</span></ion-label>
+              <ion-input type="text" name="txtNomineeName" [(ngModel)]="ProfileDetails.DrivingLicence" formControlName="drivinglicence" [class.invalid]="!IDProofForm.controls.drivinglicence.valid"></ion-input>
+            </ion-item>
+            <p *ngIf="!IDProofForm.controls.drivinglicence.valid && showDrivingID" class="error">Please enter Driving Licence Number</p>
+          </ion-list>
+          <ion-row style="margin-left:5%;" *ngIf="showChooseFile">
+            <ion-label>Scanned copy <span class="required">*</span></ion-label>
+          </ion-row>
+          <ion-row *ngIf="showChooseFile">
+            <ion-col width-50 style="padding-left:5%;">
+              <ion-label>No File Choosen</ion-label>
+            </ion-col>
+            <ion-col width-50><button ion-button>Choose file</button></ion-col>
+          </ion-row>
+        </form>
+      </ion-card>
+      <ion-list>
+        <ion-item (click)="editIDList()">
+          <h2>Driving Licence</h2>
+          <p>BZKPB9847A</p>
+        </ion-item>
+        <ion-item>
+          <h2>Aadhar Card</h2>
+          <p>BZKPB9847A</p>
+        </ion-item>
+        <ion-item>
+          <h2>Voter ID</h2>
+          <p>BZKPB9847A</p>
+        </ion-item>
+      </ion-list>
+    </div>
+  <!--ID Proof Segment Start-->
+</div>
 </ion-content>

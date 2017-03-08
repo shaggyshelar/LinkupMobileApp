@@ -2,13 +2,7 @@ import { Component } from '@angular/core';
 import { NavController, NavParams, ViewController } from 'ionic-angular';
 import { LoadingController } from 'ionic-angular';
 import { PersonalInfo } from './personal-info-model';
-import { LimitToDirective } from '../../../../providers/shared/directives/limit-to';
-/*
-  Generated class for the PersonalInfo page.
 
-  See http://ionicframework.com/docs/v2/components/#navigation for more info on
-  Ionic pages and navigation.
-*/
 @Component({
   selector: 'page-personal-info',
   templateUrl: 'personal-info.html',

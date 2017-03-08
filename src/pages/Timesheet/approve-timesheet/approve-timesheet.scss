@@ -1,3 +1,22 @@
-page-approve-timesheet {
+$categories: (
+ ionic: color($colors, primary),
+ rejected: #FE4C52,
+ pending: #FED035,
+ approved: #69BB7B,
+);
 
+@function auxiliary-categories() {
+  @return map-remove($categories);
+}
+
+page-approve-timesheet {
+@each $status, $value in auxiliary-categories() {
+   ion-item-sliding[status=#{$status}] ion-label {
+     border-left: 2px solid $value;
+     padding-left: 10px;
+   }
+  }
+  .right {
+      float: right;
+  }
 }

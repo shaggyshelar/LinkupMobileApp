@@ -42,26 +42,26 @@
           <ion-row class="grid-icons">
             <ion-col width-33>
               <div>
-                <button clear ion-button>
+                <button clear ion-button (click)="PersonalInfoTapped()">
                   <ion-icon name="card" ></ion-icon>
                   <label class="text-margin">Personal<br>Info</label>
                 </button><br>
               </div>
-              <button clear ion-button>
+              <button clear ion-button (click)="employementHistoryTapped()">
                 <ion-icon name="people" ></ion-icon>
                 <label class="text-margin">Employme- <br>nt History</label>
               </button><br>
-              <button clear ion-button>
+              <button clear ion-button (click)="certificationTapped()">
                 <ion-icon name="alert" item-left></ion-icon>
                 <label class="text-margin">Certificat- <br>ions</label>
               </button><br>
             </ion-col>
             <ion-col width-33>
-              <button clear ion-button>
+              <button clear ion-button (click)="detailsTapped()">
                   <ion-icon name="briefcase"></ion-icon>
                   <label class="text-margin">Details</label>
               </button><br>
-              <button clear ion-button>
+              <button clear ion-button (click)="experienceTapped()">
                 <ion-icon name="clipboard"></ion-icon>
                 <label class="text-margin">Experience</label>
               </button><br>
@@ -75,7 +75,7 @@
                   <ion-icon name="book"></ion-icon>
                   <label class="text-margin">Education</label>
               </button><br>
-              <button clear ion-button>
+              <button clear ion-button (click)="skillsetTapped()">
                 <ion-icon name="alert"></ion-icon>
                 <label class="text-margin">Skill Set</label>
               </button><br>

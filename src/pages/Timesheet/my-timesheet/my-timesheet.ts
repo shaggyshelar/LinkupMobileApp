@@ -13,10 +13,46 @@ import { NavController, NavParams } from 'ionic-angular';
 })
 export class MyTimesheetPage {
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) { }
+  timeRec : any[] = [];
+
+  constructor(public navCtrl: NavController, public navParams: NavParams) {
+    this.timeRec = [
+      {
+        ApproverUser: 'Kunal Adhikari',
+        StartDate: '06/03/2017',
+        EndDate: '12/03/2017',
+        BillableHours:'40:0',
+        NonBillableHours:'0:0',
+        Status:'Approved',
+        SubmissionDate: '10/03/2017'
+      },
+      {
+        ApproverUser: 'Kunal Adhikari',
+        StartDate: '13/03/2017',
+        EndDate: '19/03/2017',
+        BillableHours:'40:0',
+        NonBillableHours:'0:0',
+        Status:'Pending',
+        SubmissionDate: '18/03/2017'
+      },
+      {
+        ApproverUser: 'Kunal Adhikari',
+        StartDate: '20/03/2017',
+        EndDate: '26/03/2017',
+        BillableHours:'40:0',
+        NonBillableHours:'0:0',
+        Status:'Rejected',
+        SubmissionDate: '18/03/2017'
+      },
+    ];
+   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad MyTimesheetPage');
+  }
+
+  editClicked(item) {
+    alert('Takes you to Edit Timesheet Page');
   }
 
 }

@@ -19,6 +19,7 @@ import { ApproveTimesheetPage } from '../pages/Timesheet/approve-timesheet/
 import { ApprovedTimesheetPage } from '../pages/Timesheet/approved-timesheet/approved-timesheet';
 import { TimesheetReportPage } from '../pages/Timesheet/timesheet-report/timesheet-report';
 import { BiometricDiscrepancyApprovalPage } from '../pages/Timesheet/biometric-discrepancy-approval/biometric-discrepancy-approval';
+import { TimesheetDetailsPage } from '../pages/Timesheet/timesheet-details/timesheet-details';
 
 // Certification
 import { MyCertificationPage } from '../pages/Certification/my-certification/my-certification';
@@ -64,8 +65,10 @@ export class MyApp {
   corporatePages: PageInterface[] = [];
   certificationPages: PageInterface[] = [];
   projectsPages: PageInterface[] = [];
-
-  constructor(public platform: Platform, public auth: AuthService, public loadingCtrl: LoadingController) {
+  userDetail:any;
+  profileImageSrc:any;
+  
+constructor(public platform: Platform, public auth: AuthService, public loadingCtrl: LoadingController) {
     this.initializeApp();
 
     //this.activePage = this.pages[0];
@@ -79,6 +82,7 @@ export class MyApp {
           this.toggleCertificationMenu();
           this.toggleCorporateMenu();
           this.toggleProjectsMenu();
+          this.loadUserDetails();
         } else {
           this.isAuthenticated = false;
           this.rootPage = LoginPage;
@@ -90,11 +94,22 @@ export class MyApp {
     this.auth.logout();
   }
 
+  loadUserDetails() : void {
+    this.userDetail = this.auth.getCurrentUser();
+    console.error('Got User',this.userDetail);
+    if (this.userDetail && this.userDetail.ProfilePictureName) {
+      this.profileImageSrc = 'http://192.168.100.153:202/Profile%20Picture%20Library/' + this.userDetail.ProfilePictureName + '.JPG';
+    } else {
+      this.profileImageSrc = 'assets/img/default-user.jpg';
+    }
+  }
+
   initializeApp() {
     this.presentLoading();
     this.isAuthenticated = this.auth.isAuthenticated();
     if (this.auth.isAuthenticated()) {
       this.rootPage = HomePage;
+      this.loadUserDetails();
     } else {
       this.rootPage = LoginPage;
     }

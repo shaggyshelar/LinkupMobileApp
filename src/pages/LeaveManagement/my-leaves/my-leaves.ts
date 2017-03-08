@@ -10,6 +10,8 @@ import { AlertController, ItemSliding } from 'ionic-angular';
 import { SpinnerService } from '../../../providers/index';
 import * as moment from 'moment/moment';
 
+import { ApplyForLeavePage } from '../apply-for-leave/apply-for-leave';
+
 @Component({
   selector: 'page-my-leaves',
   templateUrl: 'my-leaves.html',
@@ -139,7 +141,8 @@ export class MyLeavesPage {
   }
 
   handleDayClick(event: any) {
-    alert(' Show Apply Leave Page');
+    // alert(' Show Apply Leave Page');
+    this.navCtrl.push(ApplyForLeavePage,{date:event.date._d});
   }
 
   handleEventClick(event:any){

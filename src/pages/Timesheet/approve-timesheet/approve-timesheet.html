@@ -18,4 +18,22 @@
 
 <ion-content padding>
 
+  <ion-list >
+      <button *ngFor="let entry of timeRec" ion-item (click)="itemTapped(entry)">
+        <h3>{{entry.ApproverUser}}</h3>
+        <h3> 
+          {{entry.StartDate}} &mdash;
+          {{entry.EndDate}} 
+        </h3>
+        <p>
+          Billable Hours {{entry.BillableHours}}
+        </p>
+        <p>
+          Non Billable Hours: {{entry.NonBillableHours}}
+          <span class="right">{{entry.SubmissionDate}}</span>
+        </p>
+      </button>
+
+  </ion-list>
+
 </ion-content>

@@ -1,3 +1,15 @@
 page-profile-details {
-
+    .required{
+        color:red;
+    }
+    .error{
+        color:red;
+        margin-left: 5%;
+    }
+    .cardHeader{
+        height:40px;
+    }
+    .cardContent{
+        margin-top:5% !important;
+    }
 }
