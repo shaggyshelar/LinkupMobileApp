@@ -64,6 +64,7 @@ export class MyApp {
   public showCertificationSubmenus: boolean = false;
   public showProjectsSubmenus: boolean = false;
   rootPage: any = LoginPage;
+  cordova: any;
   isAuthenticated: boolean = false;
   loader: any;
   IntenetLoader: any;
@@ -195,7 +196,6 @@ export class MyApp {
     //alert('Launch Eternus Website in default browser');
     this.platform.ready().then(() => {
             let browser = new InAppBrowser(url, '_system');
-            browser.show();
         });
     
   }
