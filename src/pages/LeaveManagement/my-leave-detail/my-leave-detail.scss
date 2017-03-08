@@ -3,7 +3,7 @@ $categories: (
  rejected: #FE4C52,
  pending: #FED035,
  approved: #69BB7B,
- cancelled: #000000,
+  cancelled: #000000,
 );
 
 @function auxiliary-categories() {
@@ -11,9 +11,9 @@ $categories: (
 }
 
 
-page-leave-approval {
+page-my-leave-detail {
 
-       @each $status, $value in auxiliary-categories() {
+    @each $status, $value in auxiliary-categories() {
    ion-item[status=#{$status}] ion-label {
      border-left: 2px solid $value;
      padding-left: 10px;
