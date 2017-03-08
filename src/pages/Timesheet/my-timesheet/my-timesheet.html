@@ -18,19 +18,22 @@
 
 <ion-content padding>
   <ion-list>
-    <ion-item-sliding #slidingItem *ngFor="let entry of timeRec" [attr.status]="entry.Status | lowercase">
-      <button ion-item>
-        <h3>{{entry.ApproverUser}}</h3>
+    <ion-item-sliding #slidingItem *ngFor="let entry of timesheetRec" [attr.status]="entry.SubmittedStatus | lowercase">
+      <button ion-item (click)="itemClicked(entry)">
+        <h3>
+          <span *ngFor="let approver of entry.ApproverUser"> {{approver.Name}} </span>
+        </h3>
         <h3> 
-          {{entry.StartDate}} &mdash;
-          {{entry.EndDate}} 
+          {{entry.StartDate | date: 'dd/MM/yyyy'}} &mdash;
+          {{entry.EndDate | date: 'dd/MM/yyyy'}} 
         </h3>
         <p>
           Billable Hours {{entry.BillableHours}}
         </p>
         <p>
           Non Billable Hours: {{entry.NonBillableHours}}
-          <span class="right">{{entry.SubmissionDate}}</span>
+          <span *ngIf="entry.TimesheetSubmittedDate" class="right">{{entry.TimesheetSubmittedDate}}</span>
+          <span *ngIf="!entry.TimesheetSubmittedDate" class="right">No data present...</span>
         </p>
       </button>
 
