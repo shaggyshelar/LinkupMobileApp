@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Http } from '@angular/http';
 
 /** Third Party Dependencies */
+import { CacheService } from 'ng2-cache/ng2-cache';
 import { Observable } from 'rxjs/Rx';
 import 'rxjs/add/operator/map';
 
@@ -20,25 +21,90 @@ const CONTEXT = 'EmployeeTimesheet';
 @Injectable()
 export class EmployeeTimesheetService extends BaseService {
 
-    constructor(public http: Http, messageService: MessageService) {
+    constructor(public http: Http, messageService: MessageService,
+    public _cacheService: CacheService
+    ) {
         super(http, CONTEXT);
     }
 
     getMyTimesheets(): Observable<Employee> {
-        return this.getChildList$('MyTimesheets',0,0,true).map(res => res.json());
+        if (this._cacheService.exists('myTimesheets')) {
+            return new Observable<any>((observer: any) => {
+                observer.next(this._cacheService.get('myTimesheets'));
+            });
+        } else {
+            return this.getChildList$('MyTimesheets',0,0,true).map(res => {
+                this._cacheService.set('myTimesheets', res.json(), { maxAge: 60 * 60 });
+                return res.json();
+            }).catch(err => {
+                return this.handleError(err);
+            });
+        }
     }
+
     getMyTimesheetDetail(id: any){
         /** TODO: API not ready, needs updation*/
-        return this.getChildList$('GetMyTimesheetDetail/' + id, 0, 0, true).map(res => res.json());
+
+        if (this._cacheService.exists('myTimesheetDetail')) {
+            return new Observable<any>((observer: any) => {
+                observer.next(this._cacheService.get('myTimesheetDetail'));
+            });
+        } else {
+            return this.getChildList$('GetMyTimesheetDetail/' + id, 0, 0, true).map(res => {
+                this._cacheService.set('myTimesheetDetail' + id, res.json(), { maxAge: 60 * 60 });
+                return res.json();
+            }).catch(err => {
+                return this.handleError(err);
+            });
+        }
     }
+
     getApproverPendingTimesheets(): Observable<EmployeeTimeSheet> {
-        return this.getChildList$('ApproverPendingTimesheets',0,0,true).map(res => res.json());
+
+        if (this._cacheService.exists('approverPendingTimesheets')) {
+            return new Observable<any>((observer: any) => {
+                observer.next(this._cacheService.get('approverPendingTimesheets'));
+            });
+        } else {
+            return this.getChildList$('ApproverPendingTimesheets',0,0,true).map(res => {
+                this._cacheService.set('approverPendingTimesheets', res.json(), { maxAge: 60 * 60 });
+                return res.json();
+            }).catch(err => {
+                return this.handleError(err);
+            });
+        }
     }
+
     getApproverApprovedTimesheets(): Observable<Employee> {
-        return this.getChildList$('ApproverApprovedTimesheets',0,0,true).map(res => res.json());
+
+        if (this._cacheService.exists('approverApprovedTimesheets')) {
+            return new Observable<any>((observer: any) => {
+                observer.next(this._cacheService.get('approverApprovedTimesheets'));
+            });
+        } else {
+            return this.getChildList$('ApproverApprovedTimesheets',0,0,true).map(res => {
+                this._cacheService.set('approverApprovedTimesheets', res.json(), { maxAge: 60 * 60 });
+                return res.json();
+            }).catch(err => {
+                return this.handleError(err);
+            });
+        }
     }
+
     getTimesheetApprovalData(id: any){
-        return this.getChildList$('GetTimesheetApprovalData/' + id, 0, 0, true).map(res => res.json());
+
+        if (this._cacheService.exists('timesheetApprovalData')) {
+            return new Observable<any>((observer: any) => {
+                observer.next(this._cacheService.get('timesheetApprovalData'));
+            });
+        } else {
+            return this.getChildList$('GetTimesheetApprovalData/' + id, 0, 0, true).map(res => {
+                this._cacheService.set('timesheetApprovalData' + id, res.json(), { maxAge: 60 * 60 });
+                return res.json();
+            }).catch(err => {
+                return this.handleError(err);
+            });
+        }
     }
 
 }
