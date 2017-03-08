@@ -23,6 +23,7 @@ export class MyLeavesPage {
   public leaveDetObs: Observable<LeaveDetail>;
   public leaveDetail: LeaveDetail;
   public selectedLeave: any;
+  public approvedLeaveCount:number;
   events: any[];
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
@@ -75,6 +76,7 @@ export class MyLeavesPage {
   getMyLeaves() {
     this.leaveObs = [];
     this.events = [];
+    this.approvedLeaveCount = 0;
     this.spinnerService.createSpinner('Please wait');
     this.leaveService.getMyLeaves().subscribe(
       (res: any) => {

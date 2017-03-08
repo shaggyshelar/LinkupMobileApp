@@ -236,4 +236,9 @@ export class LeaveService extends BaseService {
             });
     }
 
+    setApprovedLeavesCount(count:string)
+    {
+       this._cacheService.set('approvedLeaveCount', count, { maxAge: 60 * 60 });
+    }
+
 }
