@@ -1,7 +1,7 @@
 import { Component, ViewChild } from '@angular/core';
 import { Nav, Platform } from 'ionic-angular';
 import { StatusBar, Splashscreen, Network } from 'ionic-native';
-import { LoadingController } from 'ionic-angular';
+import { LoadingController,AlertController } from 'ionic-angular';
 import { HomePage } from '../pages/home/home';
 
 // Leave Management
@@ -56,8 +56,11 @@ export class MyApp {
   rootPage: any = LoginPage;
   isAuthenticated: boolean = false;
   loader: any;
+  IntenetLoader: any;
+  alert: any;
   activePage: any;
   disconnectSubscription: any;
+  connectSubscription: any;
   isDisconnected: boolean = false;
   subscription: Subscription;
   leavePages: PageInterface[] = [];
@@ -71,7 +74,7 @@ export class MyApp {
   designation:string;  
   empID:string;  
   
-constructor(public platform: Platform, public auth: AuthService, public loadingCtrl: LoadingController) {
+constructor(public platform: Platform, public auth: AuthService, public loadingCtrl: LoadingController, public alertCtrl : AlertController ) {
     this.initializeApp();
 
     //this.activePage = this.pages[0];
@@ -124,6 +127,19 @@ constructor(public platform: Platform, public auth: AuthService, public l
     this.platform.ready().then(() => {
       StatusBar.styleDefault();
       Splashscreen.hide();
+
+      //Intenet check
+      this.InternetChecking();
+      this.disconnectSubscription = Network.onDisconnect().subscribe(() => {
+        this.isDisconnected = true;
+        this.IntenetLoader.dismiss();
+        this.Alert();
+      });
+      this.IntenetLoader.dismiss();
+
+      // this.connectSubscription = Network.onConnect().subscribe(() => {
+      //   this.IntenetLoader.dismiss();
+      // })
     });
   }
 
@@ -135,6 +151,7 @@ constructor(public platform: Platform, public auth: AuthService, public l
 
   ionViewWillUnload() {
     this.disconnectSubscription.unsubscribe();
+    //this.connectSubscription.unsubscribe();
     this.subscription.unsubscribe();
   }
 
@@ -144,7 +161,20 @@ constructor(public platform: Platform, public auth: AuthService, public l
     });
     this.loader.present();
   }
-
+  InternetChecking() {
+    this.IntenetLoader = this.loadingCtrl.create({
+      content: "Connecting to internet..."
+    });
+    this.IntenetLoader.present();
+  }
+  Alert() {
+    this.alert = this.alertCtrl.create({
+      title: 'No Internet',
+      subTitle: 'No Intenet connection. please try again',
+      buttons: ['OK']
+    });
+    this.alert.present();
+  }
   openPage(page) {
     this.nav.setRoot(page.component);
     this.activePage = page;
