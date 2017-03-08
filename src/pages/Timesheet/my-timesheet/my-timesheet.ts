@@ -1,58 +1,51 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
+import { LoadingController } from 'ionic-angular';
+import { Observable } from 'rxjs/Rx';
 
-/*
-  Generated class for the MyTimesheet page.
+import { EmployeeTimesheetService } from '../index';
 
-  See http://ionicframework.com/docs/v2/components/#navigation for more info on
-  Ionic pages and navigation.
-*/
+import { TimesheetDetailsPage } from '../timesheet-details/timesheet-details';
+
+/** TODO: TimesheetDetails Import */
+
 @Component({
   selector: 'page-my-timesheet',
   templateUrl: 'my-timesheet.html'
 })
 export class MyTimesheetPage {
 
-  timeRec : any[] = [];
+  timesheetRec: Observable<any>;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
-    this.timeRec = [
-      {
-        ApproverUser: 'Kunal Adhikari',
-        StartDate: '06/03/2017',
-        EndDate: '12/03/2017',
-        BillableHours:'40:0',
-        NonBillableHours:'0:0',
-        Status:'Approved',
-        SubmissionDate: '10/03/2017'
-      },
-      {
-        ApproverUser: 'Kunal Adhikari',
-        StartDate: '13/03/2017',
-        EndDate: '19/03/2017',
-        BillableHours:'40:0',
-        NonBillableHours:'0:0',
-        Status:'Pending',
-        SubmissionDate: '18/03/2017'
-      },
-      {
-        ApproverUser: 'Kunal Adhikari',
-        StartDate: '20/03/2017',
-        EndDate: '26/03/2017',
-        BillableHours:'40:0',
-        NonBillableHours:'0:0',
-        Status:'Rejected',
-        SubmissionDate: '18/03/2017'
-      },
-    ];
+  constructor(public navCtrl: NavController, public navParams: NavParams
+  , private employeeTimesheetService : EmployeeTimesheetService
+  , public loadingCtrl : LoadingController) {
    }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad MyTimesheetPage');
+
+    var loader = this.loadingCtrl.create({
+      content: 'Please wait...'
+    });
+
+    loader.present().then(()=>{
+      this.employeeTimesheetService.getMyTimesheets().subscribe((res:any)=> {
+        if(res.length > 0)
+          this.timesheetRec = res;
+        console.log('employeeTimesheet => ', res);
+        loader.dismiss();
+      });
+    });
   }
 
   editClicked(item) {
     alert('Takes you to Edit Timesheet Page');
+  }
+
+  itemClicked(entry) {
+    alert('id => '+ entry.ID);
+    this.navCtrl.push(TimesheetDetailsPage, {id: entry.ID});
   }
 
 }
