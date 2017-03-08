@@ -27,13 +27,17 @@ export class EmployeeTimesheetService extends BaseService {
     getMyTimesheets(): Observable<Employee> {
         return this.getChildList$('MyTimesheets',0,0,true).map(res => res.json());
     }
+    getMyTimesheetDetail(id: any){
+        /** TODO: API not ready, needs updation*/
+        return this.getChildList$('GetMyTimesheetDetail/' + id, 0, 0, true).map(res => res.json());
+    }
     getApproverPendingTimesheets(): Observable<EmployeeTimeSheet> {
         return this.getChildList$('ApproverPendingTimesheets',0,0,true).map(res => res.json());
     }
     getApproverApprovedTimesheets(): Observable<Employee> {
         return this.getChildList$('ApproverApprovedTimesheets',0,0,true).map(res => res.json());
     }
-     getTimesheetApprovalData(id: any): Observable<any> {
+    getTimesheetApprovalData(id: any){
         return this.getChildList$('GetTimesheetApprovalData/' + id, 0, 0, true).map(res => res.json());
     }
 
