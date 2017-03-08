@@ -56,6 +56,7 @@ import { HolidayService } from '../pages/LeaveManagement/index';
 import { UserService } from '../pages/LeaveManagement/index';
 import { MessageService } from '../providers/index';
 import { CommonService } from '../providers/index';
+import { EmployeeTimesheetService } from '../pages/Timesheet/index';
 
 
 // Direrctives
@@ -150,7 +151,9 @@ import { CacheService, CacheStorageAbstract, CacheLocalStorage } from 'ng2-cache
     {
       provide: ErrorHandler,
       useClass: IonicErrorHandler
-    }, Auth, AuthService, LeaveService, HolidayService, UserService, MessageService, CommonService, LimitToDirective,
-    CacheService, { provide: CacheStorageAbstract, useClass: CacheLocalStorage }]
+    }, 
+    Auth, AuthService, LeaveService, HolidayService, UserService, MessageService, CommonService, LimitToDirective,
+    CacheService, EmployeeTimesheetService, 
+    { provide: CacheStorageAbstract, useClass: CacheLocalStorage }]
 })
 export class AppModule { }
