@@ -6,13 +6,12 @@
   </ion-header>-->
 
   <ion-content class="card-background-page">
-    <ion-item>
+    <ion-item class="menuHeader" menuClose (click)="viewProfile()">
       <ion-avatar item-left>
         <img alt="Profile Pic" [src]="profileImageSrc">
       </ion-avatar>
       <h2> {{userName}} </h2>
       <p> {{designation}} • {{empID}} </p>
-      <button ion-button clear item-right>View</button>
     </ion-item>
     <ion-list>
       <ion-list-header (click)="toggleLeaveMenu()" [ngStyle]="{'height': 36}">
