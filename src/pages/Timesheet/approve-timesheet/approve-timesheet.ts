@@ -3,7 +3,7 @@ import { NavController, NavParams } from 'ionic-angular';
 import { LoadingController } from 'ionic-angular';
 import { Observable } from 'rxjs/Rx';
 
-import { TimesheetDetailsPage } from '../timesheet-details/timesheet-details';
+import { ApproveTimesheetDetailsPage } from '../approve-timesheet-details/approve-timesheet-details';
 
 import { EmployeeTimesheetService } from '../index';
 import { EmployeeTimeSheet } from '../models/employee-timesheet.model';
@@ -41,7 +41,7 @@ export class ApproveTimesheetPage {
   }
 
   itemTapped(entry) {
-    this.navCtrl.push(TimesheetDetailsPage, {id: entry.ID});
+    this.navCtrl.push(ApproveTimesheetDetailsPage, {id: entry.ID});
   }
 
 }
