@@ -32,8 +32,10 @@ export class ApproveTimesheetPage {
 
     loader.present().then(()=>{
       this.employeeTimesheetService.getApproverPendingTimesheets().subscribe((res:any)=> {
-        if(res.length > 0)
+        if(res.length > 0) {
           this.approveEmployee = res.reverse();
+          localStorage.setItem('approveTimesheetsBadgeCount', res.length);
+        }
         console.log('approveEmployee => ', this.approveEmployee[0]);
         loader.dismiss();
       });
