@@ -1,9 +1,10 @@
 /** Angular Dependencies */
 import { Injectable } from '@angular/core';
-import { Http,RequestOptions,Headers } from '@angular/http';
+import { Http, RequestOptions, Headers } from '@angular/http';
 
 /** Third Party Dependencies */
 import { Observable } from 'rxjs/Rx';
+import { CacheService } from 'ng2-cache/ng2-cache';
 import 'rxjs/add/operator/map';
 
 /** Module Level Dependencies */
@@ -19,7 +20,7 @@ const CONTEXT = 'Leave';
 @Injectable()
 export class LeaveService extends BaseService {
     editableLeave: any;
-    constructor(public http: Http) {
+    constructor(public http: Http, private _cacheService: CacheService) {
         super(http, CONTEXT);
     }
 
@@ -100,7 +101,7 @@ export class LeaveService extends BaseService {
             });
     }
 
-      getLeaveDetailByRefID(refId: any): Observable<Leave[]> {
+    getLeaveDetailByRefID(refId: any): Observable<Leave[]> {
         let headers = new Headers();
         headers.append('Authorization', 'Bearer ' + localStorage.getItem('accessToken'));
         let options = new RequestOptions({ headers: headers });
@@ -113,7 +114,7 @@ export class LeaveService extends BaseService {
             });
     }
 
-     getApproverListByRefID(refId: any): Observable<any> {
+    getApproverListByRefID(refId: any): Observable<any> {
         let headers = new Headers();
         headers.append('Authorization', 'Bearer ' + localStorage.getItem('accessToken'));
         let options = new RequestOptions({ headers: headers });
@@ -138,10 +139,101 @@ export class LeaveService extends BaseService {
             });
     }
 
-     setEditableLeave(leave: any) {
+    setEditableLeave(leave: any) {
         this.editableLeave = leave;
     }
     getEditableLeave() {
         return this.editableLeave;
     }
+
+
+    getLeaveByStatus(status: any): Observable<Leave[]> {
+
+        return this.getChildList$('ByStatus/' + status, 0, 0, true).map(res => {
+
+            this._cacheService.set('PendingLeavesApprovalCount', res.json().length, { maxAge: 60 * 60 });
+            return res.json();
+        })
+            .catch(err => {
+                return this.handleError(err);
+            });
+    }
+
+    singleLeaveApprove(payload: any) {
+        let headers = new Headers();
+        let body = JSON.stringify(payload);
+        headers.append('Authorization', 'Bearer ' + localStorage.getItem('accessToken'));
+        headers.append('Content-Type', 'application/json');
+        let options = new RequestOptions({ headers: headers });
+        return this.http.put(this.baseUrl + 'LeaveApprovers/ApproveByManager', body, options)
+            .map(res => {
+                return res.json();
+            })
+            .catch(err => {
+                return this.handleError(err);
+            });
+    }
+
+    singleLeaveReject(payload: any) {
+        let headers = new Headers();
+        let body = JSON.stringify(payload);
+        headers.append('Authorization', 'Bearer ' + localStorage.getItem('accessToken'));
+        headers.append('Content-Type', 'application/json');
+        let options = new RequestOptions({ headers: headers });
+        return this.http.put(this.baseUrl + 'LeaveApprovers/RejectLeave', body, options)
+            .map(res => {
+                return res.json();
+            })
+            .catch(err => {
+                return this.handleError(err);
+            });
+    }
+
+    /** Get Employee Leave details */
+
+    getEmployeeDetail(Id:any): Observable<any> {
+        let headers = new Headers();
+        headers.append('Authorization', 'Bearer ' + localStorage.getItem('accessToken'));
+        let options = new RequestOptions({ headers: headers });
+        return this.http.get(this.baseUrl+'Employee/'+Id,options)
+         .map(res => {
+            return res.json();
+        })
+        .catch(err => {
+            return this.handleError(err);
+        });
+    }
+
+    // Bulk approval 
+
+    bulkLeaveApproval(payload: any) {
+        let headers = new Headers();
+        let body = JSON.stringify(payload);
+        headers.append('Authorization', 'Bearer ' + localStorage.getItem('accessToken'));
+        headers.append('Content-Type', 'application/json');
+        let options = new RequestOptions({ headers: headers });
+        return this.http.put(this.baseUrl + 'LeaveApprovers/BulkLeaveApproval', body, options)
+            .map(res => {
+                return res.json();
+            })
+            .catch(err => {
+                return this.handleError(err);
+            });
+    }
+
+    hrsingleLeaveApprove(payload: any) {
+        let headers = new Headers();
+        let body = JSON.stringify(payload);
+        headers.append('Authorization', 'Bearer ' + localStorage.getItem('accessToken'));
+        headers.append('Content-Type', 'application/json');
+        let options = new RequestOptions({ headers: headers });
+        return this.http.put(this.baseUrl + 'LeaveApprovers/ApproveByHR', body, options)
+            .map(res => {
+                return res.json();
+            })
+            .catch(err => {
+                return this.handleError(err);
+            });
+    }
+
 }
