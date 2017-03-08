@@ -16,6 +16,9 @@ import { ApproveTimesheetPage } from '../Timesheet/approve-timesheet/approve-tim
 export class ApprovalsPage {
   leavesTab: any;
   timesheetsTab: any;
+  approveTimesheetsBadgeCount : Number = 0;
+
+  timesheetBadgeShow : Boolean = false;
 
   constructor(public navCtrl: NavController, public navParams: NavParams) {
     this.leavesTab = LeaveApprovalPage;
@@ -24,6 +27,13 @@ export class ApprovalsPage {
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad ApprovalsPage');
+    console.log('badge storage => ',localStorage.getItem('approveTimesheetsBadgeCount'));
+    this.approveTimesheetsBadgeCount = parseInt(localStorage.getItem('approveTimesheetsBadgeCount'));
+    this.badgeUpdate();
+  }
+
+  badgeUpdate() {
+    this.timesheetBadgeShow = this.approveTimesheetsBadgeCount > 0 ? true : false;
   }
 
 }
