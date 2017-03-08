@@ -169,10 +169,10 @@ export class MyApp {
     this.loader.present();
   }
   InternetChecking() {
-    this.loader = this.loadingCtrl.create({
+    this.IntenetLoader = this.loadingCtrl.create({
       content: "Connecting to internet..."
     });
-    this.loader.present();
+    this.IntenetLoader.present();
   }
   Alert() {
     this.alert = this.alertCtrl.create({
