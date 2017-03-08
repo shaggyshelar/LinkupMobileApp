@@ -65,6 +65,7 @@ export class MyApp {
   corporatePages: PageInterface[] = [];
   certificationPages: PageInterface[] = [];
   projectsPages: PageInterface[] = [];
+  pages: PageInterface[] = [];
   userDetail: any;
   profileImageSrc: any;
   userName: string;
@@ -120,6 +121,10 @@ export class MyApp {
     } else {
       this.rootPage = LoginPage;
     }
+    this.pages = [
+      { title: 'My Calendar', component: MyCalendarPage, icon: 'calendar' },
+      { title: 'Approvals', component: ApprovalsPage, icon: 'checkmark-circled' },
+    ];
     this.loader.dismiss();
     this.platform.ready().then(() => {
       StatusBar.styleDefault();
@@ -150,6 +155,10 @@ export class MyApp {
     this.activePage = page;
   }
 
+  openLinkupWebsite() {
+    alert('Launch Eternus Website in default browser');
+  }
+
   checkActive(page) {
     return page == this.activePage;
   }
@@ -161,8 +170,6 @@ export class MyApp {
   toggleLeaveMenu() {
     if (this.showLeaveSubmenus) {
       this.leavePages = [
-        { title: 'My Calendar', component: MyCalendarPage, icon: 'calendar' },
-        { title: 'Approvals', component: ApprovalsPage, icon: 'calendar' },
         { title: 'Holidays', component: HolidaysPage, icon: 'calendar' },
         { title: 'My Leaves', component: MyLeavesPage, icon: 'contacts' },
         { title: 'Apply Leave', component: ApplyForLeavePage, icon: 'map' },

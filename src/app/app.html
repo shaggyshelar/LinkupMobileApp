@@ -14,6 +14,16 @@
       <p> {{designation}} • {{empID}} </p>
     </ion-item>
     <ion-list>
+      <button menuClose ion-item *ngFor="let p of pages" (click)="openPage(p)">
+        <ion-icon item-left [name]="p.icon"></ion-icon>
+        {{p.title}}
+      </button>
+      <button menuClose ion-item (click)="openLinkupWebsite()">
+        <ion-icon item-left name="earth"></ion-icon>
+        Linkup Web
+      </button>
+    </ion-list>
+    <ion-list>
       <ion-list-header (click)="toggleLeaveMenu()" [ngStyle]="{'height': 36}">
         <ion-icon *ngIf="showLeaveSubmenus == false" name="arrow-dropdown" item-right></ion-icon>
         <ion-icon *ngIf="showLeaveSubmenus == true" name="arrow-dropleft" item-right></ion-icon>
