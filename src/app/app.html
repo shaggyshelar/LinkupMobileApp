@@ -6,14 +6,14 @@
   </ion-header>-->
 
   <ion-content class="card-background-page">
-    <!--<ion-item>
+    <ion-item>
       <ion-avatar item-left>
         <img alt="Profile Pic" [src]="profileImageSrc">
       </ion-avatar>
-      <h2>{{userDetail.FirstName}} {{userDetail.LastName}}</h2>
-      <p>{{userDetail.Designation.Value}} • {{userDetail.EmpID}}</p>
+      <h2> {{userName}} </h2>
+      <p> {{designation}} • {{empID}} </p>
       <button ion-button clear item-right>View</button>
-    </ion-item>-->
+    </ion-item>
     <ion-list>
       <ion-list-header (click)="toggleLeaveMenu()" [ngStyle]="{'height': 36}">
         <ion-icon *ngIf="showLeaveSubmenus == false" name="arrow-dropdown" item-right></ion-icon>
