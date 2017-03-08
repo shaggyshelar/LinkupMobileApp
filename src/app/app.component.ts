@@ -1,8 +1,8 @@
 
 import { Component, ViewChild } from '@angular/core';
 import { Nav, Platform } from 'ionic-angular';
-import { StatusBar, Splashscreen, Network } from 'ionic-native';
-import { LoadingController,AlertController } from 'ionic-angular';
+import { StatusBar, Splashscreen, Network, InAppBrowser } from 'ionic-native';
+import { LoadingController} from 'ionic-angular';
 import { HomePage } from '../pages/home/home';
 
 // Leave Management
@@ -77,7 +77,7 @@ export class MyApp {
   designation: string;
   empID: string;
 
-  constructor(public platform: Platform, public auth: AuthService, public loadingCtrl: LoadingController, public alertCtrl:AlertController) {
+  constructor(public platform: Platform, public auth: AuthService, public loadingCtrl: LoadingController) {
     this.initializeApp();
 
     //this.activePage = this.pages[0];
@@ -135,29 +135,29 @@ export class MyApp {
       StatusBar.styleDefault();
       Splashscreen.hide();
 
-      //Intenet check
-      this.InternetChecking();
-      this.disconnectSubscription = Network.onDisconnect().subscribe(() => {
-        this.isDisconnected = true;
-        this.IntenetLoader.dismiss();
-        this.Alert();
-      });
-      this.IntenetLoader.dismiss();
+//       Intenet check
+//       this.internetChecking();
+//       this.disconnectSubscription = Network.onDisconnect().subscribe(() => {
+//         this.isDisconnected = true;
+//         this.internetChecking();
+//       });
+//       this.disconnectSubscription.unsubscribe();
 
-      // this.connectSubscription = Network.onConnect().subscribe(() => {
-      //   this.IntenetLoader.dismiss();
-      // })
+//       this.connectSubscription = Network.onConnect().subscribe(() => {
+//         this.IntenetLoader.dismiss();
+//       });
+//       this.connectSubscription.unsubscribe();
     });
   }
 
   ionViewDidLoad() {
-    this.disconnectSubscription = Network.onDisconnect().subscribe(() => {
-      this.isDisconnected = true;
-    });
+    // this.disconnectSubscription = Network.onDisconnect().subscribe(() => {
+    //   this.isDisconnected = true;
+    // });
   }
 
   ionViewWillUnload() {
-    this.disconnectSubscription.unsubscribe();
+    //this.disconnectSubscription.unsubscribe();
     //this.connectSubscription.unsubscribe();
     this.subscription.unsubscribe();
   }
@@ -168,27 +168,24 @@ export class MyApp {
     });
     this.loader.present();
   }
-  InternetChecking() {
+  internetChecking() {
     this.IntenetLoader = this.loadingCtrl.create({
       content: "Connecting to internet..."
     });
     this.IntenetLoader.present();
-  }
-  Alert() {
-    this.alert = this.alertCtrl.create({
-      title: 'Holiday',
-      subTitle: 'No internet connection please try again',
-      buttons: ['OK']
-    });
-    this.alert.present();
   }
   openPage(page) {
     this.nav.setRoot(page.component);
     this.activePage = page;
   }
 
-  openLinkupWebsite() {
-    alert('Launch Eternus Website in default browser');
+  openLinkupWebsite(url) {
+    //alert('Launch Eternus Website in default browser');
+    this.platform.ready().then(() => {
+            let browser = new InAppBrowser(url, '_system');
+            browser.show();
+        });
+    
   }
 
   checkActive(page) {
