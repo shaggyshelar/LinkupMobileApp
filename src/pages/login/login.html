@@ -18,7 +18,7 @@
                 required>
                 </ion-input>
             </ion-item>
-            <p ion-text [hidden]="username.valid || submitted == false" color="danger" padding-left>
+            <p ion-text [hidden]="username.valid || submitted == false" class="require" padding-left>
               Username is required
             </p>
             <br>
@@ -28,7 +28,7 @@
               <ion-input [(ngModel)]="model.Password" name="password" type="password" #password="ngModel" required>
               </ion-input>
             </ion-item>
-            <p ion-text [hidden]="password.valid || submitted == false" color="danger" padding-left>
+            <p ion-text [hidden]="password.valid || submitted == false" class="require" padding-left>
               Password is required
             </p>
 
