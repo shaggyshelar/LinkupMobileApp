@@ -31,7 +31,9 @@
             <p ion-text [hidden]="password.valid || submitted == false" class="require" padding-left>
               Password is required
             </p>
-
+            <p ion-text *ngIf="showError" class="require" padding-left>
+              {{errorMessage}}
+            </p>
           </ion-list>
         </ion-col>
       </ion-row>
