@@ -60,5 +60,10 @@ export class HolidayService extends BaseService {
         }
     }
 
+    setPendingHolidaysCount(count:string)
+    {
+       this._cacheService.set('PendingHolidayCount', count, { maxAge: 60 * 60 });
+    }
+
 
 }

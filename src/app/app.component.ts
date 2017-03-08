@@ -5,7 +5,9 @@ import { StatusBar, Splashscreen, Network, InAppBrowser } from 'ionic-nat
 import { LoadingController} from 'ionic-angular';
 import { HomePage } from '../pages/home/home';
 
+
 // Leave Management
+
 import { ApplyForLeavePage } from '../pages/LeaveManagement/apply-for-leave/apply-for-leave';
 import { HolidaysPage } from '../pages/LeaveManagement/holidays/holidays';
 import { MyCalendarPage } from '../pages/my-calendar/my-calendar';
@@ -13,7 +15,9 @@ import { ApprovalsPage } from '../pages/approvals/approvals';
 import { LeaveApprovalPage } from '../pages/LeaveManagement/leave-approval/leave-approval';
 import { MyLeavesPage } from '../pages/LeaveManagement/my-leaves/my-leaves';
 
+
 // Timesheet
+
 import { MyTimesheetPage } from '../pages/Timesheet/my-timesheet/my-timesheet';
 import { EnterTimesheetPage } from '../pages/Timesheet/enter-timesheet/enter-timesheet';
 import { ApproveTimesheetPage } from '../pages/Timesheet/approve-timesheet/approve-timesheet';
@@ -22,15 +26,19 @@ import { TimesheetReportPage } from '../pages/Timesheet/timesheet-report/timeshe
 import { BiometricDiscrepancyApprovalPage } from '../pages/Timesheet/biometric-discrepancy-approval/biometric-discrepancy-approval';
 import { TimesheetDetailsPage } from '../pages/Timesheet/timesheet-details/timesheet-details';
 
+
 // Certification
 import { MyCertificationPage } from '../pages/Certification/my-certification/my-certification';
 
 // Corporate
+
 import { LogATicketPage } from '../pages/Corporate/log-a-ticket/log-a-ticket';
 import { ConferenceBookingPage } from '../pages/Corporate/conference-booking/conference-booking';
 import { MyProfilePage } from '../pages/Corporate/MyProfile/my-profile/my-profile';
 
+
 // Projects
+
 import { ManageMyProjectsPage } from '../pages/Projects/manage-my-projects/manage-my-projects';
 import { EmployeeProjectManagementPage } from '../pages/Projects/employee-project-management/employee-project-management';
 
@@ -80,7 +88,9 @@ export class MyApp {
   constructor(public platform: Platform, public auth: AuthService, public loadingCtrl: LoadingController) {
     this.initializeApp();
 
+
     //this.activePage = this.pages[0];
+
     this.subscription = this.auth.onAuthStatusChanged$.subscribe(
       isAuthenticated => {
         if (isAuthenticated == "true") {
@@ -164,7 +174,9 @@ export class MyApp {
 
   presentLoading() {
     this.loader = this.loadingCtrl.create({
+
       content: "Please wait..."
+
     });
     this.loader.present();
   }
@@ -215,12 +227,14 @@ export class MyApp {
   toggleTimesheetMenu() {
     if (this.showTimesheetSubmenus) {
       this.timesheetPages = [
+
         { title: 'My Timesheets', component: MyTimesheetPage, icon: 'calendar' },
         { title: 'Enter Timesheets', component: EnterTimesheetPage, icon: 'contacts' },
         { title: 'Approve Timesheets', component: ApproveTimesheetPage, icon: 'map' },
         { title: 'Approved Timesheets', component: ApprovedTimesheetPage, icon: 'information-circle' },
         { title: 'Timesheets Report', component: TimesheetReportPage, icon: 'information-circle' },
         { title: 'Biometric Discrepancy Approval', component: BiometricDiscrepancyApprovalPage, icon: 'information-circle' }
+
       ];
       this.showTimesheetSubmenus = false;
     }
@@ -233,9 +247,11 @@ export class MyApp {
   toggleCorporateMenu() {
     if (this.showCorporateSubmenus) {
       this.corporatePages = [
+
         { title: 'Log A Ticket', component: LogATicketPage, icon: 'calendar' },
         { title: 'Conference Booking', component: ConferenceBookingPage, icon: 'contacts' },
         { title: 'My Profile', component: MyProfilePage, icon: 'person' }
+
       ];
       this.showCorporateSubmenus = false;
     }
@@ -248,7 +264,9 @@ export class MyApp {
   toggleCertificationMenu() {
     if (this.showCertificationSubmenus) {
       this.certificationPages = [
+
         { title: 'My Certifications', component: MyCertificationPage, icon: 'calendar' },
+
       ];
       this.showCertificationSubmenus = false;
     }
@@ -261,8 +279,10 @@ export class MyApp {
   toggleProjectsMenu() {
     if (this.showProjectsSubmenus) {
       this.projectsPages = [
+
         { title: 'Manage My Projects', component: ManageMyProjectsPage, icon: 'calendar' },
         { title: 'Employee Project Management', component: EmployeeProjectManagementPage, icon: 'contacts' }
+
       ];
       this.showProjectsSubmenus = false;
     }
@@ -271,4 +291,5 @@ export class MyApp {
       this.showProjectsSubmenus = true;
     }
   }
+
 }

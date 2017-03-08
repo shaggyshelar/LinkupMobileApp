@@ -1,0 +1,94 @@
+<!--
+  Generated template for the LeaveApprovalDetail page.
+
+  See http://ionicframework.com/docs/v2/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>Leave Detail</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+
+  <form [formGroup]="commentForm" [hidden]="!isPending">
+    <div class="bottom">
+      <ion-item>
+        <ion-label floating>Comments</ion-label>
+        <ion-textarea name="cmt" [(ngModel)]="comment" formControlName="comment" spellcheck="false" autocapitalize="off"></ion-textarea>
+      </ion-item>
+      <ion-row>
+        <ion-col width-50>
+          <button ion-button full [disabled]="!commentForm.controls.comment.valid" (click)="rejectClicked()">Reject</button>
+        </ion-col>
+        <ion-col width-50>
+          <button ion-button full [disabled]="!commentForm.controls.comment.valid" (click)="approveClicked()">Approve</button>
+        </ion-col>
+      </ion-row>
+    </div>
+  </form>
+  <br>
+
+  <ion-list *ngIf="ishowLeaveDetails == true">
+    <ion-item>
+      Employee Details
+    </ion-item>
+    <ion-item>
+      <ion-label floating>Department</ion-label>
+      <ion-input type="text" disabled="true" [(ngModel)]="userDetail.Department.Value"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label floating>Employee ID</ion-label>
+      <ion-input type="text" disabled="true" [(ngModel)]="userDetail.EmpID"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label floating>Name</ion-label>
+      <ion-textarea disabled="true" [(ngModel)]="userDetail.Employee.Name"></ion-textarea>
+    </ion-item>
+    <ion-item>
+      <ion-label floating>Designation</ion-label>
+      <ion-textarea disabled="true" [(ngModel)]="userDetail.Designation.Value"></ion-textarea>
+    </ion-item>
+  </ion-list>
+
+  <ion-list *ngIf="ishowLeaveDetails == true">
+    <ion-item>
+      Leave Details
+    </ion-item>
+    <ion-item>
+      <ion-label floating>Leave Type</ion-label>
+      <ion-input type="text" disabled="true" [(ngModel)]="leaveList[0].LeaveType.Value"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label floating>Start Date</ion-label>
+      <ion-input type="text" disabled="true" [(ngModel)]="startDate"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label floating>End Date</ion-label>
+      <ion-textarea disabled="true" [(ngModel)]="endDate"></ion-textarea>
+    </ion-item>
+    <ion-item>
+      <ion-label floating>Reason</ion-label>
+      <ion-textarea disabled="true" [(ngModel)]="leaveList[0].Reason"></ion-textarea>
+    </ion-item>
+    <ion-item>
+      <ion-label floating>Number of Days</ion-label>
+      <ion-textarea disabled="true" [(ngModel)]="leaveList[0].NumberOfDays"></ion-textarea>
+    </ion-item>
+  </ion-list>
+
+  <ion-list *ngIf="ishowLeaveDetails == true">
+    <ion-item>
+      Approvers
+    </ion-item>
+    <ion-item *ngFor="let approver of approverList">
+      <p>{{ approver.Approver.Name }} <span class="right">{{ approver.Status }}</span></p>
+    </ion-item>
+  </ion-list>
+
+
+</ion-content>
