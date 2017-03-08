@@ -55,6 +55,7 @@ export class AuthService extends BaseService {
             .map((res: Response) => {
                 this.setToken(res);
                 this.storeLoggedInUserPermission().subscribe();
+                this.getCurrentUserDetails().subscribe();
                 this.unblockUI();
             })
             .catch(err => {
@@ -70,14 +71,11 @@ export class AuthService extends BaseService {
         let headers = new Headers();
         headers.append('Authorization', 'Bearer ' + localStorage.getItem('accessToken'));
         let options = new RequestOptions({ headers: headers });
-        this.blockUI();
         return this.http.get(this.baseUrl + 'Employee/currentuser', options)
             .map((res: Response) => {
-                this.unblockUI();
                 this.setLoggedInUserDetail(res);
             })
             .catch(err => {
-                this.unblockUI();
                 return this.handleError(err);
             });
     }

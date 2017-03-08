@@ -39,8 +39,8 @@
 </ion-content>-->
 
 <ion-content padding>
-  <p-schedule [events]="events" (onDayClick)="handleDayClick($event)"></p-schedule>
-  <ion-list #scheduleList [hidden]="(leaveObs | async)?.length === 0">
+  <p-schedule [events]="events" (onDayClick)="handleDayClick($event)" (onEventClick)="handleEventClick($event)"></p-schedule>
+  <ion-list #scheduleList [hidden]="(leaveObs)?.length === 0">
 
     <!--<ion-item-divider sticky>
         <ion-label>
@@ -48,7 +48,7 @@
         </ion-label>
       </ion-item-divider>-->
 
-    <ion-item-sliding *ngFor="let leave of leaveObs | async" #slidingItem [attr.status]="leave.Status | lowercase">
+    <ion-item-sliding *ngFor="let leave of leaveObs " #slidingItem [attr.status]="leave.Status | lowercase">
 
       <button ion-item (click)="goToLeaveDetail(leave)">
           <h3>{{leave.Employee.Name}}</h3>
@@ -61,9 +61,9 @@
 
       <ion-badge item-right>2</ion-badge>
 
-      <ion-item-options>
-        <button ion-button color="favorite" (click)="editLeave(slidingItem, leave)">
-            Edit
+      <ion-item-options *ngIf="leave.Status == 'Pending'">
+        <button ion-button color="favorite" (click)="cancelLeave(slidingItem, leave)">
+            Cancel
           </button>
       </ion-item-options>
 
@@ -71,7 +71,9 @@
 
   </ion-list>
 
-  <ion-list-header [hidden]="(leaveObs | async)?.length > 0">
+  <ion-list-header [hidden]="(leaveObs)?.length > 0">
     No Records Found
   </ion-list-header>
+
+  
 </ion-content>
