@@ -1,4 +1,47 @@
 page-home {
 
 
+     ion-card-header {
+            font-weight: bold;
+        }
+
+     .dashboard-card{
+         height: 110px;
+     }
+
+     .center-text{
+         text-align: center;
+     }
+     .white-text{
+         color: white;
+     }
+
+     .card-center-text{
+         text-align: center;
+     }
+     .my-timesheet-card{
+         background-color:#3D5389;
+          height: 110px;
+     }
+     .team-timesheet-card{
+         background-color: #98D2B7;
+          height: 110px;
+     }
+     .my-leaves-card{
+         background-color: #DF844C;
+          height: 110px;
+     }
+      .team-leaves-card{
+         background-color: #623FB4;
+          height: 110px;
+     }
+     .slide-height{
+         height: 330px;
+     }
+     .col-padding{
+         padding: 2px;
+         margin-top: -15px;
+
+     }
+
 }

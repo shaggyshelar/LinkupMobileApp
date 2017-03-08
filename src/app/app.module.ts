@@ -20,6 +20,7 @@ import { ApproveTimesheetPage } from '../pages/Timesheet/approve-timesheet/appro
 import { ApprovedTimesheetPage } from '../pages/Timesheet/approved-timesheet/approved-timesheet';
 import { TimesheetReportPage } from '../pages/Timesheet/timesheet-report/timesheet-report';
 import { BiometricDiscrepancyApprovalPage } from '../pages/Timesheet/biometric-discrepancy-approval/biometric-discrepancy-approval';
+import { TimesheetDetailsPage } from '../pages/Timesheet/timesheet-details/timesheet-details';
 
 // Leave Management
 import { ApplyForLeavePage } from '../pages/LeaveManagement/apply-for-leave/apply-for-leave';
@@ -54,6 +55,7 @@ import { LeaveService } from '../pages/LeaveManagement/index';
 import { HolidayService } from '../pages/LeaveManagement/index';
 import { UserService } from '../pages/LeaveManagement/index';
 import { MessageService } from '../providers/index';
+import { CommonService } from '../providers/index';
 
 
 // Direrctives
@@ -80,6 +82,7 @@ import { CacheService, CacheStorageAbstract, CacheLocalStorage } from 'ng2-cache
     ApprovedTimesheetPage,
     TimesheetReportPage,
     BiometricDiscrepancyApprovalPage,
+    TimesheetDetailsPage,
     ApplyForLeavePage,
     HolidaysPage,
     MyCalendarPage,
@@ -123,6 +126,7 @@ import { CacheService, CacheStorageAbstract, CacheLocalStorage } from 'ng2-cache
     ApprovedTimesheetPage,
     TimesheetReportPage,
     BiometricDiscrepancyApprovalPage,
+    TimesheetDetailsPage,
     ApplyForLeavePage,
     HolidaysPage,
     MyCalendarPage,
@@ -146,7 +150,7 @@ import { CacheService, CacheStorageAbstract, CacheLocalStorage } from 'ng2-cache
     {
       provide: ErrorHandler,
       useClass: IonicErrorHandler
-    }, Auth, AuthService, LeaveService, HolidayService, UserService, MessageService, LimitToDirective,
+    }, Auth, AuthService, LeaveService, HolidayService, UserService, MessageService, CommonService, LimitToDirective,
     CacheService, { provide: CacheStorageAbstract, useClass: CacheLocalStorage }]
 })
 export class AppModule { }
