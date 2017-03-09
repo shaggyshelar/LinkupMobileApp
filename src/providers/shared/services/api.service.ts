@@ -3,7 +3,7 @@ import { Observable } from 'rxjs/Rx';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/catch';
-
+import { Events } from 'ionic-angular';
 /** HttpService interface Definition*/
 interface HttpServices {
     baseUrl: string;
@@ -23,7 +23,7 @@ export class APIService implements HttpServices {
    // private requestUrl: string;
 
     /** Base Service constructor : Accepts Analytics Service, Http Service, Context path, Log service */
-    constructor(_httpService: Http) {
+    constructor(_httpService: Http,public unauthorizedEvent:Events) {
         this.httpService = _httpService;
         //this.requestUrl = this.baseUrl.concat(_context);
     }

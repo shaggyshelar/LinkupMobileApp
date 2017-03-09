@@ -36,6 +36,7 @@ export class LeaveApprovalPage {
   public comment: string;
   public editMode : boolean;
   public isDatachanged : boolean = false;
+  public isDescending: boolean=true;
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
     public leaveService: LeaveService,
@@ -388,13 +389,19 @@ editleaves()
           text: 'Date Ascending',
           role: 'date ascending',
           handler: () => {
-            console.log('Date clicked');
+            if(this.isDescending === false) {
+              this.leaveList.reverse();
+              this.isDescending = true;
+            }
           }
         },{
           text: 'Date Descending',
           role: 'date descending',
           handler: () => {
-            console.log('Date clicked');
+            if(this.isDescending) {
+              this.leaveList.reverse();
+              this.isDescending = false;
+            }
           }
         },{
           text: 'Cancel',

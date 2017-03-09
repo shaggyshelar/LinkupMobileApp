@@ -7,12 +7,12 @@ import { BaseService } from '../../index';
 
 /** Context for service calls */
 const CONTEXT = 'clientMaster';
-
+import { Events } from 'ionic-angular';
 /** Service Definition */
 @Injectable()
 export class ClientService extends BaseService {
-    constructor(public http: Http) {
-        super(http, CONTEXT);
+    constructor(public http: Http, public unauthorizedEvent:Events) {
+        super(http, CONTEXT,unauthorizedEvent);
     }
     getClients() {
         return this.getList$(0, 0, true).map(res => res.json());

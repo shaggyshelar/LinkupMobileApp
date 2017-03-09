@@ -27,6 +27,7 @@ export class HolidaysPage {
   holidaysObs: Holiday[];
   holidayList: any;
   pendingHoliday: any;
+  public isDescending: boolean=true;
   // eventDay: MyEvent;
   constructor(public navCtrl: NavController, 
   public navParams: NavParams,
@@ -132,13 +133,19 @@ export class HolidaysPage {
           text: 'Date Ascending',
           role: 'date ascending',
           handler: () => {
-            console.log('Date clicked');
+            if(this.isDescending === false) {
+              this.pendingHoliday.reverse();
+              this.isDescending = true;
+            }
           }
         },{
           text: 'Date Descending',
           role: 'date descending',
           handler: () => {
-            console.log('Date clicked');
+            if(this.isDescending) {
+              this.pendingHoliday.reverse();
+              this.isDescending = false;
+            }
           }
         },{
           text: 'Cancel',

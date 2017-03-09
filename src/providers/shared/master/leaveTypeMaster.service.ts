@@ -10,7 +10,7 @@ import { CacheService } from 'ng2-cache/ng2-cache';
 import { BaseService } from '../../index';
 import { Select } from '../../../pages/LeaveManagement/models/select';
 // import { Employee } from '../models/employee';
-
+import { Events } from 'ionic-angular';
 /** Context for service calls */
 const CONTEXT = 'LeaveType';
 
@@ -18,8 +18,8 @@ const CONTEXT = 'LeaveType';
 @Injectable()
 export class LeaveTypeMasterService extends BaseService {
 
-    constructor(public http: Http , public _cacheService:CacheService) {
-        super(http, CONTEXT);
+    constructor(public http: Http , public _cacheService:CacheService, public unauthorizedEvent:Events) {
+        super(http, CONTEXT,unauthorizedEvent);
     }
 
        /**

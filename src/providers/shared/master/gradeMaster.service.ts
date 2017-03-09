@@ -7,7 +7,7 @@ import { Observable } from 'rxjs/Rx';
 import 'rxjs/add/operator/map';
 
 import { BaseService } from '../../index';
-
+import { Events } from 'ionic-angular';
 /** Context for service calls */
 const CONTEXT = 'GradeMaster';
 
@@ -15,8 +15,8 @@ const CONTEXT = 'GradeMaster';
 @Injectable()
 export class GradeMasterService extends BaseService {
 
-    constructor(public http: Http) {
-        super(http, CONTEXT);
+    constructor(public http: Http, public unauthorizedEvent:Events) {
+        super(http, CONTEXT,unauthorizedEvent);
     }
 
     getGradeMaster(): Observable<any> {

@@ -25,6 +25,7 @@ export class MyLeavesPage {
   public leaveDetail: LeaveDetail;
   public selectedLeave: any;
   public approvedLeaveCount:number;
+  public isDescending: boolean=true;
   events: any[];
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
@@ -197,19 +198,25 @@ export class MyLeavesPage {
           text: 'Date Ascending',
           role: 'date ascending',
           handler: () => {
-            console.log('Date clicked');
+            if(this.isDescending === false) {
+              this.leaveObs.reverse();
+              this.isDescending = true;
+            }
           }
         },{
           text: 'Date Descending',
           role: 'date descending',
           handler: () => {
-            console.log('Date clicked');
+            if(this.isDescending) {
+              this.leaveObs.reverse();
+              this.isDescending = false;
+            }
           }
         },{
           text: 'Cancel',
           role: 'cancel',
           handler: () => {
-            console.log('Cancel clicked');
+            
           }
         }
       ]
