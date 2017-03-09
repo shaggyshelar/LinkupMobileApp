@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
+import { NavController, NavParams, ActionSheetController, ModalController } from 'ionic-angular';
 import { LeaveService } from '../index';
 import { Observable } from 'rxjs/Rx';
 import { Leave } from '../models/leave';
@@ -11,6 +11,7 @@ import { SpinnerService } from '../../../providers/index';
 import * as moment from 'moment/moment';
 
 import { ApplyForLeavePage } from '../apply-for-leave/apply-for-leave';
+import { MyLeavesFilterPage } from '../my-leaves-filter/my-leaves-filter';
 
 @Component({
   selector: 'page-my-leaves',
@@ -29,7 +30,9 @@ export class MyLeavesPage {
     public navParams: NavParams,
     public leaveService: LeaveService,
     public spinnerService: SpinnerService,
-    public alertCtrl: AlertController) {
+    public alertCtrl: AlertController,
+    public actionSheetCtrl: ActionSheetController,
+    public modalCtrl: ModalController) {
     // this.events = [
     //   {
     //     "title": "All Day Event",
@@ -177,5 +180,36 @@ export class MyLeavesPage {
       ]
     });
     confirm.present();
+  }
+  onFilter() {
+    let modal = this.modalCtrl.create(MyLeavesFilterPage);
+    modal.present();
+  }
+  onSort() {
+    let actionSheet = this.actionSheetCtrl.create({
+      title: 'Sort Your Leaves',
+      buttons: [
+        {
+          text: 'Date Ascending',
+          role: 'date ascending',
+          handler: () => {
+            console.log('Date clicked');
+          }
+        },{
+          text: 'Date Descending',
+          role: 'date descending',
+          handler: () => {
+            console.log('Date clicked');
+          }
+        },{
+          text: 'Cancel',
+          role: 'cancel',
+          handler: () => {
+            console.log('Cancel clicked');
+          }
+        }
+      ]
+    });
+    actionSheet.present();
   }
 }

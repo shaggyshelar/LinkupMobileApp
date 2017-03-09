@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams ,AlertController } from 'ionic-angular';
+import { NavController, NavParams, AlertController, ActionSheetController, ModalController } from 'ionic-angular';
 /** Module Level Dependencies */
 import { HolidayService } from '../services/holiday.service';
 import { Holiday } from '../models/holiday';
@@ -7,7 +7,7 @@ import { MyEvent } from '../models/holiday';
 import { SpinnerService } from '../../../providers/index'
 
 import * as moment from 'moment/moment';
-
+import { HolidaysFilterPage } from '../holidays-filter/holidays-filter';
 /*
   Generated class for the Holidays page.
 
@@ -32,7 +32,9 @@ export class HolidaysPage {
   public navParams: NavParams,
   private holidayService: HolidayService,
   public spinnerService:SpinnerService,
-  public alertCtrl: AlertController) {
+  public alertCtrl: AlertController,
+  public actionSheetCtrl: ActionSheetController,
+  public modalCtrl: ModalController) {
     // this.events = [
     //    {
     //     "title": "17 Grapes Daily call",
@@ -96,6 +98,9 @@ export class HolidaysPage {
          event.start  = moment(this.holidaysObs[i].HolidayDate).format('YYYY-MM-DD');
          event.end = moment(this.holidaysObs[i].HolidayDate).format('YYYY-MM-DD');;
          event.title = this.holidaysObs[i].Title;
+         event.HolidayType = this.holidaysObs[i].HolidayType;
+         event.WeekDay = this.holidaysObs[i].WeekDay;
+         event.HolidayDescription = this.holidaysObs[i].HolidayDescription;
          if(holidaytype.Value == 'Floating')
          event.color = 'orange';
          else
@@ -109,10 +114,42 @@ export class HolidaysPage {
     console.log(event + 'event clicked');
      let alert = this.alertCtrl.create({
       title: 'Holiday',
-      subTitle: event.calEvent.title,
+      subTitle: '<b>Title: </b>' + event.calEvent.title + '<br/>'+'<b>Holiday Description: </b>'+ event.calEvent.HolidayDescription +
+                '<br/>'+ '<b>Holiday Type: </b>' + event.calEvent.HolidayType.Value + '<br/>' + '<b>Week Day: </b>' + event.calEvent.WeekDay,
       buttons: ['OK']
     });
     alert.present();
+  }
+  onFilter() {
+    let modal = this.modalCtrl.create(HolidaysFilterPage);
+    modal.present();
+  }
+  onSort() {
+    let actionSheet = this.actionSheetCtrl.create({
+      title: 'Sort Your Holidays',
+      buttons: [
+        {
+          text: 'Date Ascending',
+          role: 'date ascending',
+          handler: () => {
+            console.log('Date clicked');
+          }
+        },{
+          text: 'Date Descending',
+          role: 'date descending',
+          handler: () => {
+            console.log('Date clicked');
+          }
+        },{
+          text: 'Cancel',
+          role: 'cancel',
+          handler: () => {
+            console.log('Cancel clicked');
+          }
+        }
+      ]
+    });
+    actionSheet.present();
   }
 
 }

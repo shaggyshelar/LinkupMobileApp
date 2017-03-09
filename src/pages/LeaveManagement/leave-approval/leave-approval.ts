@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, ActionSheetController, Events } from 'ionic-angular';
+import { NavController, NavParams, ActionSheetController, Events, ModalController } from 'ionic-angular';
 import { SpinnerService } from '../../../providers/index';
 import { LeaveService } from '../index';
 import { AlertController, ItemSliding } from 'ionic-angular';
@@ -7,6 +7,7 @@ import { Leave } from '../models/leave';
 import { LeaveApprovalDetailPage } from '../leave-approval-detail/leave-approval-detail';
 import { Observable } from 'rxjs/Rx';
 import { Toast } from 'ionic-native';
+import { LeaveApprovalFilterPage } from '../leave-approval-filter/leave-approval-filter';
 /*
   Generated class for the LeaveApproval page.
 
@@ -40,7 +41,8 @@ export class LeaveApprovalPage {
     public spinnerService: SpinnerService,
     public actionSheetCtrl: ActionSheetController,
     public alertCtrl: AlertController,
-    public leaveStatusChangedEvent: Events) {
+    public leaveStatusChangedEvent: Events,
+    public modalCtrl: ModalController) {
     this.userPermissions = JSON.parse(localStorage.getItem("loggedInUserPermission"));
     this.isBulkApprovePermission = this.checkBulkApprovePermission('LEAVE.BULK_APPROVAL.MANAGE');
     this.leaveStatusChangedEvent.subscribe('Changed Leave Status', (status) => {
@@ -372,6 +374,36 @@ editleaves()
     //   }
     // );
   }
-
+  onFilter() {
+    let modal = this.modalCtrl.create(LeaveApprovalFilterPage);
+    modal.present();
+  }
+  onSort() {
+    let actionSheet = this.actionSheetCtrl.create({
+      title: 'Sort Your Leaves',
+      buttons: [
+        {
+          text: 'Date Ascending',
+          role: 'date ascending',
+          handler: () => {
+            console.log('Date clicked');
+          }
+        },{
+          text: 'Date Descending',
+          role: 'date descending',
+          handler: () => {
+            console.log('Date clicked');
+          }
+        },{
+          text: 'Cancel',
+          role: 'cancel',
+          handler: () => {
+            console.log('Cancel clicked');
+          }
+        }
+      ]
+    });
+    actionSheet.present();
+  }
 
 }
