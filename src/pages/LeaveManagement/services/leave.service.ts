@@ -43,10 +43,34 @@ export class LeaveService extends BaseService {
         return this.getList$(0, 0, true).map(res => res.json());
     }
     getMyLeaves(): Observable<Leave> {
-        return this.getChildList$('myleaves', 0, 0, true).map(res => res.json());
+        //return this.getChildList$('myleaves', 0, 0, true).map(res => res.json());
+          if (this._cacheService.exists('myLeaveList')) {
+            return new Observable<any>((observer: any) => {
+                observer.next(this._cacheService.get('myLeaveList'));
+            });
+        } else {
+            return this.getChildList$('myleaves', 0, 0, true).map(res => {
+                this._cacheService.set('myLeaveList', res.json(), { maxAge: 60 * 60 });
+                return res.json();
+            }).catch(err => {
+                return this.handleError(err);
+            });
+        }
     }
     getApproverLeaves(): Observable<Leave[]> {
-        return this.getChildList$('ApproverLeaves', 0, 0, true).map(res => res.json());
+        //return this.getChildList$('ApproverLeaves', 0, 0, true).map(res => res.json());
+        if (this._cacheService.exists('approverList')) {
+            return new Observable<any>((observer: any) => {
+                observer.next(this._cacheService.get('approverList'));
+            });
+        } else {
+            return this.getChildList$('ApproverLeaves', 0, 0, true).map(res => {
+                this._cacheService.set('approverList', res.json(), { maxAge: 60 * 60 });
+                return res.json();
+            }).catch(err => {
+                return this.handleError(err);
+            });
+        }
     }
     /**
      * getLeaveArray method
@@ -121,13 +145,26 @@ export class LeaveService extends BaseService {
         let headers = new Headers();
         headers.append('Authorization', 'Bearer ' + localStorage.getItem('accessToken'));
         let options = new RequestOptions({ headers: headers });
-        return this.http.get(this.baseUrl + 'LeaveApprovers/' + refId, options)
-            .map(res => {
+
+         if (this._cacheService.exists('leaveapproveList')) {
+            return new Observable<any>((observer: any) => {
+                observer.next(this._cacheService.get('leaveapproveList'));
+            });
+        } else {
+            return this.http.get(this.baseUrl + 'LeaveApprovers/' + refId, options).map(res => {
+                this._cacheService.set('leaveapproveList', res.json(), { maxAge: 60 * 60 });
                 return res.json();
-            })
-            .catch(err => {
+            }).catch(err => {
                 return this.handleError(err);
             });
+        }
+        // return this.http.get(this.baseUrl + 'LeaveApprovers/' + refId, options)
+        //     .map(res => {
+        //         return res.json();
+        //     })
+        //     .catch(err => {
+        //         return this.handleError(err);
+        //     });
     }
     getActiveProjects(): Observable<any> {
         let headers = new Headers();
@@ -152,14 +189,28 @@ export class LeaveService extends BaseService {
 
     getLeaveByStatus(status: any): Observable<Leave[]> {
 
-        return this.getChildList$('ByStatus/' + status, 0, 0, true).map(res => {
+        // return this.getChildList$('ByStatus/' + status, 0, 0, true).map(res => {
 
-            this._cacheService.set('PendingLeavesApprovalCount', res.json().length, { maxAge: 60 * 60 });
-            return res.json();
-        })
-            .catch(err => {
+        //     this._cacheService.set('PendingLeavesApprovalCount', res.json().length, { maxAge: 60 * 60 });
+        //     return res.json();
+        // })
+        //     .catch(err => {
+        //         return this.handleError(err);
+        //     });
+
+         if (this._cacheService.exists('pendingApproverList')) {
+            return new Observable<any>((observer: any) => {
+                observer.next(this._cacheService.get('pendingApproverList'));
+            });
+        } else {
+            return this.getChildList$('ByStatus/' + status, 0, 0, true).map(res => {
+                this._cacheService.set('pendingApproverList', res.json(), { maxAge: 60 * 60 });
+                this._cacheService.set('PendingLeavesApprovalCount', res.json().length, { maxAge: 60 * 60 });
+                return res.json();
+            }).catch(err => {
                 return this.handleError(err);
             });
+        }
     }
 
     singleLeaveApprove(payload: any) {
