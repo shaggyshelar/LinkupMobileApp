@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 import { HolidaysPage } from '../LeaveManagement/holidays/holidays';
 import { MyLeavesPage } from '../LeaveManagement/my-leaves/my-leaves';
+import { CacheService } from 'ng2-cache/ng2-cache';
 
 @Component({
   selector: 'page-my-calendar',
@@ -11,7 +12,11 @@ export class MyCalendarPage {
   events: any[];
   holidaysTab: any;
   myLeavesTab: any;
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  pendingHolidayCount:string;
+  leaveApprovedCount:string;
+  constructor(public navCtrl: NavController, 
+  public navParams: NavParams,
+  public _cacheService:CacheService) {
     this.holidaysTab = HolidaysPage;
     this.myLeavesTab = MyLeavesPage;
 
@@ -43,6 +48,15 @@ export class MyCalendarPage {
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad MyCalendarPage');
+    this.pendingHolidayCount ='';
+    if (this._cacheService.exists('PendingHolidayCount')) {
+        this.pendingHolidayCount = this._cacheService.get('PendingHolidayCount');
+        
+    };
+    if (this._cacheService.exists('approvedLeaveCount')) {
+        this.leaveApprovedCount = this._cacheService.get('approvedLeaveCount');
+        
+    };
   }
 
 }

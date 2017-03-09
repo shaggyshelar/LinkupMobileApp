@@ -89,7 +89,10 @@ export class MyLeavesPage {
           var edate = moment(element.EndDate).format('YYYY-MM-DD');
           element.StartDate = moment(sdate).toDate();
           element.EndDate = moment(edate).toDate();
+          if(element.Status == 'Approved')
+          this.approvedLeaveCount++;
         });
+        this.leaveService.setApprovedLeavesCount(this.approvedLeaveCount.toString());
         this.getCalandarEvents();
       });
     console.log('ionViewDidLoad MyLeavesPage');

@@ -2,5 +2,16 @@ page-apply-for-leave {
     .text-right {
         text-align: end;
     }
+    .right{
+        float: right;
+    }
+     .validationerror
+      {
+        color: red;
+        white-space: pre-wrap;
+      }
+       .required  {
+      color: #e32;
+      }
 
 }

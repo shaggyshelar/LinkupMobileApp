@@ -10,6 +10,7 @@ import 'rxjs/add/operator/map';
 /** Module Level Dependencies */
 import { BaseService } from '../../../providers/index';
 import { Leave } from '../models/leave';
+import { Select } from '../models/select';
 // import { Employee } from '../models/employee';
 import { LeaveDetail } from '../models/leaveDetail';
 
@@ -31,6 +32,8 @@ export class LeaveService extends BaseService {
     getLeave(id: any): Observable<Leave> {
         return this.get$(id).map(res => res.json());
     }
+
+   
 
     /**
      * getLeaves method
@@ -228,6 +231,79 @@ export class LeaveService extends BaseService {
         headers.append('Content-Type', 'application/json');
         let options = new RequestOptions({ headers: headers });
         return this.http.put(this.baseUrl + 'LeaveApprovers/ApproveByHR', body, options)
+            .map(res => {
+                return res.json();
+            })
+            .catch(err => {
+                return this.handleError(err);
+            });
+    }
+
+     getCurrentUserPendingLeaveCount() {
+        let headers = new Headers();
+        headers.append('Authorization', 'Bearer ' + localStorage.getItem('accessToken'));
+        let options = new RequestOptions({ headers: headers });
+        return this.http.get(this.baseUrl + 'LeaveDetails/GetCurrentUserPendingLeaveCount', options)
+            .map(res => {
+                return res.json();
+            })
+            .catch(err => {
+                return this.handleError(err);
+            });
+    }
+    checkIfAlreadyApplied(payload: any) {
+        let headers = new Headers();
+        let body = JSON.stringify(payload);
+        headers.append('Authorization', 'Bearer ' + localStorage.getItem('accessToken'));
+        headers.append('Content-Type', 'application/json');
+        let options = new RequestOptions({ headers: headers });
+        return this.http.post(this.baseUrl + 'LeaveDetails/GetAppliedLeaveForSameDate', body, options)
+            .map(res => {
+                return res.json();
+            })
+            .catch(err => {
+                return this.handleError(err);
+            });
+    }
+    checkIfAlreadyAppliedForTrainee(payload: any) {
+        let headers = new Headers();
+        let body = JSON.stringify(payload);
+        headers.append('Authorization', 'Bearer ' + localStorage.getItem('accessToken'));
+        headers.append('Content-Type', 'application/json');
+        let options = new RequestOptions({ headers: headers });
+        return this.http.post(this.baseUrl + 'LeaveDetails/GetCurrentUserCurrentMonthLeaveCount', body, options)
+            .map(res => {
+                return res.json();
+            })
+            .catch(err => {
+                return this.handleError(err);
+            });
+    }
+
+       /**
+     * addLeaveRecord method
+     * Adds leave record. returns true if successful, false if not.
+     */
+    submitLeaveRecord(leavePayload: any): Observable<boolean> {
+        let headers = new Headers();
+        let body = JSON.stringify(leavePayload);
+        headers.append('Authorization', 'Bearer ' + localStorage.getItem('accessToken'));
+        headers.append('Content-Type', 'application/json');
+        let options = new RequestOptions({ headers: headers });
+        return this.http.post(this.baseUrl + 'LeaveDetails', body, options)
+            .map(res => {
+                return res.json();
+            })
+            .catch(err => {
+                return this.handleError(err);
+            });
+    }
+
+    getLeaveDetails(): Observable<any> {
+        let headers = new Headers();
+        headers.append('Authorization', 'Bearer ' + localStorage.getItem('accessToken'));
+        let options = new RequestOptions({ headers: headers });
+        return this.http.get(this.baseUrl + 'EmployeeLeaves/GetMyLeaveDetails', options)
             .map(res => {
                 return res.json();
             })
