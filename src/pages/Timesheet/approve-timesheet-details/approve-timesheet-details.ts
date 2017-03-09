@@ -28,7 +28,6 @@ export class ApproveTimesheetDetailsPage {
    }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad TimesheetDetailsPage');
     this.timesheetID = this.navParams.data.id;
 
     var loader = this.loadingCtrl.create({
@@ -39,8 +38,8 @@ export class ApproveTimesheetDetailsPage {
       this.employeeTimesheetService.getTimesheetApprovalData(this.timesheetID).subscribe((res:any)=> {
         // if(res)
           this.employeeTimesheet = res.ApproverTimesheet;
-        console.log('employeeTimesheet => ', res.ApproverTimesheet);
-        
+        loader.dismiss();
+      }, (err) => {
         loader.dismiss();
       });
     });

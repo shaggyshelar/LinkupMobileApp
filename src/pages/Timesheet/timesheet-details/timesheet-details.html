@@ -13,10 +13,11 @@
 </ion-header>
 
 
-<ion-content padding>
-  <ion-list *ngFor="let rec of employeeTimesheet">
+<ion-content>
+  <ion-list *ngFor="let rec of employeeTimesheet" (click)="recordTapped(rec)">
     <ion-item-divider color="light">
       {{rec.Date}}
+      <ion-icon name="arrow-dropright" class="right"></ion-icon>
     </ion-item-divider>
     <ion-item>
       <h3>
