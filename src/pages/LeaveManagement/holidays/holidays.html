@@ -22,7 +22,7 @@
     <ion-item *ngFor="let holiday of pendingHoliday"  [attr.holidaytype]="holiday.HolidayType.Value | lowercase">
         <h3>{{holiday.Title}}</h3>
         <p>
-          {{holiday.HolidayDate | date:'dd/MM/y'}};
+          {{holiday.HolidayDate | date:'dd/MM/y'}}
         </p>
       <ion-badge item-right>{{holiday.WeekDay}}</ion-badge>
     </ion-item>

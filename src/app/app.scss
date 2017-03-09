@@ -23,9 +23,51 @@
     background-color: map-get($colors, light );
 }
 
+.fc .fc-toolbar .fc-prev-button .ui-icon-circle-triangle-w:before {
+  background-image: url('../assets/img/left.png') !important;
+  content: '';
+  width:15px;
+  height: 15px;
+  display: inline-block;
+}
+
+.ui-icon .ui-icon-circle-triangle-e {
+    background-image: url(assets/img/right.png) !important;
+    background-position: 0px 0px !important;
+}
+
+.fc .fc-toolbar .fc-next-button .ui-icon-circle-triangle-e:before {
+  background-image: url('../assets/img/right.png') !important;
+  content: '';
+  width:15px;
+  height: 15px;
+  display: inline-block;
+}
+
 .card-background-page {
+  background: color($colors, sideMenuBackground, base) !important;
+  
   ion-avatar img {
     width: 50px;
     height: 50px;
+  }
+
+  .item-inner {
+    border-bottom: 0 !important;
+  }
+  
+  .menuHeader {
+      background: map-get($colors, primary);
+      color: map-get($colors, light);
+      padding-bottom: 20px;
+  }
+
+  .customMenu {
+    background: color($colors, sideMenuBackground, base);
+    color: color($colors, sideMenuText, base);
+  }
+
+  .customMenuIcons {
+    color: map-get($colors, primary);
   }
 }  

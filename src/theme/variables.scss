@@ -34,7 +34,15 @@ $colors: (
   mahogany: #DB3E44,
   aluminium: #7E8A90,
   nightShadz: #A04445,
-  hitGrey: #A0A1A1
+  hitGrey: #A0A1A1,
+  sideMenuBackground: (
+    base : #7E8A90,
+    contrast: #ffffff
+  ),
+  sideMenuText: (
+    base : #ffffff,
+    contrast: #7E8A90
+  )
 );
 
 

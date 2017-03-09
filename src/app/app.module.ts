@@ -32,6 +32,8 @@ import { ApprovalsPage } from '../pages/approvals/approvals';
 import { LeaveApprovalPage } from '../pages/LeaveManagement/leave-approval/leave-approval';
 import { MyLeavesPage } from '../pages/LeaveManagement/my-leaves/my-leaves';
 import { MyLeaveDetailPage } from '../pages/LeaveManagement/my-leave-detail/my-leave-detail';
+import { LeaveApprovalDetailPage } from '../pages/LeaveManagement/leave-approval-detail/leave-approval-detail';
+
 
 // Certification
 import { MyCertificationPage } from '../pages/Certification/my-certification/my-certification';
@@ -94,6 +96,7 @@ import { CacheService, CacheStorageAbstract, CacheLocalStorage } from 'ng2-cache
     MyCalendarPage,
     ApprovalsPage,
     LeaveApprovalPage,
+    LeaveApprovalDetailPage,
     MyLeavesPage,
     MyLeaveDetailPage,
     ManageMyProjectsPage,
@@ -141,6 +144,7 @@ import { CacheService, CacheStorageAbstract, CacheLocalStorage } from 'ng2-cache
     MyCalendarPage,
     ApprovalsPage,
     LeaveApprovalPage,
+    LeaveApprovalDetailPage,
     MyLeavesPage,
     MyLeaveDetailPage,
     MyCertificationPage,

@@ -1,14 +1,16 @@
 /** Angular Dependencies */
 import { Injectable } from '@angular/core';
-import { Http,RequestOptions,Headers } from '@angular/http';
+import { Http, RequestOptions, Headers } from '@angular/http';
 
 /** Third Party Dependencies */
 import { Observable } from 'rxjs/Rx';
+import { CacheService } from 'ng2-cache/ng2-cache';
 import 'rxjs/add/operator/map';
 
 /** Module Level Dependencies */
 import { BaseService } from '../../../providers/index';
 import { Leave } from '../models/leave';
+import { Select } from '../models/select';
 // import { Employee } from '../models/employee';
 import { LeaveDetail } from '../models/leaveDetail';
 
@@ -19,7 +21,7 @@ const CONTEXT = 'Leave';
 @Injectable()
 export class LeaveService extends BaseService {
     editableLeave: any;
-    constructor(public http: Http) {
+    constructor(public http: Http, private _cacheService: CacheService) {
         super(http, CONTEXT);
     }
 
@@ -31,6 +33,8 @@ export class LeaveService extends BaseService {
         return this.get$(id).map(res => res.json());
     }
 
+   
+
     /**
      * getLeaves method
      * Gets array of leaves
@@ -39,10 +43,34 @@ export class LeaveService extends BaseService {
         return this.getList$(0, 0, true).map(res => res.json());
     }
     getMyLeaves(): Observable<Leave> {
-        return this.getChildList$('myleaves', 0, 0, true).map(res => res.json());
+        //return this.getChildList$('myleaves', 0, 0, true).map(res => res.json());
+          if (this._cacheService.exists('myLeaveList')) {
+            return new Observable<any>((observer: any) => {
+                observer.next(this._cacheService.get('myLeaveList'));
+            });
+        } else {
+            return this.getChildList$('myleaves', 0, 0, true).map(res => {
+                this._cacheService.set('myLeaveList', res.json(), { maxAge: 60 * 60 });
+                return res.json();
+            }).catch(err => {
+                return this.handleError(err);
+            });
+        }
     }
     getApproverLeaves(): Observable<Leave[]> {
-        return this.getChildList$('ApproverLeaves', 0, 0, true).map(res => res.json());
+        //return this.getChildList$('ApproverLeaves', 0, 0, true).map(res => res.json());
+        if (this._cacheService.exists('approverList')) {
+            return new Observable<any>((observer: any) => {
+                observer.next(this._cacheService.get('approverList'));
+            });
+        } else {
+            return this.getChildList$('ApproverLeaves', 0, 0, true).map(res => {
+                this._cacheService.set('approverList', res.json(), { maxAge: 60 * 60 });
+                return res.json();
+            }).catch(err => {
+                return this.handleError(err);
+            });
+        }
     }
     /**
      * getLeaveArray method
@@ -93,6 +121,7 @@ export class LeaveService extends BaseService {
         let options = new RequestOptions({ headers: headers });
         return this.http.post(this.baseUrl + 'Leave/cancel', body, options)
             .map(res => {
+                this.clearLeaveCache();
                 return res.json();
             })
             .catch(err => {
@@ -100,7 +129,7 @@ export class LeaveService extends BaseService {
             });
     }
 
-      getLeaveDetailByRefID(refId: any): Observable<Leave[]> {
+    getLeaveDetailByRefID(refId: any): Observable<Leave[]> {
         let headers = new Headers();
         headers.append('Authorization', 'Bearer ' + localStorage.getItem('accessToken'));
         let options = new RequestOptions({ headers: headers });
@@ -113,11 +142,177 @@ export class LeaveService extends BaseService {
             });
     }
 
-     getApproverListByRefID(refId: any): Observable<any> {
+    getApproverListByRefID(refId: any): Observable<any> {
         let headers = new Headers();
         headers.append('Authorization', 'Bearer ' + localStorage.getItem('accessToken'));
         let options = new RequestOptions({ headers: headers });
-        return this.http.get(this.baseUrl + 'LeaveApprovers/' + refId, options)
+
+         if (this._cacheService.exists('leaveapproveList')) {
+            return new Observable<any>((observer: any) => {
+                observer.next(this._cacheService.get('leaveapproveList'));
+            });
+        } else {
+            return this.http.get(this.baseUrl + 'LeaveApprovers/' + refId, options).map(res => {
+                this._cacheService.set('leaveapproveList', res.json(), { maxAge: 60 * 60 });
+                return res.json();
+            }).catch(err => {
+                return this.handleError(err);
+            });
+        }
+        // return this.http.get(this.baseUrl + 'LeaveApprovers/' + refId, options)
+        //     .map(res => {
+        //         return res.json();
+        //     })
+        //     .catch(err => {
+        //         return this.handleError(err);
+        //     });
+    }
+    getActiveProjects(): Observable<any> {
+        let headers = new Headers();
+        headers.append('Authorization', 'Bearer ' + localStorage.getItem('accessToken'));
+        let options = new RequestOptions({ headers: headers });
+        // return this.http.get(this.baseUrl + 'Project/GetMyActiveProjects', options)
+        //     .map(res => {
+        //         return res.json();
+        //     })
+        //     .catch(err => {
+        //         return this.handleError(err);
+        //     });
+
+        if (this._cacheService.exists('activeProjectList')) {
+            return new Observable<any>((observer: any) => {
+                observer.next(this._cacheService.get('activeProjectList'));
+            });
+        } else {
+            return this.http.get(this.baseUrl + 'Project/GetMyActiveProjects', options).map(res => {
+                this._cacheService.set('activeProjectList', res.json(), { maxAge: 24 * 60 * 60 });
+                return res.json();
+            }).catch(err => {
+                return this.handleError(err);
+            });
+        }
+    }
+
+    setEditableLeave(leave: any) {
+        this.editableLeave = leave;
+    }
+    getEditableLeave() {
+        return this.editableLeave;
+    }
+
+
+    getLeaveByStatus(status: any): Observable<Leave[]> {
+
+        // return this.getChildList$('ByStatus/' + status, 0, 0, true).map(res => {
+
+        //     this._cacheService.set('PendingLeavesApprovalCount', res.json().length, { maxAge: 60 * 60 });
+        //     return res.json();
+        // })
+        //     .catch(err => {
+        //         return this.handleError(err);
+        //     });
+
+         if (this._cacheService.exists('pendingApproverList')) {
+            return new Observable<any>((observer: any) => {
+                observer.next(this._cacheService.get('pendingApproverList'));
+            });
+        } else {
+            return this.getChildList$('ByStatus/' + status, 0, 0, true).map(res => {
+                this._cacheService.set('pendingApproverList', res.json(), { maxAge: 60 * 60 });
+                this._cacheService.set('PendingLeavesApprovalCount', res.json().length, { maxAge: 60 * 60 });
+                return res.json();
+            }).catch(err => {
+                return this.handleError(err);
+            });
+        }
+    }
+
+    singleLeaveApprove(payload: any) {
+        let headers = new Headers();
+        let body = JSON.stringify(payload);
+        headers.append('Authorization', 'Bearer ' + localStorage.getItem('accessToken'));
+        headers.append('Content-Type', 'application/json');
+        let options = new RequestOptions({ headers: headers });
+        return this.http.put(this.baseUrl + 'LeaveApprovers/ApproveByManager', body, options)
+            .map(res => {
+                 this.clearLeaveApprvalCache();
+                return res.json();
+            })
+            .catch(err => {
+                return this.handleError(err);
+            });
+    }
+
+    singleLeaveReject(payload: any) {
+        let headers = new Headers();
+        let body = JSON.stringify(payload);
+        headers.append('Authorization', 'Bearer ' + localStorage.getItem('accessToken'));
+        headers.append('Content-Type', 'application/json');
+        let options = new RequestOptions({ headers: headers });
+        return this.http.put(this.baseUrl + 'LeaveApprovers/RejectLeave', body, options)
+            .map(res => {
+                this.clearLeaveApprvalCache();
+                return res.json();
+            })
+            .catch(err => {
+                return this.handleError(err);
+            });
+    }
+
+    /** Get Employee Leave details */
+
+    getEmployeeDetail(Id:any): Observable<any> {
+        let headers = new Headers();
+        headers.append('Authorization', 'Bearer ' + localStorage.getItem('accessToken'));
+        let options = new RequestOptions({ headers: headers });
+        return this.http.get(this.baseUrl+'Employee/'+Id,options)
+         .map(res => {
+            return res.json();
+        })
+        .catch(err => {
+            return this.handleError(err);
+        });
+    }
+
+    // Bulk approval 
+
+    bulkLeaveApproval(payload: any) {
+        let headers = new Headers();
+        let body = JSON.stringify(payload);
+        headers.append('Authorization', 'Bearer ' + localStorage.getItem('accessToken'));
+        headers.append('Content-Type', 'application/json');
+        let options = new RequestOptions({ headers: headers });
+        return this.http.put(this.baseUrl + 'LeaveApprovers/BulkLeaveApproval', body, options)
+            .map(res => {
+                this.clearLeaveApprvalCache();
+                return res.json();
+            })
+            .catch(err => {
+                return this.handleError(err);
+            });
+    }
+
+    hrsingleLeaveApprove(payload: any) {
+        let headers = new Headers();
+        let body = JSON.stringify(payload);
+        headers.append('Authorization', 'Bearer ' + localStorage.getItem('accessToken'));
+        headers.append('Content-Type', 'application/json');
+        let options = new RequestOptions({ headers: headers });
+        return this.http.put(this.baseUrl + 'LeaveApprovers/ApproveByHR', body, options)
+            .map(res => {
+                this.clearLeaveApprvalCache();
+                return res.json();
+            })
+            .catch(err => {
+                return this.handleError(err);
+            });
+    }
+
+     getCurrentUserPendingLeaveCount() {
+        let headers = new Headers();
+        headers.append('Authorization', 'Bearer ' + localStorage.getItem('accessToken'));
+        let options = new RequestOptions({ headers: headers });
+        return this.http.get(this.baseUrl + 'LeaveDetails/GetCurrentUserPendingLeaveCount', options)
             .map(res => {
                 return res.json();
             })
@@ -125,11 +320,27 @@ export class LeaveService extends BaseService {
                 return this.handleError(err);
             });
     }
-    getActiveProjects(): Observable<any> {
+    checkIfAlreadyApplied(payload: any) {
         let headers = new Headers();
+        let body = JSON.stringify(payload);
         headers.append('Authorization', 'Bearer ' + localStorage.getItem('accessToken'));
+        headers.append('Content-Type', 'application/json');
         let options = new RequestOptions({ headers: headers });
-        return this.http.get(this.baseUrl + 'Project/GetMyActiveProjects', options)
+        return this.http.post(this.baseUrl + 'LeaveDetails/GetAppliedLeaveForSameDate', body, options)
+            .map(res => {
+                return res.json();
+            })
+            .catch(err => {
+                return this.handleError(err);
+            });
+    }
+    checkIfAlreadyAppliedForTrainee(payload: any) {
+        let headers = new Headers();
+        let body = JSON.stringify(payload);
+        headers.append('Authorization', 'Bearer ' + localStorage.getItem('accessToken'));
+        headers.append('Content-Type', 'application/json');
+        let options = new RequestOptions({ headers: headers });
+        return this.http.post(this.baseUrl + 'LeaveDetails/GetCurrentUserCurrentMonthLeaveCount', body, options)
             .map(res => {
                 return res.json();
             })
@@ -138,10 +349,54 @@ export class LeaveService extends BaseService {
             });
     }
 
-     setEditableLeave(leave: any) {
-        this.editableLeave = leave;
+       /**
+     * addLeaveRecord method
+     * Adds leave record. returns true if successful, false if not.
+     */
+    submitLeaveRecord(leavePayload: any): Observable<boolean> {
+        let headers = new Headers();
+        let body = JSON.stringify(leavePayload);
+        headers.append('Authorization', 'Bearer ' + localStorage.getItem('accessToken'));
+        headers.append('Content-Type', 'application/json');
+        let options = new RequestOptions({ headers: headers });
+        return this.http.post(this.baseUrl + 'LeaveDetails', body, options)
+            .map(res => {
+                this.clearLeaveCache();
+                return res.json();
+            })
+            .catch(err => {
+                return this.handleError(err);
+            });
     }
-    getEditableLeave() {
-        return this.editableLeave;
+
+    getLeaveDetails(): Observable<any> {
+        let headers = new Headers();
+        headers.append('Authorization', 'Bearer ' + localStorage.getItem('accessToken'));
+        let options = new RequestOptions({ headers: headers });
+        return this.http.get(this.baseUrl + 'EmployeeLeaves/GetMyLeaveDetails', options)
+            .map(res => {
+                return res.json();
+            })
+            .catch(err => {
+                return this.handleError(err);
+            });
     }
+
+    setApprovedLeavesCount(count:string)
+    {
+       this._cacheService.set('approvedLeaveCount', count, { maxAge: 60 * 60 });
+    }
+
+    clearLeaveApprvalCache()
+    {
+        this._cacheService.remove('pendingApproverList');
+        this._cacheService.remove('leaveapproveList');
+        this._cacheService.remove('approverList');
+    }
+     clearLeaveCache()
+    {
+        this._cacheService.remove('approvedLeaveCount');
+        this._cacheService.remove('myLeaveList');
+    }
+
 }
