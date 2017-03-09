@@ -63,6 +63,7 @@ export class MyLeavesPage {
 
   ionViewWillUnload() {
     // stop disconnect watch
+    this.getMyLeaves();
   }
 
   goToLeaveDetail(leaveData: any) {
@@ -129,7 +130,7 @@ export class MyLeavesPage {
     };
     this.leaveService.deleteLeaveRecord(leaveTobeCancelled).subscribe(res => {
       if (res) {
-
+      this.getMyLeaves();
       } else {
 
       }
