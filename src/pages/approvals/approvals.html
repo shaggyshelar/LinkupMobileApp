@@ -1,8 +1,6 @@
 <ion-content>
   <ion-tabs>
-
     <ion-tab tabIcon="calendar" tabTitle="Leaves" tabBadge={{leavesToApproveCount}} [root]="leavesTab"></ion-tab>
-    <ion-tab tabIcon="clock" tabTitle="Timesheets" tabBadge="5" [root]="timesheetsTab"></ion-tab>
-
-  </ion-tabs>`
+    <ion-tab tabIcon="clock" tabTitle="Timesheets" [tabBadge]="approveTimesheetsBadgeCount" [root]="timesheetsTab"></ion-tab>
+  </ion-tabs>
 </ion-content>
