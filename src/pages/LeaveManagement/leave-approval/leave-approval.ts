@@ -33,8 +33,8 @@ export class LeaveApprovalPage {
   public selectedEmployees: any[];
   public totalCount: number;
   public comment: string;
-  public editMode : boolean;
-  public isDatachanged : boolean = false;
+  public editMode: boolean;
+  public isFirstTimeLoad: boolean = true;
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
     public leaveService: LeaveService,
@@ -44,23 +44,44 @@ export class LeaveApprovalPage {
     public leaveStatusChangedEvent: Events) {
     this.userPermissions = JSON.parse(localStorage.getItem("loggedInUserPermission"));
     this.isBulkApprovePermission = this.checkBulkApprovePermission('LEAVE.BULK_APPROVAL.MANAGE');
-    this.leaveStatusChangedEvent.subscribe('Changed Leave Status', (status) => {
+    this.leaveStatusChangedEvent.subscribe('Hr Approval Leave changed', () => {
       this.getApproverLeave();
     });
+    this.leaveStatusChangedEvent.subscribe('Bulk Approval Leave changed', () => {
+      this.getApproverLeave();
+    });
+    this.leaveStatusChangedEvent.subscribe('Rejected single Leave', () => {
+      this.getApproverLeave();
+    });
+    this.leaveStatusChangedEvent.subscribe('Approved single Leave', () => {
+      this.getApproverLeave();
+    });
+
+
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad LeaveApprovalPage');
-    
+
     this.getApproverLeave();
   }
   ionViewWillEnter() {
-    this.getApproverLeave();
+    // if(!this.isFirstTimeLoad)
+    // this.getApproverLeave();
+
+    // this.isFirstTimeLoad = false;
   }
+  ionViewWillUnload() {
+    this.leaveStatusChangedEvent.unsubscribe('Hr Approval Leave changed');
+    this.leaveStatusChangedEvent.unsubscribe('Bulk Approval Leave changed');
+    this.leaveStatusChangedEvent.unsubscribe('Rejected single Leave');
+    this.leaveStatusChangedEvent.unsubscribe('Approved single Leave');
+  }
+
 
   getApproverLeave() {
 
-    
+
     this.leaveList = [];
     this.resetAllFlags();
     this.spinnerService.createSpinner('Please wait..');
@@ -327,17 +348,14 @@ export class LeaveApprovalPage {
       });
   }
 
-editleaves()
-{
-  this.editMode = !this.editMode;
-}
-   approveBulkLeave()
-  {
+  editleaves() {
+    this.editMode = !this.editMode;
+  }
+  approveBulkLeave() {
     this.showApproveRejectPromt(true);
   }
 
-  rejectBulkLeave()
-  {
+  rejectBulkLeave() {
     this.showApproveRejectPromt(false);
   }
 
