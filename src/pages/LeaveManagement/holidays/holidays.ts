@@ -81,7 +81,7 @@ export class HolidaysPage {
           this.pendingHoliday.push(res[i]);
         }
       }
-      //this.holidayService.setPendingHolidaysCount(this.pendingHoliday.length.toString());
+      this.holidayService.setPendingHolidaysCount(this.pendingHoliday.length.toString());
       this.getCalandarEvents();
     },
     error =>{

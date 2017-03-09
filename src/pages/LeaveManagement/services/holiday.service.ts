@@ -59,6 +59,7 @@ export class HolidayService extends BaseService {
                 });
         }
     }
+    
 
     setPendingHolidaysCount(count:string)
     {
