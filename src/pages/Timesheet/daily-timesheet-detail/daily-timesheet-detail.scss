@@ -1,3 +1,13 @@
 page-daily-timesheet-detail {
-
+    .extend-bottom {
+        ion-card{
+            padding-bottom: 20px;
+        }
+    }
+    .margin-left {
+        p{
+            margin-left: 15px;
+            color: indianred;
+        }
+    }
 }
