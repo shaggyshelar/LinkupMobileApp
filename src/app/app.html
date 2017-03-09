@@ -24,7 +24,7 @@
       </button>
     </ion-list>
     <ion-list>
-      <ion-list-header (click)="toggleLeaveMenu()" [ngStyle]="{'height': 36}">
+      <!--<ion-list-header (click)="toggleLeaveMenu()" [ngStyle]="{'height': 36}">
         <ion-icon *ngIf="showLeaveSubmenus == false" name="arrow-dropdown" item-right></ion-icon>
         <ion-icon *ngIf="showLeaveSubmenus == true" name="arrow-dropleft" item-right></ion-icon>
         <h2 style="display: inline-block;">Leave Management</h2>
@@ -32,7 +32,7 @@
       <ion-item class="animated fadeInUp" ion-item menuClose *ngFor="let leavePage of leavePages" (click)="openPage(leavePage)">
         <ion-icon item-left [name]="leavePage.icon" [class.activeHighlight]="checkActive(leavePage)"></ion-icon>
         {{leavePage.title}}
-      </ion-item>
+      </ion-item>-->
 
       <ion-list-header (click)="toggleTimesheetMenu()" [ngStyle]="{'height': 36}">
         <ion-icon *ngIf="showTimesheetSubmenus == false" name="arrow-dropdown" item-right></ion-icon>
@@ -44,7 +44,7 @@
         {{timesheetPage.title}}
       </ion-item>
 
-      <ion-list-header (click)="toggleCorporateMenu()" [ngStyle]="{'height': 36}">
+      <!--<ion-list-header (click)="toggleCorporateMenu()" [ngStyle]="{'height': 36}">
         <ion-icon *ngIf="showCorporateSubmenus == false" name="arrow-dropdown" item-right></ion-icon>
         <ion-icon *ngIf="showCorporateSubmenus == true" name="arrow-dropleft" item-right></ion-icon>
         <h2 style="display: inline-block;">Corporate</h2>
@@ -72,7 +72,7 @@
       <ion-item class="animated fadeInUp" ion-item menuClose *ngFor="let projectsPage of projectsPages" (click)="openPage(projectsPage)">
         <ion-icon item-left [name]="projectsPage.icon" [class.activeHighlight]="checkActive(projectsPage)"></ion-icon>
         {{projectsPage.title}}
-      </ion-item>
+      </ion-item>-->
     </ion-list>
   </ion-content>
 
