@@ -96,7 +96,7 @@ export class MyApp {
       isAuthenticated => {
         if (isAuthenticated == "true") {
           this.isAuthenticated = true;
-          this.rootPage = HomePage;
+          this.openPage(this.pages[0]);
           this.toggleLeaveMenu();
           this.toggleTimesheetMenu()
           this.toggleCertificationMenu();
@@ -131,17 +131,20 @@ export class MyApp {
   initializeApp() {
     this.presentLoading();
     this.isAuthenticated = this.auth.isAuthenticated();
+    this.pages = [
+      { title: 'Home', component: HomePage, icon: 'ios-home' },
+      { title: 'My Calendar', component: MyCalendarPage, icon: 'md-calendar' },
+      { title: 'Approvals', component: ApprovalsPage, icon: 'md-checkbox-outline' },
+      { title: 'Timesheets', component: MyTimesheetPage, icon: 'md-clock' },
+    ];
+
     if (this.auth.isAuthenticated()) {
+      this.activePage = this.pages[0];
       this.rootPage = HomePage;
       this.loadUserDetails();
     } else {
       this.rootPage = LoginPage;
     }
-    this.pages = [
-      { title: 'My Calendar', component: MyCalendarPage, icon: 'md-calendar' },
-      { title: 'Approvals', component: ApprovalsPage, icon: 'md-checkbox-outline' },
-      { title: 'Timesheets', component: MyTimesheetPage, icon: 'md-clock' },
-    ];
     this.loader.dismiss();
     this.platform.ready().then(() => {
       StatusBar.styleDefault();
