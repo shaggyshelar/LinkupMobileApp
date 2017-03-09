@@ -43,7 +43,7 @@ export class MyTimesheetPage {
   }
 
   itemClicked(entry) {
-    alert('id => '+ entry.ID);
+    //alert('id => '+ entry.ID);
     this.navCtrl.push(TimesheetDetailsPage, {id: entry.ID});
   }
 
