@@ -81,7 +81,6 @@ export class LoginPage {
     this.submitted = true;
 
     if (form.valid) {
-      this.presentLoading();
       this.authService.authenticate(this.model)
         .subscribe(
         results => {
@@ -90,7 +89,6 @@ export class LoginPage {
           this.showError = true;
           this.errorMessage = error;
         });
-        this.loader.dismiss();
     }
   }
   presentLoading() {

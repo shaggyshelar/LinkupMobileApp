@@ -13,7 +13,7 @@ import { MessageService } from '../../../providers/shared';
 import { Timesheet } from '../models/timesheet.model';
 import { Employee } from '../models/employee.model';
 import { EmployeeTimeSheet } from '../models/employee-timesheet.model';
-
+import { Events } from 'ionic-angular';
 /** Context for service calls */
 const CONTEXT = 'EmployeeTimesheet';
 
@@ -22,9 +22,9 @@ const CONTEXT = 'EmployeeTimesheet';
 export class EmployeeTimesheetService extends BaseService {
 
     constructor(public http: Http, messageService: MessageService,
-    public _cacheService: CacheService
+    public _cacheService: CacheService,public unauthorizedEvent:Events
     ) {
-        super(http, CONTEXT);
+        super(http, CONTEXT,unauthorizedEvent);
     }
 
     getMyTimesheets(): Observable<Employee> {
@@ -99,7 +99,7 @@ export class EmployeeTimesheetService extends BaseService {
             });
         } else {
             return this.getChildList$('GetTimesheetApprovalData/' + id, 0, 0, true).map(res => {
-                this._cacheService.set('timesheetApprovalData' + id, res.json(), { maxAge: 60 * 60 });
+                this._cacheService.set('timesheetApprovalData' + id, res.json(), { maxAge: 60 * 60 * 24 });
                 return res.json();
             }).catch(err => {
                 return this.handleError(err);
