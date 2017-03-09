@@ -17,21 +17,31 @@ import { CacheService } from 'ng2-cache/ng2-cache';
 export class ApprovalsPage {
   leavesTab: any;
   timesheetsTab: any;
-  leavesToApproveCount:string
 
-  constructor(public navCtrl: NavController, 
-  public navParams: NavParams,
-  public _cacheService:CacheService) {
+  leavesToApproveCount: string
+
+  approveTimesheetsBadgeCount: Number = 0;
+
+  constructor(public navCtrl: NavController,
+    public navParams: NavParams,
+    public _cacheService: CacheService) {
     this.leavesTab = LeaveApprovalPage;
     this.timesheetsTab = ApproveTimesheetPage;
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad ApprovalsPage');
+
     if (this._cacheService.exists('PendingLeavesApprovalCount')) {
-        this.leavesToApproveCount = this._cacheService.get('PendingLeavesApprovalCount');
-        
+      this.leavesToApproveCount = this._cacheService.get('PendingLeavesApprovalCount');
+
     };
+
+    console.log('badge storage => ', localStorage.getItem('approveTimesheetsBadgeCount'));
+    this.approveTimesheetsBadgeCount = parseInt(localStorage.getItem('approveTimesheetsBadgeCount'));
+
   }
+
+
 
 }

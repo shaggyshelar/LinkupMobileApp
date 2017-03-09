@@ -19,12 +19,12 @@
         {{p.title}}
       </button>
       <button menuClose ion-item (click)="openLinkupWebsite()">
-        <ion-icon item-left name="earth"></ion-icon>
+        <ion-icon item-left name="md-globe"></ion-icon>
         Linkup Web
       </button>
     </ion-list>
     <ion-list>
-      <ion-list-header (click)="toggleLeaveMenu()" [ngStyle]="{'height': 36}">
+      <!--<ion-list-header (click)="toggleLeaveMenu()" [ngStyle]="{'height': 36}">
         <ion-icon *ngIf="showLeaveSubmenus == false" name="arrow-dropdown" item-right></ion-icon>
         <ion-icon *ngIf="showLeaveSubmenus == true" name="arrow-dropleft" item-right></ion-icon>
         <h2 style="display: inline-block;">Leave Management</h2>
@@ -72,14 +72,15 @@
       <ion-item class="animated fadeInUp" ion-item menuClose *ngFor="let projectsPage of projectsPages" (click)="openPage(projectsPage)">
         <ion-icon item-left [name]="projectsPage.icon" [class.activeHighlight]="checkActive(projectsPage)"></ion-icon>
         {{projectsPage.title}}
-      </ion-item>
+      </ion-item>-->
     </ion-list>
   </ion-content>
 
   <ion-footer>
     <ion-title>
       <button menuClose ion-item (click)="onLogout()">
-         <ion-icon item-left [name]="log-out"></ion-icon>Logout
+        <ion-icon item-left name="md-exit"></ion-icon>
+        Logout
       </button>
     </ion-title>
   </ion-footer>
