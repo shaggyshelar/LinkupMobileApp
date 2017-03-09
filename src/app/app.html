@@ -18,8 +18,8 @@
         <ion-icon item-left [name]="p.icon"></ion-icon>
         {{p.title}}
       </button>
-      <button menuClose ion-item (click)="openLinkupWebsite('http://linkup.eternussolutions.com/')">
-        <ion-icon item-left name="earth"></ion-icon>
+      <button menuClose ion-item (click)="openLinkupWebsite()">
+        <ion-icon item-left name="md-globe"></ion-icon>
         Linkup Web
       </button>
     </ion-list>
@@ -32,7 +32,7 @@
       <ion-item class="animated fadeInUp" ion-item menuClose *ngFor="let leavePage of leavePages" (click)="openPage(leavePage)">
         <ion-icon item-left [name]="leavePage.icon" [class.activeHighlight]="checkActive(leavePage)"></ion-icon>
         {{leavePage.title}}
-      </ion-item>-->
+      </ion-item>
 
       <ion-list-header (click)="toggleTimesheetMenu()" [ngStyle]="{'height': 36}">
         <ion-icon *ngIf="showTimesheetSubmenus == false" name="arrow-dropdown" item-right></ion-icon>
@@ -44,7 +44,7 @@
         {{timesheetPage.title}}
       </ion-item>
 
-      <!--<ion-list-header (click)="toggleCorporateMenu()" [ngStyle]="{'height': 36}">
+      <ion-list-header (click)="toggleCorporateMenu()" [ngStyle]="{'height': 36}">
         <ion-icon *ngIf="showCorporateSubmenus == false" name="arrow-dropdown" item-right></ion-icon>
         <ion-icon *ngIf="showCorporateSubmenus == true" name="arrow-dropleft" item-right></ion-icon>
         <h2 style="display: inline-block;">Corporate</h2>
@@ -79,7 +79,8 @@
   <ion-footer>
     <ion-title>
       <button menuClose ion-item (click)="onLogout()">
-         <ion-icon item-left [name]="log-out"></ion-icon>Logout
+        <ion-icon item-left name="md-exit"></ion-icon>
+        Logout
       </button>
     </ion-title>
   </ion-footer>
