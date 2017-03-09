@@ -1,9 +1,9 @@
 
-import { Component, ViewChild } from '@angular/core';
-import { Nav, Platform } from 'ionic-angular';
-import { StatusBar, Splashscreen, Network, InAppBrowser } from 'ionic-native';
-import { LoadingController} from 'ionic-angular';
-import { HomePage } from '../pages/home/home';
+import { Component, ViewChild } from '@angular/core';
+import { Nav, Platform } from 'ionic-angular';
+import { StatusBar, Splashscreen, Network, InAppBrowser } from 'ionic-native';
+import { LoadingController } from 'ionic-angular';
+import { HomePage } from '../pages/home/home';
 
 
 // Leave Management
@@ -138,26 +138,27 @@ export class MyApp {
       this.rootPage = LoginPage;
     }
     this.pages = [
-      { title: 'My Calendar', component: MyCalendarPage, icon: 'calendar' },
-      { title: 'Approvals', component: ApprovalsPage, icon: 'checkmark-circled' },
+      { title: 'My Calendar', component: MyCalendarPage, icon: 'md-calendar' },
+      { title: 'Approvals', component: ApprovalsPage, icon: 'md-checkbox-outline' },
+      { title: 'Timesheets', component: MyTimesheetPage, icon: 'md-clock' },
     ];
     this.loader.dismiss();
     this.platform.ready().then(() => {
       StatusBar.styleDefault();
       Splashscreen.hide();
 
-//       Intenet check
-//       this.internetChecking();
-//       this.disconnectSubscription = Network.onDisconnect().subscribe(() => {
-//         this.isDisconnected = true;
-//         this.internetChecking();
-//       });
-//       this.disconnectSubscription.unsubscribe();
+      //       Intenet check
+      //       this.internetChecking();
+      //       this.disconnectSubscription = Network.onDisconnect().subscribe(() => {
+      //         this.isDisconnected = true;
+      //         this.internetChecking();
+      //       });
+      //       this.disconnectSubscription.unsubscribe();
 
-//       this.connectSubscription = Network.onConnect().subscribe(() => {
-//         this.IntenetLoader.dismiss();
-//       });
-//       this.connectSubscription.unsubscribe();
+      //       this.connectSubscription = Network.onConnect().subscribe(() => {
+      //         this.IntenetLoader.dismiss();
+      //       });
+      //       this.connectSubscription.unsubscribe();
     });
   }
 
@@ -192,12 +193,10 @@ export class MyApp {
     this.activePage = page;
   }
 
-  openLinkupWebsite(url) {
-    //alert('Launch Eternus Website in default browser');
+  openLinkupWebsite() {
     this.platform.ready().then(() => {
-            let browser = new InAppBrowser(url, '_system');
-        });
-    
+      let browser = new InAppBrowser('http://linkup.eternussolutions.com/', '_system');
+    });
   }
 
   checkActive(page) {

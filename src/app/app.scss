@@ -23,6 +23,27 @@
     background-color: map-get($colors, light );
 }
 
+.fc .fc-toolbar .fc-prev-button .ui-icon-circle-triangle-w:before {
+  background-image: url('../assets/img/left.png') !important;
+  content: '';
+  width:15px;
+  height: 15px;
+  display: inline-block;
+}
+
+.ui-icon .ui-icon-circle-triangle-e {
+    background-image: url(assets/img/right.png) !important;
+    background-position: 0px 0px !important;
+}
+
+.fc .fc-toolbar .fc-next-button .ui-icon-circle-triangle-e:before {
+  background-image: url('../assets/img/right.png') !important;
+  content: '';
+  width:15px;
+  height: 15px;
+  display: inline-block;
+}
+
 .card-background-page {
   ion-avatar img {
     width: 50px;
@@ -34,7 +55,8 @@
   }
   
   .menuHeader {
-      background: map-get($colors, light );
+      background: map-get($colors, primary);
+      color: map-get($colors, light);
       padding-bottom: 20px;
   }
 }  
