@@ -170,13 +170,26 @@ export class LeaveService extends BaseService {
         let headers = new Headers();
         headers.append('Authorization', 'Bearer ' + localStorage.getItem('accessToken'));
         let options = new RequestOptions({ headers: headers });
-        return this.http.get(this.baseUrl + 'Project/GetMyActiveProjects', options)
-            .map(res => {
+        // return this.http.get(this.baseUrl + 'Project/GetMyActiveProjects', options)
+        //     .map(res => {
+        //         return res.json();
+        //     })
+        //     .catch(err => {
+        //         return this.handleError(err);
+        //     });
+
+        if (this._cacheService.exists('activeProjectList')) {
+            return new Observable<any>((observer: any) => {
+                observer.next(this._cacheService.get('activeProjectList'));
+            });
+        } else {
+            return this.http.get(this.baseUrl + 'Project/GetMyActiveProjects', options).map(res => {
+                this._cacheService.set('activeProjectList', res.json(), { maxAge: 24 * 60 * 60 });
                 return res.json();
-            })
-            .catch(err => {
+            }).catch(err => {
                 return this.handleError(err);
             });
+        }
     }
 
     setEditableLeave(leave: any) {
