@@ -403,6 +403,8 @@ export class LeaveApprovalPage {
         });
       leave.selectionColor = "white";
       leave.selected = false;
+      if(this.selectedEmployees.length == 0)
+      this.isshowApproveRejectItems = false;
     }
     else
     {
