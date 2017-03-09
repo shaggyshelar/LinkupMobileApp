@@ -36,7 +36,6 @@ export class ApproveTimesheetPage {
           this.approveEmployee = res.reverse();
           localStorage.setItem('approveTimesheetsBadgeCount', res.length);
         }
-        console.log('approveEmployee => ', this.approveEmployee[0]);
         loader.dismiss();
       });
     });

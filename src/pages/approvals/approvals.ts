@@ -16,7 +16,7 @@ import { ApproveTimesheetPage } from '../Timesheet/approve-timesheet/approve-tim
 export class ApprovalsPage {
   leavesTab: any;
   timesheetsTab: any;
-  approveTimesheetsBadgeCount : Number = 0;
+  approveTimesheetsBadgeCount : Number = null;
 
   timesheetBadgeShow : Boolean = false;
 
