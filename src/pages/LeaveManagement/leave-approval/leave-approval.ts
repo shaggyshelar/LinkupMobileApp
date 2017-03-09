@@ -34,6 +34,7 @@ export class LeaveApprovalPage {
   public totalCount: number;
   public comment: string;
   public editMode : boolean;
+  public isDatachanged : boolean = false;
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
     public leaveService: LeaveService,
@@ -54,11 +55,12 @@ export class LeaveApprovalPage {
     this.getApproverLeave();
   }
   ionViewWillEnter() {
-    //this.getApproverLeave();
+    this.getApproverLeave();
   }
 
   getApproverLeave() {
 
+    
     this.leaveList = [];
     this.resetAllFlags();
     this.spinnerService.createSpinner('Please wait..');
