@@ -26,8 +26,6 @@ export class DailyTimesheetDetailPage {
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad DailyTimesheetDetailPage');
-    console.log('data => ', this.navParams.data);
     this.dailyData = this.navParams.data;
   }
 

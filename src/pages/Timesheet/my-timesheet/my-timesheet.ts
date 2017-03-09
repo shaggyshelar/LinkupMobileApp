@@ -23,8 +23,6 @@ export class MyTimesheetPage {
    }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad MyTimesheetPage');
-
     var loader = this.loadingCtrl.create({
       content: 'Please wait...'
     });
@@ -33,7 +31,8 @@ export class MyTimesheetPage {
       this.employeeTimesheetService.getMyTimesheets().subscribe((res:any)=> {
         if(res.length > 0)
           this.timesheetRec = res;
-        console.log('employeeTimesheet => ', res);
+        loader.dismiss();
+      }, (err) => {
         loader.dismiss();
       });
     });
