@@ -1,8 +1,9 @@
-import { Component, ViewChild } from '@angular/core';
-import { Nav, Platform } from 'ionic-angular';
-import { StatusBar, Splashscreen, Network } from 'ionic-native';
-import { LoadingController } from 'ionic-angular';
-import { HomePage } from '../pages/home/home';
+
+import { Component, ViewChild } from '@angular/core';
+import { Nav, Platform } from 'ionic-angular';
+import { StatusBar, Splashscreen, Network, InAppBrowser } from 'ionic-native';
+import { LoadingController} from 'ionic-angular';
+import { HomePage } from '../pages/home/home';
 
 
 // Leave Management
@@ -54,6 +55,7 @@ export interface PageInterface {
 @Component({
   templateUrl: 'app.html'
 })
+
 export class MyApp {
   @ViewChild(Nav) nav: Nav;
   public showLeaveSubmenus: boolean = true;
@@ -62,10 +64,14 @@ export class MyApp {
   public showCertificationSubmenus: boolean = false;
   public showProjectsSubmenus: boolean = false;
   rootPage: any = LoginPage;
+  cordova: any;
   isAuthenticated: boolean = false;
   loader: any;
+  IntenetLoader: any;
+  alert: any;
   activePage: any;
   disconnectSubscription: any;
+  connectSubscription: any;
   isDisconnected: boolean = false;
   subscription: Subscription;
   leavePages: PageInterface[] = [];
@@ -139,17 +145,31 @@ export class MyApp {
     this.platform.ready().then(() => {
       StatusBar.styleDefault();
       Splashscreen.hide();
+
+//       Intenet check
+//       this.internetChecking();
+//       this.disconnectSubscription = Network.onDisconnect().subscribe(() => {
+//         this.isDisconnected = true;
+//         this.internetChecking();
+//       });
+//       this.disconnectSubscription.unsubscribe();
+
+//       this.connectSubscription = Network.onConnect().subscribe(() => {
+//         this.IntenetLoader.dismiss();
+//       });
+//       this.connectSubscription.unsubscribe();
     });
   }
 
   ionViewDidLoad() {
-    this.disconnectSubscription = Network.onDisconnect().subscribe(() => {
-      this.isDisconnected = true;
-    });
+    // this.disconnectSubscription = Network.onDisconnect().subscribe(() => {
+    //   this.isDisconnected = true;
+    // });
   }
 
   ionViewWillUnload() {
-    this.disconnectSubscription.unsubscribe();
+    //this.disconnectSubscription.unsubscribe();
+    //this.connectSubscription.unsubscribe();
     this.subscription.unsubscribe();
   }
 
@@ -161,14 +181,23 @@ export class MyApp {
     });
     this.loader.present();
   }
-
+  internetChecking() {
+    this.IntenetLoader = this.loadingCtrl.create({
+      content: "Connecting to internet..."
+    });
+    this.IntenetLoader.present();
+  }
   openPage(page) {
     this.nav.setRoot(page.component);
     this.activePage = page;
   }
 
-  openLinkupWebsite() {
-    alert('Launch Eternus Website in default browser');
+  openLinkupWebsite(url) {
+    //alert('Launch Eternus Website in default browser');
+    this.platform.ready().then(() => {
+            let browser = new InAppBrowser(url, '_system');
+        });
+    
   }
 
   checkActive(page) {
