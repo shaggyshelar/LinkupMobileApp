@@ -35,6 +35,8 @@ export class LeaveApprovalPage {
   public comment: string;
   public editMode: boolean;
   public isFirstTimeLoad: boolean = true;
+  public isSelectall:boolean = false;
+  public isshowApproveRejectItems = false;
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
     public leaveService: LeaveService,
@@ -108,8 +110,10 @@ export class LeaveApprovalPage {
         this.spinnerService.stopSpinner();
         console.log("Data from server", res);
         this.leavesArray = [];
+        this.selectedEmployees = [];
         this.leavesArray = res.reverse();
         this.leavesArray.forEach(leave => {
+          this.selectLeave(leave,false);
         });
       },
       error => {
@@ -118,9 +122,14 @@ export class LeaveApprovalPage {
       });
   }
 
+ 
+
   /* Show Leave Deatails */
 
   itemTapped(leave: any) {
+    if(this.isshowApproveRejectItems == true)
+    this.selectLeave(leave,!leave.selected);
+    else
     this.navCtrl.push(LeaveApprovalDetailPage, { leave: leave });
   }
 
@@ -348,8 +357,78 @@ export class LeaveApprovalPage {
       });
   }
 
+  /** Bulk Approval */
+
+  /** Multiselction of List item */
+
+  longPressedItem(leave: any)
+  {
+  this.isshowApproveRejectItems = true;
+  this.selectLeave(leave,true);
+   console.log('Long pressed');
+  }
+
   editleaves() {
     this.editMode = !this.editMode;
+    if(this.editMode == false)
+    {
+      this.isshowApproveRejectItems = false;
+      this.selectedEmployees = [];
+     this.leavesArray.forEach(leave => {
+          this.selectLeave(leave,false);
+        });
+    }
+    
+  }
+
+  selectAllLeaves()
+  {
+    this.selectedEmployees = [];
+     this.leavesArray.forEach(leave => {
+          this.selectLeave(leave,true);
+        });
+  }
+
+   selectLeave(leave:any ,checked:boolean)
+  {
+     if(checked == false)
+    {
+      var index : number = 0;
+      this.leavesArray.forEach(leaves => {
+          if(leaves == leave)
+          {
+            this.selectedEmployees.splice(index,1);
+          }
+          index ++;
+        });
+      leave.selectionColor = "white";
+      leave.selected = false;
+    }
+    else
+    {
+      this.selectedEmployees.push(leave);
+      leave.selectionColor = "#44679F";
+      leave.selected = true;
+    }
+   this.setboolean();
+  }
+  setboolean()
+  {
+    this.leavechecked = false;
+    this.isSelectall = false;
+    if(this.selectedEmployees && this.selectedEmployees.length > 0)
+    {
+      this.leavechecked = true;
+
+      var count : number = 0;
+      this.leavesArray.forEach(leaves => {
+          count ++;
+        });
+      if(count == this.selectedEmployees.length)
+        {
+          this.isSelectall = true;
+        }
+    }
   }
   approveBulkLeave() {
     this.showApproveRejectPromt(true);
@@ -367,6 +446,7 @@ export class LeaveApprovalPage {
     this.leavechecked = false;
     this.isHrApprove = false;
     this.isMoreclicked = false;
+    this.isshowApproveRejectItems = false;
     this.comment = '';
     this.totalCount = 0;
   }
