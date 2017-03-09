@@ -97,6 +97,7 @@ export class MyApp {
         if (isAuthenticated == "true") {
           this.isAuthenticated = true;
           this.rootPage = HomePage;
+          this.activePage = HomePage;
           this.toggleLeaveMenu();
           this.toggleTimesheetMenu()
           this.toggleCertificationMenu();
@@ -133,11 +134,13 @@ export class MyApp {
     this.isAuthenticated = this.auth.isAuthenticated();
     if (this.auth.isAuthenticated()) {
       this.rootPage = HomePage;
+      this.activePage = HomePage;
       this.loadUserDetails();
     } else {
       this.rootPage = LoginPage;
     }
     this.pages = [
+      { title: 'Home', component: HomePage, icon: 'ios-home' },
       { title: 'My Calendar', component: MyCalendarPage, icon: 'md-calendar' },
       { title: 'Approvals', component: ApprovalsPage, icon: 'md-checkbox-outline' },
       { title: 'Timesheets', component: MyTimesheetPage, icon: 'md-clock' },

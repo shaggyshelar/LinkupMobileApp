@@ -19,10 +19,6 @@
 @import "node_modules/primeng/resources/primeng";
 @import "node_modules/primeng/resources/themes/omega/theme.scss";
 
-.activeHighlight {
-    background-color: map-get($colors, light );
-}
-
 .fc .fc-toolbar .fc-prev-button .ui-icon-circle-triangle-w:before {
   background-image: url('../assets/img/left.png') !important;
   content: '';
@@ -44,8 +40,12 @@
   display: inline-block;
 }
 
+.activeHighlight {
+    background-color: map-get($colors, activeMenu ) !important;
+}
+
 .card-background-page {
-  background: color($colors, sideMenuBackground, base) !important;
+  background: color($colors, sideMenuBackground, base);
   
   ion-avatar img {
     width: 50px;
