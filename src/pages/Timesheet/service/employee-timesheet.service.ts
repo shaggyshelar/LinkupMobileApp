@@ -1,6 +1,6 @@
 /** Angular Dependencies */
 import { Injectable } from '@angular/core';
-import { Http } from '@angular/http';
+import { Http, Headers, RequestOptions } from '@angular/http';
 
 /** Third Party Dependencies */
 import { CacheService } from 'ng2-cache/ng2-cache';
@@ -105,6 +105,94 @@ export class EmployeeTimesheetService extends BaseService {
                 return this.handleError(err);
             });
         }
+    }
+
+/** ApproveTimesheet API Service Call
+ *  TODO: Change API URL
+ */
+    approveTimesheet(payload: any) {
+        let headers = new Headers();
+        let body = JSON.stringify(payload);
+        headers.append('Authorization', 'Bearer ' + localStorage.getItem('accessToken'));
+        headers.append('Content-Type', 'application/json');
+        let options = new RequestOptions({ headers: headers });
+        // let windowRef = this._window();
+        // windowRef['App'].blockUI();
+        return this.http.put(this.baseUrl + 'LeaveApprovers/ApproveByManager', body, options)
+            .map(res => {
+                // windowRef['App'].unblockUI();
+                return res.json();
+            })
+            .catch(err => {
+                // windowRef['App'].unblockUI();
+                return this.handleError(err);
+            });
+    }
+
+/** RejectTimesheet API Service Call
+ *  TODO: Change API URL
+ */
+    rejectTimesheet(payload: any) {
+        let headers = new Headers();
+        let body = JSON.stringify(payload);
+        headers.append('Authorization', 'Bearer ' + localStorage.getItem('accessToken'));
+        headers.append('Content-Type', 'application/json');
+        let options = new RequestOptions({ headers: headers });
+        // let windowRef = this._window();
+        // windowRef['App'].blockUI();
+        return this.http.put(this.baseUrl + 'LeaveApprovers/ApproveByManager', body, options)
+            .map(res => {
+                // windowRef['App'].unblockUI();
+                return res.json();
+            })
+            .catch(err => {
+                // windowRef['App'].unblockUI();
+                return this.handleError(err);
+            });
+    }
+
+/** SubmitDailySheet API Service Call
+ *  TODO: Change API URL
+ */
+    submitDailyTimesheet(payload: any) {
+        let headers = new Headers();
+        let body = JSON.stringify(payload);
+        headers.append('Authorization', 'Bearer ' + localStorage.getItem('accessToken'));
+        headers.append('Content-Type', 'application/json');
+        // let windowRef = this._window();              used for loader
+        // windowRef['App'].blockUI();
+        let options = new RequestOptions({ headers: headers });
+        return this.http.post(this.baseUrl + 'LeaveDetails', body, options)
+            .map(res => {
+                // windowRef['App'].unblockUI();
+                return res.json();
+            })
+            .catch(err => {
+                // windowRef['App'].unblockUI();
+                return this.handleError(err);
+            });
+    }
+
+/** submitWeeklyTimesheetForApproval API Service Call
+ *  TODO: Change API URL
+ */
+    submitWeeklyTimesheetForApproval(payload: any) {
+        let headers = new Headers();
+        let body = JSON.stringify(payload);
+        headers.append('Authorization', 'Bearer ' + localStorage.getItem('accessToken'));
+        headers.append('Content-Type', 'application/json');
+        // let windowRef = this._window();
+        // windowRef['App'].blockUI();
+        let options = new RequestOptions({ headers: headers });
+        return this.http.post(this.baseUrl + 'LeaveDetails', body, options)
+            .map(res => {
+                // windowRef['App'].unblockUI();
+                return res.json();
+            })
+            .catch(err => {
+                // windowRef['App'].unblockUI();
+                return this.handleError(err);
+            });
     }
 
 }
