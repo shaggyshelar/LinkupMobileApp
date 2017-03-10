@@ -34,8 +34,11 @@ export class MyTimesheetPage {
         loader.dismiss();
       }, (err) => {
         loader.dismiss();
-      });
+        console.log(err);
+      }
+      );
     });
+
   }
 
   editClicked(item) {
@@ -44,7 +47,7 @@ export class MyTimesheetPage {
 
   itemClicked(entry) {
     //alert('id => '+ entry.ID);
-    this.navCtrl.push(TimesheetDetailsPage, {id: entry.ID});
+    this.navCtrl.push(TimesheetDetailsPage, {payload: entry, caller : 'my-timesheet'});
   }
 
 }
