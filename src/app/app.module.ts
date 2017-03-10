@@ -23,6 +23,7 @@ import { BiometricDiscrepancyApprovalPage } from '../pages/Timesheet/biometric-d
 import { ApproveTimesheetDetailsPage } from '../pages/Timesheet/approve-timesheet-details/approve-timesheet-details';
 import { TimesheetDetailsPage } from '../pages/Timesheet/timesheet-details/timesheet-details';
 import { DailyTimesheetDetailPage } from '../pages/Timesheet/daily-timesheet-detail/daily-timesheet-detail';
+import { ApproveTimesheetFilterPage } from '../pages/Timesheet/approve-timesheet-filter/approve-timesheet-filter';
 
 // Leave Management
 import { ApplyForLeavePage } from '../pages/LeaveManagement/apply-for-leave/apply-for-leave';
@@ -36,6 +37,7 @@ import { LeaveApprovalDetailPage } from '../pages/LeaveManagement/leave-approval
 import { LeaveApprovalFilterPage } from '../pages/LeaveManagement/leave-approval-filter/leave-approval-filter';
 import { MyLeavesFilterPage } from '../pages/LeaveManagement/my-leaves-filter/my-leaves-filter';
 import { HolidaysFilterPage } from '../pages/LeaveManagement/holidays-filter/holidays-filter';
+import { HolidayDetailsPage } from '../pages/LeaveManagement/holiday-details/holiday-details';
 
 // Certification
 import { MyCertificationPage } from '../pages/Certification/my-certification/my-certification';
@@ -93,6 +95,7 @@ import { CacheService, CacheStorageAbstract, CacheLocalStorage } from 'ng2-cache
     ApproveTimesheetDetailsPage,
     TimesheetDetailsPage,
     DailyTimesheetDetailPage,
+    ApproveTimesheetFilterPage,
     ApplyForLeavePage,
     HolidaysPage,
     MyCalendarPage,
@@ -102,6 +105,7 @@ import { CacheService, CacheStorageAbstract, CacheLocalStorage } from 'ng2-cache
     LeaveApprovalFilterPage,
     MyLeavesFilterPage,
     HolidaysFilterPage,
+    HolidayDetailsPage,
     MyLeavesPage,
     MyLeaveDetailPage,
     ManageMyProjectsPage,
@@ -144,6 +148,7 @@ import { CacheService, CacheStorageAbstract, CacheLocalStorage } from 'ng2-cache
     ApproveTimesheetDetailsPage,
     TimesheetDetailsPage,
     DailyTimesheetDetailPage,
+    ApproveTimesheetFilterPage,
     ApplyForLeavePage,
     HolidaysPage,
     MyCalendarPage,
@@ -153,6 +158,7 @@ import { CacheService, CacheStorageAbstract, CacheLocalStorage } from 'ng2-cache
     LeaveApprovalFilterPage,
     MyLeavesFilterPage,
     HolidaysFilterPage,
+    HolidayDetailsPage,
     MyLeavesPage,
     MyLeaveDetailPage,
     MyCertificationPage,

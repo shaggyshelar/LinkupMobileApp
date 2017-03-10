@@ -8,6 +8,7 @@ import { SpinnerService } from '../../../providers/index'
 
 import * as moment from 'moment/moment';
 import { HolidaysFilterPage } from '../holidays-filter/holidays-filter';
+import { HolidayDetailsPage } from '../holiday-details/holiday-details';
 /*
   Generated class for the Holidays page.
 
@@ -156,5 +157,7 @@ export class HolidaysPage {
     });
     actionSheet.present();
   }
-
+  onHolidayDetails(holidayData :any) {
+    this.navCtrl.push(HolidayDetailsPage,{holiday: holidayData });
+  }
 }
