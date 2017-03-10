@@ -6,6 +6,8 @@ import { Observable } from 'rxjs/Rx';
 
 import { PhasesService, ProjectService, EmployeeTimesheetService } from '../index';
 
+import { TimesheetDetailsPage } from '../timesheet-details/timesheet-details';
+
 @Component({
   selector: 'page-enter-timesheet',
   templateUrl: 'enter-timesheet.html'
@@ -103,7 +105,7 @@ export class EnterTimesheetPage {
 
   cardClick(index) {
     this.cardSelectionIndex = index;
-    alert('Card no. '+index);
+    this.navCtrl.push(TimesheetDetailsPage, { caller: 'enter-timesheet' });
   }
 
   submitTimesheetClicked() {
