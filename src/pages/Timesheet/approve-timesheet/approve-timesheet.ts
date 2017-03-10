@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
-import  {  LoadingController  }  from  'ionic-angular';
+import { LoadingController } from 'ionic-angular';
 import { Observable } from 'rxjs/Rx';
 
 import { ApproveTimesheetDetailsPage } from '../approve-timesheet-details/approve-timesheet-details';
@@ -21,27 +21,28 @@ export class ApproveTimesheetPage {
   constructor(public navCtrl: NavController
     , public navParams: NavParams
     , private employeeTimesheetService: EmployeeTimesheetService
-    , public  loadingCtrl: LoadingController) {
+    , public loadingCtrl: LoadingController) {
 
   }
 
-  ionViewDidLoad() {
-    this.decideAction();
+  ionViewDidLoad() { }
 
+  ionViewDidEnter() {
+    this.decideAction();
   }
 
   decideAction() {
     switch (this.navParams.data.caller) {
       case 'my-timesheet':
-        //console.log('my-timesheet => approve-timesheets');
+        console.log('my-timesheet => approve-timesheets');
         this.getUserData();
         break;
       case 'enter-timesheet':
-        //console.log('enter timesheet => approve-timesheets');
+        console.log('enter timesheet => approve-timesheets');
         break;
-    
+
       default:
-        //console.log('unknown caller => approve-timesheets');
+        console.log('unknown caller => approve-timesheets');
         this.getApproverData();
         break;
     }
@@ -85,7 +86,7 @@ export class ApproveTimesheetPage {
   }
 
   itemTapped(entry) {
-    this.navCtrl.push(ApproveTimesheetDetailsPage, { id: entry.ID, caller : 'approve-timesheet' });
+    this.navCtrl.push(ApproveTimesheetDetailsPage, { id: entry.ID, caller: 'approve-timesheet' });
   }
 
 }
