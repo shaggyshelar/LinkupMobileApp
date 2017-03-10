@@ -7,7 +7,6 @@ import { BaseService } from '../../index';
 
 /** Context for service calls */
 const CONTEXT = 'clientMaster';
-
 /** Service Definition */
 @Injectable()
 export class ClientService extends BaseService {

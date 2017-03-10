@@ -1,5 +1,4 @@
 import { Injectable, EventEmitter } from '@angular/core';
-
 @Injectable()
 export class MessageService {
     public static LEAVE_APPROVED = 'Leave approved';
@@ -23,7 +22,7 @@ export class MessageService {
     isSessionTimeout: boolean = false;
 
     onMessageAdd: EventEmitter<Object> = new EventEmitter<Object>();
-
+    
     getMessages() {
         return this.onMessageAdd;
     }

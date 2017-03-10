@@ -16,7 +16,7 @@ export class BiometricDiscrepancyApprovalPage {
   constructor(public navCtrl: NavController, public navParams: NavParams) { }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad BiometricDiscrepancyApprovalPage');
+     //TO DO:Implementation
   }
 
 }

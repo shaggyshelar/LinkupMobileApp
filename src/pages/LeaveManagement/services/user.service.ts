@@ -13,7 +13,6 @@ import { LeaveDetail } from '../models/leaveDetail';
 
 /** Context for service calls */
 const CONTEXT = 'Users';
-
 /** Service Definition */
 @Injectable()
 export class UserService extends BaseService {

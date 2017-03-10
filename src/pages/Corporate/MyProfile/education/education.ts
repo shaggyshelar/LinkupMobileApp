@@ -81,7 +81,7 @@ export class EducationPage {
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad EducationPage');
+     //TO DO:Implementation
   }
 
   toggleShowDetails() {
@@ -132,8 +132,6 @@ export class EducationPage {
   submitClicked(item) {
     item.status = 'Pending';
     this.education.push(item);
-    console.log('controls=> ',this.educationForm.controls);
-    console.log('ok=> ', item);
     /** 
      * API call
      */

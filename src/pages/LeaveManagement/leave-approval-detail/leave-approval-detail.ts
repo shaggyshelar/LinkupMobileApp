@@ -53,7 +53,6 @@ export class LeaveApprovalDetailPage {
     }
 
     ionViewDidLoad() {
-        console.log('ionViewDidLoad LeaveApprovalDetailPage');
         this.getLeaveDetails();
     }
 

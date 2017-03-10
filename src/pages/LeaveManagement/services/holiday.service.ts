@@ -11,7 +11,6 @@ import 'rxjs/add/operator/map';
 import { BaseService } from '../../../providers/index';
 import { Holiday } from '../models/holiday';
 // import { Employee } from '../models/employee';
-
 /** Context for service calls */
 const CONTEXT = 'Holiday';
 

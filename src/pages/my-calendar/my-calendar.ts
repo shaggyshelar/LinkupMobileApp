@@ -47,7 +47,6 @@ export class MyCalendarPage {
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad MyCalendarPage');
     this.pendingHolidayCount ='';
     if (this._cacheService.exists('PendingHolidayCount')) {
         this.pendingHolidayCount = this._cacheService.get('PendingHolidayCount');

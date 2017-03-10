@@ -12,6 +12,16 @@
     </button>
      
     <!--<ion-title>Approve Leaves</ion-title>-->
+    <ion-buttons start>
+      <button (click)="onFilter()" ion-button icon-only> 
+        <ion-icon ios="ios-funnel" md="md-funnel"></ion-icon>
+      </button>
+    </ion-buttons>
+    <ion-buttons start>
+      <button (click)="onSort()" ion-button icon-only>
+        <ion-icon name="swap"></ion-icon>
+      </button>
+    </ion-buttons> 
     <ion-toolbar>
     <ion-buttons start *ngIf="isBulkApprovePermission == false">
     <button ion-button *ngIf= "editMode == true" (click)="editleaves()">

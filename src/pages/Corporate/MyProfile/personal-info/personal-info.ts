@@ -32,7 +32,7 @@ export class PersonalInfoPage {
     loader.present();
   }
   ionViewDidLoad() {
-    console.log('ionViewDidLoad PersonalInfoPage');
+     //TO DO:Implementation
   }
   dismiss(data) {
     this.viewCtrl.dismiss(data);

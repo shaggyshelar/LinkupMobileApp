@@ -4,7 +4,6 @@ import { Http } from '@angular/http';
 
 /** Module Level Dependencies */
 import { BaseService } from '../../index';
-
 /** Context for service calls */
 const CONTEXT = 'projectTypeMaster';
 

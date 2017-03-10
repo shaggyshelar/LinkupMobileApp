@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, ActionSheetController, Events } from 'ionic-angular';
+import { NavController, NavParams, ActionSheetController, Events, ModalController } from 'ionic-angular';
 import { SpinnerService } from '../../../providers/index';
 import { LeaveService } from '../index';
 import { AlertController, ItemSliding } from 'ionic-angular';
@@ -7,6 +7,7 @@ import { Leave } from '../models/leave';
 import { LeaveApprovalDetailPage } from '../leave-approval-detail/leave-approval-detail';
 import { Observable } from 'rxjs/Rx';
 import { Toast } from 'ionic-native';
+import { LeaveApprovalFilterPage } from '../leave-approval-filter/leave-approval-filter';
 /*
   Generated class for the LeaveApproval page.
 
@@ -33,6 +34,8 @@ export class LeaveApprovalPage {
   public selectedEmployees: any[];
   public totalCount: number;
   public comment: string;
+  public isDatachanged : boolean = false;
+  public isDescending: boolean=true;
   public editMode: boolean;
   public isFirstTimeLoad: boolean = true;
   public isSelectall:boolean = false;
@@ -43,7 +46,8 @@ export class LeaveApprovalPage {
     public spinnerService: SpinnerService,
     public actionSheetCtrl: ActionSheetController,
     public alertCtrl: AlertController,
-    public leaveStatusChangedEvent: Events) {
+    public leaveStatusChangedEvent: Events,
+    public modalCtrl: ModalController) {
     this.userPermissions = JSON.parse(localStorage.getItem("loggedInUserPermission"));
     this.isBulkApprovePermission = this.checkBulkApprovePermission('LEAVE.BULK_APPROVAL.MANAGE');
     this.leaveStatusChangedEvent.subscribe('Hr Approval Leave changed', () => {
@@ -63,8 +67,6 @@ export class LeaveApprovalPage {
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad LeaveApprovalPage');
-
     this.getApproverLeave();
   }
   ionViewWillEnter() {
@@ -91,7 +93,6 @@ export class LeaveApprovalPage {
       this.spinnerService.stopSpinner();
       if (res.length > 0) {
         this.leaveList = res.reverse();
-        console.log('Got approvar list' + this.leaveList);
         this.getPendingLeavesToApprove();
       }
     },
@@ -108,7 +109,6 @@ export class LeaveApprovalPage {
       .subscribe(
       (res: any) => {
         this.spinnerService.stopSpinner();
-        console.log("Data from server", res);
         this.leavesArray = [];
         this.selectedEmployees = [];
         this.leavesArray = res.reverse();
@@ -169,7 +169,6 @@ export class LeaveApprovalPage {
         text: 'Cancel',
         role: 'cancel',
         handler: () => {
-          console.log('Cancel clicked');
           this.isMoreclicked = false;
         }
       }
@@ -207,13 +206,11 @@ export class LeaveApprovalPage {
         {
           text: 'Cancel',
           handler: data => {
-            console.log('Cancel clicked');
           }
         },
         {
           text: isApprove,
           handler: data => {
-            console.log('Saved clicked');
 
             this.comment = data.title;
             var cmt = this.comment;//this.model.comments;
@@ -365,7 +362,6 @@ export class LeaveApprovalPage {
   {
   this.isshowApproveRejectItems = true;
   this.selectLeave(leave,true);
-   console.log('Long pressed');
   }
 
   editleaves() {
@@ -474,6 +470,42 @@ export class LeaveApprovalPage {
     //   }
     // );
   }
-
+  onFilter() {
+    let modal = this.modalCtrl.create(LeaveApprovalFilterPage);
+    modal.present();
+  }
+  onSort() {
+    let actionSheet = this.actionSheetCtrl.create({
+      title: 'Sort Your Leaves',
+      buttons: [
+        {
+          text: 'Date Ascending',
+          role: 'date ascending',
+          handler: () => {
+            if(this.isDescending === false) {
+              this.leaveList.reverse();
+              this.isDescending = true;
+            }
+          }
+        },{
+          text: 'Date Descending',
+          role: 'date descending',
+          handler: () => {
+            if(this.isDescending) {
+              this.leaveList.reverse();
+              this.isDescending = false;
+            }
+          }
+        },{
+          text: 'Cancel',
+          role: 'cancel',
+          handler: () => {
+            
+          }
+        }
+      ]
+    });
+    actionSheet.present();
+  }
 
 }

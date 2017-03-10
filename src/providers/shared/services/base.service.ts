@@ -4,7 +4,6 @@ import { MessageService } from './message.service';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/catch';
-
 /** HttpService interface Definition*/
 interface HttpServices {
     baseUrl: string;
@@ -18,12 +17,12 @@ interface HttpServices {
 /** Base Service Definition */
 export class BaseService implements HttpServices {
     public baseUrl: string = 'http://192.168.101.21:8009/api/';
+    //public baseUrl: string = 'http://linkupmobile.eternussolutions.com/webapi/api/';
     public options: RequestOptions;
 
     private httpService: Http;
     private requestUrl: string;
     private messageService: MessageService;
-
     /** Base Service constructor : Accepts Analytics Service, Http Service, Context path, Log service */
     constructor(_httpService: Http, _context: string) {
         this.httpService = _httpService;

@@ -37,7 +37,7 @@ export class EmploymentHistoryPage {
                }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad EmploymentHistoryPage');
+     //TO DO:Implementation
   }
   dismiss(data) {
     this.viewCtrl.dismiss(data);
@@ -57,7 +57,7 @@ export class EmploymentHistoryPage {
     this.Employer.Enddate = '';
   }
   onSave() {
-      console.log('data saved sucessfully');
+       //TO DO:Implementation
   }
   editEmployementDetails() {
     this.Employer.EmployementDetails = 'Eternus solutions';

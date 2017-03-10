@@ -14,7 +14,6 @@ import { Select } from '../models/select';
 // import { Employee } from '../models/employee';
 import { LeaveDetail } from '../models/leaveDetail';
 import { Events } from 'ionic-angular';
-
 /** Context for service calls */
 const CONTEXT = 'Leave';
 

@@ -16,7 +16,7 @@ export class ConferenceBookingPage {
   constructor(public navCtrl: NavController, public navParams: NavParams) { }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad ConferenceBookingPage');
+     //TO DO:Implementation
   }
 
 }

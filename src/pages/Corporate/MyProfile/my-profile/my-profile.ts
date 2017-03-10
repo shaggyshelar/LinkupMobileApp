@@ -32,13 +32,13 @@ export class MyProfilePage {
   ) { }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad MyProfilePage');
+     //TO DO:Implementation;
   }
   
   achievementsTapped() {
     let modal = this.modalCtrl.create(AchievementPage,{message:'Welcome'});
     modal.onDidDismiss((data)=> {
-      console.log(data);
+      
     });
     modal.present();
     // this.navCtrl.push(AchievementPage,{message:'Welcome'});
