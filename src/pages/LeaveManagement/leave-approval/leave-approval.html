@@ -53,27 +53,6 @@
 
 </ion-header>
 
-<ion-footer *ngIf= "editMode == true" class ="animated fadeInUp">
-  <ion-toolbar>
-    <ion-buttons start>
-      <button ion-button (click)="selectAllLeaves()">
-        All
-      </button>
-      </ion-buttons>
-       <ion-buttons end>
-      <button ion-button [disabled] = "leavechecked == false" (click)="approveBulkLeave()">
-        Approve
-      </button>
-      <button ion-button [disabled] = "leavechecked == false" (click)="rejectBulkLeave()">
-        Reject
-      </button>
-    </ion-buttons>
-  </ion-toolbar>
-</ion-footer>
-
-
-
-
 <ion-content padding>
 
   <!--All Leave list -->
