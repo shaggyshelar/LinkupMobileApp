@@ -52,6 +52,9 @@
     height: 50px;
   }
 
+ 
+         
+
   .item-inner {
     border-bottom: 0 !important;
   }
@@ -70,4 +73,6 @@
   .customMenuIcons {
     color: map-get($colors, primary);
   }
+
+  
 }  

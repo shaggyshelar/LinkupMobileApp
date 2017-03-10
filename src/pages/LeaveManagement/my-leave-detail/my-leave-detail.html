@@ -37,13 +37,7 @@
       <h2>Approver</h2>
     </ion-item>  
     <ion-item *ngFor="let approver of approverObs">
-      <h3>{{approver.Approver.Name}}</h3>
-      <p>
-       {{approver.Comments}}
-      </p>
-      <p>
-       {{approver.Status}}
-      </p>
+      <p>{{approver.Approver.Name}}<span class="right">{{ approver.Status }}</span></p>
     </ion-item>
   </ion-list>
 
