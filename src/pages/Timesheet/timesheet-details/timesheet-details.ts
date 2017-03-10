@@ -41,8 +41,8 @@ export class TimesheetDetailsPage {
   }
 
   enterTimesheet() {
-    //this.getMyTimesheetDetails(1);
-    this.navCtrl.push(DailyTimesheetDetailPage, { readOnly: false });
+    this.getMyTimesheetDetails(1);
+    // this.navCtrl.push(DailyTimesheetDetailPage, { readOnly: false });
   }
 
   getMyTimesheetDetails(id) {
@@ -52,12 +52,11 @@ export class TimesheetDetailsPage {
       content: 'Please wait...'
     });
 
-    /** TODO: Implement API Service call, Loader  */
     loader.present().then(() => {
       this.employeeTimesheetService.getMyTimesheetDetail(id).subscribe((res: any) => {
         // if(res)
         this.employeeTimesheet = res.ApproverTimesheet;
-        //console.log('employeeTimesheet => ', res.ApproverTimesheet);
+
         loader.dismiss();
       }, (err) => {
         loader.dismiss();
