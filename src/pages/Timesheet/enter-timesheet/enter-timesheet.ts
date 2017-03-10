@@ -103,7 +103,7 @@ export class EnterTimesheetPage {
 
   cardClick(index) {
     this.cardSelectionIndex = index;
-    this.navCtrl.push(TimesheetDetailsPage, { caller: 'enter-timesheet' });
+    this.navCtrl.push(TimesheetDetailsPage, { caller: 'enter-timesheet', timesheetID : index });
   }
 
   submitTimesheetClicked() {
