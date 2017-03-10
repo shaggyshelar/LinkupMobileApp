@@ -7,7 +7,6 @@ import { LeaveDetail } from '../models/leaveDetail';
 import { MessageService } from '../../../providers/index';
 import { AuthService } from '../../../providers/index';
 import { ApplyLeaveValidation } from '../models/applyLeaveValidation';
-import { Select } from '../models/select';
 import { HolidayService } from '../services/holiday.service';
 import { LeaveTypeMasterService } from '../../../providers/shared/master/leaveTypeMaster.service';
 
@@ -15,7 +14,6 @@ import { LeaveTypeMasterService } from '../../../providers/shared/master/leaveTy
 import { FormBuilder, FormGroup, Validators,NgForm } from '@angular/forms';
 import { Observable } from 'rxjs/Rx';
 import * as moment from 'moment/moment';
-import { Toast } from 'ionic-native';
 
 /*
   Generated class for the ApplyForLeave page.
@@ -78,7 +76,6 @@ export class ApplyForLeavePage {
   private holidayService: HolidayService,
   public spinnerService:SpinnerService,
   public formBuilder: FormBuilder,
-  private messageService: MessageService,
   public authService : AuthService,
   public leaveTypeMasterService : LeaveTypeMasterService,
   public actionsheetCtr :ActionSheetController
@@ -200,11 +197,11 @@ export class ApplyForLeavePage {
         }
         this.leaveService.submitLeaveRecord(this.addLeaveArr).subscribe(res => {
             if (res) {
-                this.messageService.addMessage({ severity: 'success', summary: 'Success', detail: MessageService.APPLY_LEAVE_2 });
+                MessageService.addMessage({ severity: 'success', summary: 'Success', detail: MessageService.APPLY_LEAVE_2 });
                 this.showToast('MessageService.APPLY_LEAVE_2');
                 this.navCtrl.pop();
             } else {
-                this.messageService.addMessage({ severity: 'error', summary: 'Failed', detail: MessageService.REQUEST_FAILED });
+                MessageService.addMessage({ severity: 'error', summary: 'Failed', detail: MessageService.REQUEST_FAILED });
             }
         });
     }

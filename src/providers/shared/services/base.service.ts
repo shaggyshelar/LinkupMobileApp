@@ -22,12 +22,10 @@ export class BaseService implements HttpServices {
 
     private httpService: Http;
     private requestUrl: string;
-    private messageService: MessageService;
     /** Base Service constructor : Accepts Analytics Service, Http Service, Context path, Log service */
     constructor(_httpService: Http, _context: string) {
         this.httpService = _httpService;
         this.requestUrl = this.baseUrl.concat(_context);
-        this.messageService = new MessageService();
     }
 
     blockUI(): any {
@@ -167,7 +165,7 @@ export class BaseService implements HttpServices {
             //errMsg = `${error.status} - ${error.statusText || ''} ${err}`;
             errMsg = err;
             if (error.status !== 401) {
-                this.messageService.addMessage({ severity: 'error', summary: 'Failed', detail: errMsg });
+                MessageService.addMessage({ severity: 'error', summary: 'Failed', detail: errMsg });
             }
         } else {
             errMsg = error.message ? error.message : error.toString();
@@ -187,8 +185,6 @@ export class BaseService implements HttpServices {
     }
     private onUnAuthorized() {
         localStorage.clear();
-        if (location.pathname !== '/login') {
-            this.messageService.setSessionTimeOutMessage(true);
-        }
+        MessageService.setSessionTimeOutMessage(true);
     }
 }
