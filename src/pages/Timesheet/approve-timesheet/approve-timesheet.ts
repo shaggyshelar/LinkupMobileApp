@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+
 import { NavController, NavParams,ActionSheetController,ModalController } from 'ionic-angular';
 import { LoadingController } from 'ionic-angular';
 import { Observable } from 'rxjs/Rx';
@@ -14,7 +15,7 @@ import { ApproveTimesheetFilterPage } from '../approve-timesheet-filter/approve-
   templateUrl: 'approve-timesheet.html'
 })
 export class ApproveTimesheetPage {
-
+  origin: String = '';
   public approveEmployee : Observable<EmployeeTimesheetService>;
   public isDescending:boolean = true;
   constructor(public navCtrl: NavController
@@ -23,18 +24,59 @@ export class ApproveTimesheetPage {
   , public loadingCtrl : LoadingController
   , public actionSheetCtrl : ActionSheetController
   , public modalCtrl: ModalController) {
-
-   }
+  }
+  
 
   ionViewDidLoad() {
+    this.decideAction();
+
+  }
+
+  decideAction() {
+    switch (this.navParams.data.caller) {
+      case 'my-timesheet':
+        console.log('my-timesheet => approve-timesheets');
+        this.getUserData();
+        break;
+      case 'enter-timesheet':
+        console.log('enter timesheet => approve-timesheets');
+        break;
+    
+      default:
+        console.log('unknown caller => approve-timesheets');
+        this.getApproverData();
+        break;
+    }
+  }
+
+  getUserData() {
     var loader = this.loadingCtrl.create({
       content: 'Please wait...'
     });
 
-    loader.present().then(()=>{
-      this.employeeTimesheetService.getApproverPendingTimesheets().subscribe((res:any)=> {
-        if(res.length > 0) {
+    loader.present().then(() => {
+      this.employeeTimesheetService.getMyTimesheets().subscribe((res: any) => {
+        if (res.length > 0) {
           this.approveEmployee = res.reverse();
+          console.log(res);
+        }
+        loader.dismiss();
+      }, (err) => {
+        loader.dismiss();
+      });
+    });
+  }
+
+  getApproverData() {
+    var loader = this.loadingCtrl.create({
+      content: 'Please wait...'
+    });
+
+    loader.present().then(() => {
+      this.employeeTimesheetService.getApproverPendingTimesheets().subscribe((res: any) => {
+        if (res.length > 0) {
+          this.approveEmployee = res.reverse();
+          console.log(res);
           localStorage.setItem('approveTimesheetsBadgeCount', res.length);
         }
         loader.dismiss();
@@ -45,7 +87,7 @@ export class ApproveTimesheetPage {
   }
 
   itemTapped(entry) {
-    this.navCtrl.push(ApproveTimesheetDetailsPage, {id: entry.ID});
+    this.navCtrl.push(ApproveTimesheetDetailsPage, { id: entry.ID, caller : 'approve-timesheet' });
   }
   onFilter() {
     let modal = this.modalCtrl.create(ApproveTimesheetFilterPage);
