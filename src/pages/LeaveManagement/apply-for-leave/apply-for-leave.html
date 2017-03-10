@@ -14,6 +14,10 @@
       <ion-title>Apply Leave</ion-title>
     </ion-toolbar>
     <ion-buttons end>
+       <button ion-button end (click)="showLeaveDeatils()" > 
+          Leaves
+          <ion-badge *ngIf = "isAllDataDownloaded == true" class="notifications-badge" color="danger">{{currentUserLeaveDetail.ActualBalance | number : '1.1-3'}}</ion-badge>
+      </button>
       <button ion-button end [disabled]="applyLeaveForm.invalid || this.isValidationMessage || this.itsWeekend" 
       (click)="submitForm()">
           Submit
@@ -34,7 +38,7 @@
 
     <ion-item>
     <ion-label fixed>Leave Type <span class="required">*</span></ion-label>
-    <ion-input [(ngModel)]="this.model.leaveType.Type" (focus) = "getLeaveType($event)" type="text" formControlName="leaveType"></ion-input>
+    <ion-input readonly="true" [(ngModel)]="this.model.leaveType.Type" (focus) = "getLeaveType($event)" type="text" formControlName="leaveType"></ion-input>
   </ion-item>
   <ion-list *ngIf="isShowLeaveSelection == true">
     <ion-item *ngFor="let leavetype of leaves" (click)="selectLeaveType(leavetype)">
@@ -71,8 +75,7 @@
     <p ion-text [hidden]="applyLeaveForm.controls.reason.valid || submitted == false" color="danger" padding-left>
 				Reason is required.
 	     </p> 
-
-<button ion-button full [disabled]="applyLeaveForm.invalid || this.isValidationMessage || this.itsWeekend" (click)= "onAddLeave()"> Add Leaves </button>
+<button ion-button class="add-leave-button" type="submit" [disabled]="applyLeaveForm.invalid || this.isValidationMessage || this.itsWeekend" (click)= "onAddLeave()"> Add Leaves </button>
 <ion-list>
   <ion-item>
     Added Leaves

@@ -393,7 +393,8 @@ export class LeaveApprovalPage {
       this.leavesArray.forEach(leaves => {
           if(leaves == leave)
           {
-            this.selectedEmployees.splice(index,1);
+            var sindex = this.selectedEmployees.indexOf(leave);
+            this.selectedEmployees.splice(sindex,1);
           }
           index ++;
         });
@@ -405,7 +406,7 @@ export class LeaveApprovalPage {
     else
     {
       this.selectedEmployees.push(leave);
-      leave.selectionColor = "#44679F";
+      leave.selectionColor = "#8ea3c5";
       leave.selected = true;
     }
    this.setboolean();

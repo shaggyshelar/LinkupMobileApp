@@ -30,7 +30,7 @@
 
   <ion-list >
       <button *ngFor="let entry of approveEmployee" ion-item (click)="itemTapped(entry)">
-        <h3><span *ngFor="let approver of entry.ApproverUser">{{approver.Name}}  </span></h3>
+        <h3><span *ngFor="let approver of entry.ApproverUser">{{entry.Employee.Name}}</span></h3>
         <h3> 
           {{entry.StartDate | date: 'dd/MM/yyyy'}} &mdash;
           {{entry.EndDate | date: 'dd/MM/yyyy'}} 
@@ -45,5 +45,8 @@
       </button>
 
   </ion-list>
+  <ion-list-header [hidden]="(approveEmployee)?.length > 0">
+    No Records Found
+  </ion-list-header>
 
 </ion-content>

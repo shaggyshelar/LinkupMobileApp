@@ -136,6 +136,11 @@ export class MyLeavesPage {
     this.showConfirm();
   }
 
+  handleScrollCalender(event:any)
+  {
+    console.log('scrolled calender');
+  }
+
   handleDayClick(event: any) {
     // alert(' Show Apply Leave Page');
     this.navCtrl.push(ApplyForLeavePage, { date: event.date._d });

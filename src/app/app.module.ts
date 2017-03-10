@@ -38,6 +38,7 @@ import { LeaveApprovalFilterPage } from '../pages/LeaveManagement/leave-approval
 import { MyLeavesFilterPage } from '../pages/LeaveManagement/my-leaves-filter/my-leaves-filter';
 import { HolidaysFilterPage } from '../pages/LeaveManagement/holidays-filter/holidays-filter';
 import { HolidayDetailsPage } from '../pages/LeaveManagement/holiday-details/holiday-details';
+import { LeaveDetailsPage } from '../pages/LeaveManagement/leave-details/leave-details';
 
 // Certification
 import { MyCertificationPage } from '../pages/Certification/my-certification/my-certification';
@@ -107,6 +108,7 @@ import { CacheService, CacheStorageAbstract, CacheLocalStorage } from 'ng2-cache
     HolidaysFilterPage,
     HolidayDetailsPage,
     MyLeavesPage,
+    LeaveDetailsPage,
     MyLeaveDetailPage,
     ManageMyProjectsPage,
     EmployeeProjectManagementPage,
@@ -160,6 +162,7 @@ import { CacheService, CacheStorageAbstract, CacheLocalStorage } from 'ng2-cache
     HolidaysFilterPage,
     HolidayDetailsPage,
     MyLeavesPage,
+    LeaveDetailsPage,
     MyLeaveDetailPage,
     MyCertificationPage,
     ManageMyProjectsPage,

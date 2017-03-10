@@ -13,5 +13,24 @@ page-apply-for-leave {
        .required  {
       color: #e32;
       }
+       .add-leave-button {
+          width: 70%;
+          margin-left: 15%;
+          border-radius: 30px;
+          font-size: 0.9em;
+          border: 1px solid #fff;
+          background-color: #39acdc;
+      }
+      .notifications-badge {
+            background-color: green;
+            position: absolute;
+            top: -4px;
+            right: -12px;
+        }
+        .leave-icon{
+            font-size: smaller;
+        }
+
+        
 
 }
