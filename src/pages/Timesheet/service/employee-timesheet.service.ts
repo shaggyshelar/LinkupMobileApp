@@ -7,8 +7,6 @@ import { CacheService } from 'ng2-cache/ng2-cache';
 import { Observable } from 'rxjs/Rx';
 import 'rxjs/add/operator/map';
 
-import * as Rx from 'rxjs/Rx';
-
 /** Module Level Dependencies */
 import { BaseService } from '../../../providers/shared';
 import { MessageService } from '../../../providers/shared';
