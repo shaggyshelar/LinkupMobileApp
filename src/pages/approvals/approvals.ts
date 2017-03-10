@@ -17,10 +17,9 @@ import { CacheService } from 'ng2-cache/ng2-cache';
 export class ApprovalsPage {
   leavesTab: any;
   timesheetsTab: any;
-
   leavesToApproveCount: string
-
   approveTimesheetsBadgeCount: Number = 0;
+
 
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
@@ -38,7 +37,9 @@ export class ApprovalsPage {
     };
 
     console.log('badge storage => ', localStorage.getItem('approveTimesheetsBadgeCount'));
+    if (this._cacheService.exists('PendingLeavesApprovalCount')) {
     this.approveTimesheetsBadgeCount = parseInt(localStorage.getItem('approveTimesheetsBadgeCount'));
+    }
 
   }
 

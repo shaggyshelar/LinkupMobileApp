@@ -22,6 +22,7 @@ import { TimesheetReportPage } from '../pages/Timesheet/timesheet-report/timeshe
 import { BiometricDiscrepancyApprovalPage } from '../pages/Timesheet/biometric-discrepancy-approval/biometric-discrepancy-approval';
 import { ApproveTimesheetDetailsPage } from '../pages/Timesheet/approve-timesheet-details/approve-timesheet-details';
 import { TimesheetDetailsPage } from '../pages/Timesheet/timesheet-details/timesheet-details';
+import { DailyTimesheetDetailPage } from '../pages/Timesheet/daily-timesheet-detail/daily-timesheet-detail';
 
 // Leave Management
 import { ApplyForLeavePage } from '../pages/LeaveManagement/apply-for-leave/apply-for-leave';
@@ -62,7 +63,7 @@ import { HolidayService } from '../pages/LeaveManagement/index';
 import { UserService } from '../pages/LeaveManagement/index';
 import { MessageService } from '../providers/index';
 import { CommonService } from '../providers/index';
-import { EmployeeTimesheetService } from '../pages/Timesheet/index';
+import { EmployeeTimesheetService, PhasesService, ProjectService } from '../pages/Timesheet/index';
 
 
 // Direrctives
@@ -91,6 +92,7 @@ import { CacheService, CacheStorageAbstract, CacheLocalStorage } from 'ng2-cache
     BiometricDiscrepancyApprovalPage,
     ApproveTimesheetDetailsPage,
     TimesheetDetailsPage,
+    DailyTimesheetDetailPage,
     ApplyForLeavePage,
     HolidaysPage,
     MyCalendarPage,
@@ -141,6 +143,7 @@ import { CacheService, CacheStorageAbstract, CacheLocalStorage } from 'ng2-cache
     BiometricDiscrepancyApprovalPage,
     ApproveTimesheetDetailsPage,
     TimesheetDetailsPage,
+    DailyTimesheetDetailPage,
     ApplyForLeavePage,
     HolidaysPage,
     MyCalendarPage,
@@ -171,7 +174,7 @@ import { CacheService, CacheStorageAbstract, CacheLocalStorage } from 'ng2-cache
       useClass: IonicErrorHandler
     }, 
     Auth, AuthService, LeaveService, HolidayService, UserService, MessageService, CommonService, LimitToDirective,
-    CacheService, EmployeeTimesheetService, 
+    CacheService, EmployeeTimesheetService, PhasesService, ProjectService, 
     { provide: CacheStorageAbstract, useClass: CacheLocalStorage }]
 })
 export class AppModule { }

@@ -1,6 +1,6 @@
 /** Angular Dependencies */
 import { Injectable } from '@angular/core';
-import { Http } from '@angular/http';
+import { Http, Headers, RequestOptions } from '@angular/http';
 
 /** Third Party Dependencies */
 import { CacheService } from 'ng2-cache/ng2-cache';
@@ -10,7 +10,7 @@ import 'rxjs/add/operator/map';
 /** Module Level Dependencies */
 import { BaseService } from '../../../providers/shared';
 import { MessageService } from '../../../providers/shared';
-import { Timesheet } from '../models/timesheet.model';
+// import { Timesheet } from '../models/timesheet.model';
 import { Employee } from '../models/employee.model';
 import { EmployeeTimeSheet } from '../models/employee-timesheet.model';
 import { Events } from 'ionic-angular';
@@ -21,13 +21,18 @@ const CONTEXT = 'EmployeeTimesheet';
 @Injectable()
 export class EmployeeTimesheetService extends BaseService {
 
+/** MyTimesheetDetails Stub Data */
+    StubData = [
+    {Date:"Monday, 1/27/2017",Project:{Value:"MMC",ID:219},Task:"Development",BillableHours:null,NonBillableHours:"08:00",TotalHours:"8:0",NoteForBillableHours:null,NoteForNonBillableHours:"xzfg"},{Date:"Tuesday, 1/28/2017",Project:{Value:"MMC",ID:219},Task:"Development",BillableHours:null,NonBillableHours:"08:00",TotalHours:"8:0",NoteForBillableHours:null,NoteForNonBillableHours:"dfg"},{Date:"Wednesday, 1/29/2017",Project:{Value:"MMC",ID:219},Task:"Development",BillableHours:null,NonBillableHours:"08:00",TotalHours:"8:0",NoteForBillableHours:null,NoteForNonBillableHours:"fujfuj"},{Date:"Thursday, 1/30/2017",Project:{Value:"MMC",ID:219},Task:"Development",BillableHours:null,NonBillableHours:"08:00",TotalHours:"8:0",NoteForBillableHours:null,NoteForNonBillableHours:"dj"},{Date:"Friday, 1/31/2017",Project:{Value:"MMC",ID:219},Task:"Development",BillableHours:null,NonBillableHours:"08:00",TotalHours:"8:0",NoteForBillableHours:null,NoteForNonBillableHours:"dyjj"}
+    ];
+
     constructor(public http: Http, messageService: MessageService,
     public _cacheService: CacheService,public unauthorizedEvent:Events
     ) {
         super(http, CONTEXT,unauthorizedEvent);
     }
 
-    getMyTimesheets(): Observable<Employee> {
+    getMyTimesheets(): Observable<any> {
         if (this._cacheService.exists('myTimesheets')) {
             return new Observable<any>((observer: any) => {
                 observer.next(this._cacheService.get('myTimesheets'));
@@ -35,7 +40,8 @@ export class EmployeeTimesheetService extends BaseService {
         } else {
             return this.getChildList$('MyTimesheets',0,0,true).map(res => {
                 this._cacheService.set('myTimesheets', res.json(), { maxAge: 60 * 60 });
-                return res.json();
+                // return res.json();
+                return this.StubData;
             }).catch(err => {
                 return this.handleError(err);
             });
@@ -105,6 +111,94 @@ export class EmployeeTimesheetService extends BaseService {
                 return this.handleError(err);
             });
         }
+    }
+
+/** ApproveTimesheet API Service Call
+ *  TODO: Change API URL
+ */
+    approveTimesheet(payload: any) {
+        let headers = new Headers();
+        let body = JSON.stringify(payload);
+        headers.append('Authorization', 'Bearer ' + localStorage.getItem('accessToken'));
+        headers.append('Content-Type', 'application/json');
+        let options = new RequestOptions({ headers: headers });
+        // let windowRef = this._window();
+        // windowRef['App'].blockUI();
+        return this.http.put(this.baseUrl + 'LeaveApprovers/ApproveByManager', body, options)
+            .map(res => {
+                // windowRef['App'].unblockUI();
+                return res.json();
+            })
+            .catch(err => {
+                // windowRef['App'].unblockUI();
+                return this.handleError(err);
+            });
+    }
+
+/** RejectTimesheet API Service Call
+ *  TODO: Change API URL
+ */
+    rejectTimesheet(payload: any) {
+        let headers = new Headers();
+        let body = JSON.stringify(payload);
+        headers.append('Authorization', 'Bearer ' + localStorage.getItem('accessToken'));
+        headers.append('Content-Type', 'application/json');
+        let options = new RequestOptions({ headers: headers });
+        // let windowRef = this._window();
+        // windowRef['App'].blockUI();
+        return this.http.put(this.baseUrl + 'LeaveApprovers/ApproveByManager', body, options)
+            .map(res => {
+                // windowRef['App'].unblockUI();
+                return res.json();
+            })
+            .catch(err => {
+                // windowRef['App'].unblockUI();
+                return this.handleError(err);
+            });
+    }
+
+/** SubmitDailySheet API Service Call
+ *  TODO: Change API URL
+ */
+    submitDailyTimesheet(payload: any) {
+        let headers = new Headers();
+        let body = JSON.stringify(payload);
+        headers.append('Authorization', 'Bearer ' + localStorage.getItem('accessToken'));
+        headers.append('Content-Type', 'application/json');
+        // let windowRef = this._window();              used for loader
+        // windowRef['App'].blockUI();
+        let options = new RequestOptions({ headers: headers });
+        return this.http.post(this.baseUrl + 'LeaveDetails', body, options)
+            .map(res => {
+                // windowRef['App'].unblockUI();
+                return res.json();
+            })
+            .catch(err => {
+                // windowRef['App'].unblockUI();
+                return this.handleError(err);
+            });
+    }
+
+/** submitWeeklyTimesheetForApproval API Service Call
+ *  TODO: Change API URL
+ */
+    submitWeeklyTimesheetForApproval(payload: any) {
+        let headers = new Headers();
+        let body = JSON.stringify(payload);
+        headers.append('Authorization', 'Bearer ' + localStorage.getItem('accessToken'));
+        headers.append('Content-Type', 'application/json');
+        // let windowRef = this._window();
+        // windowRef['App'].blockUI();
+        let options = new RequestOptions({ headers: headers });
+        return this.http.post(this.baseUrl + 'LeaveDetails', body, options)
+            .map(res => {
+                // windowRef['App'].unblockUI();
+                return res.json();
+            })
+            .catch(err => {
+                // windowRef['App'].unblockUI();
+                return this.handleError(err);
+            });
     }
 
 }

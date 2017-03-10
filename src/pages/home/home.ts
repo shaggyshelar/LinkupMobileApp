@@ -87,39 +87,39 @@ export class HomePage {
       }
     });
 
-    this.teamTimesheetPieChart = new Chart(this.pieTeamTimesheetCanvas.nativeElement, {
-      type: 'pie',
-      data: {
-        labels: [
-          "Approved",
-          "Submitted",
-          "P-Approved",
-          "N-Submitted",
-          "Rejcted",
-          "Pending"
-        ],
-        datasets: [
-          {
-            data: [48, 1, 2, 0, 0, 4],
-            backgroundColor: [
-              "#79B334",
-              "#7DC6E4",
-              "#9AE373",
-              "#DBE21C",
-              "#E49F5A",
-              "#CC6628"
-            ],
-            hoverBackgroundColor: [
-              "#79B334",
-              "#7DC6E4",
-              "#9AE373",
-              "#DBE21C",
-              "#E49F5A",
-              "#CC6628"
-            ]
-          }]
-      }
-    });
+    // this.teamTimesheetPieChart = new Chart(this.pieTeamTimesheetCanvas.nativeElement, {
+    //   type: 'pie',
+    //   data: {
+    //     labels: [
+    //       "Approved",
+    //       "Submitted",
+    //       "P-Approved",
+    //       "N-Submitted",
+    //       "Rejcted",
+    //       "Pending"
+    //     ],
+    //     datasets: [
+    //       {
+    //         data: [48, 1, 2, 0, 0, 4],
+    //         backgroundColor: [
+    //           "#79B334",
+    //           "#7DC6E4",
+    //           "#9AE373",
+    //           "#DBE21C",
+    //           "#E49F5A",
+    //           "#CC6628"
+    //         ],
+    //         hoverBackgroundColor: [
+    //           "#79B334",
+    //           "#7DC6E4",
+    //           "#9AE373",
+    //           "#DBE21C",
+    //           "#E49F5A",
+    //           "#CC6628"
+    //         ]
+    //       }]
+    //   }
+    // });
   }
 
   getItems(ev) {

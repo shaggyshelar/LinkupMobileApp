@@ -8,6 +8,7 @@ import { MyEvent } from '../models/holiday';
 import { MyLeaveDetailPage } from '../my-leave-detail/my-leave-detail';
 import { AlertController, ItemSliding } from 'ionic-angular';
 import { SpinnerService } from '../../../providers/index';
+import { Events } from 'ionic-angular';
 import * as moment from 'moment/moment';
 
 import { ApplyForLeavePage } from '../apply-for-leave/apply-for-leave';
@@ -26,6 +27,7 @@ export class MyLeavesPage {
   public selectedLeave: any;
   public approvedLeaveCount:number;
   public isDescending: boolean=true;
+  public isFirstTimeLoad: boolean = true;
   events: any[];
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
@@ -33,41 +35,29 @@ export class MyLeavesPage {
     public spinnerService: SpinnerService,
     public alertCtrl: AlertController,
     public actionSheetCtrl: ActionSheetController,
-    public modalCtrl: ModalController) {
-    // this.events = [
-    //   {
-    //     "title": "All Day Event",
-    //     "start": "2017-02-01"
-    //   },
-    //   {
-    //     "title": "Long Event",
-    //     "start": "2017-02-07",
-    //     "end": "2017-02-10"
-    //   },
-    //   {
-    //     "title": "Repeating Event",
-    //     "start": "2017-02-09T16:00:00"
-    //   },
-    //   {
-    //     "title": "Repeating Event",
-    //     "start": "2017-02-16T16:00:00"
-    //   },
-    //   {
-    //     "title": "Conference",
-    //     "start": "2017-02-11",
-    //     "end": "2017-02-13"
-    //   }
-    // ];
+    public modalCtrl: ModalController,
+    public leaveChangeEvent: Events) {
+
+    this.leaveChangeEvent.subscribe('Delected Leave', () => {
+      this.getMyLeaves();
+    });
+
+    this.leaveChangeEvent.subscribe('Applied Leave', () => {
+      this.getMyLeaves();
+    });
   }
 
   ionViewDidLoad() {
     //this.leaveObs = this.leaveService.getMyLeaves();
     this.getMyLeaves();
   }
+  ionViewWillEnter() {
+
+  }
 
   ionViewWillUnload() {
-    // stop disconnect watch
-    this.getMyLeaves();
+    this.leaveChangeEvent.unsubscribe('Delected Leave');
+    this.leaveChangeEvent.unsubscribe('Applied Leave');
   }
 
   goToLeaveDetail(leaveData: any) {
@@ -94,8 +84,8 @@ export class MyLeavesPage {
           var edate = moment(element.EndDate).format('YYYY-MM-DD');
           element.StartDate = moment(sdate).toDate();
           element.EndDate = moment(edate).toDate();
-          if(element.Status == 'Approved')
-          this.approvedLeaveCount++;
+          if (element.Status == 'Approved')
+            this.approvedLeaveCount++;
         });
         this.leaveService.setApprovedLeavesCount(this.approvedLeaveCount.toString());
         this.getCalandarEvents();
@@ -134,7 +124,7 @@ export class MyLeavesPage {
     };
     this.leaveService.deleteLeaveRecord(leaveTobeCancelled).subscribe(res => {
       if (res) {
-      this.getMyLeaves();
+        //this.getMyLeaves();
       } else {
 
       }

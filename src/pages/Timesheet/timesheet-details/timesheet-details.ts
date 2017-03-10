@@ -5,6 +5,8 @@ import { Observable } from 'rxjs/Rx';
 
 // import { EmployeeTimesheetService } from '../index';
 
+import { DailyTimesheetDetailPage } from '../daily-timesheet-detail/daily-timesheet-detail';
+
 /*
   Generated class for the TimesheetDetails page.
 
@@ -43,6 +45,11 @@ export class TimesheetDetailsPage {
     //     loader.dismiss();
     //   });
     // });
+  }
+
+  recordTapped(rec) {
+    console.log('rec => ',rec);
+    this.navCtrl.push(DailyTimesheetDetailPage, rec);
   }
 
 }
