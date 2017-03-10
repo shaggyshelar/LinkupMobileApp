@@ -41,7 +41,7 @@ export class TimesheetDetailsPage {
   }
 
   enterTimesheet() {
-    this.getMyTimesheetDetails(1);
+    this.getMyTimesheetDetails(1);  //getting stub data
     // this.navCtrl.push(DailyTimesheetDetailPage, { readOnly: false });
   }
 
