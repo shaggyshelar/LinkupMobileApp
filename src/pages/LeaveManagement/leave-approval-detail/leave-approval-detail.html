@@ -87,6 +87,7 @@
     </ion-item>
     <ion-item *ngFor="let approver of approverList">
       <p>{{ approver.Approver.Name }} <span class="right">{{ approver.Status }}</span></p>
+      <p>{{ approver.Comments}}</p>
     </ion-item>
   </ion-list>
 
