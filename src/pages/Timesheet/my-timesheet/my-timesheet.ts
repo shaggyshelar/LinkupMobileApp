@@ -6,6 +6,7 @@ import { Observable } from 'rxjs/Rx';
 import { EmployeeTimesheetService } from '../index';
 
 import { TimesheetDetailsPage } from '../timesheet-details/timesheet-details';
+import { EnterTimesheetPage } from '../enter-timesheet/enter-timesheet';
 
 /** TODO: TimesheetDetails Import */
 
@@ -34,8 +35,11 @@ export class MyTimesheetPage {
         loader.dismiss();
       }, (err) => {
         loader.dismiss();
-      });
+        console.log(err);
+      }
+      );
     });
+
   }
 
   editClicked(item) {
@@ -44,7 +48,11 @@ export class MyTimesheetPage {
 
   itemClicked(entry) {
     //alert('id => '+ entry.ID);
-    this.navCtrl.push(TimesheetDetailsPage, {id: entry.ID});
+    this.navCtrl.push(TimesheetDetailsPage, {payload: entry, caller : 'my-timesheet'});
+  }
+
+  addFabClicked() {
+    this.navCtrl.push(EnterTimesheetPage , { caller : 'my-timesheet' });
   }
 
 }
