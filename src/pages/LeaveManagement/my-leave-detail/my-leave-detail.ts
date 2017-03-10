@@ -42,7 +42,6 @@ export class MyLeaveDetailPage {
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad MyLeaveDetailPage');
     this.getLeaveDetailsData();
   }
 
@@ -95,13 +94,11 @@ export class MyLeaveDetailPage {
         {
           text: 'NO',
           handler: () => {
-            console.log('Disagree clicked');
           }
         },
         {
           text: 'YES',
           handler: () => {
-            console.log('Agree clicked');
             this.cancelClicked();
           }
         }

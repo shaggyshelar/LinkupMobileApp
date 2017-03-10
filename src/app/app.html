@@ -14,7 +14,7 @@
       <p> {{designation}} • {{empID}} </p>
     </ion-item>
     <ion-list >
-      <button menuClose class="customMenu" ion-item *ngFor="let p of pages" (click)="openPage(p)">
+      <button menuClose class="customMenu" ion-item [class.activeHighlight]="checkActive(p)" *ngFor="let p of pages" (click)="openPage(p)">
         <ion-icon item-left class="customMenuIcons" [name]="p.icon"></ion-icon>
         {{p.title}}
       </button>

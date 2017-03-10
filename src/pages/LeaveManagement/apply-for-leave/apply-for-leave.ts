@@ -126,8 +126,6 @@ export class ApplyForLeavePage {
    }
 
    ionViewDidLoad() {
-    console.log('ionViewDidLoad ApplyForLeavePage');
-    console.log('date clicked => ',this.navParams.data);
     this.getLeaveAssets();
   }
 
@@ -169,7 +167,6 @@ export class ApplyForLeavePage {
         });
         });
            
-            console.log(this.leaves);
         });
        
         
@@ -299,11 +296,6 @@ export class ApplyForLeavePage {
             this.model.numDays = dayCount;
         }
         this.checkIfAlreadyApplied();
-
-        console.log('Leave form'+this.applyLeaveForm.valid);
-        console.log('Validation msg'+ this.isValidationMessage);
-        console.log('Weekend '+ this.itsWeekend);
-        console.log('Form  :  '+ this.applyLeaveForm);
         
 
     }

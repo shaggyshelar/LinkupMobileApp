@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import {LoadingController} from 'ionic-angular';
-
  @Injectable()
 export class SpinnerService {
     public loader :any;

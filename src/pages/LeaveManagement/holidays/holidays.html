@@ -10,13 +10,23 @@
     <button ion-button icon-only menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
+    <ion-buttons start>
+      <button (click)="onFilter()" ion-button icon-only> 
+        <ion-icon ios="ios-funnel" md="md-funnel"></ion-icon>
+      </button>
+    </ion-buttons>
+    <ion-buttons start>
+      <button (click)="onSort()" ion-button icon-only>
+        <ion-icon name="swap"></ion-icon>
+      </button>
+    </ion-buttons>
     <ion-title>Holidays</ion-title>
   </ion-navbar>
 
 </ion-header>
 
 
-<ion-content padding>
+<ion-content padding class="customCalendar">
   <p-schedule [events]="events" (onEventClick)="handleEventClick($event)" ></p-schedule>
   <ion-list #scheduleList [hidden]="(pendingHoliday )?.length === 0">
     <ion-item *ngFor="let holiday of pendingHoliday"  [attr.holidaytype]="holiday.HolidayType.Value | lowercase">

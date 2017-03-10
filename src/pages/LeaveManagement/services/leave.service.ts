@@ -13,7 +13,7 @@ import { Leave } from '../models/leave';
 import { Select } from '../models/select';
 // import { Employee } from '../models/employee';
 import { LeaveDetail } from '../models/leaveDetail';
-
+import { Events } from 'ionic-angular';
 /** Context for service calls */
 const CONTEXT = 'Leave';
 
@@ -21,7 +21,7 @@ const CONTEXT = 'Leave';
 @Injectable()
 export class LeaveService extends BaseService {
     editableLeave: any;
-    constructor(public http: Http, private _cacheService: CacheService) {
+    constructor(public http: Http, private _cacheService: CacheService, private leaveChangedEvent:Events) {
         super(http, CONTEXT);
     }
 
@@ -121,6 +121,7 @@ export class LeaveService extends BaseService {
         let options = new RequestOptions({ headers: headers });
         return this.http.post(this.baseUrl + 'Leave/cancel', body, options)
             .map(res => {
+                this.leaveChangedEvent.publish('Delected Leave');
                 this.clearLeaveCache();
                 return res.json();
             })
@@ -235,6 +236,7 @@ export class LeaveService extends BaseService {
         let options = new RequestOptions({ headers: headers });
         return this.http.put(this.baseUrl + 'LeaveApprovers/ApproveByManager', body, options)
             .map(res => {
+                 this.leaveChangedEvent.publish('Approved single Leave');
                  this.clearLeaveApprvalCache();
                 return res.json();
             })
@@ -251,6 +253,7 @@ export class LeaveService extends BaseService {
         let options = new RequestOptions({ headers: headers });
         return this.http.put(this.baseUrl + 'LeaveApprovers/RejectLeave', body, options)
             .map(res => {
+                 this.leaveChangedEvent.publish('Rejected single Leave');
                 this.clearLeaveApprvalCache();
                 return res.json();
             })
@@ -284,6 +287,7 @@ export class LeaveService extends BaseService {
         let options = new RequestOptions({ headers: headers });
         return this.http.put(this.baseUrl + 'LeaveApprovers/BulkLeaveApproval', body, options)
             .map(res => {
+                 this.leaveChangedEvent.publish('Bulk Approval Leave changed');
                 this.clearLeaveApprvalCache();
                 return res.json();
             })
@@ -300,6 +304,7 @@ export class LeaveService extends BaseService {
         let options = new RequestOptions({ headers: headers });
         return this.http.put(this.baseUrl + 'LeaveApprovers/ApproveByHR', body, options)
             .map(res => {
+                this.leaveChangedEvent.publish('Hr Approval Leave changed');
                 this.clearLeaveApprvalCache();
                 return res.json();
             })
@@ -361,6 +366,7 @@ export class LeaveService extends BaseService {
         let options = new RequestOptions({ headers: headers });
         return this.http.post(this.baseUrl + 'LeaveDetails', body, options)
             .map(res => {
+                this.leaveChangedEvent.publish('Applied Leave');
                 this.clearLeaveCache();
                 return res.json();
             })

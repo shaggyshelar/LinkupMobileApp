@@ -2,9 +2,9 @@
 import { Component, ViewChild } from '@angular/core';
 import { Nav, Platform } from 'ionic-angular';
 import { StatusBar, Splashscreen, Network, InAppBrowser } from 'ionic-native';
-import { LoadingController } from 'ionic-angular';
+import { LoadingController, AlertController, ToastController } from 'ionic-angular';
 import { HomePage } from '../pages/home/home';
-
+import { Events } from 'ionic-angular';
 
 // Leave Management
 
@@ -86,7 +86,12 @@ export class MyApp {
   designation: string;
   empID: string;
 
-  constructor(public platform: Platform, public auth: AuthService, public loadingCtrl: LoadingController) {
+  constructor(public platform: Platform,
+    public auth: AuthService,
+    public loadingCtrl: LoadingController,
+    public unauthorizedEvent: Events,
+    public alertCtrl: AlertController,
+    public toastCtrl: ToastController) {
     this.initializeApp();
 
 
@@ -96,7 +101,7 @@ export class MyApp {
       isAuthenticated => {
         if (isAuthenticated == "true") {
           this.isAuthenticated = true;
-          this.rootPage = HomePage;
+          this.openPage(this.pages[0]);
           this.toggleLeaveMenu();
           this.toggleTimesheetMenu()
           this.toggleCertificationMenu();
@@ -108,8 +113,31 @@ export class MyApp {
           this.rootPage = LoginPage;
         }
       });
+    this.unauthorizedEvent.subscribe('Token Expired', (Token) => {
+      this.tokenExpiredAlert('Session Expired', 'Please Login again.');
+    });
+    this.unauthorizedEvent.subscribe('All Errors', (errMsg) => {
+      this.allErrorToast(errMsg);
+    });
   }
-
+  allErrorToast(errMsg) {
+    let toast = this.toastCtrl.create({
+      message: errMsg,
+      duration: 3000
+    });
+    toast.present();
+  }
+  tokenExpiredAlert(title: string, subTitle: string) {
+    let alert = this.alertCtrl.create({
+      title: title,
+      subTitle: subTitle,
+      buttons: ['OK']
+    });
+    alert.onDidDismiss(() =>
+      this.onLogout()
+    );
+    alert.present();
+  }
   onLogout(): void {
     this.auth.logout();
   }
@@ -131,17 +159,20 @@ export class MyApp {
   initializeApp() {
     this.presentLoading();
     this.isAuthenticated = this.auth.isAuthenticated();
+    this.pages = [
+      { title: 'Home', component: HomePage, icon: 'ios-home' },
+      { title: 'My Calendar', component: MyCalendarPage, icon: 'md-calendar' },
+      { title: 'Approvals', component: ApprovalsPage, icon: 'md-checkbox-outline' },
+      { title: 'Timesheets', component: MyTimesheetPage, icon: 'md-clock' },
+    ];
+
     if (this.auth.isAuthenticated()) {
+      this.activePage = this.pages[0];
       this.rootPage = HomePage;
       this.loadUserDetails();
     } else {
       this.rootPage = LoginPage;
     }
-    this.pages = [
-      { title: 'My Calendar', component: MyCalendarPage, icon: 'md-calendar' },
-      { title: 'Approvals', component: ApprovalsPage, icon: 'md-checkbox-outline' },
-      { title: 'Timesheets', component: MyTimesheetPage, icon: 'md-clock' },
-    ];
     this.loader.dismiss();
     this.platform.ready().then(() => {
       StatusBar.styleDefault();

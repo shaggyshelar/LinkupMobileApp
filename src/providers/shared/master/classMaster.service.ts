@@ -10,7 +10,6 @@ import { BaseService } from '../../index';
 
 /** Context for service calls */
 const CONTEXT = 'ClassMaster';
-
 /** Service Definition */
 @Injectable()
 export class ClassMasterService extends BaseService {

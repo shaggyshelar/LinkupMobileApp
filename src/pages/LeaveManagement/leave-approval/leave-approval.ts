@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, ActionSheetController, Events } from 'ionic-angular';
+import { NavController, NavParams, ActionSheetController, Events, ModalController } from 'ionic-angular';
 import { SpinnerService } from '../../../providers/index';
 import { LeaveService } from '../index';
 import { AlertController, ItemSliding } from 'ionic-angular';
@@ -7,6 +7,7 @@ import { Leave } from '../models/leave';
 import { LeaveApprovalDetailPage } from '../leave-approval-detail/leave-approval-detail';
 import { Observable } from 'rxjs/Rx';
 import { Toast } from 'ionic-native';
+import { LeaveApprovalFilterPage } from '../leave-approval-filter/leave-approval-filter';
 /*
   Generated class for the LeaveApproval page.
 
@@ -33,34 +34,58 @@ export class LeaveApprovalPage {
   public selectedEmployees: any[];
   public totalCount: number;
   public comment: string;
-  public editMode : boolean;
   public isDatachanged : boolean = false;
+  public isDescending: boolean=true;
+  public editMode: boolean;
+  public isFirstTimeLoad: boolean = true;
+  public isSelectall:boolean = false;
+  public isshowApproveRejectItems = false;
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
     public leaveService: LeaveService,
     public spinnerService: SpinnerService,
     public actionSheetCtrl: ActionSheetController,
     public alertCtrl: AlertController,
-    public leaveStatusChangedEvent: Events) {
+    public leaveStatusChangedEvent: Events,
+    public modalCtrl: ModalController) {
     this.userPermissions = JSON.parse(localStorage.getItem("loggedInUserPermission"));
     this.isBulkApprovePermission = this.checkBulkApprovePermission('LEAVE.BULK_APPROVAL.MANAGE');
-    this.leaveStatusChangedEvent.subscribe('Changed Leave Status', (status) => {
+    this.leaveStatusChangedEvent.subscribe('Hr Approval Leave changed', () => {
       this.getApproverLeave();
     });
+    this.leaveStatusChangedEvent.subscribe('Bulk Approval Leave changed', () => {
+      this.getApproverLeave();
+    });
+    this.leaveStatusChangedEvent.subscribe('Rejected single Leave', () => {
+      this.getApproverLeave();
+    });
+    this.leaveStatusChangedEvent.subscribe('Approved single Leave', () => {
+      this.getApproverLeave();
+    });
+
+
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad LeaveApprovalPage');
-    
     this.getApproverLeave();
   }
   ionViewWillEnter() {
-    this.getApproverLeave();
+    // if(!this.isFirstTimeLoad)
+    // this.getApproverLeave();
+
+    // this.isFirstTimeLoad = false;
   }
+  ionViewWillUnload() {
+    this.leaveStatusChangedEvent.unsubscribe('Hr Approval Leave changed');
+    this.leaveStatusChangedEvent.unsubscribe('Bulk Approval Leave changed');
+    this.leaveStatusChangedEvent.unsubscribe('Rejected single Leave');
+    this.leaveStatusChangedEvent.unsubscribe('Approved single Leave');
+  }
+
 
   getApproverLeave() {
 
-    
+
     this.leaveList = [];
     this.resetAllFlags();
     this.spinnerService.createSpinner('Please wait..');
@@ -68,7 +93,6 @@ export class LeaveApprovalPage {
       this.spinnerService.stopSpinner();
       if (res.length > 0) {
         this.leaveList = res.reverse();
-        console.log('Got approvar list' + this.leaveList);
         this.getPendingLeavesToApprove();
       }
     },
@@ -85,10 +109,11 @@ export class LeaveApprovalPage {
       .subscribe(
       (res: any) => {
         this.spinnerService.stopSpinner();
-        console.log("Data from server", res);
         this.leavesArray = [];
+        this.selectedEmployees = [];
         this.leavesArray = res.reverse();
         this.leavesArray.forEach(leave => {
+          this.selectLeave(leave,false);
         });
       },
       error => {
@@ -97,9 +122,14 @@ export class LeaveApprovalPage {
       });
   }
 
+ 
+
   /* Show Leave Deatails */
 
   itemTapped(leave: any) {
+    if(this.isshowApproveRejectItems == true)
+    this.selectLeave(leave,!leave.selected);
+    else
     this.navCtrl.push(LeaveApprovalDetailPage, { leave: leave });
   }
 
@@ -139,7 +169,6 @@ export class LeaveApprovalPage {
         text: 'Cancel',
         role: 'cancel',
         handler: () => {
-          console.log('Cancel clicked');
           this.isMoreclicked = false;
         }
       }
@@ -177,13 +206,11 @@ export class LeaveApprovalPage {
         {
           text: 'Cancel',
           handler: data => {
-            console.log('Cancel clicked');
           }
         },
         {
           text: isApprove,
           handler: data => {
-            console.log('Saved clicked');
 
             this.comment = data.title;
             var cmt = this.comment;//this.model.comments;
@@ -327,17 +354,85 @@ export class LeaveApprovalPage {
       });
   }
 
-editleaves()
-{
-  this.editMode = !this.editMode;
-}
-   approveBulkLeave()
+  /** Bulk Approval */
+
+  /** Multiselction of List item */
+
+  longPressedItem(leave: any)
   {
+  this.isshowApproveRejectItems = true;
+  this.selectLeave(leave,true);
+  }
+
+  editleaves() {
+    this.editMode = !this.editMode;
+    if(this.editMode == false)
+    {
+      this.isshowApproveRejectItems = false;
+      this.selectedEmployees = [];
+     this.leavesArray.forEach(leave => {
+          this.selectLeave(leave,false);
+        });
+    }
+    
+  }
+
+  selectAllLeaves()
+  {
+    this.selectedEmployees = [];
+     this.leavesArray.forEach(leave => {
+          this.selectLeave(leave,true);
+        });
+  }
+
+   selectLeave(leave:any ,checked:boolean)
+  {
+     if(checked == false)
+    {
+      var index : number = 0;
+      this.leavesArray.forEach(leaves => {
+          if(leaves == leave)
+          {
+            this.selectedEmployees.splice(index,1);
+          }
+          index ++;
+        });
+      leave.selectionColor = "white";
+      leave.selected = false;
+      if(this.selectedEmployees.length == 0)
+      this.isshowApproveRejectItems = false;
+    }
+    else
+    {
+      this.selectedEmployees.push(leave);
+      leave.selectionColor = "#44679F";
+      leave.selected = true;
+    }
+   this.setboolean();
+  }
+  setboolean()
+  {
+    this.leavechecked = false;
+    this.isSelectall = false;
+    if(this.selectedEmployees && this.selectedEmployees.length > 0)
+    {
+      this.leavechecked = true;
+
+      var count : number = 0;
+      this.leavesArray.forEach(leaves => {
+          count ++;
+        });
+      if(count == this.selectedEmployees.length)
+        {
+          this.isSelectall = true;
+        }
+    }
+  }
+  approveBulkLeave() {
     this.showApproveRejectPromt(true);
   }
 
-  rejectBulkLeave()
-  {
+  rejectBulkLeave() {
     this.showApproveRejectPromt(false);
   }
 
@@ -349,6 +444,7 @@ editleaves()
     this.leavechecked = false;
     this.isHrApprove = false;
     this.isMoreclicked = false;
+    this.isshowApproveRejectItems = false;
     this.comment = '';
     this.totalCount = 0;
   }
@@ -374,6 +470,42 @@ editleaves()
     //   }
     // );
   }
-
+  onFilter() {
+    let modal = this.modalCtrl.create(LeaveApprovalFilterPage);
+    modal.present();
+  }
+  onSort() {
+    let actionSheet = this.actionSheetCtrl.create({
+      title: 'Sort Your Leaves',
+      buttons: [
+        {
+          text: 'Date Ascending',
+          role: 'date ascending',
+          handler: () => {
+            if(this.isDescending === false) {
+              this.leaveList.reverse();
+              this.isDescending = true;
+            }
+          }
+        },{
+          text: 'Date Descending',
+          role: 'date descending',
+          handler: () => {
+            if(this.isDescending) {
+              this.leaveList.reverse();
+              this.isDescending = false;
+            }
+          }
+        },{
+          text: 'Cancel',
+          role: 'cancel',
+          handler: () => {
+            
+          }
+        }
+      ]
+    });
+    actionSheet.present();
+  }
 
 }

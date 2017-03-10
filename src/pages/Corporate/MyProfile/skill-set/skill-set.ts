@@ -31,7 +31,7 @@ export class SkillSetPage {
     }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad SkillSetPage');
+     //TO DO:Implementation
   }
   dismiss(data) {
     this.viewCtrl.dismiss(data);
@@ -42,7 +42,7 @@ export class SkillSetPage {
     this.skill.Skills = "";
   }
   onSave() {
-      console.log('data saved sucessfully');
+       //TO DO:Implementation
   }
   onCloseForm() {
     this.showForm = false;

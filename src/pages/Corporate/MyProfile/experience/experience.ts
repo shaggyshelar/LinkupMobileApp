@@ -41,7 +41,7 @@ export class ExperiencePage {
     }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad ExperiencePage');
+     //TO DO:Implementation
   }
   dismiss(data) {
     this.viewCtrl.dismiss(data);
@@ -55,7 +55,7 @@ export class ExperiencePage {
     this.Experience.Role = "";
   }
   onSave() {
-      console.log('data saved sucessfully');
+       //TO DO:Implementation
   }
   onCloseForm() {
     this.showForm = false;

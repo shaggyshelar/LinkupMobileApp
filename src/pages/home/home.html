@@ -5,7 +5,7 @@
     </button>
     <ion-toolbar>
       <ion-title *ngIf="isSearchShow == false">
-        Home
+        <img src="../assets/img/elogo.png" class="Logo">
       </ion-title>
       <!--<ion-searchbar *ngIf="isSearchShow == true" (ionInput)="getItems($event)"
     (ionClear)="onClear($event)"
@@ -45,7 +45,15 @@
       </ion-col>
     </ion-row>
   </ion-grid>
-  <ion-slides class="slide-height" pager>
+  <ion-card>
+    <ion-card-header>
+      My Timesheets
+    </ion-card-header>
+    <ion-card-content>
+      <canvas #pieMyTimesheetCanvas></canvas>
+    </ion-card-content>
+  </ion-card>
+  <!--<ion-slides class="slide-height" pager>
     <ion-slide>
       <ion-card>
         <ion-card-header>
@@ -67,6 +75,6 @@
         </ion-card-content>
       </ion-card>
     </ion-slide>
-  </ion-slides>
+  </ion-slides>-->
 
 </ion-content>

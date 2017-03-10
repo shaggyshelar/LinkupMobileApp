@@ -16,7 +16,7 @@ export class ApprovedTimesheetPage {
   constructor(public navCtrl: NavController, public navParams: NavParams) { }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad ApprovedTimesheetPage');
+     //TO DO:Implementation
   }
 
 }

@@ -75,13 +75,12 @@ export class LoginPage {
     this.model = new User('', '');
   }
   ionViewDidLoad() {
-    console.log('ionViewDidLoad LoginPage');
+     //TO DO:Implementation
   }
   onLogin(form: NgForm) {
     this.submitted = true;
 
     if (form.valid) {
-      this.presentLoading();
       this.authService.authenticate(this.model)
         .subscribe(
         results => {
@@ -90,7 +89,6 @@ export class LoginPage {
           this.showError = true;
           this.errorMessage = error;
         });
-        this.loader.dismiss();
     }
   }
   presentLoading() {

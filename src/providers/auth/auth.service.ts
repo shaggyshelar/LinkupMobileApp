@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Http, Response, Headers, RequestOptions } from '@angular/http';
+import { LoadingController  } from 'ionic-angular';
 import { Observable } from 'rxjs/Rx';
 import { BaseService } from '../shared/index';
 import { Subject } from 'rxjs/Subject';
-
 /** Context for service calls */
 const CONTEXT = 'auth';
 
@@ -11,10 +11,11 @@ const CONTEXT = 'auth';
 export class AuthService extends BaseService {
     public currentUser: any;
     public authStatusChangeSource = new Subject<string>();
+    public loader:any;
     onAuthStatusChanged$ = this.authStatusChangeSource.asObservable();
     private authenticated = false;
 
-    constructor(httpService: Http, private http: Http) {
+    constructor(httpService: Http, private http: Http, public loadingCtrl:LoadingController) {
         super(httpService, CONTEXT);
     }
 
@@ -47,6 +48,7 @@ export class AuthService extends BaseService {
     }
     authenticate(credentials: any): Observable<any> {
         let headers = new Headers();
+        this.presentLoading();
         let credentialString: string = 'grant_type=password&UserName=' + credentials.UserName + '&Password=' + credentials.Password;
         headers.append('Content-Type', 'application/x-www-form-urlencoded');
         let options = new RequestOptions({ headers: headers });
@@ -61,7 +63,8 @@ export class AuthService extends BaseService {
             .catch(err => {
                 this.unblockUI();
                 return this.handleError(err);
-            });
+            })
+            .finally(() => this.loader.dismiss());
     }
     storeLoggedInUserPermission() {
         return this.getChildList$('permissions', 0, 0, true).map((res: Response) => { this.setLoggedInUserPermission(res); });
@@ -103,4 +106,10 @@ export class AuthService extends BaseService {
         localStorage.setItem('loggedInUserDetails', JSON.stringify(body));
         
     }
+    presentLoading() {
+    this.loader = this.loadingCtrl.create({
+      content: "Please wait..."
+    });
+    this.loader.present();
+  }
 }

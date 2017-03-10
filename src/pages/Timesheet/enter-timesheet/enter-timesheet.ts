@@ -64,13 +64,11 @@ export class EnterTimesheetPage {
           text: 'No',
           role: 'cancel',
           handler: () => {
-            //console.log('Cancel clicked');
           }
         },
         {
           text: 'Yes',
           handler: () => {
-            //console.log('Buy clicked');
             this.projectCount.splice(i, 1);
           }
         }

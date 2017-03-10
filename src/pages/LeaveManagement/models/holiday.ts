@@ -4,6 +4,7 @@ export interface Holiday {
     HolidayDate: string;
     WeekDay: string;
     HolidayType: string;
+    HolidayDescription: string;
 }
 
 export class MyEvent {
@@ -14,5 +15,8 @@ export class MyEvent {
   end: string;
   color:string;
   allDay: boolean;
+  HolidayType: string;
+  WeekDay: string;
+  HolidayDescription: string;
 }
 

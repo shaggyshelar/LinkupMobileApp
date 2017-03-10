@@ -7,7 +7,6 @@ import { Observable } from 'rxjs/Rx';
 import 'rxjs/add/operator/map';
 
 import { BaseService } from '../../index';
-
 /** Context for service calls */
 const CONTEXT = 'IdentityTypeMaster';
 

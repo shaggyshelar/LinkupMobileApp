@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
+import { NavController, NavParams, ActionSheetController, ModalController } from 'ionic-angular';
 import { LeaveService } from '../index';
 import { Observable } from 'rxjs/Rx';
 import { Leave } from '../models/leave';
@@ -8,9 +8,11 @@ import { MyEvent } from '../models/holiday';
 import { MyLeaveDetailPage } from '../my-leave-detail/my-leave-detail';
 import { AlertController, ItemSliding } from 'ionic-angular';
 import { SpinnerService } from '../../../providers/index';
+import { Events } from 'ionic-angular';
 import * as moment from 'moment/moment';
 
 import { ApplyForLeavePage } from '../apply-for-leave/apply-for-leave';
+import { MyLeavesFilterPage } from '../my-leaves-filter/my-leaves-filter';
 
 @Component({
   selector: 'page-my-leaves',
@@ -24,46 +26,38 @@ export class MyLeavesPage {
   public leaveDetail: LeaveDetail;
   public selectedLeave: any;
   public approvedLeaveCount:number;
+  public isDescending: boolean=true;
+  public isFirstTimeLoad: boolean = true;
   events: any[];
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
     public leaveService: LeaveService,
     public spinnerService: SpinnerService,
-    public alertCtrl: AlertController) {
-    // this.events = [
-    //   {
-    //     "title": "All Day Event",
-    //     "start": "2017-02-01"
-    //   },
-    //   {
-    //     "title": "Long Event",
-    //     "start": "2017-02-07",
-    //     "end": "2017-02-10"
-    //   },
-    //   {
-    //     "title": "Repeating Event",
-    //     "start": "2017-02-09T16:00:00"
-    //   },
-    //   {
-    //     "title": "Repeating Event",
-    //     "start": "2017-02-16T16:00:00"
-    //   },
-    //   {
-    //     "title": "Conference",
-    //     "start": "2017-02-11",
-    //     "end": "2017-02-13"
-    //   }
-    // ];
+    public alertCtrl: AlertController,
+    public actionSheetCtrl: ActionSheetController,
+    public modalCtrl: ModalController,
+    public leaveChangeEvent: Events) {
+
+    this.leaveChangeEvent.subscribe('Delected Leave', () => {
+      this.getMyLeaves();
+    });
+
+    this.leaveChangeEvent.subscribe('Applied Leave', () => {
+      this.getMyLeaves();
+    });
   }
 
   ionViewDidLoad() {
     //this.leaveObs = this.leaveService.getMyLeaves();
     this.getMyLeaves();
   }
+  ionViewWillEnter() {
+
+  }
 
   ionViewWillUnload() {
-    // stop disconnect watch
-    this.getMyLeaves();
+    this.leaveChangeEvent.unsubscribe('Delected Leave');
+    this.leaveChangeEvent.unsubscribe('Applied Leave');
   }
 
   goToLeaveDetail(leaveData: any) {
@@ -82,7 +76,6 @@ export class MyLeavesPage {
     this.leaveService.getMyLeaves().subscribe(
       (res: any) => {
         this.spinnerService.stopSpinner();
-        console.log("Data from server", res);
         this.leaveObs = res;
         this.leaveObs.reverse();
         this.leaveObs.forEach(element => {
@@ -90,13 +83,12 @@ export class MyLeavesPage {
           var edate = moment(element.EndDate).format('YYYY-MM-DD');
           element.StartDate = moment(sdate).toDate();
           element.EndDate = moment(edate).toDate();
-          if(element.Status == 'Approved')
-          this.approvedLeaveCount++;
+          if (element.Status == 'Approved')
+            this.approvedLeaveCount++;
         });
         this.leaveService.setApprovedLeavesCount(this.approvedLeaveCount.toString());
         this.getCalandarEvents();
       });
-    console.log('ionViewDidLoad MyLeavesPage');
   }
 
   /*Create events to show on calendar */
@@ -130,7 +122,7 @@ export class MyLeavesPage {
     };
     this.leaveService.deleteLeaveRecord(leaveTobeCancelled).subscribe(res => {
       if (res) {
-      this.getMyLeaves();
+        //this.getMyLeaves();
       } else {
 
       }
@@ -168,18 +160,53 @@ export class MyLeavesPage {
         {
           text: 'NO',
           handler: () => {
-            console.log('Disagree clicked');
           }
         },
         {
           text: 'YES',
           handler: () => {
-            console.log('Agree clicked');
             this.cancelClicked();
           }
         }
       ]
     });
     confirm.present();
+  }
+  onFilter() {
+    let modal = this.modalCtrl.create(MyLeavesFilterPage);
+    modal.present();
+  }
+  onSort() {
+    let actionSheet = this.actionSheetCtrl.create({
+      title: 'Sort Your Leaves',
+      buttons: [
+        {
+          text: 'Date Ascending',
+          role: 'date ascending',
+          handler: () => {
+            if(this.isDescending === false) {
+              this.leaveObs.reverse();
+              this.isDescending = true;
+            }
+          }
+        },{
+          text: 'Date Descending',
+          role: 'date descending',
+          handler: () => {
+            if(this.isDescending) {
+              this.leaveObs.reverse();
+              this.isDescending = false;
+            }
+          }
+        },{
+          text: 'Cancel',
+          role: 'cancel',
+          handler: () => {
+            
+          }
+        }
+      ]
+    });
+    actionSheet.present();
   }
 }

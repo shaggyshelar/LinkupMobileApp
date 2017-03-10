@@ -3,7 +3,6 @@ import { Observable } from 'rxjs/Rx';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/catch';
-
 /** HttpService interface Definition*/
 interface HttpServices {
     baseUrl: string;

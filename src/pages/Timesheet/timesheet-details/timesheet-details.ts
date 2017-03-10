@@ -69,7 +69,6 @@ export class TimesheetDetailsPage {
   }
 
   recordTapped(rec) {
-    console.log('rec => ', rec);
     this.navCtrl.push(DailyTimesheetDetailPage, { dailyData: rec, readOnly: true, submittedStatus: this.employeeTimesheet.SubmittedStatus });
   }
 

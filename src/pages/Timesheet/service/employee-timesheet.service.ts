@@ -13,7 +13,6 @@ import { MessageService } from '../../../providers/shared';
 // import { Timesheet } from '../models/timesheet.model';
 import { Employee } from '../models/employee.model';
 import { EmployeeTimeSheet } from '../models/employee-timesheet.model';
-
 /** Context for service calls */
 const CONTEXT = 'EmployeeTimesheet';
 
@@ -143,7 +142,7 @@ export class EmployeeTimesheetService extends BaseService {
             });
         } else {
             return this.getChildList$('GetTimesheetApprovalData/' + id, 0, 0, true).map(res => {
-                this._cacheService.set('timesheetApprovalData' + id, res.json(), { maxAge: 60 * 60 });
+                this._cacheService.set('timesheetApprovalData' + id, res.json(), { maxAge: 60 * 60 * 24 });
                 return res.json();
             }).catch(err => {
                 return this.handleError(err);
