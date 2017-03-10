@@ -7,7 +7,7 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title>TimesheetDetails</ion-title>
+    <ion-title>Weekly Timesheet Details</ion-title>
   </ion-navbar>
 
 </ion-header>
@@ -34,7 +34,7 @@
         Hours : <span *ngIf="rec.NonBillableHours">{{rec.NonBillableHours}}</span> <span *ngIf="!rec.NonBillableHours">0:0</span>
       </p>
       <p>
-        Note for Non Billable Hours : <br><span *ngIf="rec.NoteForNonBillableHours">{{rec.NoteForNonBillableHours}}</span>        <span *ngIf="!rec.NoteForNonBillableHours"> No notes data available. </span>
+        Note for Non Billable Hours : <br><span *ngIf="rec.NoteForNonBillableHours">{{rec.NoteForNonBillableHours}}</span><span *ngIf="!rec.NoteForNonBillableHours"> No notes data available. </span>
       </p>
     </ion-item>
   </ion-list>
