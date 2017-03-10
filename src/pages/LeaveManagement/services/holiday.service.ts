@@ -11,7 +11,6 @@ import 'rxjs/add/operator/map';
 import { BaseService } from '../../../providers/index';
 import { Holiday } from '../models/holiday';
 // import { Employee } from '../models/employee';
-import { Events } from 'ionic-angular';
 /** Context for service calls */
 const CONTEXT = 'Holiday';
 
@@ -19,8 +18,8 @@ const CONTEXT = 'Holiday';
 @Injectable()
 export class HolidayService extends BaseService {
 
-    constructor(public http: Http,private _cacheService: CacheService,public unauthorizedEvent:Events) {
-        super(http, CONTEXT,unauthorizedEvent);
+    constructor(public http: Http,private _cacheService: CacheService) {
+        super(http, CONTEXT);
     }
 
     /**

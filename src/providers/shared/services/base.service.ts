@@ -4,7 +4,6 @@ import { MessageService } from './message.service';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/catch';
-import { Events } from 'ionic-angular';
 /** HttpService interface Definition*/
 interface HttpServices {
     baseUrl: string;
@@ -25,7 +24,7 @@ export class BaseService implements HttpServices {
     private requestUrl: string;
     private messageService: MessageService;
     /** Base Service constructor : Accepts Analytics Service, Http Service, Context path, Log service */
-    constructor(_httpService: Http, _context: string, public unauthorizedEvent:Events) {
+    constructor(_httpService: Http, _context: string) {
         this.httpService = _httpService;
         this.requestUrl = this.baseUrl.concat(_context);
         this.messageService = new MessageService();
@@ -169,7 +168,6 @@ export class BaseService implements HttpServices {
             errMsg = err;
             if (error.status !== 401) {
                 this.messageService.addMessage({ severity: 'error', summary: 'Failed', detail: errMsg });
-                this.onHandleAllErrors(errMsg);
             }
         } else {
             errMsg = error.message ? error.message : error.toString();
@@ -192,9 +190,5 @@ export class BaseService implements HttpServices {
         if (location.pathname !== '/login') {
             this.messageService.setSessionTimeOutMessage(true);
         }
-        this.unauthorizedEvent.publish('Token Expired','Token');
-    }
-    private onHandleAllErrors(errMsg) {
-        this.unauthorizedEvent.publish('All Errors',errMsg);
     }
 }

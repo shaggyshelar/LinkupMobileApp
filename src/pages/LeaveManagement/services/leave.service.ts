@@ -14,7 +14,6 @@ import { Select } from '../models/select';
 // import { Employee } from '../models/employee';
 import { LeaveDetail } from '../models/leaveDetail';
 import { Events } from 'ionic-angular';
-
 /** Context for service calls */
 const CONTEXT = 'Leave';
 
@@ -22,8 +21,8 @@ const CONTEXT = 'Leave';
 @Injectable()
 export class LeaveService extends BaseService {
     editableLeave: any;
-    constructor(public http: Http, private _cacheService: CacheService,public unauthorizedEvent:Events, private leaveChangedEvent:Events) {
-        super(http, CONTEXT,unauthorizedEvent);
+    constructor(public http: Http, private _cacheService: CacheService, private leaveChangedEvent:Events) {
+        super(http, CONTEXT);
     }
 
     /**

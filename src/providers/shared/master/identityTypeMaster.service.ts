@@ -7,7 +7,6 @@ import { Observable } from 'rxjs/Rx';
 import 'rxjs/add/operator/map';
 
 import { BaseService } from '../../index';
-import { Events } from 'ionic-angular';
 /** Context for service calls */
 const CONTEXT = 'IdentityTypeMaster';
 
@@ -15,8 +14,8 @@ const CONTEXT = 'IdentityTypeMaster';
 @Injectable()
 export class IdentityTypeMasterService extends BaseService {
 
-    constructor(public http: Http, public unauthorizedEvent:Events) {
-        super(http, CONTEXT,unauthorizedEvent);
+    constructor(public http: Http) {
+        super(http, CONTEXT);
     }
 
     getIdentityTypeMaster(): Observable<any> {

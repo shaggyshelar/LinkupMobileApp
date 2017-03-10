@@ -13,7 +13,6 @@ import { MessageService } from '../../../providers/shared';
 // import { Timesheet } from '../models/timesheet.model';
 import { Employee } from '../models/employee.model';
 import { EmployeeTimeSheet } from '../models/employee-timesheet.model';
-import { Events } from 'ionic-angular';
 /** Context for service calls */
 const CONTEXT = 'EmployeeTimesheet';
 
@@ -27,9 +26,9 @@ export class EmployeeTimesheetService extends BaseService {
     ];
 
     constructor(public http: Http, messageService: MessageService,
-    public _cacheService: CacheService,public unauthorizedEvent:Events
+    public _cacheService: CacheService
     ) {
-        super(http, CONTEXT,unauthorizedEvent);
+        super(http, CONTEXT);
     }
 
     getMyTimesheets(): Observable<any> {

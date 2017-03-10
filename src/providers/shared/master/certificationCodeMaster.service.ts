@@ -7,7 +7,6 @@ import { Observable } from 'rxjs/Rx';
 import 'rxjs/add/operator/map';
 
 import { BaseService } from '../../index';
-import { Events } from 'ionic-angular';
 /** Context for service calls */
 const CONTEXT = 'CertificationCodeMaster';
 
@@ -15,8 +14,8 @@ const CONTEXT = 'CertificationCodeMaster';
 @Injectable()
 export class CertificationCodeMasterService extends BaseService {
 
-    constructor(public http: Http,public unauthorizedEvent:Events) {
-        super(http, CONTEXT,unauthorizedEvent);
+    constructor(public http: Http) {
+        super(http, CONTEXT);
     }
 
     getCertificationCodeMaster(): Observable<any> {

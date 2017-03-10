@@ -16,7 +16,7 @@ export class TimesheetReportPage {
   constructor(public navCtrl: NavController, public navParams: NavParams) { }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad TimesheetReportPage');
+     //TO DO:Implementation
   }
 
 }

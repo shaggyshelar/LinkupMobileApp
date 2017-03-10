@@ -10,13 +10,12 @@ import { BaseService } from '../../index';
 
 /** Context for service calls */
 const CONTEXT = 'ClassMaster';
-import { Events } from 'ionic-angular';
 /** Service Definition */
 @Injectable()
 export class ClassMasterService extends BaseService {
 
-    constructor(public http: Http, public unauthorizedEvent:Events) {
-        super(http, CONTEXT,unauthorizedEvent);
+    constructor(public http: Http) {
+        super(http, CONTEXT);
     }
 
     getClassMaster(): Observable<any> {

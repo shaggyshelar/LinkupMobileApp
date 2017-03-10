@@ -16,7 +16,6 @@ export class LeaveApprovalFilterPage {
   constructor(public navCtrl: NavController, public navParams: NavParams, public viewCtrl:ViewController) {}
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad LeaveApprovalFilterPage');
   }
   dismiss(data) {
     this.viewCtrl.dismiss(data);

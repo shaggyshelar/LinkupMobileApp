@@ -61,7 +61,6 @@ export class HolidaysPage {
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad HolidaysPage');
     this.getHolidays();
   }
 
@@ -112,7 +111,6 @@ export class HolidaysPage {
   }
 
   handleEventClick(event:any){
-    console.log(event + 'event clicked');
      let alert = this.alertCtrl.create({
       title: 'Holiday',
       subTitle: '<b>Title: </b>' + event.calEvent.title + '<br/>'+'<b>Holiday Description: </b>'+ event.calEvent.HolidayDescription +
@@ -151,7 +149,7 @@ export class HolidaysPage {
           text: 'Cancel',
           role: 'cancel',
           handler: () => {
-            console.log('Cancel clicked');
+            
           }
         }
       ]

@@ -16,7 +16,7 @@ export class LogATicketPage {
   constructor(public navCtrl: NavController, public navParams: NavParams) { }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad LogATicketPage');
+     //TO DO:Implementation
   }
 
 }

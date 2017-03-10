@@ -29,14 +29,12 @@ export class ApprovalsPage {
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad ApprovalsPage');
 
     if (this._cacheService.exists('PendingLeavesApprovalCount')) {
       this.leavesToApproveCount = this._cacheService.get('PendingLeavesApprovalCount');
 
     };
 
-    console.log('badge storage => ', localStorage.getItem('approveTimesheetsBadgeCount'));
     if (this._cacheService.exists('PendingLeavesApprovalCount')) {
     this.approveTimesheetsBadgeCount = parseInt(localStorage.getItem('approveTimesheetsBadgeCount'));
     }

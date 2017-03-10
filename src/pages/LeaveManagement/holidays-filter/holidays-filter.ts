@@ -16,7 +16,7 @@ export class HolidaysFilterPage {
   constructor(public navCtrl: NavController, public navParams: NavParams, public viewCtrl:ViewController) {}
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad HolidaysFilterPage');
+     //TO DO:Implementation
   }
   dismiss(data) {
     this.viewCtrl.dismiss(data);

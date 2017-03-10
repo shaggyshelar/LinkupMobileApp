@@ -4,7 +4,6 @@ import { LoadingController  } from 'ionic-angular';
 import { Observable } from 'rxjs/Rx';
 import { BaseService } from '../shared/index';
 import { Subject } from 'rxjs/Subject';
-import { Events } from 'ionic-angular';
 /** Context for service calls */
 const CONTEXT = 'auth';
 
@@ -16,8 +15,8 @@ export class AuthService extends BaseService {
     onAuthStatusChanged$ = this.authStatusChangeSource.asObservable();
     private authenticated = false;
 
-    constructor(httpService: Http, private http: Http, public loadingCtrl:LoadingController,public unauthorizedEvent:Events) {
-        super(httpService, CONTEXT,unauthorizedEvent);
+    constructor(httpService: Http, private http: Http, public loadingCtrl:LoadingController) {
+        super(httpService, CONTEXT);
     }
 
     blockUI(): any {

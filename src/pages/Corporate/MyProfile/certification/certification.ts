@@ -31,13 +31,13 @@ export class CertificationPage {
     }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad CertificationPage');
+     //TO DO:Implementation
   }
   dismiss(data) {
     this.viewCtrl.dismiss(data);
   }
   onSave() {
-      console.log('data saved sucessfully');
+       //TO DO:Implementation
   }
   onAddForm() {
     this.showForm = true;

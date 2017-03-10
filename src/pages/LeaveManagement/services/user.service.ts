@@ -13,12 +13,11 @@ import { LeaveDetail } from '../models/leaveDetail';
 
 /** Context for service calls */
 const CONTEXT = 'Users';
-import { Events } from 'ionic-angular';
 /** Service Definition */
 @Injectable()
 export class UserService extends BaseService {
-    constructor(public http: Http, public unauthorizedEvent:Events) {
-        super(http, CONTEXT,unauthorizedEvent);
+    constructor(public http: Http) {
+        super(http, CONTEXT);
     }
 
     getUserDetails(): Observable<User> {

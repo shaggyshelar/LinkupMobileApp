@@ -28,7 +28,6 @@ export class TimesheetDetailsPage {
    }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad TimesheetDetailsPage');
     this.timesheetID = this.navParams.data.id;
 
     var loader = this.loadingCtrl.create({
@@ -48,7 +47,6 @@ export class TimesheetDetailsPage {
   }
 
   recordTapped(rec) {
-    console.log('rec => ',rec);
     this.navCtrl.push(DailyTimesheetDetailPage, rec);
   }
 

@@ -27,7 +27,7 @@ export class AchievementPage {
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad AchievementPage');
+     //TO DO:Implementation
   }
 
   addAchievement() {
@@ -48,7 +48,6 @@ export class AchievementPage {
   submitTapped(item) {
     /** Pushing to array temporarily */
     if (this.achievementForm.valid) {
-      console.log('submit value => ',item.achievement);
       this.achievements.push(item.achievement);
       this.addAchievement();
       this.isEditable = false;

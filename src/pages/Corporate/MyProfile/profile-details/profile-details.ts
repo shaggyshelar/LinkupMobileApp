@@ -70,7 +70,7 @@ export class ProfileDetailsPage {
                }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad ProfileDetailsPage');
+     //TO DO:Implementation
   }
   dismiss(data) {
     this.viewCtrl.dismiss(data);

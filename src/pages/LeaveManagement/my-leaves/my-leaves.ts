@@ -76,7 +76,6 @@ export class MyLeavesPage {
     this.leaveService.getMyLeaves().subscribe(
       (res: any) => {
         this.spinnerService.stopSpinner();
-        console.log("Data from server", res);
         this.leaveObs = res;
         this.leaveObs.reverse();
         this.leaveObs.forEach(element => {
@@ -90,7 +89,6 @@ export class MyLeavesPage {
         this.leaveService.setApprovedLeavesCount(this.approvedLeaveCount.toString());
         this.getCalandarEvents();
       });
-    console.log('ionViewDidLoad MyLeavesPage');
   }
 
   /*Create events to show on calendar */
@@ -162,13 +160,11 @@ export class MyLeavesPage {
         {
           text: 'NO',
           handler: () => {
-            console.log('Disagree clicked');
           }
         },
         {
           text: 'YES',
           handler: () => {
-            console.log('Agree clicked');
             this.cancelClicked();
           }
         }

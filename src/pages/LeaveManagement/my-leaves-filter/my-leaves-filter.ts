@@ -16,7 +16,7 @@ export class MyLeavesFilterPage {
   constructor(public navCtrl: NavController, public navParams: NavParams, public viewCtrl: ViewController) {}
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad MyLeavesFilterPage');
+     //TO DO:Implementation
   }
   dismiss(data) {
     this.viewCtrl.dismiss(data);

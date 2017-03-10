@@ -75,7 +75,7 @@ export class LoginPage {
     this.model = new User('', '');
   }
   ionViewDidLoad() {
-    console.log('ionViewDidLoad LoginPage');
+     //TO DO:Implementation
   }
   onLogin(form: NgForm) {
     this.submitted = true;

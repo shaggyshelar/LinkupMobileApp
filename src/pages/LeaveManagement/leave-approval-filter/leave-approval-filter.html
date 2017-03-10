@@ -19,16 +19,39 @@
 
 
 <ion-content padding>
-  <ion-item>
-  <ion-label>Approve Leaves</ion-label>
-  <ion-select [(ngModel)]="toppings" multiple="true">
-    <ion-option>Cancelled Status</ion-option>
-    <ion-option>Approved Status</ion-option>
-    <ion-option>Rejected Status</ion-option>
-    <ion-option>Leave</ion-option>
-    <ion-option>Leave (LWP)</ion-option>
-    <ion-option>Absent</ion-option>
-    <ion-option>half Day Leave</ion-option>
-  </ion-select>
-</ion-item>
+  <ion-list>
+    <ion-item>
+      <ion-label>Cancel Status</ion-label>
+      <ion-checkbox checked="true"></ion-checkbox>
+    </ion-item>
+    <ion-item>
+      <ion-label>Approved Status</ion-label>
+      <ion-checkbox checked="true"></ion-checkbox>
+    </ion-item> 
+    <ion-item>
+      <ion-label>Rejected Status</ion-label>
+      <ion-checkbox checked="true"></ion-checkbox>
+    </ion-item> 
+    <ion-item>
+      <ion-label>Leave</ion-label>
+      <ion-checkbox checked="true"></ion-checkbox>
+    </ion-item> 
+    <ion-item>
+      <ion-label>Leave (LWP)</ion-label>
+      <ion-checkbox checked="true"></ion-checkbox>
+    </ion-item> 
+    <ion-item>
+      <ion-label>Abscent</ion-label>
+      <ion-checkbox checked="true"></ion-checkbox>
+    </ion-item> 
+    <ion-item>
+      <ion-label>Half Day Leave</ion-label>
+      <ion-checkbox checked="true"></ion-checkbox>
+    </ion-item> 
+  </ion-list>
 </ion-content>
+<ion-footer>
+  <ion-toolbar>
+    <ion-title class="text-center">Apply</ion-title>
+  </ion-toolbar>
+</ion-footer>

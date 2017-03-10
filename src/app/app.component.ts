@@ -2,7 +2,7 @@
 import { Component, ViewChild } from '@angular/core';
 import { Nav, Platform } from 'ionic-angular';
 import { StatusBar, Splashscreen, Network, InAppBrowser } from 'ionic-native';
-import { LoadingController,AlertController,ToastController } from 'ionic-angular';
+import { LoadingController, AlertController, ToastController } from 'ionic-angular';
 import { HomePage } from '../pages/home/home';
 import { Events } from 'ionic-angular';
 
@@ -86,12 +86,12 @@ export class MyApp {
   designation: string;
   empID: string;
 
-  constructor(public platform: Platform, 
-              public auth: AuthService, 
-              public loadingCtrl: LoadingController,
-              public unauthorizedEvent:Events,
-              public alertCtrl:AlertController,
-              public toastCtrl: ToastController) {
+  constructor(public platform: Platform,
+    public auth: AuthService,
+    public loadingCtrl: LoadingController,
+    public unauthorizedEvent: Events,
+    public alertCtrl: AlertController,
+    public toastCtrl: ToastController) {
     this.initializeApp();
 
 
@@ -113,12 +113,12 @@ export class MyApp {
           this.rootPage = LoginPage;
         }
       });
-      this.unauthorizedEvent.subscribe('Token Expired', (Token) => {
-        this.tpkenExpiredAlert('Session Expired','Please Login again.');
-      });
-      this.unauthorizedEvent.subscribe('All Errors', (errMsg) => {
-        this.allErrorToast(errMsg);
-      });
+    this.unauthorizedEvent.subscribe('Token Expired', (Token) => {
+      this.tokenExpiredAlert('Session Expired', 'Please Login again.');
+    });
+    this.unauthorizedEvent.subscribe('All Errors', (errMsg) => {
+      this.allErrorToast(errMsg);
+    });
   }
   allErrorToast(errMsg) {
     let toast = this.toastCtrl.create({
@@ -127,16 +127,16 @@ export class MyApp {
     });
     toast.present();
   }
-  tpkenExpiredAlert(title:string, subTitle:string) {
-      let alert = this.alertCtrl.create({
+  tokenExpiredAlert(title: string, subTitle: string) {
+    let alert = this.alertCtrl.create({
       title: title,
       subTitle: subTitle,
       buttons: ['OK']
-      });
-      alert.onDidDismiss(() =>  
+    });
+    alert.onDidDismiss(() =>
       this.onLogout()
-      );
-      alert.present();
+    );
+    alert.present();
   }
   onLogout(): void {
     this.auth.logout();
