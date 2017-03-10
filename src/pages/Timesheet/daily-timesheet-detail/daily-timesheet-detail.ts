@@ -34,11 +34,11 @@ export class DailyTimesheetDetailPage {
   viewMyTimesheetMode() {
     this.dailyData = this.navParams.data.dailyData;
     this.isViewModeBillable = this.isViewModeNonBillable = this.navParams.data.readOnly;
-    console.log('viewMyTimesheetMode');
+    //console.log('viewMyTimesheetMode');
   }
 
   enterTimesheetMode() {
-    console.log('enterTimesheetMode');
+    //console.log('enterTimesheetMode');
     this.dailyData.BillableHours = this.dailyData.NonBillableHours = this.dailyData.NoteForBillableHours = this.dailyData.NoteForNonBillableHours = '';
   }
 
