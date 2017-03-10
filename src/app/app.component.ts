@@ -24,7 +24,7 @@ import { ApproveTimesheetPage } from '../pages/Timesheet/approve-timesheet/appro
 import { ApprovedTimesheetPage } from '../pages/Timesheet/approved-timesheet/approved-timesheet';
 import { TimesheetReportPage } from '../pages/Timesheet/timesheet-report/timesheet-report';
 import { BiometricDiscrepancyApprovalPage } from '../pages/Timesheet/biometric-discrepancy-approval/biometric-discrepancy-approval';
-import { TimesheetDetailsPage } from '../pages/Timesheet/timesheet-details/timesheet-details';
+//import { TimesheetDetailsPage } from '../pages/Timesheet/timesheet-details/timesheet-details';
 
 
 // Certification

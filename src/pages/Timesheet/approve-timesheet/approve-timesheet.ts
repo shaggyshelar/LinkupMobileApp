@@ -1,12 +1,12 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
-import  {  LoadingController  }  from  'ionic-angular';
+import { LoadingController } from 'ionic-angular';
 import { Observable } from 'rxjs/Rx';
 
 import { ApproveTimesheetDetailsPage } from '../approve-timesheet-details/approve-timesheet-details';
 
 import { EmployeeTimesheetService } from '../index';
-import { EmployeeTimeSheet } from '../models/employee-timesheet.model';
+//import { EmployeeTimeSheet } from '../models/employee-timesheet.model';
 
 
 @Component({
@@ -21,13 +21,14 @@ export class ApproveTimesheetPage {
   constructor(public navCtrl: NavController
     , public navParams: NavParams
     , private employeeTimesheetService: EmployeeTimesheetService
-    , public  loadingCtrl: LoadingController) {
+    , public loadingCtrl: LoadingController) {
 
   }
 
-  ionViewDidLoad() {
-    this.decideAction();
+  ionViewDidLoad() { }
 
+  ionViewDidEnter() {
+    this.decideAction();
   }
 
   decideAction() {
@@ -39,7 +40,7 @@ export class ApproveTimesheetPage {
       case 'enter-timesheet':
         console.log('enter timesheet => approve-timesheets');
         break;
-    
+
       default:
         console.log('unknown caller => approve-timesheets');
         this.getApproverData();
@@ -56,7 +57,7 @@ export class ApproveTimesheetPage {
       this.employeeTimesheetService.getMyTimesheets().subscribe((res: any) => {
         if (res.length > 0) {
           this.approveEmployee = res.reverse();
-          console.log(res);
+          //console.log(res);
         }
         loader.dismiss();
       }, (err) => {
@@ -74,7 +75,7 @@ export class ApproveTimesheetPage {
       this.employeeTimesheetService.getApproverPendingTimesheets().subscribe((res: any) => {
         if (res.length > 0) {
           this.approveEmployee = res.reverse();
-          console.log(res);
+          //console.log(res);
           localStorage.setItem('approveTimesheetsBadgeCount', res.length);
         }
         loader.dismiss();
@@ -85,7 +86,7 @@ export class ApproveTimesheetPage {
   }
 
   itemTapped(entry) {
-    this.navCtrl.push(ApproveTimesheetDetailsPage, { id: entry.ID, caller : 'approve-timesheet' });
+    this.navCtrl.push(ApproveTimesheetDetailsPage, { id: entry.ID, caller: 'approve-timesheet' });
   }
 
 }

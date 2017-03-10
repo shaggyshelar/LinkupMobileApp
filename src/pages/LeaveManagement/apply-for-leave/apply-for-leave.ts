@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams,ActionSheetController } from 'ionic-angular';
+import { NavController, NavParams,ActionSheetController,ModalController } from 'ionic-angular';
+import { LeaveDetailsPage } from '../leave-details/leave-details';
 import { LeaveService } from '../index';
 import { Leave } from '../models/leave';
 import { SpinnerService } from '../../../providers/index';
@@ -69,6 +70,7 @@ export class ApplyForLeavePage {
     hideLeaveList:boolean = false;
     formDisabled:boolean = true;
     isShowLeaveSelection:boolean = false;
+    isAllDataDownloaded:boolean = false;
 
   constructor(public navCtrl: NavController,
   public navParams: NavParams,
@@ -78,7 +80,8 @@ export class ApplyForLeavePage {
   public formBuilder: FormBuilder,
   public authService : AuthService,
   public leaveTypeMasterService : LeaveTypeMasterService,
-  public actionsheetCtr :ActionSheetController
+  public actionsheetCtr :ActionSheetController,
+  public modalCtrl: ModalController
   ) {
 
      this.applyLeaveForm = this.formBuilder.group({
@@ -157,8 +160,11 @@ export class ApplyForLeavePage {
                 this.formDisabled = true;
             } else {
                 this.currentUserLeaveDetail = res;
+                this.isAllDataDownloaded = true;
                 this.selectLeaveType(this.leaves[0]);
-            }
+
+                  
+         }
         });
         });
         });
@@ -171,6 +177,14 @@ export class ApplyForLeavePage {
        
        
    }
+
+   /** Show Leave Deatils Page */
+
+    showLeaveDeatils() {
+    let modal = this.modalCtrl.create(LeaveDetailsPage,{leaveDetails:this.currentUserLeaveDetail});
+    modal.showBackButton(true);
+    modal.present();
+  }
 
    /** Select Leave type */
 

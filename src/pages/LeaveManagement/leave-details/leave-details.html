@@ -1,0 +1,59 @@
+<!--
+  Generated template for the LeaveDetails page.
+
+  See http://ionicframework.com/docs/v2/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+
+
+  <ion-toolbar>
+    <ion-buttons start>
+      <button ion-button (click)="close()">
+        <span showWhen="ios">Cancel</span>
+        <ion-icon name="md-close" showWhen="android,windows"></ion-icon>
+      </button>
+    </ion-buttons>
+    <ion-title>Leave Details</ion-title>
+  </ion-toolbar>
+
+<ion-content padding>
+<br>
+<br>
+<br>
+  <ion-list>
+ 
+        <ion-item ion-item>
+                <p>
+                  Leave Balance 
+                </p>
+                <ion-badge item-right>{{leaveDetails.ActualBalance | number : '1.1-3' }}</ion-badge>
+              </ion-item>
+         <ion-item ion-item>
+          <p>
+            Leave Taken
+          </p>
+          <ion-badge item-right>{{leaveDetails.LeaveTaken | number : '1.1-3' }}</ion-badge>
+        </ion-item>
+        <ion-item ion-item>
+          <p>
+            Half Day Taken
+          </p>
+          <ion-badge item-right>{{leaveDetails.HalfdayLeaveTaken | number : '1.1-3' }}</ion-badge>
+        </ion-item>
+
+        <ion-item ion-item>
+          <p>
+            Absent Taken
+          </p>
+          <ion-badge item-right>{{leaveDetails.AbsentTaken | number : '1.1-3' }}</ion-badge>
+        </ion-item>
+
+        <ion-item ion-item>
+          <p>
+            Half Day Absent Taken
+          </p>
+          <ion-badge item-right>{{leaveDetails.HalfdayAbsentTaken | number : '1.1-3' }}</ion-badge>
+        </ion-item>
+</ion-list>
+
+</ion-content>
