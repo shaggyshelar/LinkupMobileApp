@@ -6,7 +6,7 @@ import { Observable } from 'rxjs/Rx';
 import { ApproveTimesheetDetailsPage } from '../approve-timesheet-details/approve-timesheet-details';
 
 import { EmployeeTimesheetService } from '../index';
-import { EmployeeTimeSheet } from '../models/employee-timesheet.model';
+//import { EmployeeTimeSheet } from '../models/employee-timesheet.model';
 
 
 @Component({
@@ -33,15 +33,15 @@ export class ApproveTimesheetPage {
   decideAction() {
     switch (this.navParams.data.caller) {
       case 'my-timesheet':
-        console.log('my-timesheet => approve-timesheets');
+        //console.log('my-timesheet => approve-timesheets');
         this.getUserData();
         break;
       case 'enter-timesheet':
-        console.log('enter timesheet => approve-timesheets');
+        //console.log('enter timesheet => approve-timesheets');
         break;
     
       default:
-        console.log('unknown caller => approve-timesheets');
+        //console.log('unknown caller => approve-timesheets');
         this.getApproverData();
         break;
     }
@@ -56,7 +56,7 @@ export class ApproveTimesheetPage {
       this.employeeTimesheetService.getMyTimesheets().subscribe((res: any) => {
         if (res.length > 0) {
           this.approveEmployee = res.reverse();
-          console.log(res);
+          //console.log(res);
         }
         loader.dismiss();
       }, (err) => {
@@ -74,7 +74,7 @@ export class ApproveTimesheetPage {
       this.employeeTimesheetService.getApproverPendingTimesheets().subscribe((res: any) => {
         if (res.length > 0) {
           this.approveEmployee = res.reverse();
-          console.log(res);
+          //console.log(res);
           localStorage.setItem('approveTimesheetsBadgeCount', res.length);
         }
         loader.dismiss();

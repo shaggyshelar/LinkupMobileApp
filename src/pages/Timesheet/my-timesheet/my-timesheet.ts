@@ -35,7 +35,7 @@ export class MyTimesheetPage {
         loader.dismiss();
       }, (err) => {
         loader.dismiss();
-        console.log(err);
+        //console.log(err);
       }
       );
     });
