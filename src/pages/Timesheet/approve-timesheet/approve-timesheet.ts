@@ -1,12 +1,12 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
-import { LoadingController } from 'ionic-angular';
+import { LoadingController } from 'ionic-angular';
 import { Observable } from 'rxjs/Rx';
 
 import { ApproveTimesheetDetailsPage } from '../approve-timesheet-details/approve-timesheet-details';
 
 import { EmployeeTimesheetService } from '../index';
-import { EmployeeTimeSheet } from '../models/employee-timesheet.model';
+//import { EmployeeTimeSheet } from '../models/employee-timesheet.model';
 
 
 @Component({
@@ -14,25 +14,68 @@ import { EmployeeTimeSheet } from '../models/employee-timesheet.model';
   templateUrl: 'approve-timesheet.html'
 })
 export class ApproveTimesheetPage {
+  origin: String = '';
 
-  public approveEmployee : Observable<EmployeeTimesheetService>;
+  public approveEmployee: Observable<EmployeeTimesheetService>;
 
   constructor(public navCtrl: NavController
-  , public navParams: NavParams
-  , private employeeTimesheetService : EmployeeTimesheetService
-  , public loadingCtrl : LoadingController) {
+    , public navParams: NavParams
+    , private employeeTimesheetService: EmployeeTimesheetService
+    , public loadingCtrl: LoadingController) {
 
-   }
+  }
 
-  ionViewDidLoad() {
+  ionViewDidLoad() { }
+
+  ionViewDidEnter() {
+    this.decideAction();
+  }
+
+  decideAction() {
+    switch (this.navParams.data.caller) {
+      case 'my-timesheet':
+        console.log('my-timesheet => approve-timesheets');
+        this.getUserData();
+        break;
+      case 'enter-timesheet':
+        console.log('enter timesheet => approve-timesheets');
+        break;
+
+      default:
+        console.log('unknown caller => approve-timesheets');
+        this.getApproverData();
+        break;
+    }
+  }
+
+  getUserData() {
     var loader = this.loadingCtrl.create({
       content: 'Please wait...'
     });
 
-    loader.present().then(()=>{
-      this.employeeTimesheetService.getApproverPendingTimesheets().subscribe((res:any)=> {
-        if(res.length > 0) {
+    loader.present().then(() => {
+      this.employeeTimesheetService.getMyTimesheets().subscribe((res: any) => {
+        if (res.length > 0) {
           this.approveEmployee = res.reverse();
+          //console.log(res);
+        }
+        loader.dismiss();
+      }, (err) => {
+        loader.dismiss();
+      });
+    });
+  }
+
+  getApproverData() {
+    var loader = this.loadingCtrl.create({
+      content: 'Please wait...'
+    });
+
+    loader.present().then(() => {
+      this.employeeTimesheetService.getApproverPendingTimesheets().subscribe((res: any) => {
+        if (res.length > 0) {
+          this.approveEmployee = res.reverse();
+          //console.log(res);
           localStorage.setItem('approveTimesheetsBadgeCount', res.length);
         }
         loader.dismiss();
@@ -43,7 +86,7 @@ export class ApproveTimesheetPage {
   }
 
   itemTapped(entry) {
-    this.navCtrl.push(ApproveTimesheetDetailsPage, {id: entry.ID});
+    this.navCtrl.push(ApproveTimesheetDetailsPage, { id: entry.ID, caller: 'approve-timesheet' });
   }
 
 }

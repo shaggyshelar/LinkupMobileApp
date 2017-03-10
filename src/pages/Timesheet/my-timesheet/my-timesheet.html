@@ -18,7 +18,7 @@
 
 <ion-content padding>
   <ion-fab right bottom>
-    <button ion-fab mini><ion-icon name="add"></ion-icon></button>
+    <button ion-fab mini (click)="addFabClicked()"><ion-icon name="add"></ion-icon></button>
   </ion-fab>
   <ion-list>
     <ion-item-sliding #slidingItem *ngFor="let entry of timesheetRec" [attr.status]="entry.SubmittedStatus | lowercase">
@@ -45,5 +45,9 @@
       </ion-item-options>
     </ion-item-sliding>
   </ion-list>
+
+  <ion-list-header [hidden]="(timesheetRec)?.length > 0">
+    No Records Found
+  </ion-list-header>
 
 </ion-content>

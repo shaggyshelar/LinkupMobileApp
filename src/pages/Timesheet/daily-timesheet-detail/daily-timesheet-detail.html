@@ -8,7 +8,7 @@
 
   <ion-navbar>
     <ion-title>DailyTimesheetDetail</ion-title>
-    <ion-buttons end>
+    <ion-buttons end *ngIf="!navParams.data.readOnly">
       <button ion-button end>
           <ion-icon name="checkmark"></ion-icon>
       </button>
@@ -22,14 +22,14 @@
   <form [formGroup]="dailyTimesheetForm" class="extend-bottom margin-left">
     <ion-card>
       <ion-item>
-        <ion-label color="primary">Billable Hours</ion-label>
-        <ion-input type="number" formControlName="billableHours" [(ngModel)]="dailyData.BillableHours" [disabled]="isViewModeBillable"></ion-input>
+        <ion-input placeholder="Billable Hours" formControlName="billableHours"></ion-input>
+        <ion-icon name="clock" item-right></ion-icon>
       </ion-item>
       <p *ngIf="!dailyTimesheetForm.controls.billableHours.valid && (dailyTimesheetForm.controls.billableHours.dirty || dailyTimesheetForm.controls.billableHours.touched)" class="warning">Field required</p>
 
       <ion-item>
         <ion-label floating>Note</ion-label>
-        <ion-textarea formControlName="noteForBillableHours" [(ngModel)]="dailyData.NoteForBillableHours" [disabled]="isViewModeBillable"></ion-textarea>
+        <ion-textarea formControlName="noteForBillableHours"></ion-textarea>
       </ion-item>
       <p *ngIf="!dailyTimesheetForm.controls.noteForBillableHours.valid && (dailyTimesheetForm.controls.noteForBillableHours.dirty || dailyTimesheetForm.controls.noteForBillableHours.touched)" class="warning">Field required</p>
 
@@ -37,14 +37,14 @@
 
     <ion-card>
       <ion-item>
-        <ion-label color="primary">Non Billable Hours</ion-label>
-        <ion-input type="number" formControlName="nonBillableHours" [(ngModel)]="dailyData.NonBillableHours" [disabled]="isViewModeNonBillable" ></ion-input>
+        <ion-input  placeholder="Non Billable Hours" formControlName="nonBillableHours" ></ion-input>
+        <ion-icon name="clock" item-right></ion-icon>
       </ion-item>
       <p *ngIf="!dailyTimesheetForm.controls.nonBillableHours.valid && (dailyTimesheetForm.controls.nonBillableHours.dirty || dailyTimesheetForm.controls.nonBillableHours.touched)" class="warning">Field required</p>
 
       <ion-item>
         <ion-label floating>Note</ion-label>
-        <ion-textarea formControlName="noteForNonBillableHours" [(ngModel)]="dailyData.NoteForNonBillableHours" [disabled]="isViewModeNonBillable"></ion-textarea>
+        <ion-textarea formControlName="noteForNonBillableHours"></ion-textarea>
       </ion-item>
       <p *ngIf="!dailyTimesheetForm.controls.noteForNonBillableHours.valid && (dailyTimesheetForm.controls.noteForNonBillableHours.dirty || dailyTimesheetForm.controls.noteForNonBillableHours.touched)" class="warning">Field required</p>
 
