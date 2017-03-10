@@ -1,0 +1,55 @@
+<!--
+  Generated template for the HolidayDetails page.
+
+  See http://ionicframework.com/docs/v2/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>Holiday Details</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+  <ion-list>
+    <ion-item>
+      <h3>Holiday Title</h3>
+      <p>
+        {{selectedHoliday.Title}}
+      </p>
+    </ion-item>
+    <ion-item>
+      <h3>Week Day</h3>
+      <p>
+        {{selectedHoliday.WeekDay}}
+      </p>
+    </ion-item>
+    <ion-item>
+      <h3>Financial Year</h3>
+      <p>
+        {{selectedHoliday.FinancialYear.Value}}
+      </p>
+    </ion-item>
+    <ion-item>
+      <h3>Holiday Date</h3>
+      <p>
+        {{selectedHoliday.HolidayDate | date:"MM/dd/yyyy"}}
+      </p>
+    </ion-item>
+    <ion-item>
+      <h3>Holiday Description</h3>
+      <p>
+        {{selectedHoliday.HolidayDescription}}
+      </p>
+    </ion-item>
+    <ion-item>
+      <h3>Holiday Type</h3>
+      <p>
+        {{selectedHoliday.HolidayType.Value}}
+      </p>
+    </ion-item>
+  </ion-list>
+</ion-content>

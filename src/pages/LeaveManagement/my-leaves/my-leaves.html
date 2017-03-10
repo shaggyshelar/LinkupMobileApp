@@ -71,8 +71,6 @@
           <ion-badge item-right>{{leave.NumberOfLeaves | number : '1.1-3' }}</ion-badge>
         </ion-item>
 
-      
-
       <ion-item-options *ngIf="leave.Status == 'Pending'">
         <button ion-button color="favorite" (click)="cancelLeave(slidingItem, leave)">
             Cancel
@@ -83,6 +81,14 @@
 
   </ion-list>
 
+  <!--Lazy loading Begin-->
+  <ion-infinite-scroll (ionInfinite)="doInfinite($event)">
+    <ion-infinite-scroll-content loadingSpinner="bubbles"
+      loadingText="Loading more data..." threshold="5%">
+    </ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+  <!--Lazy loading End-->
+  
   <ion-list-header [hidden]="(leaveObs)?.length > 0">
     No Records Found
   </ion-list-header>
