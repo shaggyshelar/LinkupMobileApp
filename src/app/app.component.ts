@@ -156,8 +156,9 @@ export class MyApp {
       Splashscreen.hide();
       MessageService.onMessageAdded
         .subscribe((value: any) => {
+          //TODO: Parse Error and display message
           let toast = this.toastCtrl.create({
-            message: value.message,
+            message: 'Something unexpected happend. Please try again',
             duration: 3000
           });
           toast.present();

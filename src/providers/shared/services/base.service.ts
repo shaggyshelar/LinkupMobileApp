@@ -168,6 +168,7 @@ export class BaseService implements HttpServices {
                 MessageService.addMessage({ severity: 'error', summary: 'Failed', detail: errMsg });
             }
         } else {
+            MessageService.addMessage({ severity: 'error', summary: 'Failed', detail: errMsg });
             errMsg = error.message ? error.message : error.toString();
         }
         console.error(errMsg);
