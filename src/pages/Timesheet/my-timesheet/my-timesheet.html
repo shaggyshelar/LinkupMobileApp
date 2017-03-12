@@ -4,7 +4,7 @@
     <button ion-button icon-only menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
-    <ion-title>Timesheets</ion-title>
+    <ion-title>My Timesheets</ion-title>
   </ion-navbar>
 
 </ion-header>
@@ -49,8 +49,9 @@
     </ion-item>
   </ion-list>-->
 
-  <ion-list #scheduleList [hidden]="(myTimeSheets )?.length === 0">
-    <ion-item *ngFor="let timesheet of myTimeSheets" ion-item (click)="itemTapped(timesheet)" [attr.status]="timesheet.SubmittedStatus | lowercase">
+  <ion-list #myTimesheetList [hidden]="(myTimeSheets )?.length === 0">
+    <ion-item *ngFor="let timesheet of myTimeSheets" ion-item (click)="itemClicked(timesheet)" [attr.submittedstatus]="timesheet.SubmittedStatus | lowercase">
+      <h3 *ngFor="let approver of timesheet.ApproverUser"> {{approver.Name}} </h3>
       <h3>
         {{timesheet.StartDate | date: 'dd/MM/yyyy'}} &mdash; {{timesheet.EndDate | date: 'dd/MM/yyyy'}}
       </h3>

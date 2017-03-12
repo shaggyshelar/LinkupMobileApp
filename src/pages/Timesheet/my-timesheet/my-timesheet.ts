@@ -16,21 +16,21 @@ import { EmployeeTimeSheet } from '../models/employee-timesheet.model';
 })
 export class MyTimesheetPage {
   myTimeSheets: EmployeeTimeSheet[];
+  loader: any;
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
     private employeeTimesheetService: EmployeeTimesheetService,
     public loadingCtrl: LoadingController) {
+    this.loader = this.loadingCtrl.create({
+      content: 'Please wait...'
+    });
   }
 
   ionViewDidLoad() {
-    // var loader = this.loadingCtrl.create({
-    //   content: 'Please wait...'
-    // });
-
-    // loader.present().then(() => {
-    // });
+    this.loader.present();
     this.myTimeSheets = [];
     this.employeeTimesheetService.getMyTimesheets().subscribe((res: any) => {
+      this.loader.dismiss();
       if (res.length > 0) {
         this.myTimeSheets = res.reverse();
       }
