@@ -38,7 +38,7 @@
         <button ion-button (click)="editClicked(item)">Edit</button>
       </ion-item-options>
     </ion-item-sliding>
-  </ion-list>-->
+  </ion-list>
   <ion-list #scheduleList [hidden]="(myTimeSheets )?.length === 0">
     <ion-item *ngFor="let timesheet of myTimeSheets" [attr.status]="timesheet.status | lowercase" (click)="onHolidayDetails(holiday)">
       <h3>{{timesheet.Title}}</h3>
@@ -46,6 +46,21 @@
         {{timesheet.HolidayDate | date:'dd/MM/y'}}
       </p>
       <ion-badge item-right>{{timesheet.WeekDay}}</ion-badge>
+    </ion-item>
+  </ion-list>-->
+
+  <ion-list #scheduleList [hidden]="(myTimeSheets )?.length === 0">
+    <ion-item *ngFor="let timesheet of myTimeSheets" ion-item (click)="itemTapped(timesheet)" [attr.status]="timesheet.SubmittedStatus | lowercase">
+      <h3>
+        {{timesheet.StartDate | date: 'dd/MM/yyyy'}} &mdash; {{timesheet.EndDate | date: 'dd/MM/yyyy'}}
+      </h3>
+      <p>
+        Billable Hours {{timesheet.BillableHours}}
+      </p>
+      <p>
+        Non Billable Hours: {{timesheet.NonBillableHours}}
+        <span class="right">{{timesheet.SubmissionDate}}</span>
+      </p>
     </ion-item>
   </ion-list>
 
