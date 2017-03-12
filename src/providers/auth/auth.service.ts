@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Http, Response, Headers, RequestOptions } from '@angular/http';
-import { LoadingController  } from 'ionic-angular';
+import { LoadingController } from 'ionic-angular';
 import { Observable } from 'rxjs/Rx';
 import { BaseService } from '../shared/index';
 import { Subject } from 'rxjs/Subject';
@@ -11,11 +11,11 @@ const CONTEXT = 'auth';
 export class AuthService extends BaseService {
     public currentUser: any;
     public authStatusChangeSource = new Subject<string>();
-    public loader:any;
+    public loader: any;
     onAuthStatusChanged$ = this.authStatusChangeSource.asObservable();
     private authenticated = false;
 
-    constructor(httpService: Http, private http: Http, public loadingCtrl:LoadingController) {
+    constructor(httpService: Http, private http: Http, public loadingCtrl: LoadingController) {
         super(httpService, CONTEXT);
     }
 
@@ -23,10 +23,6 @@ export class AuthService extends BaseService {
     }
 
     unblockUI(): any {
-    }
-
-    onAuthenticate(isAuthenticated: string) {
-        this.authStatusChangeSource.next(isAuthenticated);
     }
 
     isAuthenticated() {
@@ -64,12 +60,10 @@ export class AuthService extends BaseService {
                 this.unblockUI();
                 return this.handleError(err);
             })
-            .finally(() => this.loader.dismiss());
     }
-    storeLoggedInUserPermission() {
-        return this.getChildList$('permissions', 0, 0, true).map((res: Response) => { this.setLoggedInUserPermission(res); });
-    }
-
+    storeLoggedInUserPermission() {
+        return this.getChildList$('permissions', 0, 0, true).map((res: Response) => { this.setLoggedInUserPermission(res); });
+    }
     getCurrentUserDetails() {
         let headers = new Headers();
         headers.append('Authorization', 'Bearer ' + localStorage.getItem('accessToken'));
@@ -80,7 +74,8 @@ export class AuthService extends BaseService {
             })
             .catch(err => {
                 return this.handleError(err);
-            });
+            })
+            .finally(() => this.loader.dismiss());;
     }
     private setToken(res: Response) {
         if (res.status < 200 || res.status >= 300) {
@@ -96,7 +91,6 @@ export class AuthService extends BaseService {
         let body = res.json();
         localStorage.setItem('loggedInUserPermission', JSON.stringify(body));
         this.authenticated = true;
-        this.authStatusChangeSource.next('true');
     }
     private setLoggedInUserDetail(res: Response) {
         if (res.status < 200 || res.status >= 300) {
@@ -104,12 +98,12 @@ export class AuthService extends BaseService {
         }
         let body = res.json();
         localStorage.setItem('loggedInUserDetails', JSON.stringify(body));
-        
+        this.authStatusChangeSource.next('true');
     }
-    presentLoading() {
-    this.loader = this.loadingCtrl.create({
-      content: "Please wait..."
-    });
-    this.loader.present();
-  }
+    presentLoading() {
+        this.loader = this.loadingCtrl.create({
+            content: "Please wait..."
+        });
+        this.loader.present();
+    }
 }

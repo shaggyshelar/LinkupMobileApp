@@ -126,7 +126,7 @@ export class MyApp {
       this.designation = this.userDetail.Designation.Value;
       this.empID = this.userDetail.EmpID;
       if (this.userDetail.ProfilePictureName) {
-        this.profileImageSrc = 'http://192.168.100.153:202/Profile%20Picture%20Library/' + this.userDetail.ProfilePictureName + '.JPG';
+        this.profileImageSrc = 'http://linkup.eternussolutions.com/Profile%20Picture%20Library/' + this.userDetail.ProfilePictureName + '.JPG';
       } else {
         this.profileImageSrc = 'assets/img/default-user.jpg';
       }

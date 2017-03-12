@@ -48,7 +48,7 @@
   </ion-list>
 </ion-content>-->
 
-<ion-content padding>
+<ion-content padding class="customCalendar">
   <p-schedule [events]="events" [height]="auto" (onDayClick)="handleDayClick($event)" (onScroll)="handleScrollCalender($event)" (onEventClick)="handleEventClick($event)"></p-schedule>
   <ion-list #scheduleList [hidden]="(leaveObs)?.length === 0">
 
