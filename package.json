@@ -7,7 +7,8 @@
     "clean": "ionic-app-scripts clean",
     "build": "ionic-app-scripts build",
     "ionic:build": "ionic-app-scripts build",
-    "ionic:serve": "ionic-app-scripts serve"
+    "ionic:serve": "ionic-app-scripts serve",
+    "release": "cordova build --release android && cd platforms/android/build/outputs/apk/ && jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore linkup-release-key.keystore android-release-unsigned.apk justaarogyam && zipalign -v 4 android-release-unsigned.apk LinkupPlaystore.apk"
   },
   "dependencies": {
     "@angular/common": "2.2.1",
