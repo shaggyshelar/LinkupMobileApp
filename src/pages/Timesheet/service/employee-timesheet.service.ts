@@ -53,7 +53,7 @@ export class EmployeeTimesheetService extends BaseService {
         ],
         "ID": 0
     };
-    
+
     constructor(public http: Http, messageService: MessageService, public _cacheService: CacheService
     ) {
         super(http, CONTEXT);
@@ -162,23 +162,21 @@ export class EmployeeTimesheetService extends BaseService {
             });
     }
     getMyTimesheetDetail(id: any) {
-        /** TODO: API not ready, needs updation*/
-
-        // if (this._cacheService.exists('myTimesheetDetail')) {
-        //     return new Observable<any>((observer: any) => {
-        //         observer.next(this._cacheService.get('myTimesheetDetail'));
-        //     });
-        // } else {
-        //     return this.getChildList$('GetMyTimesheetDetail/' + id, 0, 0, true).map(res => {
-        //         this._cacheService.set('myTimesheetDetail' + id, res.json(), { maxAge: 60 * 60 });
-        //         return res.json();
-        //     }).catch(err => {
-        //         return this.handleError(err);
-        //     });
-        // }
-        return new Observable<any>((observer: any) => {
-            observer.next(this.MytimesheetStub);
-        });
+        if (this._cacheService.exists('myTimesheetDetail')) {
+            return new Observable<any>((observer: any) => {
+                observer.next(this._cacheService.get('myTimesheetDetail'));
+            });
+        } else {
+            return this.getChildList$('GetMyTimesheetDetail/' + id, 0, 0, true).map(res => {
+                this._cacheService.set('myTimesheetDetail' + id, res.json(), { maxAge: 60 * 60 });
+                return res.json();
+            }).catch(err => {
+                return this.handleError(err);
+            });
+        }
+        // return new Observable<any>((observer: any) => {
+        //     observer.next(this.MytimesheetStub);
+        // });
     }
 
     /** SubmitDailySheet API Service Call
