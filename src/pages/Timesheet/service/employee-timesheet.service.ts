@@ -53,35 +53,114 @@ export class EmployeeTimesheetService extends BaseService {
         ],
         "ID": 0
     };
-
-
-    constructor(public http: Http, messageService: MessageService,
-        public _cacheService: CacheService
+    
+    constructor(public http: Http, messageService: MessageService, public _cacheService: CacheService
     ) {
         super(http, CONTEXT);
     }
 
     getMyTimesheets(): Observable<any> {
         /** TODO: API not ready, needs updation*/
-
-        // if (this._cacheService.exists('myTimesheets')) {
-        //     return new Observable<any>((observer: any) => {
-        //         observer.next(this._cacheService.get('myTimesheets'));
-        //     });
-        // } else {
-        //     return this.getChildList$('MyTimesheets',0,0,true).map(res => {
-        //         this._cacheService.set('myTimesheets', res.json(), { maxAge: 60 * 60 });
-        //         // return res.json();
-        //         return this.MytimesheetsStub;
-        //     }).catch(err => {
-        //         return this.handleError(err);
-        //     });
-        // }
-        return new Observable<any>((observer: any) => {
-            observer.next(this.MytimesheetsStub);
-        });
+        if (this._cacheService.exists('myTimesheets')) {
+            return new Observable<any>((observer: any) => {
+                observer.next(this._cacheService.get('myTimesheets'));
+            });
+        } else {
+            return this.getChildList$('MyTimesheets', 0, 0, true).map(res => {
+                this._cacheService.set('myTimesheets', res.json(), { maxAge: 60 * 60 });
+                return res.json();
+            }).catch(err => {
+                return this.handleError(err);
+            });
+        }
+        // return new Observable<any>((observer: any) => {
+        //     observer.next(this.MytimesheetsStub);
+        // });
     }
-
+    getApproverPendingTimesheets(): Observable<EmployeeTimeSheet> {
+        if (this._cacheService.exists('approverPendingTimesheets')) {
+            return new Observable<any>((observer: any) => {
+                observer.next(this._cacheService.get('approverPendingTimesheets'));
+            });
+        } else {
+            return this.getChildList$('ApproverPendingTimesheets', 0, 0, true).map(res => {
+                this._cacheService.set('approverPendingTimesheets', res.json(), { maxAge: 60 * 60 });
+                return res.json();
+            }).catch(err => {
+                return this.handleError(err);
+            });
+        }
+    }
+    getApproverApprovedTimesheets(): Observable<Employee> {
+        if (this._cacheService.exists('approverApprovedTimesheets')) {
+            return new Observable<any>((observer: any) => {
+                observer.next(this._cacheService.get('approverApprovedTimesheets'));
+            });
+        } else {
+            return this.getChildList$('ApproverApprovedTimesheets', 0, 0, true).map(res => {
+                this._cacheService.set('approverApprovedTimesheets', res.json(), { maxAge: 60 * 60 });
+                return res.json();
+            }).catch(err => {
+                return this.handleError(err);
+            });
+        }
+    }
+    getTimesheetApprovalData(id: any) {
+        if (this._cacheService.exists('timesheetApprovalData')) {
+            return new Observable<any>((observer: any) => {
+                observer.next(this._cacheService.get('timesheetApprovalData'));
+            });
+        } else {
+            return this.getChildList$('GetTimesheetApprovalData/' + id, 0, 0, true).map(res => {
+                this._cacheService.set('timesheetApprovalData' + id, res.json(), { maxAge: 60 * 60 * 24 });
+                return res.json();
+            }).catch(err => {
+                return this.handleError(err);
+            });
+        }
+    }
+    approveTimesheet(payload: any) {
+        let headers = new Headers();
+        let body = JSON.stringify(payload);
+        headers.append('Authorization', 'Bearer ' + localStorage.getItem('accessToken'));
+        headers.append('Content-Type', 'application/json');
+        let options = new RequestOptions({ headers: headers });
+        return this.http.post(this.baseUrl + '/EmployeeTimesheet/Approve ', body, options)
+            .map(res => {
+                return res.json();
+            })
+            .catch(err => {
+                return this.handleError(err);
+            });
+    }
+    rejectTimesheet(payload: any) {
+        let headers = new Headers();
+        let body = JSON.stringify(payload);
+        headers.append('Authorization', 'Bearer ' + localStorage.getItem('accessToken'));
+        headers.append('Content-Type', 'application/json');
+        let options = new RequestOptions({ headers: headers });
+        return this.http.post(this.baseUrl + '/EmployeeTimesheet/Reject ', body, options)
+            .map(res => {
+                return res.json();
+            })
+            .catch(err => {
+                return this.handleError(err);
+            });
+    }
+    bulkApproval(payload: any) {
+        let headers = new Headers();
+        let body = JSON.stringify(payload);
+        headers.append('Authorization', 'Bearer ' + localStorage.getItem('accessToken'));
+        headers.append('Content-Type', 'application/json');
+        let options = new RequestOptions({ headers: headers });
+        return this.http.post(this.baseUrl + '/EmployeeTimesheet/BulkApprove', body, options)
+            .map(res => {
+                return res.json();
+            })
+            .catch(err => {
+                return this.handleError(err);
+            });
+    }
     getMyTimesheetDetail(id: any) {
         /** TODO: API not ready, needs updation*/
 
@@ -101,93 +180,6 @@ export class EmployeeTimesheetService extends BaseService {
             observer.next(this.MytimesheetStub);
         });
     }
-
-    getApproverPendingTimesheets(): Observable<EmployeeTimeSheet> {
-
-        if (this._cacheService.exists('approverPendingTimesheets')) {
-            return new Observable<any>((observer: any) => {
-                observer.next(this._cacheService.get('approverPendingTimesheets'));
-            });
-        } else {
-            return this.getChildList$('ApproverPendingTimesheets', 0, 0, true).map(res => {
-                this._cacheService.set('approverPendingTimesheets', res.json(), { maxAge: 60 * 60 });
-                return res.json();
-            }).catch(err => {
-                return this.handleError(err);
-            });
-        }
-    }
-
-    getApproverApprovedTimesheets(): Observable<Employee> {
-
-        if (this._cacheService.exists('approverApprovedTimesheets')) {
-            return new Observable<any>((observer: any) => {
-                observer.next(this._cacheService.get('approverApprovedTimesheets'));
-            });
-        } else {
-            return this.getChildList$('ApproverApprovedTimesheets', 0, 0, true).map(res => {
-                this._cacheService.set('approverApprovedTimesheets', res.json(), { maxAge: 60 * 60 });
-                return res.json();
-            }).catch(err => {
-                return this.handleError(err);
-            });
-        }
-    }
-
-    getTimesheetApprovalData(id: any) {
-
-        if (this._cacheService.exists('timesheetApprovalData')) {
-            return new Observable<any>((observer: any) => {
-                observer.next(this._cacheService.get('timesheetApprovalData'));
-            });
-        } else {
-            return this.getChildList$('GetTimesheetApprovalData/' + id, 0, 0, true).map(res => {
-                this._cacheService.set('timesheetApprovalData' + id, res.json(), { maxAge: 60 * 60 * 24 });
-                return res.json();
-            }).catch(err => {
-                return this.handleError(err);
-            });
-        }
-    }
-
-    approveTimesheet(payload: any) {
-        let headers = new Headers();
-        let body = JSON.stringify(payload);
-        headers.append('Authorization', 'Bearer ' + localStorage.getItem('accessToken'));
-        headers.append('Content-Type', 'application/json');
-        // let windowRef = this._window();
-        // windowRef['App'].blockUI();
-        let options = new RequestOptions({ headers: headers });
-        return this.http.post(this.baseUrl + '/EmployeeTimesheet/Approve ', body, options)
-            .map(res => {
-                // windowRef['App'].unblockUI();
-                return res.json();
-            })
-            .catch(err => {
-                // windowRef['App'].unblockUI();
-                return this.handleError(err);
-            });
-    }
-
-    rejectTimesheet(payload: any) {
-        let headers = new Headers();
-        let body = JSON.stringify(payload);
-        headers.append('Authorization', 'Bearer ' + localStorage.getItem('accessToken'));
-        headers.append('Content-Type', 'application/json');
-        // let windowRef = this._window();
-        // windowRef['App'].blockUI();
-        let options = new RequestOptions({ headers: headers });
-        return this.http.post(this.baseUrl + '/EmployeeTimesheet/Reject ', body, options)
-            .map(res => {
-                // windowRef['App'].unblockUI();
-                return res.json();
-            })
-            .catch(err => {
-                // windowRef['App'].unblockUI();
-                return this.handleError(err);
-            });
-    }
-
 
     /** SubmitDailySheet API Service Call
      *  TODO: Change API URL
