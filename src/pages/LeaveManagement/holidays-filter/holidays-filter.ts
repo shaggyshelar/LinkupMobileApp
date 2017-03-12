@@ -12,14 +12,18 @@ import { NavController, NavParams, ViewController } from 'ionic-angular';
   templateUrl: 'holidays-filter.html'
 })
 export class HolidaysFilterPage {
-
-  constructor(public navCtrl: NavController, public navParams: NavParams, public viewCtrl:ViewController) {}
+  public holidayFilterModel: any;
+  constructor(public navCtrl: NavController, public navParams: NavParams, public viewCtrl: ViewController) {
+    this.holidayFilterModel = { cancelled: true, approved: true, rejected: true, lwp: true, absent: true, halfDay: true }
+  }
 
   ionViewDidLoad() {
-     //TO DO:Implementation
+    //TO DO:Implementation
   }
   dismiss(data) {
     this.viewCtrl.dismiss(data);
   }
-
+  applyFilter() {
+    this.dismiss(this.holidayFilterModel);
+  }
 }
