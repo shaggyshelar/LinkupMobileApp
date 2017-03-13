@@ -13,11 +13,14 @@ import { NavController, NavParams, ViewController } from 'ionic-angular';
 })
 export class LeaveApprovalFilterPage {
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public viewCtrl:ViewController) {}
+  constructor(public navCtrl: NavController, public navParams: NavParams, public viewCtrl: ViewController) { }
 
   ionViewDidLoad() {
   }
   dismiss(data) {
     this.viewCtrl.dismiss(data);
+  }
+  applyFilter() {
+    this.dismiss({});
   }
 }
