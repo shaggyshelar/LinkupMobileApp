@@ -10,6 +10,7 @@ const CONTEXT = 'auth';
 @Injectable()
 export class AuthService extends BaseService {
     public currentUser: any;
+    public userPermissions: any[];
     public authStatusChangeSource = new Subject<string>();
     public loader: any;
     onAuthStatusChanged$ = this.authStatusChangeSource.asObservable();
@@ -103,5 +104,22 @@ export class AuthService extends BaseService {
             content: "Please wait..."
         });
         this.loader.present();
+    }
+
+    /** Get User permission*/
+
+    checkPermission(feature: string) {
+        this.userPermissions = [];
+        this.userPermissions = JSON.parse(localStorage.getItem("loggedInUserPermission"));
+        if(this.userPermissions)
+        {
+          for (let innerindex = 0; innerindex < this.userPermissions.length; innerindex++) {
+            if (feature == this.userPermissions[innerindex]) {
+                return true;
+            }
+        }
+        }
+       
+        return false;
     }
 }
