@@ -2,6 +2,8 @@ import { Component, ViewChild } from '@angular/core';
 import { NavController, NavParams, Slides } from 'ionic-angular';
 import { AuthService } from '../../providers/index';
 
+import { MyTimesheetPage } from '../Timesheet/my-timesheet/my-timesheet';
+import { MyLeavesPage } from '../LeaveManagement/my-leaves/my-leaves';
 /*
   Generated class for the Dashboard page.
 
@@ -150,6 +152,14 @@ export class HomePage {
 
   ionViewDidLoad() {
     this.createCharts();
+  }
+
+  gotoMyLeaves() {
+    this.navCtrl.push(MyLeavesPage);
+  }
+
+  gotoMyTimesheet() {
+    this.navCtrl.push(MyTimesheetPage);
   }
 
 }

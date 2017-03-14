@@ -14,12 +14,12 @@ import { SpinnerService } from '../../../providers/index';
 @Component({
   selector: 'page-approve-timesheet',
   templateUrl: 'approve-timesheet.html',
-   providers: [EmployeeTimesheetService, SpinnerService, AuthService]
+  providers: [EmployeeTimesheetService, SpinnerService, AuthService]
 })
 export class ApproveTimesheetPage {
   origin: String = '';
 
-  public isBulkApprovePermission:boolean = false;
+  public isBulkApprovePermission: boolean = false;
   public timesheetID: string;
   public timesheetObs: Observable<EmployeeTimeSheet[]>;
   public pendingtimesheetsArray: EmployeeTimeSheet[];
@@ -30,20 +30,20 @@ export class ApproveTimesheetPage {
   public isHrApprove: boolean;
   public selectedEmployees: any[];
   public comment: string;
-  public isDescending: boolean=true;
+  public isDescending: boolean = true;
   public editMode: boolean;
-  public isSelectall:boolean = false;
+  public isSelectall: boolean = false;
   public isshowApproveRejectItems = false;
-  public isDataretrived:boolean = false;
+  public isDataretrived: boolean = false;
   public isAuthorized: boolean;
-  public timesheetchecked : boolean = false;
+  public timesheetchecked: boolean = false;
   public approveEmployee: Observable<EmployeeTimesheetService>;
-
+  public noResponseMsg: String;
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
     private employeeTimesheetService: EmployeeTimesheetService,
-    private spinnerService:SpinnerService,
-    private auth:AuthService,
+    private spinnerService: SpinnerService,
+    private auth: AuthService,
     public loadingCtrl: LoadingController,
     public actionSheetCtrl: ActionSheetController,
     public modalCtrl: ModalController) {
@@ -52,19 +52,75 @@ export class ApproveTimesheetPage {
   }
 
 
-  ionViewDidLoad() { 
-     if (this.isAuthorized == true)
+  ionViewDidLoad() {
+    this.getApproverData();
+    if (this.isAuthorized == true)
       this.getPendingTimesheetsToApprove();
   }
 
   ionViewDidEnter() {
-    
+    // this.decideAction();
   }
 
- 
- 
+  // decideAction() {
+  //   switch (this.navParams.data.caller) {
+  //     case 'my-timesheet':
+  //       console.log('my-timesheet => approve-timesheets');
+  //       this.getUserData();
+  //       break;
+  //     case 'enter-timesheet':
+  //       console.log('enter timesheet => approve-timesheets');
+  //       break;
 
-   /* Get Pending Leaves */
+  //     default:
+  //       console.log('unknown caller => approve-timesheets');
+  //       this.getApproverData();
+  //       break;
+  //   }
+  // }
+
+
+  getUserData() {
+    var loader = this.loadingCtrl.create({
+      content: 'Please wait...'
+    });
+
+    loader.present().then(() => {
+      this.employeeTimesheetService.getMyTimesheets().subscribe((res: any) => {
+        if (res.length > 0) {
+          this.approveEmployee = res.reverse();
+          //console.log(res);
+        }
+        loader.dismiss();
+      }, (err) => {
+        loader.dismiss();
+      });
+    });
+  }
+
+  getApproverData() {
+    var loader = this.loadingCtrl.create({
+      content: 'Please wait...'
+    });
+
+    loader.present().then(() => {
+      this.employeeTimesheetService.getApproverApprovedTimesheets().subscribe((res: any) => {
+        if (res.length > 0) {
+          this.approveEmployee = res.reverse();
+          console.log(res);
+          localStorage.setItem('approveTimesheetsBadgeCount', res.length);
+        }
+        loader.dismiss();
+      }, (err) => {
+        loader.dismiss();
+      });
+    });
+  }
+
+
+
+
+  /* Get Pending Leaves */
 
   getPendingTimesheetsToApprove() {
     this.isDataretrived = false;
@@ -132,30 +188,28 @@ export class ApproveTimesheetPage {
 
   /** Bulk Timesheet Approval functionality */
 
-    /** Bulk Approval */
+  /** Bulk Approval */
 
   /** Multiselction of List item */
 
-  longPressedItem(leave: any)
-  {
-  this.isshowApproveRejectItems = true;
- // this.selectLeave(leave,true);
+  longPressedItem(leave: any) {
+    this.isshowApproveRejectItems = true;
+    // this.selectLeave(leave,true);
   }
 
   editTimsheet() {
     this.editMode = !this.editMode;
-    if(this.editMode == false)
-    {
+    if (this.editMode == false) {
       this.isshowApproveRejectItems = false;
       this.selectedEmployees = [];
-     this.pendingtimesheetsArray.forEach(leave => {
-         /// this.selectLeave(leave,false);
-        });
+      this.pendingtimesheetsArray.forEach(leave => {
+        /// this.selectLeave(leave,false);
+      });
     }
-    
+
   }
 
- selectAllLeaves() {
+  selectAllLeaves() {
     this.selectedEmployees = [];
     this.pendingtimesheetsArray.forEach(leave => {
       this.selectLeave(leave, true);
@@ -200,6 +254,6 @@ export class ApproveTimesheetPage {
     }
   }
 
-  
+
 
 }
