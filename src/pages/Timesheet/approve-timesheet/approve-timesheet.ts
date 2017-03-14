@@ -4,16 +4,17 @@ import { LoadingController } from 'ionic-angular';
 import { Observable } from 'rxjs/Rx';
 import { ApproveTimesheetDetailsPage } from '../approve-timesheet-details/approve-timesheet-details';
 import { EmployeeTimesheetService } from '../index';
-
+import { AuthService } from '../../../providers/index';
 import { EmployeeTimeSheet } from '../models/employee-timesheet.model';
-
-
+import { AlertController, ItemSliding } from 'ionic-angular';
+import { Toast } from 'ionic-native';
 import { ApproveTimesheetFilterPage } from '../approve-timesheet-filter/approve-timesheet-filter';
-
+import { SpinnerService } from '../../../providers/index';
 
 @Component({
   selector: 'page-approve-timesheet',
-  templateUrl: 'approve-timesheet.html'
+  templateUrl: 'approve-timesheet.html',
+   providers: [EmployeeTimesheetService, SpinnerService, AuthService]
 })
 export class ApproveTimesheetPage {
   origin: String = '';
@@ -33,97 +34,59 @@ export class ApproveTimesheetPage {
   public editMode: boolean;
   public isSelectall:boolean = false;
   public isshowApproveRejectItems = false;
-
-
+  public isDataretrived:boolean = false;
+  public isAuthorized: boolean;
+  public timesheetchecked : boolean = false;
   public approveEmployee: Observable<EmployeeTimesheetService>;
 
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
     private employeeTimesheetService: EmployeeTimesheetService,
+    private spinnerService:SpinnerService,
+    private auth:AuthService,
     public loadingCtrl: LoadingController,
     public actionSheetCtrl: ActionSheetController,
     public modalCtrl: ModalController) {
+    this.isAuthorized = this.auth.checkPermission('TIMESHEET.APPROVETIMESHEETS.MANAGE');
+    this.isBulkApprovePermission = this.auth.checkPermission('TIMESHEET.BULK_APPROVAL.MANAGE');
   }
 
 
-  ionViewDidLoad() { }
+  ionViewDidLoad() { 
+     if (this.isAuthorized == true)
+      this.getPendingTimesheetsToApprove();
+  }
 
   ionViewDidEnter() {
-    this.decideAction();
+    
   }
 
-  decideAction() {
-    switch (this.navParams.data.caller) {
-      case 'my-timesheet':
-        console.log('my-timesheet => approve-timesheets');
-        this.getUserData();
-        break;
-      case 'enter-timesheet':
-        console.log('enter timesheet => approve-timesheets');
-        break;
+ 
+ 
 
-      default:
-        console.log('unknown caller => approve-timesheets');
-        this.getApproverData();
-        break;
-    }
-  }
+   /* Get Pending Leaves */
 
-
-  getUserData() {
-    var loader = this.loadingCtrl.create({
-      content: 'Please wait...'
-    });
-
-    loader.present().then(() => {
-      this.employeeTimesheetService.getMyTimesheets().subscribe((res: any) => {
-        if (res.length > 0) {
-          this.approveEmployee = res.reverse();
-          //console.log(res);
-        }
-        loader.dismiss();
-      }, (err) => {
-        loader.dismiss();
+  getPendingTimesheetsToApprove() {
+    this.isDataretrived = false;
+    this.spinnerService.createSpinner('Please wait..');
+    this.employeeTimesheetService.getApproverPendingTimesheets()
+      .subscribe(
+      (res: any) => {
+        this.spinnerService.stopSpinner();
+        this.pendingtimesheetsArray = [];
+        this.selectedEmployees = [];
+        this.pendingtimesheetsArray = res.reverse();
+        this.pendingtimesheetsArray.forEach(leave => {
+          this.selectLeave(leave, false);
+        });
+        this.editMode = true;
+        this.isDataretrived = true;
+      },
+      error => {
+        this.isDataretrived = true;
+        this.spinnerService.stopSpinner();
+        //this.showToast('Failed to get Pending Leaves.');
       });
-    });
-  }
-
-  getApproverData() {
-    var loader = this.loadingCtrl.create({
-      content: 'Please wait...'
-    });
-
-    loader.present().then(() => {
-      this.employeeTimesheetService.getApproverApprovedTimesheets().subscribe((res: any) => {
-        if (res.length > 0) {
-          this.approveEmployee = res.reverse();
-          //console.log(res);
-          localStorage.setItem('approveTimesheetsBadgeCount', res.length);
-        }
-        loader.dismiss();
-      }, (err) => {
-        loader.dismiss();
-      });
-    });
-  }
-
-  getPendingApproverData() {
-    var loader = this.loadingCtrl.create({
-      content: 'Please wait...'
-    });
-
-    loader.present().then(() => {
-      this.employeeTimesheetService.getApproverPendingTimesheets().subscribe((res: any) => {
-        if (res.length > 0) {
-          this.pendingtimesheetsArray = res.reverse();
-          //console.log(res);
-          localStorage.setItem('approveTimesheetsBadgeCount', res.length);
-        }
-        loader.dismiss();
-      }, (err) => {
-        loader.dismiss();
-      });
-    });
   }
 
   itemTapped(entry) {
@@ -192,12 +155,49 @@ export class ApproveTimesheetPage {
     
   }
 
-  selectAllLeaves()
-  {
+ selectAllLeaves() {
     this.selectedEmployees = [];
-     this.pendingtimesheetsArray.forEach(leave => {
-          //this.selectLeave(leave,true);
-        });
+    this.pendingtimesheetsArray.forEach(leave => {
+      this.selectLeave(leave, true);
+    });
+  }
+
+  selectLeave(leave: any, checked: boolean) {
+    if (checked == false) {
+      var index: number = 0;
+      this.pendingtimesheetsArray.forEach(leaves => {
+        if (leaves == leave) {
+          var sindex = this.selectedEmployees.indexOf(leave);
+          this.selectedEmployees.splice(sindex, 1);
+        }
+        index++;
+      });
+      leave.selectionColor = "white";
+      leave.selected = false;
+      if (this.selectedEmployees.length == 0)
+        this.isshowApproveRejectItems = false;
+    }
+    else {
+      this.selectedEmployees.push(leave);
+      leave.selectionColor = "#8ea3c5";
+      leave.selected = true;
+    }
+    this.setboolean();
+  }
+  setboolean() {
+    this.timesheetchecked = false;
+    this.isSelectall = false;
+    if (this.selectedEmployees && this.selectedEmployees.length > 0) {
+      this.timesheetchecked = true;
+
+      var count: number = 0;
+      this.pendingtimesheetsArray.forEach(leaves => {
+        count++;
+      });
+      if (count == this.selectedEmployees.length) {
+        this.isSelectall = true;
+      }
+    }
   }
 
   
