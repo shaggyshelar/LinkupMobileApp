@@ -1,8 +1,9 @@
 $categories: (
  ionic: color($colors, primary),
  rejected: #FE4C52,
- pending: #FED035,
+ submitted: #FED035,
  approved: #69BB7B,
+ cancelled: #000000,
 );
 
 @function auxiliary-categories() {
@@ -10,12 +11,14 @@ $categories: (
 }
 
 page-approve-timesheet {
-@each $status, $value in auxiliary-categories() {
-   ion-item-sliding[status=#{$status}] ion-label {
+
+     @each $submittedstatus, $value in auxiliary-categories() {
+   ion-item[submittedstatus=#{$submittedstatus}] ion-label {
      border-left: 2px solid $value;
      padding-left: 10px;
    }
   }
+
   .right {
       float: right;
   }

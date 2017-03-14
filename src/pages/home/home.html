@@ -33,14 +33,14 @@
       <ion-icon name="calendar"></ion-icon>
     </ion-avatar>
     <h2>My Leaves</h2>
-    <p> Balance - 0, Pending - 0 </p>
+    <p> Balance - {{myLeaveBalance}}, Taken - {{myLeaveTaken}} </p>
   </ion-item>
-   <ion-item (click)="gotoMyTimesheet()">
+  <ion-item (click)="gotoMyTimesheet()">
     <ion-avatar item-left class="homeIcons">
       <ion-icon name="clock"></ion-icon>
     </ion-avatar>
     <h2>My Timesheet</h2>
-    <p> Approved- 0, Pending - 0 </p>
+    <p> Approved- {{myTimesheetApproved}}, Pending - {{myTimesheetPending}} </p>
   </ion-item>
   <!--<ion-grid>
     <ion-row>

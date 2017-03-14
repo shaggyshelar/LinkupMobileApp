@@ -22,9 +22,9 @@
         <ion-icon name="md-repeat"></ion-icon>
       </button>
     </ion-buttons> -->
-    <ion-toolbar>
-    <ion-buttons start *ngIf="isBulkApprovePermission == false">
-    <button ion-button *ngIf= "isshowApproveRejectItems == true" (click)="editleaves()">
+    <!--<ion-toolbar>-->
+    <ion-buttons start >
+    <button ion-button *ngIf= "isshowApproveRejectItems == true">
        <!--<ion-icon name="arrow-round-back"></ion-icon>-->
        {{selectedEmployees.length}}
     </button>
@@ -37,10 +37,10 @@
       <!--<button ion-button *ngIf= "editMode == false" (click)="editleaves()">
         <ion-icon name="logo-buffer"></ion-icon>
       </button>-->
-        <button *ngIf="isshowApproveRejectItems == true" ion-button (click)="selectAllLeaves()">
+        <button *ngIf="isshowApproveRejectItems == true" ion-button (click)="selectAllLeaves()" icon-only>
         <ion-icon name="checkbox"></ion-icon>
       </button>
-      <button *ngIf="isshowApproveRejectItems == true"ion-button [disabled] = "leavechecked == false" (click)="approveBulkLeave()">
+      <button *ngIf="isshowApproveRejectItems == true"ion-button [disabled] = "leavechecked == false" (click)="approveBulkLeave()" icon-only>
         <ion-icon name="checkmark"></ion-icon>
       </button>
        <!--<button *ngIf="isshowApproveRejectItems == true" ion-button [disabled] = "leavechecked == false" (click)="rejectBulkLeave()">
@@ -48,7 +48,7 @@
       </button>-->
     
     </ion-buttons>
-    </ion-toolbar>
+    <!--</ion-toolbar>-->
   </ion-navbar>
 
 </ion-header>
