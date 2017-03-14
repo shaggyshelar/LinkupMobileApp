@@ -28,26 +28,17 @@
        <!--<ion-icon name="arrow-round-back"></ion-icon>-->
        {{selectedEmployees.length}}
     </button>
-    </ion-buttons>
-    <ion-title *ngIf="isshowApproveRejectItems == false">
-      Approve Leaves
-    </ion-title>
-    
-     <ion-buttons end >
-      <!--<button ion-button *ngIf= "editMode == false" (click)="editleaves()">
-        <ion-icon name="logo-buffer"></ion-icon>
-      </button>-->
-        <button *ngIf="isshowApproveRejectItems == true" ion-button (click)="selectAllLeaves()" icon-only>
+     <button *ngIf="isshowApproveRejectItems == true" ion-button (click)="selectAllLeaves()" icon-only>
         <ion-icon name="checkbox"></ion-icon>
       </button>
       <button *ngIf="isshowApproveRejectItems == true"ion-button [disabled] = "leavechecked == false" (click)="approveBulkLeave()" icon-only>
         <ion-icon name="checkmark"></ion-icon>
       </button>
-       <!--<button *ngIf="isshowApproveRejectItems == true" ion-button [disabled] = "leavechecked == false" (click)="rejectBulkLeave()">
-       <ion-icon name="close"></ion-icon>
-      </button>-->
-    
     </ion-buttons>
+    <ion-title *ngIf="isshowApproveRejectItems == false">
+      Approve Leaves
+    </ion-title>
+  
     <!--</ion-toolbar>-->
   </ion-navbar>
 
