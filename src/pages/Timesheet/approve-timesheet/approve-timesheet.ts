@@ -14,6 +14,7 @@ export class ApproveTimesheetPage {
   origin: String = '';
   public approveEmployee: Observable<EmployeeTimesheetService>;
   public isDescending: boolean = true;
+  public noResponseMsg: String;
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
     private employeeTimesheetService: EmployeeTimesheetService,
@@ -23,28 +24,30 @@ export class ApproveTimesheetPage {
   }
 
 
-  ionViewDidLoad() { }
+  ionViewDidLoad() {
+    this.getApproverData();
+   }
 
   ionViewDidEnter() {
-    this.decideAction();
+    // this.decideAction();
   }
 
-  decideAction() {
-    switch (this.navParams.data.caller) {
-      case 'my-timesheet':
-        console.log('my-timesheet => approve-timesheets');
-        this.getUserData();
-        break;
-      case 'enter-timesheet':
-        console.log('enter timesheet => approve-timesheets');
-        break;
+  // decideAction() {
+  //   switch (this.navParams.data.caller) {
+  //     case 'my-timesheet':
+  //       console.log('my-timesheet => approve-timesheets');
+  //       this.getUserData();
+  //       break;
+  //     case 'enter-timesheet':
+  //       console.log('enter timesheet => approve-timesheets');
+  //       break;
 
-      default:
-        console.log('unknown caller => approve-timesheets');
-        this.getApproverData();
-        break;
-    }
-  }
+  //     default:
+  //       console.log('unknown caller => approve-timesheets');
+  //       this.getApproverData();
+  //       break;
+  //   }
+  // }
 
   getUserData() {
     var loader = this.loadingCtrl.create({
