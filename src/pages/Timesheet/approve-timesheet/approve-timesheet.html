@@ -7,45 +7,37 @@
 <ion-header>
 
   <ion-navbar>
-    <button ion-button icon-only menuToggle>
+    <button  ion-button icon-only menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
+
+     
     <!--<ion-buttons start>
       <button (click)="onFilter()" ion-button icon-only> 
-        <ion-icon ios="ios-funnel" md="md-funnel"></ion-icon>
+        <ion-icon name="ios-funnel"></ion-icon>
       </button>
     </ion-buttons>
     <ion-buttons start>
       <button (click)="onSort()" ion-button icon-only>
         <ion-icon name="md-repeat"></ion-icon>
       </button>
-    </ion-buttons>-->
-    <ion-toolbar>
-      <ion-buttons start *ngIf="isBulkApprovePermission == false">
-        <button ion-button *ngIf="editMode == true" (click)="editTimesheet()">
-       <ion-icon name="arrow-round-back"></ion-icon>
+
+    </ion-buttons> -->
+    <!--<ion-toolbar>-->
+    <ion-buttons start *ngIf="isBulkApprovePermission == false">
+    <button ion-button *ngIf= "isshowApproveRejectItems == true">
        {{selectedEmployees.length}}
     </button>
-      </ion-buttons>
-      <ion-title *ngIf="isshowApproveRejectItems == false">
-        Approve Timesheets
-      </ion-title>
-
-      <ion-buttons end *ngIf="isBulkApprovePermission == false">
-        <button ion-button *ngIf="editMode == false" (click)="editTimesheet()">
-        <ion-icon name="logo-buffer"></ion-icon>
-      </button>
-        <button *ngIf="isshowApproveRejectItems == true" ion-button (click)="selectAllTimesheet()">
+     <button *ngIf="isshowApproveRejectItems == true" ion-button (click)="selectAllLeaves()" icon-only>
         <ion-icon name="checkbox"></ion-icon>
       </button>
-        <button *ngIf="isshowApproveRejectItems == true" ion-button [disabled]="timesheetchecked == false" (click)="approveBulkTimesheet()">
+      <button *ngIf="isshowApproveRejectItems == true"ion-button [disabled] = "leavechecked == false" (click)="approveBulkTimesheet()" icon-only>
         <ion-icon name="checkmark"></ion-icon>
       </button>
-        <button *ngIf="isshowApproveRejectItems == true" ion-button [disabled]="timesheetchecked == false" (click)="rejectBulkTimesheet()">
-       <ion-icon name="close"></ion-icon>
-      </button>
-      </ion-buttons>
-    </ion-toolbar>
+    </ion-buttons>
+    <ion-title *ngIf="isshowApproveRejectItems == false">
+      Approve Timesheets
+    </ion-title>
   </ion-navbar>
 </ion-header>
 
@@ -72,25 +64,32 @@
 
   <!--Pending Timesheet List -->
 
-  <ion-list *ngIf="editMode == true">
-    <ion-item *ngFor="let entry of pendingtimesheetsArray" ion-item (click)="itemTapped(entry)">
-      <h3><span *ngFor="let approver of entry.ApproverUser">{{entry.Employee.Name}}</span></h3>
-      <h3>
-        {{entry.StartDate | date: 'dd/MM/yyyy'}} &mdash; {{entry.EndDate | date: 'dd/MM/yyyy'}}
-      </h3>
-      <p>
-        Billable Hours: {{entry.BillableHours}}
-      </p>
-      <p>
-        Non Billable Hours: {{entry.NonBillableHours}}
-        <span class="right">{{entry.SubmissionDate}}</span>
-      </p>
-    </ion-item>
 
+  <ion-list>
+      <ion-item [ngStyle]="{'background-color': entry.selectionColor}" *ngFor="let entry of pendingtimesheetsArray" ion-item (click)="itemTapped(entry)" (press)="longPressedItem(entry)"
+      [attr.submittedstatus]="entry.SubmittedStatus | lowercase">
+        <h3><span *ngFor="let approver of entry.ApproverUser">{{entry.Employee.Name}}</span></h3>
+        <h3> 
+          {{entry.StartDate | date: 'dd/MM/yyyy'}} &mdash;
+          {{entry.EndDate | date: 'dd/MM/yyyy'}} 
+        </h3>
+        <p>
+          Billable Hours: {{entry.BillableHours}}
+        </p>
+        <p>
+          Non Billable Hours: {{entry.NonBillableHours}}
+          <span class="right">{{entry.SubmissionDate}}</span>
+        </p>
+         <!--<ion-icon *ngIf="entry.SubmittedStatus == 'Submitted' " name="more" item-right (click)="presentActionSheet(entry)"></ion-icon>-->
+      </ion-item>
   </ion-list>
 
-  <ion-list-header [hidden]="(approveEmployee)?.length > 0">
+   <ion-list-header *ngIf ="(pendingtimesheetsArray)?.length == 0 && isDataretrived ==true">
     No Records Found
+  </ion-list-header>
+
+   <ion-list-header [hidden]="isAuthorized == true">
+    You are not Authorized
   </ion-list-header>
 
 </ion-content>
