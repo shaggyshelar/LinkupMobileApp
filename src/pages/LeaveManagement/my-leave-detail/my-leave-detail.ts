@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, AlertController } from 'ionic-angular';
+import { NavController, NavParams, AlertController,Events } from 'ionic-angular';
 import { LeaveDetail } from '../models/leaveDetail';
 import { LeaveService } from '../index';
 import { Leave } from '../models/leave';
@@ -34,7 +34,8 @@ export class MyLeaveDetailPage {
     public navParams: NavParams,
     public leaveService: LeaveService,
     public spinnerService: SpinnerService,
-    public alertCtrl: AlertController) {
+    public alertCtrl: AlertController,
+    public leaveStatusChangedEvent: Events) {
     this.leaveid = navParams.get('leaveid');
     this.selectedLeave = navParams.get('leave');
     this.today = new Date();
@@ -79,6 +80,7 @@ export class MyLeaveDetailPage {
     this.leaveService.deleteLeaveRecord(leaveTobeCancelled).subscribe(res => {
       if (res) {
         this.spinnerService.stopSpinner();
+        this.leaveStatusChangedEvent.publish('Delected Leave','status');
         this.navCtrl.pop();
       } else {
         this.spinnerService.stopSpinner();

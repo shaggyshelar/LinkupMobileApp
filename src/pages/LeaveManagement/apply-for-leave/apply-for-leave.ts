@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams,ActionSheetController,ModalController } from 'ionic-angular';
+import { NavController, NavParams,ActionSheetController,ModalController,Events } from 'ionic-angular';
 import { LeaveDetailsPage } from '../leave-details/leave-details';
 import { LeaveService } from '../index';
 import { Leave } from '../models/leave';
@@ -81,6 +81,7 @@ export class ApplyForLeavePage {
   public authService : AuthService,
   public leaveTypeMasterService : LeaveTypeMasterService,
   public actionsheetCtr :ActionSheetController,
+  public leaveStatusChanged:Events,
   public modalCtrl: ModalController
   ) {
 
@@ -134,6 +135,7 @@ export class ApplyForLeavePage {
 
    getLeaveAssets()
    {
+       this.spinnerService.createSpinner('Please wait..');
       this.leaveTypeMasterService.getLeaveTypes().subscribe((res: any) => {
             //this.leaves.push({ label: 'Select', value: null });
             for (var index in res) {
@@ -162,7 +164,7 @@ export class ApplyForLeavePage {
                 this.currentUserLeaveDetail = res;
                 this.isAllDataDownloaded = true;
                 this.selectLeaveType(this.leaves[0]);
-
+                this.spinnerService.stopSpinner();
                   
          }
         });
@@ -208,13 +210,17 @@ export class ApplyForLeavePage {
                 return;
             this.onAddLeave();
             this.hideLeaveList = true;
+            this.spinnerService.createSpinner('Please wait..');
         }
         this.leaveService.submitLeaveRecord(this.addLeaveArr).subscribe(res => {
             if (res) {
+                this.spinnerService.stopSpinner();
+                this.leaveStatusChanged.publish('Applied Leave','status');
                 MessageService.addMessage({ severity: 'success', summary: 'Success', detail: MessageService.APPLY_LEAVE_2 });
                 this.showToast('MessageService.APPLY_LEAVE_2');
                 this.navCtrl.pop();
             } else {
+                this.spinnerService.stopSpinner();
                 MessageService.addMessage({ severity: 'error', summary: 'Failed', detail: MessageService.REQUEST_FAILED });
             }
         });
@@ -245,6 +251,7 @@ export class ApplyForLeavePage {
             }
         }
     }
+    
     deleteLeave(index: number) {
         this.addLeaveArr.splice(index, 1);
     }
@@ -270,6 +277,10 @@ export class ApplyForLeavePage {
 
     reasonTextChanged() {
         this.charsLeft = 600 - this.model.reason.length;
+    }
+    focusremoved()
+    {
+
     }
 
     dayDiffCalc() {

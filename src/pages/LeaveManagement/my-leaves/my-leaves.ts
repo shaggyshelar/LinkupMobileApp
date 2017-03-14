@@ -28,6 +28,7 @@ export class MyLeavesPage {
   public approvedLeaveCount:number;
   public isDescending: boolean=true;
   public isFirstTimeLoad: boolean = true;
+  public isAllDataLoaded:boolean = false;
   events: any[];
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
@@ -69,6 +70,7 @@ export class MyLeavesPage {
   /* Get My Leaves */
 
   getMyLeaves() {
+    this.isAllDataLoaded = false;
     this.leaveObs = [];
     this.events = [];
     this.approvedLeaveCount = 0;
@@ -112,6 +114,7 @@ export class MyLeavesPage {
 
       this.events.push(event);
     }
+    this.isAllDataLoaded = true;
   }
 
   cancelClicked() {

@@ -414,8 +414,10 @@ export class ApproveTimesheetPage {
 
   longPressedItem(entry: any)
   {
+  if (this.isBulkApprovePermission == true) {
   this.isshowApproveRejectItems = true;
   this.selectTimesheet(entry,true);
+  }
   }
 
   selectAllTimesheets() {

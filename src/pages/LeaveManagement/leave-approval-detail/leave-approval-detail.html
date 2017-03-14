@@ -21,7 +21,9 @@
         <ion-label floating>Comments</ion-label>
         <ion-textarea name="cmt" [(ngModel)]="comment" formControlName="comment" spellcheck="false" autocapitalize="off"></ion-textarea>
       </ion-item>
-      <ion-row>
+    </div>
+  </form>
+  <ion-row>
         <ion-col width-50>
           <button ion-button full [disabled]="!commentForm.controls.comment.valid" (click)="rejectClicked()">Reject</button>
         </ion-col>
@@ -29,8 +31,6 @@
           <button ion-button full [disabled]="!commentForm.controls.comment.valid" (click)="approveClicked()">Approve</button>
         </ion-col>
       </ion-row>
-    </div>
-  </form>
   <br>
 
   <ion-list *ngIf="ishowLeaveDetails == true">
