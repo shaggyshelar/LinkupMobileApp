@@ -1,16 +1,10 @@
-<!--
-  Generated template for the MyTimesheet page.
-
-  See http://ionicframework.com/docs/v2/components/#navigation for more info on
-  Ionic pages and navigation.
--->
 <ion-header>
 
   <ion-navbar>
     <button ion-button icon-only menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
-    <ion-title>My Timesheet</ion-title>
+    <ion-title>My Timesheets</ion-title>
   </ion-navbar>
 
 </ion-header>
@@ -20,7 +14,7 @@
   <ion-fab right bottom>
     <button ion-fab mini (click)="addFabClicked()"><ion-icon name="add"></ion-icon></button>
   </ion-fab>
-  <ion-list>
+  <!--<ion-list>
     <ion-item-sliding #slidingItem *ngFor="let entry of timesheetRec" [attr.status]="entry.SubmittedStatus | lowercase">
       <button ion-item (click)="itemClicked(entry)">
         <h3>
@@ -45,8 +39,33 @@
       </ion-item-options>
     </ion-item-sliding>
   </ion-list>
+  <ion-list #scheduleList [hidden]="(myTimeSheets )?.length === 0">
+    <ion-item *ngFor="let timesheet of myTimeSheets" [attr.status]="timesheet.status | lowercase" (click)="onHolidayDetails(holiday)">
+      <h3>{{timesheet.Title}}</h3>
+      <p>
+        {{timesheet.HolidayDate | date:'dd/MM/y'}}
+      </p>
+      <ion-badge item-right>{{timesheet.WeekDay}}</ion-badge>
+    </ion-item>
+  </ion-list>-->
 
-  <ion-list-header [hidden]="(timesheetRec)?.length > 0">
+  <ion-list #myTimesheetList [hidden]="(myTimeSheets )?.length === 0">
+    <ion-item *ngFor="let timesheet of myTimeSheets" ion-item (click)="itemClicked(timesheet)" [attr.submittedstatus]="timesheet.SubmittedStatus | lowercase">
+      <h3 *ngFor="let approver of timesheet.ApproverUser"> {{approver.Name}} </h3>
+      <h3>
+        {{timesheet.StartDate | date: 'dd/MM/yyyy'}} &mdash; {{timesheet.EndDate | date: 'dd/MM/yyyy'}}
+      </h3>
+      <p>
+        Billable Hours {{timesheet.BillableHours}}
+      </p>
+      <p>
+        Non Billable Hours: {{timesheet.NonBillableHours}}
+        <span class="right">{{timesheet.SubmissionDate}}</span>
+      </p>
+    </ion-item>
+  </ion-list>
+
+  <ion-list-header [hidden]="(myTimeSheets)?.length > 0">
     No Records Found
   </ion-list-header>
 

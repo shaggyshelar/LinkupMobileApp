@@ -10,8 +10,8 @@ $categories: (
 }
 
 page-my-timesheet {
-@each $status, $value in auxiliary-categories() {
-   ion-item-sliding[status=#{$status}] ion-label {
+@each $submittedstatus, $value in auxiliary-categories() {
+   ion-item-sliding[submittedstatus=#{$submittedstatus}] ion-label {
      border-left: 2px solid $value;
      padding-left: 10px;
    }

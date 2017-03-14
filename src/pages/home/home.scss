@@ -3,7 +3,12 @@ page-home {
 
      ion-card-header {
             font-weight: bold;
-        }
+    }
+
+    .homeIcons {
+        font-size: 2.5em;
+        color: map-get($colors, primary);
+    }
 
      .dashboard-card{
          height: 110px;
