@@ -14,10 +14,11 @@ import { SpinnerService } from '../../../providers/index';
 @Component({
   selector: 'page-approve-timesheet',
   templateUrl: 'approve-timesheet.html',
-   providers: [EmployeeTimesheetService, SpinnerService, AuthService]
+  providers: [EmployeeTimesheetService, SpinnerService, AuthService]
 })
 export class ApproveTimesheetPage {
   origin: String = '';
+
 
   public timesheetReport: any;
   public isBulkApprovePermission:boolean = false;
@@ -31,21 +32,22 @@ export class ApproveTimesheetPage {
   public isHrApprove: boolean;
   public selectedEmployees: any[];
   public comment: string;
-  public isDescending: boolean=true;
+  public isDescending: boolean = true;
   public editMode: boolean;
-  public isSelectall:boolean = false;
+  public isSelectall: boolean = false;
   public isshowApproveRejectItems = false;
-  public isDataretrived:boolean = false;
+  public isDataretrived: boolean = false;
   public isAuthorized: boolean;
+
   public timesheetchecked : boolean = false;
   public selectedLeaveID:string;
   public approveEmployee: Observable<EmployeeTimesheetService>;
-
+  public noResponseMsg: String;
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
     private employeeTimesheetService: EmployeeTimesheetService,
-    private spinnerService:SpinnerService,
-    private auth:AuthService,
+    private spinnerService: SpinnerService,
+    private auth: AuthService,
     public loadingCtrl: LoadingController,
     public actionSheetCtrl: ActionSheetController,
     public alertCtrl:AlertController,
@@ -56,14 +58,71 @@ export class ApproveTimesheetPage {
   }
 
 
-  ionViewDidLoad() { 
-     if (this.isAuthorized == true)
+  ionViewDidLoad() {
+    this.getApproverData();
+    if (this.isAuthorized == true)
       this.getPendingTimesheetsToApprove();
   }
 
   ionViewDidEnter() {
-    
+    // this.decideAction();
   }
+
+  // decideAction() {
+  //   switch (this.navParams.data.caller) {
+  //     case 'my-timesheet':
+  //       console.log('my-timesheet => approve-timesheets');
+  //       this.getUserData();
+  //       break;
+  //     case 'enter-timesheet':
+  //       console.log('enter timesheet => approve-timesheets');
+  //       break;
+
+  //     default:
+  //       console.log('unknown caller => approve-timesheets');
+  //       this.getApproverData();
+  //       break;
+  //   }
+  // }
+
+
+  getUserData() {
+    var loader = this.loadingCtrl.create({
+      content: 'Please wait...'
+    });
+
+    loader.present().then(() => {
+      this.employeeTimesheetService.getMyTimesheets().subscribe((res: any) => {
+        if (res.length > 0) {
+          this.approveEmployee = res.reverse();
+          //console.log(res);
+        }
+        loader.dismiss();
+      }, (err) => {
+        loader.dismiss();
+      });
+    });
+  }
+
+  getApproverData() {
+    var loader = this.loadingCtrl.create({
+      content: 'Please wait...'
+    });
+
+    loader.present().then(() => {
+      this.employeeTimesheetService.getApproverApprovedTimesheets().subscribe((res: any) => {
+        if (res.length > 0) {
+          this.approveEmployee = res.reverse();
+          console.log(res);
+          localStorage.setItem('approveTimesheetsBadgeCount', res.length);
+        }
+        loader.dismiss();
+      }, (err) => {
+        loader.dismiss();
+      });
+    });
+  }
+
 
   /*show more action */
 
@@ -268,7 +327,9 @@ export class ApproveTimesheetPage {
   }
  
 
-   /* Get Pending Leaves */
+
+
+  /* Get Pending Leaves */
 
   getPendingTimesheetsToApprove() {
     this.resetAllFlags();
@@ -346,9 +407,10 @@ export class ApproveTimesheetPage {
 
   /** Bulk Timesheet Approval functionality */
 
-    /** Bulk Approval */
+  /** Bulk Approval */
 
   /** Multiselction of List item */
+
 
   longPressedItem(entry: any)
   {
@@ -356,8 +418,7 @@ export class ApproveTimesheetPage {
   this.selectTimesheet(entry,true);
   }
 
-
- selectAllTimesheets() {
+  selectAllTimesheets() {
     this.selectedEmployees = [];
     this.pendingtimesheetsArray.forEach(entry => {
       this.selectTimesheet(entry, true);
@@ -402,6 +463,7 @@ export class ApproveTimesheetPage {
     }
   }
 
+
   /* Reset All flags */
 
   resetAllFlags() {
@@ -416,5 +478,6 @@ export class ApproveTimesheetPage {
   }
 
   
+
 
 }

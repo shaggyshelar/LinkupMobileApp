@@ -10,8 +10,8 @@
     <button  ion-button icon-only menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
+
      
-    <!--<ion-title>Approve Leaves</ion-title>-->
     <!--<ion-buttons start>
       <button (click)="onFilter()" ion-button icon-only> 
         <ion-icon name="ios-funnel"></ion-icon>
@@ -21,11 +21,11 @@
       <button (click)="onSort()" ion-button icon-only>
         <ion-icon name="md-repeat"></ion-icon>
       </button>
+
     </ion-buttons> -->
     <!--<ion-toolbar>-->
     <ion-buttons start *ngIf="isBulkApprovePermission == false">
     <button ion-button *ngIf= "isshowApproveRejectItems == true">
-       <!--<ion-icon name="arrow-round-back"></ion-icon>-->
        {{selectedEmployees.length}}
     </button>
      <button *ngIf="isshowApproveRejectItems == true" ion-button (click)="selectAllLeaves()" icon-only>
@@ -38,30 +38,12 @@
     <ion-title *ngIf="isshowApproveRejectItems == false">
       Approve Timesheets
     </ion-title>
-    
-     <ion-buttons end >
-      <!--<button ion-button *ngIf= "editMode == false" (click)="editleaves()">
-        <ion-icon name="logo-buffer"></ion-icon>
-      </button>-->
-        <!--<button *ngIf="isshowApproveRejectItems == true" ion-button (click)="selectAllLeaves()">
-        <ion-icon name="checkbox"></ion-icon>
-      </button>
-      <button *ngIf="isshowApproveRejectItems == true"ion-button [disabled] = "leavechecked == false" (click)="approveBulkTimesheet()">
-        <ion-icon name="checkmark"></ion-icon>
-      </button>-->
-       <!--<button *ngIf="isshowApproveRejectItems == true" ion-button [disabled] = "leavechecked == false" (click)="rejectBulkLeave()">
-       <ion-icon name="close"></ion-icon>
-      </button>-->
-    
-    </ion-buttons>
-    <!--</ion-toolbar>-->
   </ion-navbar>
-
 </ion-header>
 
 <ion-content padding>
 
- <!--All Timsheet List -->
+  <!--All Timsheet List -->
   <!--<ion-list >
       <ion-item *ngFor="let entry of approveEmployee" ion-item (click)="itemTapped(entry)">
         <h3><span *ngFor="let approver of entry.ApproverUser">{{entry.Employee.Name}}</span></h3>
@@ -82,6 +64,7 @@
 
   <!--Pending Timesheet List -->
 
+
   <ion-list>
       <ion-item [ngStyle]="{'background-color': entry.selectionColor}" *ngFor="let entry of pendingtimesheetsArray" ion-item (click)="itemTapped(entry)" (press)="longPressedItem(entry)"
       [attr.submittedstatus]="entry.SubmittedStatus | lowercase">
@@ -99,7 +82,6 @@
         </p>
          <!--<ion-icon *ngIf="entry.SubmittedStatus == 'Submitted' " name="more" item-right (click)="presentActionSheet(entry)"></ion-icon>-->
       </ion-item>
-
   </ion-list>
 
    <ion-list-header *ngIf ="(pendingtimesheetsArray)?.length == 0 && isDataretrived ==true">

@@ -153,7 +153,7 @@ export class BaseService implements HttpServices {
     /**
      * Method For handling Error in Http request
      */
-    protected handleError(error: Response | any): Observable<any> {
+    protected handleError(error: Response | any, hideErrorMessage: boolean = false): Observable<any> {
         // In a real world app, we might use a remote logging infrastructure
         let errMsg: string;
         if (error instanceof Response) {
@@ -161,14 +161,18 @@ export class BaseService implements HttpServices {
                 this.onUnAuthorized();
             }
             const body = error.json() || '';
-            const err = body.error || body.Message || JSON.stringify(body);
+            const err = body.error_description || body.error || body.Message || JSON.stringify(body);
             //errMsg = `${error.status} - ${error.statusText || ''} ${err}`;
             errMsg = err;
             if (error.status !== 401) {
-                MessageService.addMessage({ severity: 'error', summary: 'Failed', detail: errMsg });
+                if (hideErrorMessage == false) {
+                    MessageService.addMessage({ severity: 'error', summary: 'Failed', detail: errMsg });
+                }
             }
         } else {
-            MessageService.addMessage({ severity: 'error', summary: 'Failed', detail: errMsg });
+            if (hideErrorMessage == false) {
+                MessageService.addMessage({ severity: 'error', summary: 'Failed', detail: errMsg });
+            }
             errMsg = error.message ? error.message : error.toString();
         }
         console.error(errMsg);

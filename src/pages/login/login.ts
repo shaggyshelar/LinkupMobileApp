@@ -1,5 +1,5 @@
 import { Component, ViewChild, trigger, state, style, transition, animate, keyframes } from '@angular/core';
-import { NavController, NavParams, Nav,  LoadingController  } from 'ionic-angular';
+import { NavController, NavParams, Nav, } from 'ionic-angular';
 import { NgForm } from '@angular/forms';
 import { AuthService } from '../../providers/index';
 import { User } from './user.model';
@@ -62,7 +62,6 @@ export class LoginPage {
 
   login: { username?: string, password?: string } = {};
   public errorMessage: string;
-  loader: any;
   showError: boolean = false;
   public model: User;
   submitted = false;
@@ -71,11 +70,11 @@ export class LoginPage {
   loginState: any = "in";
   formState: any = "in";
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public authService: AuthService, public loadingCtrl: LoadingController ) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public authService: AuthService) {
     this.model = new User('', '');
   }
   ionViewDidLoad() {
-     //TO DO:Implementation
+    //TO DO:Implementation
   }
   onLogin(form: NgForm) {
     this.submitted = true;
@@ -91,10 +90,4 @@ export class LoginPage {
         });
     }
   }
-  presentLoading() {
-    this.loader = this.loadingCtrl.create({
-      content: "Please wait..."
-    });
-    this.loader.present();
-  }
 }

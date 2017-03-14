@@ -49,17 +49,15 @@ export class AuthService extends BaseService {
         let credentialString: string = 'grant_type=password&UserName=' + credentials.UserName + '&Password=' + credentials.Password;
         headers.append('Content-Type', 'application/x-www-form-urlencoded');
         let options = new RequestOptions({ headers: headers });
-        this.blockUI();
         return this.http.post(this.baseUrl + 'auth/Token', credentialString, options)
             .map((res: Response) => {
                 this.setToken(res);
                 this.storeLoggedInUserPermission().subscribe();
                 this.getCurrentUserDetails().subscribe();
-                this.unblockUI();
             })
             .catch(err => {
-                this.unblockUI();
-                return this.handleError(err);
+                this.loader.dismiss();
+                return this.handleError(err, true);
             })
     }
     storeLoggedInUserPermission() {

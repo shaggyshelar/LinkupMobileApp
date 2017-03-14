@@ -128,6 +128,7 @@ export class MyApp {
 
   onLogout(): void {
     this.auth.logout();
+    this.openPage({ component: LoginPage });
   }
 
   loadUserDetails(): void {
@@ -136,11 +137,12 @@ export class MyApp {
       this.userName = this.userDetail.FirstName + ' ' + this.userDetail.LastName;
       this.designation = this.userDetail.Designation.Value;
       this.empID = this.userDetail.EmpID;
-      if (this.userDetail.ProfilePictureName) {
-        this.profileImageSrc = 'http://linkup.eternussolutions.com/Profile%20Picture%20Library/' + this.userDetail.ProfilePictureName + '.JPG';
-      } else {
-        this.profileImageSrc = 'assets/img/default-user.jpg';
-      }
+      // if (this.userDetail.ProfilePictureName) {
+      //   this.profileImageSrc = 'http://linkup.eternussolutions.com/Profile%20Picture%20Library/' + this.userDetail.ProfilePictureName + '.JPG';
+      // } else {
+      //   this.profileImageSrc = 'assets/img/default-user.jpg';
+      // }
+      this.profileImageSrc = 'assets/img/default-user.jpg';
     }
   }
   intializeMenu() {
