@@ -56,6 +56,7 @@ export class ApproveTimesheetPage {
     this.getApproverData();
     if (this.isAuthorized == true)
       this.getPendingTimesheetsToApprove();
+    localStorage.setItem('approveTimesheetsBadgeCount', ''+this.pendingtimesheetsArray.length);
   }
 
   ionViewDidEnter() {
@@ -89,7 +90,9 @@ export class ApproveTimesheetPage {
       this.employeeTimesheetService.getMyTimesheets().subscribe((res: any) => {
         if (res.length > 0) {
           this.approveEmployee = res.reverse();
-          //console.log(res);
+          console.log(res);
+        } else {
+          this.noResponseMsg = 'No Records Received'
         }
         loader.dismiss();
       }, (err) => {
@@ -107,8 +110,6 @@ export class ApproveTimesheetPage {
       this.employeeTimesheetService.getApproverApprovedTimesheets().subscribe((res: any) => {
         if (res.length > 0) {
           this.approveEmployee = res.reverse();
-          console.log(res);
-          localStorage.setItem('approveTimesheetsBadgeCount', res.length);
         }
         loader.dismiss();
       }, (err) => {
