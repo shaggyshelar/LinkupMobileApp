@@ -25,10 +25,10 @@ export class MyLeavesPage {
   public leaveDetObs: Observable<LeaveDetail>;
   public leaveDetail: LeaveDetail;
   public selectedLeave: any;
-  public approvedLeaveCount:number;
-  public isDescending: boolean=true;
+  public approvedLeaveCount: number;
+  public isDescending: boolean = true;
   public isFirstTimeLoad: boolean = true;
-  public isAllDataLoaded:boolean = false;
+  public isAllDataLoaded: boolean = false;
   events: any[];
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
@@ -139,8 +139,7 @@ export class MyLeavesPage {
     this.showConfirm();
   }
 
-  handleScrollCalender(event:any)
-  {
+  handleScrollCalender(event: any) {
     console.log('scrolled calender');
   }
 
@@ -192,25 +191,25 @@ export class MyLeavesPage {
           text: 'Date Ascending',
           role: 'date ascending',
           handler: () => {
-            if(this.isDescending === false) {
+            if (this.isDescending === false) {
               this.leaveObs.reverse();
               this.isDescending = true;
             }
           }
-        },{
+        }, {
           text: 'Date Descending',
           role: 'date descending',
           handler: () => {
-            if(this.isDescending) {
+            if (this.isDescending) {
               this.leaveObs.reverse();
               this.isDescending = false;
             }
           }
-        },{
+        }, {
           text: 'Cancel',
           role: 'cancel',
           handler: () => {
-            
+
           }
         }
       ]
@@ -221,11 +220,11 @@ export class MyLeavesPage {
   // Lazy Loading Functionality. TO DO:need to get only limited data from back end
   doInfinite(infiniteScroll) {
     setTimeout(() => {
-        this.leaveService.getMyLeaves().subscribe(
-      (res: any) => {
-        for(let i=0;i<res.length;i++){
+      this.leaveService.getMyLeaves().subscribe(
+        (res: any) => {
+          for (let i = 0; i < res.length; i++) {
             this.leaveObs.push(res[i]);
-        }
+          }
         });
       infiniteScroll.complete();
     }, 500);
