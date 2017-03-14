@@ -73,7 +73,7 @@
 
   <!--Pending Timesheet List -->
 
-  <ion-list *ngIf="editMode == true">
+  <ion-list>
       <ion-item *ngFor="let entry of pendingtimesheetsArray" ion-item (click)="itemTapped(entry)">
         <h3><span *ngFor="let approver of entry.ApproverUser">{{entry.Employee.Name}}</span></h3>
         <h3> 

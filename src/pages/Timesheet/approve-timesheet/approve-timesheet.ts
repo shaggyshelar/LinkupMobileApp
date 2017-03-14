@@ -67,7 +67,7 @@ export class ApproveTimesheetPage {
    /* Get Pending Leaves */
 
   getPendingTimesheetsToApprove() {
-    this.isDataretrived = false;
+    this.resetAllFlags();
     this.spinnerService.createSpinner('Please wait..');
     this.employeeTimesheetService.getApproverPendingTimesheets()
       .subscribe(
@@ -198,6 +198,19 @@ export class ApproveTimesheetPage {
         this.isSelectall = true;
       }
     }
+  }
+
+  /* Reset All flags */
+
+  resetAllFlags() {
+    this.editMode = false;
+    this.isHrApprove = false;
+    this.timesheetchecked = false;
+    this.isHrApprove = false;
+    this.isMoreclicked = false;
+    this.isshowApproveRejectItems = false;
+    this.comment = '';
+    this.isDataretrived = false;
   }
 
   
