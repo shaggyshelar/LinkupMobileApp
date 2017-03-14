@@ -14,12 +14,12 @@
     <!--<ion-title>Approve Leaves</ion-title>-->
     <ion-buttons start>
       <button (click)="onFilter()" ion-button icon-only> 
-        <ion-icon ios="ios-funnel" md="md-funnel"></ion-icon>
+        <ion-icon name="ios-funnel"></ion-icon>
       </button>
     </ion-buttons>
     <ion-buttons start>
       <button (click)="onSort()" ion-button icon-only>
-        <ion-icon name="swap"></ion-icon>
+        <ion-icon name="md-repeat"></ion-icon>
       </button>
     </ion-buttons> 
     <ion-toolbar>
@@ -70,7 +70,14 @@
     </ion-item>
   </ion-list>
 
-<!--Pending Leaves List-->
+  <!--Lazy loading Begin-->
+  <ion-infinite-scroll (ionInfinite)="doInfinite($event)">
+    <ion-infinite-scroll-content loadingSpinner="bubbles"
+      loadingText="Loading more data..." threshold="5%">
+    </ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+  <!--Lazy loading end-->
+  <!--Pending Leaves List-->
   <ion-list *ngIf="editMode == true">
     <ion-item [ngStyle]="{'background-color': leave.selectionColor}" *ngFor="let leave of leavesArray" ion-item (click)="itemTapped(leave)" (press)="longPressedItem(leave)"[attr.status]="leave.Status | lowercase">
       <h3>{{leave.Employee.Name}}</h3>

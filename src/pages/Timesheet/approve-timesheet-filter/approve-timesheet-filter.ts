@@ -1,21 +1,16 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams, ViewController } from 'ionic-angular';
 
-/*
-  Generated class for the LeaveApprovalFilter page.
-
-  See http://ionicframework.com/docs/v2/components/#navigation for more info on
-  Ionic pages and navigation.
-*/
 @Component({
-  selector: 'page-leave-approval-filter',
-  templateUrl: 'leave-approval-filter.html'
+  selector: 'page-approve-timesheet-filter',
+  templateUrl: 'approve-timesheet-filter.html'
 })
-export class LeaveApprovalFilterPage {
+export class ApproveTimesheetFilterPage {
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public viewCtrl: ViewController) { }
 
   ionViewDidLoad() {
+
   }
   dismiss(data) {
     this.viewCtrl.dismiss(data);

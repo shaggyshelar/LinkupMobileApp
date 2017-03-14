@@ -1,12 +1,14 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
+import { NavController, NavParams, ActionSheetController, ModalController } from 'ionic-angular';
 import { LoadingController } from 'ionic-angular';
 import { Observable } from 'rxjs/Rx';
-
 import { ApproveTimesheetDetailsPage } from '../approve-timesheet-details/approve-timesheet-details';
-
 import { EmployeeTimesheetService } from '../index';
+
 import { EmployeeTimeSheet } from '../models/employee-timesheet.model';
+
+
+import { ApproveTimesheetFilterPage } from '../approve-timesheet-filter/approve-timesheet-filter';
 
 
 @Component({
@@ -15,6 +17,7 @@ import { EmployeeTimeSheet } from '../models/employee-timesheet.model';
 })
 export class ApproveTimesheetPage {
   origin: String = '';
+
   public isBulkApprovePermission:boolean = false;
   public timesheetID: string;
   public timesheetObs: Observable<EmployeeTimeSheet[]>;
@@ -31,14 +34,17 @@ export class ApproveTimesheetPage {
   public isSelectall:boolean = false;
   public isshowApproveRejectItems = false;
 
+
   public approveEmployee: Observable<EmployeeTimesheetService>;
 
-  constructor(public navCtrl: NavController
-    , public navParams: NavParams
-    , private employeeTimesheetService: EmployeeTimesheetService
-    , public loadingCtrl: LoadingController) {
-
+  constructor(public navCtrl: NavController,
+    public navParams: NavParams,
+    private employeeTimesheetService: EmployeeTimesheetService,
+    public loadingCtrl: LoadingController,
+    public actionSheetCtrl: ActionSheetController,
+    public modalCtrl: ModalController) {
   }
+
 
   ionViewDidLoad() { }
 
@@ -123,6 +129,43 @@ export class ApproveTimesheetPage {
   itemTapped(entry) {
     this.navCtrl.push(ApproveTimesheetDetailsPage, { id: entry.ID, caller: 'approve-timesheet' });
   }
+  onFilter() {
+    let modal = this.modalCtrl.create(ApproveTimesheetFilterPage);
+    modal.present();
+  }
+  onSort() {
+    let actionSheet = this.actionSheetCtrl.create({
+      title: 'Sort Your Timesheets',
+      buttons: [
+        {
+          text: 'Date Ascending',
+          role: 'date ascending',
+          handler: () => {
+            if (this.isDescending === false) {
+              // this.approveEmployee.ApproverUser.reverse();
+              this.isDescending = true;
+            }
+          }
+        }, {
+          text: 'Date Descending',
+          role: 'date descending',
+          handler: () => {
+            if (this.isDescending) {
+              // this.approveEmployee.reverse();
+              this.isDescending = false;
+            }
+          }
+        }, {
+          text: 'Cancel',
+          role: 'cancel',
+          handler: () => {
+
+          }
+        }
+      ]
+    });
+    actionSheet.present();
+  }
 
   /** Bulk Timesheet Approval functionality */
 
@@ -133,7 +176,7 @@ export class ApproveTimesheetPage {
   longPressedItem(leave: any)
   {
   this.isshowApproveRejectItems = true;
-  this.selectLeave(leave,true);
+ // this.selectLeave(leave,true);
   }
 
   editTimsheet() {
@@ -143,7 +186,7 @@ export class ApproveTimesheetPage {
       this.isshowApproveRejectItems = false;
       this.selectedEmployees = [];
      this.pendingtimesheetsArray.forEach(leave => {
-          this.selectLeave(leave,false);
+         /// this.selectLeave(leave,false);
         });
     }
     
@@ -153,53 +196,10 @@ export class ApproveTimesheetPage {
   {
     this.selectedEmployees = [];
      this.pendingtimesheetsArray.forEach(leave => {
-          this.selectLeave(leave,true);
+          //this.selectLeave(leave,true);
         });
   }
 
-   selectLeave(leave:any ,checked:boolean)
-  {
-     if(checked == false)
-    {
-      var index : number = 0;
-      this.pendingtimesheetsArray.forEach(leaves => {
-          if(leaves == leave)
-          {
-            var sindex = this.selectedEmployees.indexOf(leave);
-            this.selectedEmployees.splice(sindex,1);
-          }
-          index ++;
-        });
-      leave.selectionColor = "white";
-      leave.selected = false;
-      if(this.selectedEmployees.length == 0)
-      this.isshowApproveRejectItems = false;
-    }
-    else
-    {
-      this.selectedEmployees.push(leave);
-      leave.selectionColor = "#8ea3c5";
-      leave.selected = true;
-    }
-   this.setboolean();
-  }
-  setboolean()
-  {
-    this.leavechecked = false;
-    this.isSelectall = false;
-    if(this.selectedEmployees && this.selectedEmployees.length > 0)
-    {
-      this.leavechecked = true;
-
-      var count : number = 0;
-      this.leavesArray.forEach(leaves => {
-          count ++;
-        });
-      if(count == this.selectedEmployees.length)
-        {
-          this.isSelectall = true;
-        }
-    }
-  }
+  
 
 }

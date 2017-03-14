@@ -19,18 +19,15 @@ export class MessageService {
     public static APPLY_LEAVE_12 = 'You can take only one half day leave in this month! No more leaves available';
     public static APPLY_LEAVE_13 = 'You have already applied Leave for selected date';
     public static APPLY_LEAVE_14 = 'Leave request cancelled';
-    isSessionTimeout: boolean = false;
 
-    onMessageAdd: EventEmitter<Object> = new EventEmitter<Object>();
-    
-    getMessages() {
-        return this.onMessageAdd;
-    }
+    public static onUnauthorized: EventEmitter<Object> = new EventEmitter<Object>();
+    public static onMessageAdded: EventEmitter<Object> = new EventEmitter<Object>();
 
-    addMessage(value: Object) {
-        this.onMessageAdd.emit(value);
+    static addMessage(value: Object) {
+        // Example addMessage({ severity: 'success', summary: 'Success', message: 'Record Saved' })
+        MessageService.onMessageAdded.emit(value);
     }
-    setSessionTimeOutMessage(value: boolean) {
-        this.isSessionTimeout = value;
+    static setSessionTimeOutMessage(value: boolean) {
+        MessageService.onUnauthorized.emit({ message: 'Unauthorized' });
     }
 }

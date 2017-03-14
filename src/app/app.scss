@@ -44,6 +44,10 @@
     background-color: map-get($colors, activeMenu ) !important;
 }
 
+h3 {
+  margin-top: -0.1rem !important;
+}
+
 .card-background-page {
   background: color($colors, sideMenuBackground, base);
   

@@ -214,4 +214,17 @@ export class MyLeavesPage {
     });
     actionSheet.present();
   }
+
+  // Lazy Loading Functionality. TO DO:need to get only limited data from back end
+  doInfinite(infiniteScroll) {
+    setTimeout(() => {
+        this.leaveService.getMyLeaves().subscribe(
+      (res: any) => {
+        for(let i=0;i<res.length;i++){
+            this.leaveObs.push(res[i]);
+        }
+        });
+      infiniteScroll.complete();
+    }, 500);
+  }
 }

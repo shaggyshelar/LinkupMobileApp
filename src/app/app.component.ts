@@ -43,7 +43,7 @@ import { ManageMyProjectsPage } from '../pages/Projects/manage-my-projects/manag
 import { EmployeeProjectManagementPage } from '../pages/Projects/employee-project-management/employee-project-management';
 
 import { LoginPage } from '../pages/login/login';
-import { AuthService } from '../providers/index';
+import { AuthService, MessageService } from '../providers/index';
 import { Subscription } from 'rxjs/Subscription';
 
 export interface PageInterface {
@@ -113,31 +113,8 @@ export class MyApp {
           this.rootPage = LoginPage;
         }
       });
-    this.unauthorizedEvent.subscribe('Token Expired', (Token) => {
-      this.tokenExpiredAlert('Session Expired', 'Please Login again.');
-    });
-    this.unauthorizedEvent.subscribe('All Errors', (errMsg) => {
-      this.allErrorToast(errMsg);
-    });
   }
-  allErrorToast(errMsg) {
-    let toast = this.toastCtrl.create({
-      message: errMsg,
-      duration: 3000
-    });
-    toast.present();
-  }
-  tokenExpiredAlert(title: string, subTitle: string) {
-    let alert = this.alertCtrl.create({
-      title: title,
-      subTitle: subTitle,
-      buttons: ['OK']
-    });
-    alert.onDidDismiss(() =>
-      this.onLogout()
-    );
-    alert.present();
-  }
+
   onLogout(): void {
     this.auth.logout();
   }
@@ -149,7 +126,7 @@ export class MyApp {
       this.designation = this.userDetail.Designation.Value;
       this.empID = this.userDetail.EmpID;
       if (this.userDetail.ProfilePictureName) {
-        this.profileImageSrc = 'http://192.168.100.153:202/Profile%20Picture%20Library/' + this.userDetail.ProfilePictureName + '.JPG';
+        this.profileImageSrc = 'http://linkup.eternussolutions.com/Profile%20Picture%20Library/' + this.userDetail.ProfilePictureName + '.JPG';
       } else {
         this.profileImageSrc = 'assets/img/default-user.jpg';
       }
@@ -177,6 +154,24 @@ export class MyApp {
     this.platform.ready().then(() => {
       StatusBar.styleDefault();
       Splashscreen.hide();
+      MessageService.onMessageAdded
+        .subscribe((value: any) => {
+          //TODO: Parse Error and display message
+          let toast = this.toastCtrl.create({
+            message: 'Something unexpected happend. Please try again',
+            duration: 3000
+          });
+          toast.present();
+        });
+      MessageService.onUnauthorized
+        .subscribe((value: Object) => {
+          this.auth.logout();
+          let toast = this.toastCtrl.create({
+            message: 'Session Expired. Please Login',
+            duration: 3000
+          });
+          toast.present();
+        });
 
       //       Intenet check
       //       this.internetChecking();

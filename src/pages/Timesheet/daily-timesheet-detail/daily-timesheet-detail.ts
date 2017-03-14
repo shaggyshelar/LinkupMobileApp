@@ -11,19 +11,19 @@ import { DailyTimesheet } from '../models/daily-timesheet.model';
 })
 export class DailyTimesheetDetailPage {
 
-  dailyData : DailyTimesheet;
-  dailyTimesheetForm : FormGroup;
-  isViewModeBillable : Boolean = true;
-  isViewModeNonBillable : Boolean = false;
+  dailyData: DailyTimesheet;
+  dailyTimesheetForm: FormGroup;
+  isViewModeBillable: Boolean = true;
+  isViewModeNonBillable: Boolean = false;
 
   constructor(public navCtrl: NavController, public navParams: NavParams
-  , private formBuilder: FormBuilder
+    , private formBuilder: FormBuilder
   ) {
     this.dailyTimesheetForm = this.formBuilder.group({
-      billableHours:[{value: this.navParams.data.readOnly ? this.navParams.data.dailyData.BillableHours :'' , disabled: this.navParams.data.readOnly}],
-      noteForBillableHours:[{value: this.navParams.data.readOnly ? this.navParams.data.dailyData.NoteForBillableHours :'' , disabled: this.navParams.data.readOnly}],
-      nonBillableHours:[{value: this.navParams.data.readOnly ? this.navParams.data.dailyData.NonBillableHours :'' , disabled: this.navParams.data.readOnly}],
-      noteForNonBillableHours:[{value: this.navParams.data.readOnly ? this.navParams.data.dailyData.NoteForNonBillableHours :'' , disabled: this.navParams.data.readOnly}],
+      billableHours: [{ value: this.navParams.data.readOnly ? this.navParams.data.dailyData.BillableHours : '', disabled: this.navParams.data.readOnly }],
+      noteForBillableHours: [{ value: this.navParams.data.readOnly ? this.navParams.data.dailyData.NoteForBillableHours : '', disabled: this.navParams.data.readOnly }],
+      nonBillableHours: [{ value: this.navParams.data.readOnly ? this.navParams.data.dailyData.NonBillableHours : '', disabled: this.navParams.data.readOnly }],
+      noteForNonBillableHours: [{ value: this.navParams.data.readOnly ? this.navParams.data.dailyData.NoteForNonBillableHours : '', disabled: this.navParams.data.readOnly }],
     });
   }
 

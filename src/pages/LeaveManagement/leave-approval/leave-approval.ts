@@ -508,5 +508,17 @@ export class LeaveApprovalPage {
     });
     actionSheet.present();
   }
+  
+  // Lazy Loading Functionality. TO DO:need to get only limited data from back end
+  doInfinite(infiniteScroll) {
+    setTimeout(() => {
+      this.leaveService.getApproverLeaves().subscribe((res: any) => {
+        for(let i=0;i<res.length;i++){
+          this.leaveList.push(res[i]);
+        }
+    });
+      infiniteScroll.complete();
+    }, 500);
+  }
 
 }
