@@ -402,17 +402,21 @@ export class LeaveApprovalPage {
   selectLeave(leave: any, checked: boolean) {
     if (checked == false) {
       var index: number = 0;
-      this.leavesArray.forEach(leaves => {
+      if (this.selectedEmployees.length > 0)
+      {
+        this.leavesArray.forEach(leaves => {
         if (leaves == leave) {
           var sindex = this.selectedEmployees.indexOf(leave);
           this.selectedEmployees.splice(sindex, 1);
         }
         index++;
       });
+    }
+    else
+    this.isshowApproveRejectItems = false;
+
       leave.selectionColor = "white";
       leave.selected = false;
-      if (this.selectedEmployees.length == 0)
-        this.isshowApproveRejectItems = false;
     }
     else {
       this.selectedEmployees.push(leave);

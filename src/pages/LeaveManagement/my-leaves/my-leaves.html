@@ -49,8 +49,8 @@
 </ion-content>-->
 
 <ion-content padding class="customCalendar">
-  <p-schedule [events]="events" [height]="auto" (onDayClick)="handleDayClick($event)" (onScroll)="handleScrollCalender($event)" (onEventClick)="handleEventClick($event)"></p-schedule>
-  <ion-list #scheduleList [hidden]="(leaveObs)?.length === 0">
+  <p-schedule *ngIf="isAllDataLoaded == true" [events]="events" [height]="auto" (onDayClick)="handleDayClick($event)" (onScroll)="handleScrollCalender($event)" (onEventClick)="handleEventClick($event)"></p-schedule>
+  <ion-list #scheduleList *ngIf ="(leaveObs)?.length > 0 && isAllDataLoaded == true">
 
     <!--<ion-item-divider sticky>
         <ion-label>
@@ -89,7 +89,7 @@
   </ion-infinite-scroll>
   <!--Lazy loading End-->
   
-  <ion-list-header [hidden]="(leaveObs)?.length > 0">
+  <ion-list-header *ngIf ="(leaveObs)?.length == 0 && isAllDataLoaded == true">
     No Records Found
   </ion-list-header>
 

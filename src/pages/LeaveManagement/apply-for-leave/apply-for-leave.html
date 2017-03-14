@@ -65,17 +65,19 @@
     <ion-item>
       <ion-label>Duration<span class="right">{{model.numDays}}</span></ion-label>
     </ion-item>
-  </ion-item-group>
 
   <ion-item>
         <ion-label floating>Comments<span class="required">*</span></ion-label>
-        <ion-textarea name ="reason" [(ngModel)]="model.reason" formControlName="reason"spellcheck="false" autocapitalize="off"></ion-textarea>
+        <ion-textarea name ="reason" [(ngModel)]="model.reason" formControlName="reason" spellcheck="false" autocapitalize="off" (blur)="focusremoved()" ></ion-textarea>
   </ion-item>
 
     <p ion-text [hidden]="applyLeaveForm.controls.reason.valid || submitted == false" color="danger" padding-left>
 				Reason is required.
 	     </p> 
-<button ion-button class="add-leave-button" type="submit" [disabled]="applyLeaveForm.invalid || this.isValidationMessage || this.itsWeekend" (click)= "onAddLeave()"> Add Leaves </button>
+       <button ion-button class="add-leave-button"  [disabled]="applyLeaveForm.invalid || this.isValidationMessage || this.itsWeekend" (click)="onAddLeave()"> Add Leaves </button>
+</ion-item-group>
+</form>
+
 <ion-list>
   <ion-item>
     Added Leaves
@@ -94,9 +96,4 @@
           <ion-badge item-right>{{leave.NumberOfLeaves | number : '1.1-3' }}</ion-badge>
         </ion-item>
 </ion-list>
-
-
-  
-
-</form>
 </ion-content>
