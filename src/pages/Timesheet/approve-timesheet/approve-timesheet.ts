@@ -4,7 +4,12 @@ import { LoadingController } from 'ionic-angular';
 import { Observable } from 'rxjs/Rx';
 import { ApproveTimesheetDetailsPage } from '../approve-timesheet-details/approve-timesheet-details';
 import { EmployeeTimesheetService } from '../index';
+
+import { EmployeeTimeSheet } from '../models/employee-timesheet.model';
+
+
 import { ApproveTimesheetFilterPage } from '../approve-timesheet-filter/approve-timesheet-filter';
+
 
 @Component({
   selector: 'page-approve-timesheet',
@@ -12,8 +17,25 @@ import { ApproveTimesheetFilterPage } from '../approve-timesheet-filter/approve-
 })
 export class ApproveTimesheetPage {
   origin: String = '';
+
+  public isBulkApprovePermission:boolean = false;
+  public timesheetID: string;
+  public timesheetObs: Observable<EmployeeTimeSheet[]>;
+  public pendingtimesheetsArray: EmployeeTimeSheet[];
+  public timesheetList: EmployeeTimeSheet[];
+  public userPermissions: any[];
+  public selectedTimesheetID: string;
+  public isMoreclicked: boolean;
+  public isHrApprove: boolean;
+  public selectedEmployees: any[];
+  public comment: string;
+  public isDescending: boolean=true;
+  public editMode: boolean;
+  public isSelectall:boolean = false;
+  public isshowApproveRejectItems = false;
+
+
   public approveEmployee: Observable<EmployeeTimesheetService>;
-  public isDescending: boolean = true;
   public noResponseMsg: String;
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
@@ -49,6 +71,7 @@ export class ApproveTimesheetPage {
   //   }
   // }
 
+
   getUserData() {
     var loader = this.loadingCtrl.create({
       content: 'Please wait...'
@@ -73,9 +96,28 @@ export class ApproveTimesheetPage {
     });
 
     loader.present().then(() => {
-      this.employeeTimesheetService.getApproverPendingTimesheets().subscribe((res: any) => {
+      this.employeeTimesheetService.getApproverApprovedTimesheets().subscribe((res: any) => {
         if (res.length > 0) {
           this.approveEmployee = res.reverse();
+          console.log(res);
+          localStorage.setItem('approveTimesheetsBadgeCount', res.length);
+        }
+        loader.dismiss();
+      }, (err) => {
+        loader.dismiss();
+      });
+    });
+  }
+
+  getPendingApproverData() {
+    var loader = this.loadingCtrl.create({
+      content: 'Please wait...'
+    });
+
+    loader.present().then(() => {
+      this.employeeTimesheetService.getApproverPendingTimesheets().subscribe((res: any) => {
+        if (res.length > 0) {
+          this.pendingtimesheetsArray = res.reverse();
           //console.log(res);
           localStorage.setItem('approveTimesheetsBadgeCount', res.length);
         }
@@ -126,5 +168,40 @@ export class ApproveTimesheetPage {
     });
     actionSheet.present();
   }
+
+  /** Bulk Timesheet Approval functionality */
+
+    /** Bulk Approval */
+
+  /** Multiselction of List item */
+
+  longPressedItem(leave: any)
+  {
+  this.isshowApproveRejectItems = true;
+ // this.selectLeave(leave,true);
+  }
+
+  editTimsheet() {
+    this.editMode = !this.editMode;
+    if(this.editMode == false)
+    {
+      this.isshowApproveRejectItems = false;
+      this.selectedEmployees = [];
+     this.pendingtimesheetsArray.forEach(leave => {
+         /// this.selectLeave(leave,false);
+        });
+    }
+    
+  }
+
+  selectAllLeaves()
+  {
+    this.selectedEmployees = [];
+     this.pendingtimesheetsArray.forEach(leave => {
+          //this.selectLeave(leave,true);
+        });
+  }
+
+  
 
 }

@@ -10,6 +10,7 @@ const CONTEXT = 'auth';
 @Injectable()
 export class AuthService extends BaseService {
     public currentUser: any;
+    public userPermissions: any[];
     public authStatusChangeSource = new Subject<string>();
     public loader: any;
     onAuthStatusChanged$ = this.authStatusChangeSource.asObservable();
@@ -48,17 +49,15 @@ export class AuthService extends BaseService {
         let credentialString: string = 'grant_type=password&UserName=' + credentials.UserName + '&Password=' + credentials.Password;
         headers.append('Content-Type', 'application/x-www-form-urlencoded');
         let options = new RequestOptions({ headers: headers });
-        this.blockUI();
         return this.http.post(this.baseUrl + 'auth/Token', credentialString, options)
             .map((res: Response) => {
                 this.setToken(res);
                 this.storeLoggedInUserPermission().subscribe();
                 this.getCurrentUserDetails().subscribe();
-                this.unblockUI();
             })
             .catch(err => {
-                this.unblockUI();
-                return this.handleError(err);
+                this.loader.dismiss();
+                return this.handleError(err, true);
             })
     }
     storeLoggedInUserPermission() {
@@ -105,5 +104,22 @@ export class AuthService extends BaseService {
             content: "Please wait..."
         });
         this.loader.present();
+    }
+
+    /** Get User permission*/
+
+    checkPermission(feature: string) {
+        this.userPermissions = [];
+        this.userPermissions = JSON.parse(localStorage.getItem("loggedInUserPermission"));
+        if(this.userPermissions)
+        {
+          for (let innerindex = 0; innerindex < this.userPermissions.length; innerindex++) {
+            if (feature == this.userPermissions[innerindex]) {
+                return true;
+            }
+        }
+        }
+       
+        return false;
     }
 }

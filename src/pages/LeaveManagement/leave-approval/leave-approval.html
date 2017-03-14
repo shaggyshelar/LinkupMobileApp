@@ -12,7 +12,7 @@
     </button>
      
     <!--<ion-title>Approve Leaves</ion-title>-->
-    <ion-buttons start>
+    <!--<ion-buttons start>
       <button (click)="onFilter()" ion-button icon-only> 
         <ion-icon name="ios-funnel"></ion-icon>
       </button>
@@ -21,11 +21,11 @@
       <button (click)="onSort()" ion-button icon-only>
         <ion-icon name="md-repeat"></ion-icon>
       </button>
-    </ion-buttons> 
+    </ion-buttons> -->
     <ion-toolbar>
     <ion-buttons start *ngIf="isBulkApprovePermission == false">
-    <button ion-button *ngIf= "editMode == true" (click)="editleaves()">
-       <ion-icon name="arrow-round-back"></ion-icon>
+    <button ion-button *ngIf= "isshowApproveRejectItems == true" (click)="editleaves()">
+       <!--<ion-icon name="arrow-round-back"></ion-icon>-->
        {{selectedEmployees.length}}
     </button>
     </ion-buttons>
@@ -33,46 +33,25 @@
       Approve Leaves
     </ion-title>
     
-     <ion-buttons end *ngIf="isBulkApprovePermission == false">
-      <button ion-button *ngIf= "editMode == false" (click)="editleaves()">
+     <ion-buttons end >
+      <!--<button ion-button *ngIf= "editMode == false" (click)="editleaves()">
         <ion-icon name="logo-buffer"></ion-icon>
-      </button>
+      </button>-->
         <button *ngIf="isshowApproveRejectItems == true" ion-button (click)="selectAllLeaves()">
         <ion-icon name="checkbox"></ion-icon>
       </button>
       <button *ngIf="isshowApproveRejectItems == true"ion-button [disabled] = "leavechecked == false" (click)="approveBulkLeave()">
         <ion-icon name="checkmark"></ion-icon>
       </button>
-       <button *ngIf="isshowApproveRejectItems == true" ion-button [disabled] = "leavechecked == false" (click)="rejectBulkLeave()">
+       <!--<button *ngIf="isshowApproveRejectItems == true" ion-button [disabled] = "leavechecked == false" (click)="rejectBulkLeave()">
        <ion-icon name="close"></ion-icon>
-      </button>
+      </button>-->
     
     </ion-buttons>
     </ion-toolbar>
   </ion-navbar>
 
 </ion-header>
-
-<ion-footer *ngIf= "editMode == true" class ="animated fadeInUp">
-  <ion-toolbar>
-    <ion-buttons start>
-      <button ion-button (click)="selectAllLeaves()">
-        All
-      </button>
-      </ion-buttons>
-       <ion-buttons end>
-      <button ion-button [disabled] = "leavechecked == false" (click)="approveBulkLeave()">
-        Approve
-      </button>
-      <button ion-button [disabled] = "leavechecked == false" (click)="rejectBulkLeave()">
-        Reject
-      </button>
-    </ion-buttons>
-  </ion-toolbar>
-</ion-footer>
-
-
-
 
 <ion-content padding>
 
@@ -92,11 +71,11 @@
   </ion-list>
 
   <!--Lazy loading Begin-->
-  <ion-infinite-scroll (ionInfinite)="doInfinite($event)">
+  <!--<ion-infinite-scroll (ionInfinite)="doInfinite($event)">
     <ion-infinite-scroll-content loadingSpinner="bubbles"
       loadingText="Loading more data..." threshold="5%">
     </ion-infinite-scroll-content>
-  </ion-infinite-scroll>
+  </ion-infinite-scroll>-->
   <!--Lazy loading end-->
   <!--Pending Leaves List-->
   <ion-list *ngIf="editMode == true">
@@ -109,16 +88,17 @@
         No of Leaves: {{leave.NumberOfLeaves | number : '1.1-3'}}
         <span class="right">{{leave.Status}}</span>
       </p>
-      <!--<ion-icon *ngIf="leave.Status == 'Pending' " name="more" item-right (click)="presentActionSheet(leave , leave.LeaveRequestMasterId)"></ion-icon>-->
+      <ion-icon *ngIf="leave.Status == 'Pending' " name="more" item-right (click)="presentActionSheet(leave , leave.LeaveRequestMasterId)"></ion-icon>
     </ion-item>
   </ion-list>
 
-  
-
-
-
-  <ion-list-header [hidden]="(leaveList)?.length > 0">
+  <ion-list-header *ngIf ="(leavesArray)?.length == 0 && isDataretrived ==true">
     No Records Found
   </ion-list-header>
+
+   <ion-list-header [hidden]="isAuthorized == true">
+    You are not Authorized
+  </ion-list-header>
+
 
 </ion-content>

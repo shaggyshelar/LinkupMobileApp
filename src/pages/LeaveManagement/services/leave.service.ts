@@ -218,7 +218,7 @@ export class LeaveService extends BaseService {
                 observer.next(this._cacheService.get('pendingApproverList'));
             });
         } else {
-            return this.getChildList$('ByStatus/' + status, 0, 0, true).map(res => {
+            return this.getChildList$('ApproverLeaves/' + status, 0, 0, true).map(res => {
                 this._cacheService.set('pendingApproverList', res.json(), { maxAge: 60 * 60 });
                 this._cacheService.set('PendingLeavesApprovalCount', res.json().length, { maxAge: 60 * 60 });
                 return res.json();
