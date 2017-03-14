@@ -19,6 +19,7 @@ import { SpinnerService } from '../../../providers/index';
 export class ApproveTimesheetPage {
   origin: String = '';
 
+  public timesheetReport: any;
   public isBulkApprovePermission:boolean = false;
   public timesheetID: string;
   public timesheetObs: Observable<EmployeeTimeSheet[]>;
@@ -37,6 +38,7 @@ export class ApproveTimesheetPage {
   public isDataretrived:boolean = false;
   public isAuthorized: boolean;
   public timesheetchecked : boolean = false;
+  public selectedLeaveID:string;
   public approveEmployee: Observable<EmployeeTimesheetService>;
 
   constructor(public navCtrl: NavController,
@@ -46,9 +48,11 @@ export class ApproveTimesheetPage {
     private auth:AuthService,
     public loadingCtrl: LoadingController,
     public actionSheetCtrl: ActionSheetController,
+    public alertCtrl:AlertController,
     public modalCtrl: ModalController) {
     this.isAuthorized = this.auth.checkPermission('TIMESHEET.APPROVETIMESHEETS.MANAGE');
     this.isBulkApprovePermission = this.auth.checkPermission('TIMESHEET.BULK_APPROVAL.MANAGE');
+    this.timesheetReport = {};
   }
 
 
@@ -61,7 +65,207 @@ export class ApproveTimesheetPage {
     
   }
 
+  /*show more action */
+
+  presentActionSheet(entry: any) {
+    this.isMoreclicked = true;
+    if (entry.SubmittedStatus == 'Approved' || entry.SubmittedStatus == 'Rejected' || entry.SubmittedStatus == 'Cancelled')
+      return;
+    let actbuttons: any[] = [
+      {
+        text: 'Approve',
+        role: 'destructive',
+        handler: () => {
+          this.selectedLeaveID = entry.ID;
+          this.showApproveRejectPromt(true);
+          this.isMoreclicked = false;
+        }
+      }, {
+        text: 'Reject',
+        handler: () => {
+          this.selectedLeaveID = entry.ID;
+          this.showApproveRejectPromt(false);
+          this.isMoreclicked = false;
+        }
+      },
+      {
+        text: 'HR Approve',
+        handler: () => {
+          this.selectedLeaveID = entry.ID;
+          this.isHrApprove = true;
+          this.showApproveRejectPromt(true);
+          this.isMoreclicked = false;
+        }
+      }, {
+        text: 'Cancel',
+        role: 'cancel',
+        handler: () => {
+          this.isMoreclicked = false;
+        }
+      }
+    ];
+
+    if (this.auth.checkPermission('TIMESHEET.HRAPPROVAL.UPDATE') == false) {
+      actbuttons.splice(2, 1);
+    }
+    let actionSheet = this.actionSheetCtrl.create({
+      title: 'Timesheet Action',
+      buttons: actbuttons
+    });
+    actionSheet.present();
+  }
+
+
+   /* Approve/Reject prompt */
+
+  showApproveRejectPromt(approve: boolean) {
+      if (this.timesheetchecked)
+      {
+        this.sendRequest('Approved');
+        return;
+      }
+      
+    var isApprove: String = "Approve";
+    if (approve)
+      isApprove = "Approve";
+    else
+      isApprove = "Reject";
+
+    let prompt = this.alertCtrl.create({
+      title: 'Leave',
+      message: "Enter a comment for Leave!",
+      inputs: [
+        {
+          name: 'title',
+          placeholder: 'Comment'
+        },
+      ],
+      buttons: [
+        {
+          text: 'Cancel',
+          handler: data => {
+          }
+        },
+        {
+          text: isApprove,
+          handler: data => {
+
+            this.comment = data.title;
+            var cmt = this.comment;//this.model.comments;
+
+            if (isApprove == 'Approve') {
+              if (this.comment.trim().length == 0) {
+                this.comment = '';
+                this.showApproveRejectPromt(true);
+                return;
+              }
+              if (this.timesheetchecked)
+                this.sendRequest('Approved');
+              else
+                this.approveClicked();
+            }
+            else {
+              if (this.comment.trim().length == 0) {
+
+                this.comment = '';
+                this.showApproveRejectPromt(false);
+                return;
+              }
+              if (this.timesheetchecked)
+                this.sendRequest('Rejected');
+              else
+                this.rejectClicked();
+            }
+          }
+        }
+      ]
+    });
+    prompt.present();
+  }
+
+
+   approveBulkTimesheet() {
+    this.showApproveRejectPromt(true);
+  }
+
+   /*Bulk Approve Reject API*/
  
+  sendRequest(status: any) {
+    this.spinnerService.createSpinner('Please wait..');
+    if (this.selectedEmployees.length > 0) {
+      let payload: any = {};
+      payload.Comments = this.comment;
+      payload.TimesheetIDs = [];
+      for(let i=0;i<this.selectedEmployees.length;i++){
+        payload.TimesheetIDs.push(this.selectedEmployees[i].ID);
+      }
+      //    BACKEND CALL HERE
+      this.employeeTimesheetService.bulkApproval(payload).subscribe(res => {
+        this.spinnerService.stopSpinner();
+        if (res) {
+          this.getPendingTimesheetsToApprove();
+          this.selectedEmployees = [];
+          //this.showToast('Selected Leaves are ' + status + '.');
+        } else {
+          this.resetAllFlags();
+        }
+      },
+        error => {
+        this.resetAllFlags();
+        });
+    }
+  }
+
+  /*Approve Reject API */
+  approveClicked() {
+    var params = {
+      LeaveRequestRefId: this.selectedLeaveID,
+      Comments: this.comment,
+      Status: 'Approved'
+    };
+    this.spinnerService.createSpinner('Please wait..');
+      this.employeeTimesheetService.approveTimesheet(params)
+        .subscribe(res => {
+          this.spinnerService.stopSpinner();
+          if (res) {
+            //his.showToast('Leave is Approved successfully!');
+            this
+          } else {
+            //this.showToast('Failed to Approve Please try again!');
+            this.resetAllFlags();
+          }
+        },
+        error => {
+          //this.showToast('Failed to Approve Please try again!');
+          this.resetAllFlags();
+        });
+    
+  }
+
+  rejectClicked() {
+    this.spinnerService.createSpinner('Please wait..');
+    var params = {
+      LeaveRequestRefId: this.selectedLeaveID,
+      Comments: this.comment,
+      Status: 'Rejected'
+    };
+
+    this.employeeTimesheetService.rejectTimesheet(params)
+      .subscribe(res => {
+        this.spinnerService.stopSpinner();
+        if (res) {
+          //this.showToast('Leave is Rejected successfully!');
+          this.getPendingTimesheetsToApprove();
+        } else {
+          //this.showToast('Failed to Reject Please try again!');
+          this.resetAllFlags();
+        }
+      },
+      error => {
+        //this.showToast('Failed to Reject Please try again!');
+        this.resetAllFlags();
+      });
+  }
  
 
    /* Get Pending Leaves */
@@ -76,8 +280,8 @@ export class ApproveTimesheetPage {
         this.pendingtimesheetsArray = [];
         this.selectedEmployees = [];
         this.pendingtimesheetsArray = res.reverse();
-        this.pendingtimesheetsArray.forEach(leave => {
-          this.selectLeave(leave, false);
+        this.pendingtimesheetsArray.forEach(entry => {
+          this.selectTimesheet(entry, false);
         });
         this.editMode = true;
         this.isDataretrived = true;
@@ -89,9 +293,19 @@ export class ApproveTimesheetPage {
       });
   }
 
-  itemTapped(entry) {
-    this.navCtrl.push(ApproveTimesheetDetailsPage, { id: entry.ID, caller: 'approve-timesheet' });
+   /* Show Leave Deatails */
+
+  itemTapped(entry: any) {
+    if (this.isshowApproveRejectItems == true)
+      this.selectTimesheet(entry, !entry.selected);
+    else {
+      if (this.isMoreclicked == true)
+        return;
+       this.navCtrl.push(ApproveTimesheetDetailsPage, { id: entry.ID, caller: 'approve-timesheet' });
+    }
+
   }
+
   onFilter() {
     let modal = this.modalCtrl.create(ApproveTimesheetFilterPage);
     modal.present();
@@ -136,51 +350,39 @@ export class ApproveTimesheetPage {
 
   /** Multiselction of List item */
 
-  longPressedItem(leave: any)
+  longPressedItem(entry: any)
   {
   this.isshowApproveRejectItems = true;
- // this.selectLeave(leave,true);
+  this.selectTimesheet(entry,true);
   }
 
-  editTimsheet() {
-    this.editMode = !this.editMode;
-    if(this.editMode == false)
-    {
-      this.isshowApproveRejectItems = false;
-      this.selectedEmployees = [];
-     this.pendingtimesheetsArray.forEach(leave => {
-         /// this.selectLeave(leave,false);
-        });
-    }
-    
-  }
 
- selectAllLeaves() {
+ selectAllTimesheets() {
     this.selectedEmployees = [];
-    this.pendingtimesheetsArray.forEach(leave => {
-      this.selectLeave(leave, true);
+    this.pendingtimesheetsArray.forEach(entry => {
+      this.selectTimesheet(entry, true);
     });
   }
 
-  selectLeave(leave: any, checked: boolean) {
+  selectTimesheet(entry: any, checked: boolean) {
     if (checked == false) {
       var index: number = 0;
       this.pendingtimesheetsArray.forEach(leaves => {
-        if (leaves == leave) {
-          var sindex = this.selectedEmployees.indexOf(leave);
+        if (leaves == entry) {
+          var sindex = this.selectedEmployees.indexOf(entry);
           this.selectedEmployees.splice(sindex, 1);
         }
         index++;
       });
-      leave.selectionColor = "white";
-      leave.selected = false;
+      entry.selectionColor = "white";
+      entry.selected = false;
       if (this.selectedEmployees.length == 0)
         this.isshowApproveRejectItems = false;
     }
     else {
-      this.selectedEmployees.push(leave);
-      leave.selectionColor = "#8ea3c5";
-      leave.selected = true;
+      this.selectedEmployees.push(entry);
+      entry.selectionColor = "#8ea3c5";
+      entry.selected = true;
     }
     this.setboolean();
   }

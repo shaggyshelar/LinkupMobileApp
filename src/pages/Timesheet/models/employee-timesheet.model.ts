@@ -27,6 +27,8 @@ export class EmployeeTimeSheet {
     IsUserUpdated: string;
     UpdationFlag: string;
     ID: number;
+    selected : boolean ;
+    selectionColor : string;
 }
 class User {
     Name: string;
