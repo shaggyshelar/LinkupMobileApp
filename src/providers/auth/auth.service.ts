@@ -113,15 +113,14 @@ export class AuthService extends BaseService {
     checkPermission(feature: string) {
         this.userPermissions = [];
         this.userPermissions = JSON.parse(localStorage.getItem("loggedInUserPermission"));
-        if(this.userPermissions)
-        {
-          for (let innerindex = 0; innerindex < this.userPermissions.length; innerindex++) {
-            if (feature == this.userPermissions[innerindex]) {
-                return true;
+        if (this.userPermissions) {
+            for (let innerindex = 0; innerindex < this.userPermissions.length; innerindex++) {
+                if (feature == this.userPermissions[innerindex]) {
+                    return true;
+                }
             }
         }
-        }
-       
+
         return false;
     }
 }

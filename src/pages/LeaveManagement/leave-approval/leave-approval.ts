@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { NavController, NavParams, ActionSheetController, Events, ModalController } from 'ionic-angular';
 import { SpinnerService } from '../../../providers/index';
 import { LeaveService } from '../index';
-import { AuthService } from '../../../providers/index';;
+import { AuthService } from '../../../providers/index';
 import { AlertController, ItemSliding } from 'ionic-angular';
 import { Leave } from '../models/leave';
 import { LeaveApprovalDetailPage } from '../leave-approval-detail/leave-approval-detail';
