@@ -128,6 +128,7 @@ export class MyApp {
 
   onLogout(): void {
     this.auth.logout();
+    this.openPage({ component: LoginPage });
   }
 
   loadUserDetails(): void {
