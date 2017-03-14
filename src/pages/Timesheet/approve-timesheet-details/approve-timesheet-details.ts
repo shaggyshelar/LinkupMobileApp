@@ -3,6 +3,7 @@ import { NavController, NavParams } from 'ionic-angular';
 import { LoadingController } from 'ionic-angular';
 import { Observable } from 'rxjs/Rx';
 import { CacheService } from 'ng2-cache/ng2-cache';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import { EmployeeTimesheetService } from '../index';
 
@@ -23,12 +24,17 @@ export class ApproveTimesheetDetailsPage {
   employeeTimesheet: any;
   payload: any;
   comment: String = '';
+  approveTimesheetForm: FormGroup;
 
   constructor(public navCtrl: NavController, public navParams: NavParams
     , private employeeTimesheetService: EmployeeTimesheetService
     , public loadingCtrl: LoadingController
     , public cacheService: CacheService
+    , public formBuilder: FormBuilder
   ) {
+    this.approveTimesheetForm = formBuilder.group({
+      comment: ['', Validators.compose([Validators.minLength(3), Validators.required])]
+    });
   }
 
   ionViewDidLoad() { }
@@ -44,6 +50,7 @@ export class ApproveTimesheetDetailsPage {
         // if(res)
         this.employeeTimesheet = res.ApproverTimesheet;
         this.payload = res;
+        console.log(JSON.stringify(res));
         loader.dismiss();
       }, (err) => {
         loader.dismiss();
@@ -52,39 +59,45 @@ export class ApproveTimesheetDetailsPage {
   }
 
   approveClicked() {
-    var loader = this.loadingCtrl.create({
-      content: 'Please wait...'
-    });
-
-    loader.present().then(() => {
-      this.payload.Comments = this.comment;
-      this.employeeTimesheetService.approveTimesheet(this.payload).subscribe(res => {
-        this.clearCache();
-        loader.dismiss();
-        this.navCtrl.pop();
-      }, (err) => {
-        loader.dismiss();
-        this.navCtrl.pop();
+    if (this.approveTimesheetForm.valid) {
+      var loader = this.loadingCtrl.create({
+        content: 'Please wait...'
       });
-    });
+
+      loader.present().then(() => {
+        this.payload.Comments = this.comment;
+        this.employeeTimesheetService.approveTimesheet(this.payload).subscribe(res => {
+          this.clearCache();
+          loader.dismiss();
+          console.log(res);
+          this.navCtrl.pop();
+        }, (err) => {
+          loader.dismiss();
+          this.navCtrl.pop();
+        });
+      });
+    }
+
   }
 
   rejectClicked() {
-    var loader = this.loadingCtrl.create({
-      content: 'Please wait...'
-    });
-
-    loader.present().then(() => {
-      this.payload.Comments = this.comment;
-      this.employeeTimesheetService.rejectTimesheet(this.payload).subscribe(res => {
-        this.clearCache();
-        loader.dismiss();
-        this.navCtrl.pop();
-      }, (err) => {
-        loader.dismiss();
-        this.navCtrl.pop();
+    if (this.approveTimesheetForm.valid) {
+      var loader = this.loadingCtrl.create({
+        content: 'Please wait...'
       });
-    });
+
+      loader.present().then(() => {
+        this.payload.Comments = this.comment;
+        this.employeeTimesheetService.rejectTimesheet(this.payload).subscribe(res => {
+          this.clearCache();
+          loader.dismiss();
+          this.navCtrl.pop();
+        }, (err) => {
+          loader.dismiss();
+          this.navCtrl.pop();
+        });
+      });
+    }
   }
 
   clearCache() {
