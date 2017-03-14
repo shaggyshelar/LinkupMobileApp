@@ -11,11 +11,11 @@
 
 
 <ion-content padding>
-  <ion-fab right bottom>
+  <!--<ion-fab right bottom>
     <button ion-fab mini (click)="addFabClicked()"><ion-icon name="add"></ion-icon></button>
-  </ion-fab>
-  <!--<ion-list>
-    <ion-item-sliding #slidingItem *ngFor="let entry of timesheetRec" [attr.status]="entry.SubmittedStatus | lowercase">
+  </ion-fab>-->
+  <ion-list>
+    <ion-item-sliding #slidingItem *ngFor="let entry of myTimeSheets" [attr.submittedstatus]="entry.SubmittedStatus | lowercase">
       <button ion-item (click)="itemClicked(entry)">
         <h3>
           <span *ngFor="let approver of entry.ApproverUser"> {{approver.Name}} </span>
@@ -47,9 +47,9 @@
       </p>
       <ion-badge item-right>{{timesheet.WeekDay}}</ion-badge>
     </ion-item>
-  </ion-list>-->
+  </ion-list>
 
-  <ion-list #myTimesheetList [hidden]="(myTimeSheets )?.length === 0">
+  <!--<ion-list #myTimesheetList [hidden]="(myTimeSheets )?.length === 0">
     <ion-item *ngFor="let timesheet of myTimeSheets" ion-item (click)="itemClicked(timesheet)" [attr.submittedstatus]="timesheet.SubmittedStatus | lowercase">
       <h3 *ngFor="let approver of timesheet.ApproverUser"> {{approver.Name}} </h3>
       <h3>
@@ -63,7 +63,7 @@
         <span class="right">{{timesheet.SubmissionDate}}</span>
       </p>
     </ion-item>
-  </ion-list>
+  </ion-list>-->
 
   <ion-list-header [hidden]="(myTimeSheets)?.length > 0">
     No Records Found
