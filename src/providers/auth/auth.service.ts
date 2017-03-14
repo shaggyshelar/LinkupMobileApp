@@ -67,7 +67,8 @@ export class AuthService extends BaseService {
         let headers = new Headers();
         headers.append('Authorization', 'Bearer ' + localStorage.getItem('accessToken'));
         let options = new RequestOptions({ headers: headers });
-        return this.http.get(this.baseUrl + 'Employee/currentuser', options)
+        //return this.http.get(this.baseUrl + 'Employee/currentuser', options)
+        return this.http.get(this.baseUrl + 'Employee/currentuser/dash', options)
             .map((res: Response) => {
                 this.setLoggedInUserDetail(res);
             })
@@ -97,6 +98,27 @@ export class AuthService extends BaseService {
         }
         let body = res.json();
         localStorage.setItem('loggedInUserDetails', JSON.stringify(body));
+        let dasboardStats = body.DashboardStats;
+        if (dasboardStats) {
+            if (dasboardStats.MyTimesheetStats) {
+                localStorage.setItem('myTimesheetApproved', dasboardStats.MyTimesheetStats.Approved);
+                localStorage.setItem('myTimesheetPending', dasboardStats.MyTimesheetStats.Pending);
+                localStorage.setItem('myTimesheetSubmitted', dasboardStats.MyTimesheetStats.Submitted);
+                localStorage.setItem('myTimesheetPartiallyApproved', dasboardStats.MyTimesheetStats.PartiallyApproved);
+                localStorage.setItem('myTimesheetNotSubmitted', dasboardStats.MyTimesheetStats.NotSubmitted);
+                localStorage.setItem('myTimesheetRejected', dasboardStats.MyTimesheetStats.Rejected);
+            }
+            if (dasboardStats.MyLeavesStats) {
+                localStorage.setItem('myLeaveBalance', dasboardStats.MyLeavesStats.Balance);
+                localStorage.setItem('myLeaveTaken', dasboardStats.MyLeavesStats.Taken);
+            }
+            if (dasboardStats.TeamsTimesheetStats) {
+                //TODO: Implement
+            }
+            if (dasboardStats.TeamsLeaveStats) {
+                //TODO: Implement
+            }
+        }
         this.authStatusChangeSource.next('true');
     }
     presentLoading() {
