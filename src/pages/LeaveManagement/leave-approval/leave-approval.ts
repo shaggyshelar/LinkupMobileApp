@@ -18,7 +18,7 @@ import { LeaveApprovalFilterPage } from '../leave-approval-filter/leave-approval
 @Component({
   selector: 'page-leave-approval',
   templateUrl: 'leave-approval.html',
-  providers: [LeaveService, SpinnerService,AuthService]
+  providers: [LeaveService, SpinnerService, AuthService]
 })
 export class LeaveApprovalPage {
 
@@ -35,18 +35,18 @@ export class LeaveApprovalPage {
   public selectedEmployees: any[];
   public totalCount: number;
   public comment: string;
-  public isDatachanged : boolean = false;
-  public isDescending: boolean=true;
+  public isDatachanged: boolean = false;
+  public isDescending: boolean = true;
   public editMode: boolean;
   public isDataretrived: boolean = false;
-  public isSelectall:boolean = false;
+  public isSelectall: boolean = false;
   public isshowApproveRejectItems = false;
-  public isAuthorized :boolean;
+  public isAuthorized: boolean;
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
     public leaveService: LeaveService,
     public spinnerService: SpinnerService,
-    public auth:AuthService,
+    public auth: AuthService,
     public actionSheetCtrl: ActionSheetController,
     public alertCtrl: AlertController,
     public leaveStatusChangedEvent: Events,
@@ -71,8 +71,8 @@ export class LeaveApprovalPage {
   }
 
   ionViewDidLoad() {
-    if(this.isAuthorized == true)
-    this.getApproverLeave();
+    if (this.isAuthorized == true)
+      this.getApproverLeave();
   }
   ionViewWillEnter() {
     // if(!this.isFirstTimeLoad)
@@ -93,17 +93,17 @@ export class LeaveApprovalPage {
 
     this.leaveList = [];
     this.resetAllFlags();
-   // this.spinnerService.createSpinner('Please wait..');
-   // this.leaveService.getApproverLeaves().subscribe((res: any) => {
+    // this.spinnerService.createSpinner('Please wait..');
+    // this.leaveService.getApproverLeaves().subscribe((res: any) => {
     //  this.spinnerService.stopSpinner();
-     // if (res.length > 0) {
-      //  this.leaveList = res.reverse();
-        this.getPendingLeavesToApprove();
-      //}
-  //  },
-     // error => {
-       // this.spinnerService.stopSpinner();
-     // });
+    // if (res.length > 0) {
+    //  this.leaveList = res.reverse();
+    this.getPendingLeavesToApprove();
+    //}
+    //  },
+    // error => {
+    // this.spinnerService.stopSpinner();
+    // });
   }
 
   /* Get Pending Leaves */
@@ -119,7 +119,7 @@ export class LeaveApprovalPage {
         this.selectedEmployees = [];
         this.leavesArray = res.reverse();
         this.leavesArray.forEach(leave => {
-          this.selectLeave(leave,false);
+          this.selectLeave(leave, false);
         });
         this.editMode = true;
         this.isDataretrived = true;
@@ -131,28 +131,27 @@ export class LeaveApprovalPage {
       });
   }
 
- 
+
 
   /* Show Leave Deatails */
 
   itemTapped(leave: any) {
-   
 
-    if(this.isshowApproveRejectItems == true)
-    this.selectLeave(leave,!leave.selected);
-    else
-    {
-    if(this.isMoreclicked == true)
-    return;
-    this.navCtrl.push(LeaveApprovalDetailPage, { leave: leave });
+
+    if (this.isshowApproveRejectItems == true)
+      this.selectLeave(leave, !leave.selected);
+    else {
+      if (this.isMoreclicked == true)
+        return;
+      this.navCtrl.push(LeaveApprovalDetailPage, { leave: leave });
     }
-    
+
   }
 
   /*show more action */
 
   presentActionSheet(leave: any, leaveID: string) {
-     this.isMoreclicked = true;
+    this.isMoreclicked = true;
     if (leave.Status == 'Approved' || leave.Status == 'Rejected' || leave.Status == 'Cancelled')
       return;
     let actbuttons: any[] = [
@@ -373,79 +372,68 @@ export class LeaveApprovalPage {
 
   /** Multiselction of List item */
 
-  longPressedItem(leave: any)
-  {
-  if(this.isBulkApprovePermission == true)
-  {
-  this.isshowApproveRejectItems = true;
-  this.selectLeave(leave,true);
-  }  
- 
+  longPressedItem(leave: any) {
+    if (this.isBulkApprovePermission == true) {
+      this.isshowApproveRejectItems = true;
+      this.selectLeave(leave, true);
+    }
+
   }
 
   editleaves() {
     this.editMode = !this.editMode;
-    if(this.editMode == false)
-    {
+    if (this.editMode == false) {
       this.isshowApproveRejectItems = false;
       this.selectedEmployees = [];
-     this.leavesArray.forEach(leave => {
-          this.selectLeave(leave,false);
-        });
+      this.leavesArray.forEach(leave => {
+        this.selectLeave(leave, false);
+      });
     }
-    
+
   }
 
-  selectAllLeaves()
-  {
+  selectAllLeaves() {
     this.selectedEmployees = [];
-     this.leavesArray.forEach(leave => {
-          this.selectLeave(leave,true);
-        });
+    this.leavesArray.forEach(leave => {
+      this.selectLeave(leave, true);
+    });
   }
 
-   selectLeave(leave:any ,checked:boolean)
-  {
-     if(checked == false)
-    {
-      var index : number = 0;
+  selectLeave(leave: any, checked: boolean) {
+    if (checked == false) {
+      var index: number = 0;
       this.leavesArray.forEach(leaves => {
-          if(leaves == leave)
-          {
-            var sindex = this.selectedEmployees.indexOf(leave);
-            this.selectedEmployees.splice(sindex,1);
-          }
-          index ++;
-        });
+        if (leaves == leave) {
+          var sindex = this.selectedEmployees.indexOf(leave);
+          this.selectedEmployees.splice(sindex, 1);
+        }
+        index++;
+      });
       leave.selectionColor = "white";
       leave.selected = false;
-      if(this.selectedEmployees.length == 0)
-      this.isshowApproveRejectItems = false;
+      if (this.selectedEmployees.length == 0)
+        this.isshowApproveRejectItems = false;
     }
-    else
-    {
+    else {
       this.selectedEmployees.push(leave);
       leave.selectionColor = "#8ea3c5";
       leave.selected = true;
     }
-   this.setboolean();
+    this.setboolean();
   }
-  setboolean()
-  {
+  setboolean() {
     this.leavechecked = false;
     this.isSelectall = false;
-    if(this.selectedEmployees && this.selectedEmployees.length > 0)
-    {
+    if (this.selectedEmployees && this.selectedEmployees.length > 0) {
       this.leavechecked = true;
 
-      var count : number = 0;
+      var count: number = 0;
       this.leavesArray.forEach(leaves => {
-          count ++;
-        });
-      if(count == this.selectedEmployees.length)
-        {
-          this.isSelectall = true;
-        }
+        count++;
+      });
+      if (count == this.selectedEmployees.length) {
+        this.isSelectall = true;
+      }
     }
   }
   approveBulkLeave() {
@@ -502,40 +490,40 @@ export class LeaveApprovalPage {
           text: 'Date Ascending',
           role: 'date ascending',
           handler: () => {
-            if(this.isDescending === false) {
+            if (this.isDescending === false) {
               this.leaveList.reverse();
               this.isDescending = true;
             }
           }
-        },{
+        }, {
           text: 'Date Descending',
           role: 'date descending',
           handler: () => {
-            if(this.isDescending) {
+            if (this.isDescending) {
               this.leaveList.reverse();
               this.isDescending = false;
             }
           }
-        },{
+        }, {
           text: 'Cancel',
           role: 'cancel',
           handler: () => {
-            
+
           }
         }
       ]
     });
     actionSheet.present();
   }
-  
+
   // Lazy Loading Functionality. TO DO:need to get only limited data from back end
   doInfinite(infiniteScroll) {
     setTimeout(() => {
       this.leaveService.getApproverLeaves().subscribe((res: any) => {
-        for(let i=0;i<res.length;i++){
+        for (let i = 0; i < res.length; i++) {
           this.leaveList.push(res[i]);
         }
-    });
+      });
       infiniteScroll.complete();
     }, 500);
   }

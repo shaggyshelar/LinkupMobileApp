@@ -36,7 +36,7 @@ export class ApprovalsPage {
     };
 
     if (this._cacheService.exists('PendingLeavesApprovalCount')) {
-    this.approveTimesheetsBadgeCount = parseInt(localStorage.getItem('approveTimesheetsBadgeCount'));
+      this.approveTimesheetsBadgeCount = parseInt(localStorage.getItem('approveTimesheetsBadgeCount'));
     }
 
   }

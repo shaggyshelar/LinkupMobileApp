@@ -91,17 +91,17 @@ export class MyApp {
   userName: string;
   designation: string;
   empID: string;
-  pendingCount:number = 0;
+  pendingCount: number = 0;
 
   constructor(public platform: Platform,
     public auth: AuthService,
-    public leaveService:LeaveService,
-    public timesheetService:EmployeeTimesheetService,
+    public leaveService: LeaveService,
+    public timesheetService: EmployeeTimesheetService,
     public loadingCtrl: LoadingController,
     public unauthorizedEvent: Events,
     public alertCtrl: AlertController,
     public toastCtrl: ToastController,
-    public _cacheService:CacheService) {
+    public _cacheService: CacheService) {
     this.initializeApp();
 
 
@@ -111,6 +111,7 @@ export class MyApp {
       isAuthenticated => {
         if (isAuthenticated == "true") {
           this.isAuthenticated = true;
+          this.intializeMenu();
           this.openPage(this.pages[0]);
           this.toggleLeaveMenu();
           this.toggleTimesheetMenu()
@@ -142,23 +143,23 @@ export class MyApp {
       }
     }
   }
+  intializeMenu() {
+    this.pages = [];
+    this.pages = [
+      { title: 'Home', component: HomePage, icon: 'ios-home' },
+      { title: 'My Calendar', component: MyCalendarPage, icon: 'md-calendar' },
+    ];
+    if (this.auth.checkPermission('TIMESHEET.APPROVETIMESHEETS.MANAGE') == true || this.auth.checkPermission('LEAVE.APPROVAL.MANAGE') == true) {
+      this.pages.push({ title: 'Approvals', component: ApprovalsPage, icon: 'md-checkbox-outline' });
+    }
+
+    this.pages.push({ title: 'Timesheets', component: MyTimesheetPage, icon: 'md-clock' });
+  }
 
   initializeApp() {
     this.presentLoading();
     this.isAuthenticated = this.auth.isAuthenticated();
-    this.pages = [
-      { title: 'Home', component: HomePage, icon: 'ios-home' },
-      { title: 'My Calendar', component: MyCalendarPage, icon: 'md-calendar' },
-     // { title: 'Approvals', component: ApprovalsPage, icon: 'md-checkbox-outline' },
-     // { title: 'Timesheets', component: MyTimesheetPage, icon: 'md-clock' },
-    ];
-    if(this.auth.checkPermission('TIMESHEET.APPROVETIMESHEETS.MANAGE') == true || this.auth.checkPermission('LEAVE.APPROVAL.MANAGE') == true )
-   {
-     //this.getPendingApprovalCount();
-     this.pages.push({ title: 'Approvals', component: ApprovalsPage, icon: 'md-checkbox-outline' });
-   }
-   
-    this.pages.push({ title: 'Timesheets', component: MyTimesheetPage, icon: 'md-clock' });
+    this.intializeMenu();
 
     if (this.auth.isAuthenticated()) {
       this.activePage = this.pages[0];
@@ -334,17 +335,16 @@ export class MyApp {
     }
   }
 
-/** Get Pending approval counts */
-getPendingApprovalCount()
-{
-   this.leaveService.getLeaveByStatus('Pending')
+  /** Get Pending approval counts */
+  getPendingApprovalCount() {
+    this.leaveService.getLeaveByStatus('Pending')
       .subscribe(
       (res: any) => {
       },
       error => {
       });
 
-       this.timesheetService.getApproverPendingTimesheets()
+    this.timesheetService.getApproverPendingTimesheets()
       .subscribe(
       (res: any) => {
       },
@@ -352,14 +352,14 @@ getPendingApprovalCount()
       });
     this.pendingCount = 0;
     if (this._cacheService.exists('PendingLeavesApprovalCount')) {
-     this.pendingCount = this.pendingCount +  parseInt(this._cacheService.get('PendingLeavesApprovalCount'));
+      this.pendingCount = this.pendingCount + parseInt(this._cacheService.get('PendingLeavesApprovalCount'));
     };
     if (this._cacheService.exists('PendingTimesheetApprovalCount')) {
-    this.pendingCount = this.pendingCount + parseInt(this._cacheService.get('PendingLeavesApprovalCount'));
+      this.pendingCount = this.pendingCount + parseInt(this._cacheService.get('PendingLeavesApprovalCount'));
     }
-}
+  }
 
-/** Get base64 Image  */
+  /** Get base64 Image  */
 
 
 }
