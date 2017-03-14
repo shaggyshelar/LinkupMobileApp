@@ -24,6 +24,7 @@ import { ApproveTimesheetDetailsPage } from '../pages/Timesheet/approve-timeshee
 import { TimesheetDetailsPage } from '../pages/Timesheet/timesheet-details/timesheet-details';
 import { DailyTimesheetDetailPage } from '../pages/Timesheet/daily-timesheet-detail/daily-timesheet-detail';
 import { ApproveTimesheetFilterPage } from '../pages/Timesheet/approve-timesheet-filter/approve-timesheet-filter';
+import { TaskDetailPage } from '../pages/Timesheet/task-detail/task-detail';
 
 // Leave Management
 import { ApplyForLeavePage } from '../pages/LeaveManagement/apply-for-leave/apply-for-leave';
@@ -66,7 +67,7 @@ import { HolidayService } from '../pages/LeaveManagement/index';
 import { UserService } from '../pages/LeaveManagement/index';
 import { MessageService } from '../providers/index';
 import { CommonService } from '../providers/index';
-import { EmployeeTimesheetService, PhasesService, ProjectService } from '../pages/Timesheet/index';
+import { EmployeeTimesheetService, PhasesService, ProjectService, TimesheetService } from '../pages/Timesheet/index';
 
 
 // Direrctives
@@ -97,6 +98,7 @@ import { CacheService, CacheStorageAbstract, CacheLocalStorage } from 'ng2-cache
     TimesheetDetailsPage,
     DailyTimesheetDetailPage,
     ApproveTimesheetFilterPage,
+    TaskDetailPage,
     ApplyForLeavePage,
     HolidaysPage,
     MyCalendarPage,
@@ -151,6 +153,7 @@ import { CacheService, CacheStorageAbstract, CacheLocalStorage } from 'ng2-cache
     TimesheetDetailsPage,
     DailyTimesheetDetailPage,
     ApproveTimesheetFilterPage,
+    TaskDetailPage,
     ApplyForLeavePage,
     HolidaysPage,
     MyCalendarPage,
@@ -183,7 +186,7 @@ import { CacheService, CacheStorageAbstract, CacheLocalStorage } from 'ng2-cache
       useClass: IonicErrorHandler
     }, 
     Auth, AuthService, LeaveService, HolidayService, UserService, MessageService, CommonService, LimitToDirective,
-    CacheService, EmployeeTimesheetService, PhasesService, ProjectService, 
+    CacheService, EmployeeTimesheetService, PhasesService, ProjectService, TimesheetService,
     { provide: CacheStorageAbstract, useClass: CacheLocalStorage }]
 })
 export class AppModule { }
