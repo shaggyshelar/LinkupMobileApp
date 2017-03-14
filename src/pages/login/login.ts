@@ -85,7 +85,6 @@ export class LoginPage {
         results => {
         },
         error => {
-          console.warn(' Error login.ts 91', error);
           this.showError = true;
           this.errorMessage = error;
         });
