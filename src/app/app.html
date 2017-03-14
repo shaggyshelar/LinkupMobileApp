@@ -1,4 +1,4 @@
-<ion-menu [content]="content" [hidden]="isAuthenticated == false">
+<ion-menu (ionOpen)="getPendingApprovalCount()"[content]="content" [hidden]="isAuthenticated == false">
   <!--<ion-header>
     <ion-toolbar>
       <ion-title>Menu</ion-title>
@@ -17,6 +17,7 @@
       <button menuClose class="customMenu" ion-item [class.activeHighlight]="checkActive(p)" *ngFor="let p of pages" (click)="openPage(p)">
         <ion-icon item-left class="customMenuIcons" [name]="p.icon"></ion-icon>
         {{p.title}}
+        <ion-badge *ngIf = "pendingCount > 0 && p.title=='Approvals'" item-right>{{pendingCount}}</ion-badge>
       </button>
       <button class="customMenu" menuClose ion-item (click)="openLinkupWebsite()">
         <ion-icon item-left class="customMenuIcons" name="md-globe"></ion-icon>

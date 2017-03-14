@@ -12,11 +12,7 @@
     </button>
     <ion-buttons start>
       <button (click)="onFilter()" ion-button icon-only> 
-
         <ion-icon ios="ios-funnel" md="md-funnel"></ion-icon>
-
-        <ion-icon name="ios-funnel"></ion-icon>
-
       </button>
     </ion-buttons>
     <ion-buttons start>
@@ -49,19 +45,10 @@
        <button *ngIf="isshowApproveRejectItems == true" ion-button [disabled] = "timesheetchecked == false" (click)="rejectBulkTimesheet()">
        <ion-icon name="close"></ion-icon>
       </button>
-    
     </ion-buttons>
     </ion-toolbar>
-
-        <ion-icon name="md-repeat"></ion-icon>
-      </button>
-    </ion-buttons>
-    <ion-title>Approve Timesheet</ion-title>
-
-  </ion-navbar>
-
-</ion-header>
-
+ </ion-navbar>
+ </ion-header>
 
 <ion-content padding>
 

@@ -5,6 +5,7 @@ import { StatusBar, Splashscreen, Network, InAppBrowser } from 'ionic-native';
 import { LoadingController, AlertController, ToastController } from 'ionic-angular';
 import { HomePage } from '../pages/home/home';
 import { Events } from 'ionic-angular';
+import { CacheService } from 'ng2-cache/ng2-cache';
 
 // Leave Management
 
@@ -14,6 +15,7 @@ import { MyCalendarPage } from '../pages/my-calendar/my-calendar';
 import { ApprovalsPage } from '../pages/approvals/approvals';
 import { LeaveApprovalPage } from '../pages/LeaveManagement/leave-approval/leave-approval';
 import { MyLeavesPage } from '../pages/LeaveManagement/my-leaves/my-leaves';
+import { LeaveService } from '../pages/LeaveManagement/services/leave.service';
 
 
 // Timesheet
@@ -24,6 +26,7 @@ import { ApproveTimesheetPage } from '../pages/Timesheet/approve-timesheet/appro
 import { ApprovedTimesheetPage } from '../pages/Timesheet/approved-timesheet/approved-timesheet';
 import { TimesheetReportPage } from '../pages/Timesheet/timesheet-report/timesheet-report';
 import { BiometricDiscrepancyApprovalPage } from '../pages/Timesheet/biometric-discrepancy-approval/biometric-discrepancy-approval';
+import { EmployeeTimesheetService } from '../pages/Timesheet/service/employee-timesheet.service';
 //import { TimesheetDetailsPage } from '../pages/Timesheet/timesheet-details/timesheet-details';
 
 
@@ -44,7 +47,10 @@ import { EmployeeProjectManagementPage } from '../pages/Projects/employee-projec
 
 import { LoginPage } from '../pages/login/login';
 import { AuthService, MessageService } from '../providers/index';
+
 import { Subscription } from 'rxjs/Subscription';
+
+
 
 export interface PageInterface {
   title: string;
@@ -85,13 +91,17 @@ export class MyApp {
   userName: string;
   designation: string;
   empID: string;
+  pendingCount:number = 0;
 
   constructor(public platform: Platform,
     public auth: AuthService,
+    public leaveService:LeaveService,
+    public timesheetService:EmployeeTimesheetService,
     public loadingCtrl: LoadingController,
     public unauthorizedEvent: Events,
     public alertCtrl: AlertController,
-    public toastCtrl: ToastController) {
+    public toastCtrl: ToastController,
+    public _cacheService:CacheService) {
     this.initializeApp();
 
 
@@ -139,9 +149,16 @@ export class MyApp {
     this.pages = [
       { title: 'Home', component: HomePage, icon: 'ios-home' },
       { title: 'My Calendar', component: MyCalendarPage, icon: 'md-calendar' },
-      { title: 'Approvals', component: ApprovalsPage, icon: 'md-checkbox-outline' },
-      { title: 'Timesheets', component: MyTimesheetPage, icon: 'md-clock' },
+     // { title: 'Approvals', component: ApprovalsPage, icon: 'md-checkbox-outline' },
+     // { title: 'Timesheets', component: MyTimesheetPage, icon: 'md-clock' },
     ];
+    if(this.auth.checkPermission('TIMESHEET.APPROVETIMESHEETS.MANAGE') == true || this.auth.checkPermission('LEAVE.APPROVAL.MANAGE') == true )
+   {
+     //this.getPendingApprovalCount();
+     this.pages.push({ title: 'Approvals', component: ApprovalsPage, icon: 'md-checkbox-outline' });
+   }
+   
+    this.pages.push({ title: 'Timesheets', component: MyTimesheetPage, icon: 'md-clock' });
 
     if (this.auth.isAuthenticated()) {
       this.activePage = this.pages[0];
@@ -316,5 +333,33 @@ export class MyApp {
       this.showProjectsSubmenus = true;
     }
   }
+
+/** Get Pending approval counts */
+getPendingApprovalCount()
+{
+   this.leaveService.getLeaveByStatus('Pending')
+      .subscribe(
+      (res: any) => {
+      },
+      error => {
+      });
+
+       this.timesheetService.getApproverPendingTimesheets()
+      .subscribe(
+      (res: any) => {
+      },
+      error => {
+      });
+    this.pendingCount = 0;
+    if (this._cacheService.exists('PendingLeavesApprovalCount')) {
+     this.pendingCount = this.pendingCount +  parseInt(this._cacheService.get('PendingLeavesApprovalCount'));
+    };
+    if (this._cacheService.exists('PendingTimesheetApprovalCount')) {
+    this.pendingCount = this.pendingCount + parseInt(this._cacheService.get('PendingLeavesApprovalCount'));
+    }
+}
+
+/** Get base64 Image  */
+
 
 }

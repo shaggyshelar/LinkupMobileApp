@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { NavController, NavParams, ActionSheetController, Events, ModalController } from 'ionic-angular';
 import { SpinnerService } from '../../../providers/index';
 import { LeaveService } from '../index';
+import { AuthService } from '../../../providers/index';;
 import { AlertController, ItemSliding } from 'ionic-angular';
 import { Leave } from '../models/leave';
 import { LeaveApprovalDetailPage } from '../leave-approval-detail/leave-approval-detail';
@@ -17,7 +18,7 @@ import { LeaveApprovalFilterPage } from '../leave-approval-filter/leave-approval
 @Component({
   selector: 'page-leave-approval',
   templateUrl: 'leave-approval.html',
-  providers: [LeaveService, SpinnerService]
+  providers: [LeaveService, SpinnerService,AuthService]
 })
 export class LeaveApprovalPage {
 
@@ -37,18 +38,21 @@ export class LeaveApprovalPage {
   public isDatachanged : boolean = false;
   public isDescending: boolean=true;
   public editMode: boolean;
-  public isFirstTimeLoad: boolean = true;
+  public isDataretrived: boolean = false;
   public isSelectall:boolean = false;
   public isshowApproveRejectItems = false;
+  public isAuthorized :boolean;
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
     public leaveService: LeaveService,
     public spinnerService: SpinnerService,
+    public auth:AuthService,
     public actionSheetCtrl: ActionSheetController,
     public alertCtrl: AlertController,
     public leaveStatusChangedEvent: Events,
     public modalCtrl: ModalController) {
     this.userPermissions = JSON.parse(localStorage.getItem("loggedInUserPermission"));
+    this.isAuthorized = this.auth.checkPermission('LEAVE.APPROVAL.MANAGE');
     this.isBulkApprovePermission = this.checkBulkApprovePermission('LEAVE.BULK_APPROVAL.MANAGE');
     this.leaveStatusChangedEvent.subscribe('Hr Approval Leave changed', () => {
       this.getApproverLeave();
@@ -67,6 +71,7 @@ export class LeaveApprovalPage {
   }
 
   ionViewDidLoad() {
+    if(this.isAuthorized == true)
     this.getApproverLeave();
   }
   ionViewWillEnter() {
@@ -88,22 +93,23 @@ export class LeaveApprovalPage {
 
     this.leaveList = [];
     this.resetAllFlags();
-    this.spinnerService.createSpinner('Please wait..');
-    this.leaveService.getApproverLeaves().subscribe((res: any) => {
-      this.spinnerService.stopSpinner();
-      if (res.length > 0) {
-        this.leaveList = res.reverse();
+   // this.spinnerService.createSpinner('Please wait..');
+   // this.leaveService.getApproverLeaves().subscribe((res: any) => {
+    //  this.spinnerService.stopSpinner();
+     // if (res.length > 0) {
+      //  this.leaveList = res.reverse();
         this.getPendingLeavesToApprove();
-      }
-    },
-      error => {
-        this.spinnerService.stopSpinner();
-      });
+      //}
+  //  },
+     // error => {
+       // this.spinnerService.stopSpinner();
+     // });
   }
 
   /* Get Pending Leaves */
 
   getPendingLeavesToApprove() {
+    this.isDataretrived = false;
     this.spinnerService.createSpinner('Please wait..');
     this.leaveService.getLeaveByStatus('Pending')
       .subscribe(
@@ -115,8 +121,11 @@ export class LeaveApprovalPage {
         this.leavesArray.forEach(leave => {
           this.selectLeave(leave,false);
         });
+        this.editMode = true;
+        this.isDataretrived = true;
       },
       error => {
+        this.isDataretrived = true;
         this.spinnerService.stopSpinner();
         this.showToast('Failed to get Pending Leaves.');
       });
@@ -127,19 +136,25 @@ export class LeaveApprovalPage {
   /* Show Leave Deatails */
 
   itemTapped(leave: any) {
+   
+
     if(this.isshowApproveRejectItems == true)
     this.selectLeave(leave,!leave.selected);
     else
+    {
+    if(this.isMoreclicked == true)
+    return;
     this.navCtrl.push(LeaveApprovalDetailPage, { leave: leave });
+    }
+    
   }
 
   /*show more action */
 
   presentActionSheet(leave: any, leaveID: string) {
+     this.isMoreclicked = true;
     if (leave.Status == 'Approved' || leave.Status == 'Rejected' || leave.Status == 'Cancelled')
       return;
-    this.isMoreclicked = true;
-
     let actbuttons: any[] = [
       {
         text: 'Approve',
@@ -360,8 +375,12 @@ export class LeaveApprovalPage {
 
   longPressedItem(leave: any)
   {
+  if(this.isBulkApprovePermission == true)
+  {
   this.isshowApproveRejectItems = true;
   this.selectLeave(leave,true);
+  }  
+ 
   }
 
   editleaves() {
