@@ -14,13 +14,14 @@ import { TimesheetDetailsPage } from '../timesheet-details/timesheet-details';
 })
 export class EnterTimesheetPage {
 
-  projectCount: any[] = [0];
+  projectCount: any[] = [];
   projects: Observable<any>[];
   phases: Observable<any>[];
 
-  project: any;
-  phase: any;
-  cardSelectionIndex : Number;
+  project: any = '';
+  phase: any = '';
+  currentTaskIndex = 0;
+  cardSelectionIndex: Number;
 
   projectData: any = {};
 
@@ -33,6 +34,10 @@ export class EnterTimesheetPage {
   ) { this.project = {} }
 
   ionViewDidLoad() {
+
+  }
+
+  getProjects() {
     var loader = this.loadingCtrl.create({
       content: 'Please wait...'
     });
@@ -46,13 +51,14 @@ export class EnterTimesheetPage {
         loader.dismiss();
       });
     });
+
   }
 
   addProjectClicked() {
-    /**
-     * TODO: API Service call to get all projects
-     */
-    this.projectCount.push(this.projectCount.length);
+    this.getProjects();
+    this.projectCount.push({project: null, phase: null});
+    this.currentTaskIndex = this.projectCount.length-1;
+    // this.projectCount.push(this.projectCount.length);
   }
 
   closeClicked(i) {
@@ -78,10 +84,6 @@ export class EnterTimesheetPage {
   }
 
   projectChanged(event) {
-    /** 
-     * TODO: 
-     * API Service call to get all tasks under selected project
-     */
     var loader = this.loadingCtrl.create({
       content: 'Please wait...'
     });
@@ -97,17 +99,20 @@ export class EnterTimesheetPage {
     });
   }
 
-  phaseChanged($event) {
-
+  phaseChanged(event) {
+    this.projectCount.push({
+      project: this.project,
+      phase: this.phase
+    });
   }
 
   cardClick(index) {
     this.cardSelectionIndex = index;
-    this.navCtrl.push(TimesheetDetailsPage, { caller: 'enter-timesheet', timesheetID : index });
+    this.navCtrl.push(TimesheetDetailsPage, { caller: 'enter-timesheet', timesheetID: index });
   }
 
   submitTimesheetClicked() {
-    
+
   }
 
   saveTimesheetClicked() {
