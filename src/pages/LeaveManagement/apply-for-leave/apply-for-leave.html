@@ -7,18 +7,15 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-toolbar>
       <button ion-button icon-only menuToggle>
         <ion-icon name="menu"></ion-icon>
       </button>
       <ion-title>Apply Leave</ion-title>
-    </ion-toolbar>
     <ion-buttons end>
-       <button ion-button end (click)="showLeaveDeatils()" > 
-          Leaves
-          <ion-badge *ngIf = "isAllDataDownloaded == true" class="notifications-badge" color="danger">{{currentUserLeaveDetail.ActualBalance | number : '1.1-3'}}</ion-badge>
+       <button ion-button (click)="showLeaveDeatils()" > 
+          <ion-icon name="information-circle"></ion-icon>
       </button>
-      <button ion-button end [disabled]="this.isValidationMessage || this.itsWeekend" 
+      <button ion-button [disabled]="addLeaveArr.length===0"
       (click)="submitForm()">
           Submit
       </button>
@@ -62,29 +59,26 @@
     <ion-item>
       <ion-label>Duration<span class="right">{{model.numDays}}</span></ion-label>
     </ion-item>
-     <ion-item>
-        <ion-label floating>Comments<span class="required">*</span></ion-label>
-        <ion-textarea name ="comment" [(ngModel)]="comment" spellcheck="false" autocapitalize="off" (blur)="focusremoved()" ></ion-textarea>
-   </ion-item>
+    
   </ion-list>
 
-<!--<form [formGroup]="applyLeaveForm">
+<form [formGroup]="applyLeaveForm">
    <div >
   <ion-item>
         <ion-label floating>Comments<span class="required">*</span></ion-label>
-        <ion-textarea name ="reason" [(ngModel)]="model.reason" formControlName="comment" spellcheck="false" autocapitalize="off" (blur)="focusremoved()" ></ion-textarea>
+        <ion-textarea name ="reason" [(ngModel)]="comment" formControlName="reason" spellcheck="false" autocapitalize="off" (input)="textChanged($event)" ></ion-textarea>
   </ion-item>
 
-    <p ion-text [hidden]="applyLeaveForm.controls.comment.valid || submitted == false" color="danger" padding-left>
+    <p ion-text [hidden]="applyLeaveForm.controls.reason.valid || submitted == false" color="danger" padding-left>
 				Reason is required.
 	     </p> 
    </div>
  
-</form>-->
+</form>
 
-<button ion-button class="add-leave-button"  [disabled]="comment.length<2 || this.isValidationMessage || this.itsWeekend" (click)="onLeaveAdd()"> Add Leaves </button>
-<ion-list>
-  <ion-item *ngIf="isAddedLeave == true">
+<button ion-button class="add-leave-button"  [disabled]="!isCommentValid  || this.isValidationMessage || this.itsWeekend" (click)="onAddLeave()"> Add Leaves </button>
+<ion-list *ngIf="isAddedLeave == true">
+  <ion-item >
     Added Leaves
   </ion-item>
          <ion-item ion-item  *ngFor="let leave of addLeaveArr">

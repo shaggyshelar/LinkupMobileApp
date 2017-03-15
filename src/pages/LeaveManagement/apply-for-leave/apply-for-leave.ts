@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, ActionSheetController, ModalController, Events } from 'ionic-angular';
+import { NavController, NavParams, ActionSheetController, ModalController, Events ,AlertController,ToastController} from 'ionic-angular';
 import { LeaveDetailsPage } from '../leave-details/leave-details';
 import { LeaveService } from '../index';
 import { Leave } from '../models/leave';
@@ -15,6 +15,7 @@ import { LeaveTypeMasterService } from '../../../providers/shared/master/leaveTy
 import { FormBuilder, FormGroup, Validators, NgForm } from '@angular/forms';
 import { Observable } from 'rxjs/Rx';
 import * as moment from 'moment/moment';
+import { Toast } from 'ionic-native';
 
 /*
   Generated class for the ApplyForLeave page.
@@ -54,6 +55,7 @@ export class ApplyForLeavePage {
     charsLeft: number = 600;
     isLeaveAdded: boolean = false;
     isEndDtEnable: boolean = true;
+    isCommentValid:boolean = false;
 
     leaves: any[];
     model: ApplyLeaveValidation;
@@ -84,7 +86,8 @@ export class ApplyForLeavePage {
         public leaveTypeMasterService: LeaveTypeMasterService,
         public actionsheetCtr: ActionSheetController,
         public leaveStatusChanged: Events,
-        public modalCtrl: ModalController
+        public modalCtrl: ModalController,
+        private alertCtrl: AlertController
     ) {
 
      
@@ -117,7 +120,7 @@ export class ApplyForLeavePage {
             leaveType: { id: 0, name: 'Leave', ID: 1, Name: 'Leave', Type: 'Leave', Value: 'Leave' },
             end: this.sdate,
             start: this.edate,
-            reason: this.comment
+            reason: ''
         };
 
         //    this.applyLeaveForm = this.formBuilder.group({
@@ -127,10 +130,26 @@ export class ApplyForLeavePage {
         //     reason: ['', Validators.compose([Validators.minLength(2), Validators.maxLength(600), Validators.required])]
         // });
 
-        //  this.applyLeaveForm = formBuilder.group({
-        //     comment: ['', Validators.compose([Validators.minLength(2), Validators.maxLength(600), Validators.required])]
-        // });
+         this.applyLeaveForm = formBuilder.group({
+            reason: ['', Validators.compose([Validators.minLength(2), Validators.maxLength(600), Validators.required])]
+        });
 
+
+    }
+
+    removeFocus()
+    {
+        this.model.reason = this.comment;
+    }
+
+    textChanged(event:any)
+    {
+        if(this.comment.length > 2)
+        this.isCommentValid = true;
+        else
+        this.isCommentValid = false;
+        
+        this.model.reason = this.comment;
 
     }
 
@@ -207,15 +226,7 @@ export class ApplyForLeavePage {
         this.validateLeaveType();
     }
 
-    onLeaveAdd()
-    {
-        // if (this.addLeaveArr.length === 0) {
-            this.validateLeaveType();
-            if (!this.leaveTypeValid)
-                return;
-            this.onAddLeave();
-        // }
-    }
+   
 
 
     submitForm() {
@@ -225,8 +236,9 @@ export class ApplyForLeavePage {
                 return;
             this.onAddLeave();
             this.hideLeaveList = true;
-            this.spinnerService.createSpinner('Please wait..');
+            
         }
+        this.spinnerService.createSpinner('Please wait..');
         this.leaveService.submitLeaveRecord(this.addLeaveArr).subscribe(res => {
             if (res) {
                 this.spinnerService.stopSpinner();
@@ -243,6 +255,7 @@ export class ApplyForLeavePage {
     }
 
     onAddLeave() {
+    
         this.checkIfAlreadyAdded();
         if (!this.isValidationMessage) {
             let totalNoOfdays = moment(this.model.end).diff(this.model.start, 'days') + 1;
@@ -265,8 +278,13 @@ export class ApplyForLeavePage {
                 };
                 this.addLeaveArr.push(leave);
                 this.isAddedLeave = true;
+                //this.presentAlert('Leave Added');
+                //
             }
+            
         }
+        this.presentAlert('Leave Added');
+        this.removeFocus();
     }
 
     deleteLeave(index: number) {
@@ -463,12 +481,21 @@ export class ApplyForLeavePage {
 
 
     showToast(message: string) {
-        //     Toast.show(message, '5000', 'center').subscribe(
-        //   toast => {
-        //     console.log(toast);
-        //   }
-        // );
+        Toast.show(message, '5000', 'center').subscribe(
+          toast => {
+            console.log(toast);
+           }
+         );
     }
+
+    presentAlert(msg:string) {
+  let alert = this.alertCtrl.create({
+    title: 'Alert',
+    subTitle: msg,
+    buttons: ['Dismiss']
+  });
+  alert.present();
+}
 
 
 }
