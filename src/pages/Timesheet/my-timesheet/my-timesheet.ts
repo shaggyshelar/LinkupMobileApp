@@ -17,6 +17,7 @@ import { EmployeeTimeSheet } from '../models/employee-timesheet.model';
 export class MyTimesheetPage {
   myTimeSheets: EmployeeTimeSheet[];
   loader: any;
+  isDataReceived: Boolean = false;
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
     private employeeTimesheetService: EmployeeTimesheetService,
@@ -30,10 +31,14 @@ export class MyTimesheetPage {
     this.loader.present();
     this.myTimeSheets = [];
     this.employeeTimesheetService.getMyTimesheets().subscribe((res: any) => {
+      this.myTimeSheets = [];
+      this.myTimeSheets = res.reverse();
+      console.log(this.myTimeSheets);
+      this.isDataReceived = true;
       this.loader.dismiss();
-      if (res.length > 0) {
-        this.myTimeSheets = res.reverse();
-      }
+    }, err => {
+      this.isDataReceived = true;
+      this.loader.dismiss();
     });
   }
 

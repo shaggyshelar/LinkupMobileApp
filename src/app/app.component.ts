@@ -26,7 +26,7 @@ import { ApproveTimesheetPage } from '../pages/Timesheet/approve-timesheet/appro
 import { ApprovedTimesheetPage } from '../pages/Timesheet/approved-timesheet/approved-timesheet';
 import { TimesheetReportPage } from '../pages/Timesheet/timesheet-report/timesheet-report';
 import { BiometricDiscrepancyApprovalPage } from '../pages/Timesheet/biometric-discrepancy-approval/biometric-discrepancy-approval';
-import { EmployeeTimesheetService } from '../pages/Timesheet/service/employee-timesheet.service';
+import { EmployeeTimesheetService } from '../pages/Timesheet/index';
 //import { TimesheetDetailsPage } from '../pages/Timesheet/timesheet-details/timesheet-details';
 
 
@@ -92,6 +92,8 @@ export class MyApp {
   designation: string;
   empID: string;
   pendingCount: number = 0;
+  myTimesheetCount: number = 0;
+  approvedLeaveCount: number = 0;
 
   constructor(public platform: Platform,
     public auth: AuthService,
@@ -133,10 +135,10 @@ export class MyApp {
 
   loadUserDetails(): void {
     this.userDetail = this.auth.getCurrentUser();
-    if (this.userDetail && this.userDetail.EmployeeDetail) {
-      this.userName = this.userDetail.EmployeeDetail.FirstName + ' ' + this.userDetail.EmployeeDetail.LastName;
-      this.designation = this.userDetail.EmployeeDetail.Designation.Value;
-      this.empID = this.userDetail.EmployeeDetail.EmpID;
+    if (this.userDetail) {
+      this.userName = this.userDetail.FirstName + ' ' + this.userDetail.LastName;
+      this.designation = this.userDetail.Designation.Value;
+      this.empID = this.userDetail.EmpID;
       // if (this.userDetail.ProfilePictureName) {
       //   this.profileImageSrc = 'http://linkup.eternussolutions.com/Profile%20Picture%20Library/' + this.userDetail.ProfilePictureName + '.JPG';
       // } else {
@@ -282,6 +284,7 @@ export class MyApp {
 
       ];
       this.showTimesheetSubmenus = false;
+      
     }
     else {
       this.timesheetPages = [];
@@ -339,26 +342,39 @@ export class MyApp {
 
   /** Get Pending approval counts */
   getPendingApprovalCount() {
-    this.leaveService.getLeaveByStatus('Pending')
-      .subscribe(
-      (res: any) => {
-      },
-      error => {
-      });
+    // this.leaveService.getLeaveByStatus('Pending')
+    //   .subscribe(
+    //   (res: any) => {
+    //   },
+    //   error => {
+    //   });
 
-    this.timesheetService.getApproverPendingTimesheets()
-      .subscribe(
-      (res: any) => {
-      },
-      error => {
-      });
+    // this.timesheetService.getApproverPendingTimesheets()
+    //   .subscribe(
+    //   (res: any) => {
+    //   },
+    //   error => {
+    //   });
+    // this.pendingCount = 0;
+    // if (this._cacheService.exists('PendingLeavesApprovalCount')) {
+    //   this.pendingCount = this.pendingCount + parseInt(this._cacheService.get('PendingLeavesApprovalCount'));
+    // };
+    // if (this._cacheService.exists('PendingTimesheetApprovalCount')) {
+    //   this.pendingCount = this.pendingCount + parseInt(this._cacheService.get('PendingLeavesApprovalCount'));
+    // }
+    this.updateBadges();
+  }
+
+  updateBadges() {
+    this.leaveService.getLeaveArray('Pending').subscribe(res => {}, err => {});
+    this.timesheetService.getApproverPendingTimesheets().subscribe(res => {}, err => {});
     this.pendingCount = 0;
-    if (this._cacheService.exists('PendingLeavesApprovalCount')) {
-      this.pendingCount = this.pendingCount + parseInt(this._cacheService.get('PendingLeavesApprovalCount'));
-    };
-    if (this._cacheService.exists('PendingTimesheetApprovalCount')) {
-      this.pendingCount = this.pendingCount + parseInt(this._cacheService.get('PendingLeavesApprovalCount'));
-    }
+    this.pendingCount = parseInt(localStorage.getItem('PendingLeavesApprovalCount')) + parseInt(localStorage.getItem('PendingTimesheetApprovalCount'));
+    this.myTimesheetCount = parseInt(localStorage.getItem('myTimesheetPending'));;
+    this.approvedLeaveCount = parseInt(localStorage.getItem('approvedLeaveCount'));
+
+
+
   }
 
   /** Get base64 Image  */

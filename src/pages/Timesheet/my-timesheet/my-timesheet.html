@@ -21,16 +21,16 @@
           <span *ngFor="let approver of entry.ApproverUser"> {{approver.Name}} </span>
         </h3>
         <h3> 
-          {{entry.StartDate | date: 'dd/MM/yyyy'}} &mdash;
-          {{entry.EndDate | date: 'dd/MM/yyyy'}} 
+          {{entry.StartDate | date: 'fullDate'}} &mdash;
+          {{entry.EndDate | date: 'fullDate'}} 
         </h3>
         <p>
           Billable Hours {{entry.BillableHours}}
         </p>
         <p>
           Non Billable Hours: {{entry.NonBillableHours}}
-          <span *ngIf="entry.TimesheetSubmittedDate" class="right">{{entry.TimesheetSubmittedDate}}</span>
-          <span *ngIf="!entry.TimesheetSubmittedDate" class="right">No data present...</span>
+          <span *ngIf="entry.TimesheetSubmittedDate" class="right">{{entry.TimesheetSubmittedDate | date: 'fullDate'}}</span>
+          <span *ngIf="!entry.TimesheetSubmittedDate" class="right"></span>
         </p>
       </button>
 
@@ -39,7 +39,7 @@
       </ion-item-options>
     </ion-item-sliding>
   </ion-list>
-  <ion-list #scheduleList [hidden]="(myTimeSheets )?.length === 0">
+  <!--<ion-list #scheduleList [hidden]="(myTimeSheets )?.length === 0">
     <ion-item *ngFor="let timesheet of myTimeSheets" [attr.status]="timesheet.status | lowercase" (click)="onHolidayDetails(holiday)">
       <h3>{{timesheet.Title}}</h3>
       <p>
@@ -47,7 +47,7 @@
       </p>
       <ion-badge item-right>{{timesheet.WeekDay}}</ion-badge>
     </ion-item>
-  </ion-list>
+  </ion-list>-->
 
   <!--<ion-list #myTimesheetList [hidden]="(myTimeSheets )?.length === 0">
     <ion-item *ngFor="let timesheet of myTimeSheets" ion-item (click)="itemClicked(timesheet)" [attr.submittedstatus]="timesheet.SubmittedStatus | lowercase">
@@ -65,7 +65,7 @@
     </ion-item>
   </ion-list>-->
 
-  <ion-list-header [hidden]="(myTimeSheets)?.length > 0">
+  <ion-list-header *ngIf ="(myTimeSheets)?.length == 0 && isDataretrived ==true">
     No Records Found
   </ion-list-header>
 

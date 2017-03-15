@@ -13,7 +13,7 @@
 </ion-header>
 
 
-<ion-content>
+<ion-content padding>
   <!--<ion-list *ngFor="let rec of employeeTimesheet" (click)="recordTapped(rec)">
     <ion-item-divider color="light">
       {{rec.Date}}
@@ -51,8 +51,7 @@
     </ion-item-divider>
     <ion-item>
       <p>Approver user: {{rec.ApproverUser.Value}} </p>
-      <p>Start Date: {{rec.StartDate | date : fullDate}} </p>
-      <p>End Date: {{rec.EndDate | date : fullDate}} </p>
+      <p>Comment: {{rec.ApproverComment}} </p>
     </ion-item>
 
   </ion-list>
