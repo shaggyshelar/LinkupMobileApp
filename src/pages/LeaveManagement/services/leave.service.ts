@@ -220,7 +220,8 @@ export class LeaveService extends BaseService {
         } else {
             return this.getChildList$('ApproverLeaves/' + status, 0, 0, true).map(res => {
                 this._cacheService.set('pendingApproverList', res.json(), { maxAge: 60 * 60 });
-                this._cacheService.set('PendingLeavesApprovalCount', res.json().length, { maxAge: 60 * 60 });
+                // this._cacheService.set('PendingLeavesApprovalCount', res.json().length, { maxAge: 60 * 60 });
+                localStorage.setItem('PendingLeavesApprovalCount', ''+res.json().length);
                 return res.json();
             }).catch(err => {
                 return this.handleError(err);
@@ -391,6 +392,7 @@ export class LeaveService extends BaseService {
     setApprovedLeavesCount(count:string)
     {
        this._cacheService.set('approvedLeaveCount', count, { maxAge: 60 * 60 });
+       localStorage.setItem('approvedLeaveCount', ''+count);
     }
 
     clearLeaveApprvalCache()

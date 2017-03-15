@@ -18,6 +18,8 @@
         <ion-icon item-left class="customMenuIcons" [name]="p.icon"></ion-icon>
         {{p.title}}
         <ion-badge *ngIf = "pendingCount > 0 && p.title=='Approvals'" item-right>{{pendingCount}}</ion-badge>
+        <ion-badge *ngIf = "approvedLeaveCount > 0 && p.title=='My Calender'" item-right>{{approvedLeaveCount}}</ion-badge>
+        <ion-badge *ngIf = "myTimesheetCount > 0 && p.title=='Timesheets'" item-right>{{myTimesheetCount}}</ion-badge>
       </button>
       <button class="customMenu" menuClose ion-item (click)="openLinkupWebsite()">
         <ion-icon item-left class="customMenuIcons" name="md-globe"></ion-icon>
