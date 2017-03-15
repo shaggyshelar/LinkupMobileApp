@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams,ActionSheetController,ModalController,Events } from 'ionic-angular';
+import { NavController, NavParams, ActionSheetController, ModalController, Events } from 'ionic-angular';
 import { LeaveDetailsPage } from '../leave-details/leave-details';
 import { LeaveService } from '../index';
 import { Leave } from '../models/leave';
@@ -12,7 +12,7 @@ import { HolidayService } from '../services/holiday.service';
 import { LeaveTypeMasterService } from '../../../providers/shared/master/leaveTypeMaster.service';
 
 /** Third Party Dependencies */
-import { FormBuilder, FormGroup, Validators,NgForm } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, NgForm } from '@angular/forms';
 import { Observable } from 'rxjs/Rx';
 import * as moment from 'moment/moment';
 
@@ -23,86 +23,83 @@ import * as moment from 'moment/moment';
   Ionic pages and navigation.
 */
 @Component({
-  selector: 'page-apply-for-leave',
-  templateUrl: 'apply-for-leave.html',
-  providers:[LeaveService,SpinnerService,HolidayService,AuthService,LeaveTypeMasterService]
+    selector: 'page-apply-for-leave',
+    templateUrl: 'apply-for-leave.html',
+    providers: [LeaveService, SpinnerService, HolidayService, AuthService, LeaveTypeMasterService]
 })
 export class ApplyForLeavePage {
 
 
-  public leaveObs: Observable<Leave>;
-  public leaveDetObs: Observable<LeaveDetail>;
-  public leaveDetail: any;
-  public sdate:string;
-  public edate:string;
-  public minSdate :string;
-  public minEdate :string;
-  public maxSdate :string;
-  public maxEdate :string;
-  public startSDate:Date;
-  public endEDate:Date;
-  numberdays:boolean;
-  applyLeaveForm: FormGroup;
-   addLeaveArr: any[];
-   leaveTypeValid: boolean = true;
-   leaveID: number;
-  StartDate : any = {};
-  EndDate : any = {};
-  LeaveType : any = {};
-  leaveTypes : any[] = [];
+    public leaveObs: Observable<Leave>;
+    public leaveDetObs: Observable<LeaveDetail>;
+    public leaveDetail: any;
+    public sdate: string;
+    public edate: string;
+    public minSdate: string;
+    public minEdate: string;
+    public maxSdate: string;
+    public maxEdate: string;
+    public startSDate: Date;
+    public endEDate: Date;
+    numberdays: boolean;
+    applyLeaveForm: FormGroup;
+    addLeaveArr: any[];
+    leaveTypeValid: boolean = true;
+    leaveID: number;
+    StartDate: any = {};
+    EndDate: any = {};
+    LeaveType: any = {};
+    leaveTypes: any[] = [];
     minDate: Date;
     charsLeft: number = 600;
     isLeaveAdded: boolean = false;
     isEndDtEnable: boolean = true;
 
-   leaves: any[];
+    leaves: any[];
     model: ApplyLeaveValidation;
-    finalLeaveData:any;
-    userDetail:any;
-    activeProjects:any;
-    holidayList:any;
-    pendingLeaveCount:any;
-    currentUserLeaveDetail:any;
-    isValidationMessage:boolean=false;
-    validationMessage:string='';
-    itsWeekend:boolean=false;
-    submitted:boolean = false;
-    hideLeaveList:boolean = false;
-    formDisabled:boolean = true;
-    isShowLeaveSelection:boolean = false;
-    isAllDataDownloaded:boolean = false;
+    comment:string = '';
+    finalLeaveData: any;
+    userDetail: any;
+    activeProjects: any;
+    holidayList: any;
+    pendingLeaveCount: any;
+    currentUserLeaveDetail: any;
+    isValidationMessage: boolean = false;
+    validationMessage: string = '';
+    itsWeekend: boolean = false;
+    submitted: boolean = false;
+    hideLeaveList: boolean = false;
+    formDisabled: boolean = true;
+    isShowLeaveSelection: boolean = false;
+    isAllDataDownloaded: boolean = false;
+    isAddedLeave:boolean = false;
 
-  constructor(public navCtrl: NavController,
-  public navParams: NavParams,
-  private leaveService: LeaveService,
-  private holidayService: HolidayService,
-  public spinnerService:SpinnerService,
-  public formBuilder: FormBuilder,
-  public authService : AuthService,
-  public leaveTypeMasterService : LeaveTypeMasterService,
-  public actionsheetCtr :ActionSheetController,
-  public leaveStatusChanged:Events,
-  public modalCtrl: ModalController
-  ) {
+    constructor(public navCtrl: NavController,
+        public navParams: NavParams,
+        private leaveService: LeaveService,
+        private holidayService: HolidayService,
+        public spinnerService: SpinnerService,
+        public formBuilder: FormBuilder,
+        public authService: AuthService,
+        public leaveTypeMasterService: LeaveTypeMasterService,
+        public actionsheetCtr: ActionSheetController,
+        public leaveStatusChanged: Events,
+        public modalCtrl: ModalController
+    ) {
 
-     this.applyLeaveForm = this.formBuilder.group({
-            leaveType: ['', [Validators.required]],
-            start: ['', [Validators.required]],
-            end: ['', [Validators.required]],
-            reason: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(600)]]
-        });
+     
 
-         this.leaves = [];
+        this.leaves = [];
         this.addLeaveArr = [];
         this.numberdays = true;
+        this.comment = '';
 
-         this.leaves = [];
+        this.leaves = [];
         this.startSDate = this.navParams.get('date');
-      this.endEDate = this.navParams.get('date');
-      this.sdate = this.startSDate.toString();
-      this.edate = this.endEDate.toString();
-     
-      
+        this.endEDate = this.navParams.get('date');
+        this.sdate = this.startSDate.toString();
+        this.edate = this.endEDate.toString();
+
         this.leaves = [];
         this.addLeaveArr = [];
         this.numberdays = true;
@@ -117,26 +114,36 @@ export class ApplyForLeavePage {
                 Name: 'Lname Fname'
             },
             numDays: 1,
-            leaveType: {id :0,name:'Leave',ID:1,Name: 'Leave', Type:'Leave',Value:'Leave'},
+            leaveType: { id: 0, name: 'Leave', ID: 1, Name: 'Leave', Type: 'Leave', Value: 'Leave' },
             end: this.sdate,
             start: this.edate,
-            reason: ''
+            reason: this.comment
         };
-        
 
-   }
+        //    this.applyLeaveForm = this.formBuilder.group({
+        //     leaveType: ['', Validators.compose([Validators.required])],
+        //     start: ['', Validators.compose([Validators.required])],
+        //     end: ['', Validators.compose([Validators.required])],
+        //     reason: ['', Validators.compose([Validators.minLength(2), Validators.maxLength(600), Validators.required])]
+        // });
 
-   ionViewDidLoad() {
-    this.getLeaveAssets();
-  }
+        //  this.applyLeaveForm = formBuilder.group({
+        //     comment: ['', Validators.compose([Validators.minLength(2), Validators.maxLength(600), Validators.required])]
+        // });
 
 
-   /* Get Leave Assets */
+    }
 
-   getLeaveAssets()
-   {
-       this.spinnerService.createSpinner('Please wait..');
-      this.leaveTypeMasterService.getLeaveTypes().subscribe((res: any) => {
+    ionViewDidLoad() {
+        this.getLeaveAssets();
+    }
+
+
+    /* Get Leave Assets */
+
+    getLeaveAssets() {
+        this.spinnerService.createSpinner('Please wait..');
+        this.leaveTypeMasterService.getLeaveTypes().subscribe((res: any) => {
             //this.leaves.push({ label: 'Select', value: null });
             for (var index in res) {
                 if (res[index].Applicable === 'Yes') {
@@ -144,63 +151,71 @@ export class ApplyForLeavePage {
                 }
             }
 
-        this.leaveService.getActiveProjects().subscribe(res => {
-            this.activeProjects = res;
-            this.userDetail = this.authService.getCurrentUser();
-        let financialYear = moment().year();
-        if (moment().month() <= 2) {
-            financialYear = financialYear - 1;
-        }
-        this.holidayService.getHolidayByFinancialYear(financialYear.toString()).subscribe(res => {
-            this.holidayList = res;
-             this.leaveService.getCurrentUserPendingLeaveCount().subscribe(res => {
-            this.pendingLeaveCount = res;
-             this.leaveService.getLeaveDetails().subscribe((res: any) => {
-            if (res === null) {
-                this.validationMessage = MessageService.APPLY_LEAVE_1;
-                this.isValidationMessage = true;
-                this.formDisabled = true;
-            } else {
-                this.currentUserLeaveDetail = res;
-                this.isAllDataDownloaded = true;
-                this.selectLeaveType(this.leaves[0]);
-                this.spinnerService.stopSpinner();
-                  
-         }
-        });
-        });
-        });
-        });
-           
-        });
-       
-        
-       
-       
-       
-   }
+            this.leaveService.getActiveProjects().subscribe(res => {
+                this.activeProjects = res;
+                this.userDetail = this.authService.getCurrentUser();
+                let financialYear = moment().year();
+                if (moment().month() <= 2) {
+                    financialYear = financialYear - 1;
+                }
+                this.holidayService.getHolidayByFinancialYear(financialYear.toString()).subscribe(res => {
+                    this.holidayList = res;
+                    this.leaveService.getCurrentUserPendingLeaveCount().subscribe(res => {
+                        this.pendingLeaveCount = res;
+                        this.leaveService.getLeaveDetails().subscribe((res: any) => {
+                            if (res === null) {
+                                this.validationMessage = MessageService.APPLY_LEAVE_1;
+                                this.isValidationMessage = true;
+                                this.formDisabled = true;
+                            } else {
+                                this.currentUserLeaveDetail = res;
+                                this.isAllDataDownloaded = true;
+                                this.selectLeaveType(this.leaves[0]);
+                                this.spinnerService.stopSpinner();
 
-   /** Show Leave Deatils Page */
+                            }
+                        });
+                    });
+                });
+            });
+
+        });
+
+
+
+
+
+    }
+
+    /** Show Leave Deatils Page */
 
     showLeaveDeatils() {
-    let modal = this.modalCtrl.create(LeaveDetailsPage,{leaveDetails:this.currentUserLeaveDetail});
-    modal.showBackButton(true);
-    modal.present();
-  }
+        let modal = this.modalCtrl.create(LeaveDetailsPage, { leaveDetails: this.currentUserLeaveDetail });
+        modal.showBackButton(true);
+        modal.present();
+    }
 
-   /** Select Leave type */
+    /** Select Leave type */
 
-   getLeaveType(event:any)
-   {
-     this.isShowLeaveSelection = true;
-   }
+    getLeaveType(event: any) {
+        this.isShowLeaveSelection = true;
+    }
 
-   selectLeaveType(leavetyepe:any)
-   {
-     this.isShowLeaveSelection = false;
-     this.model.leaveType = leavetyepe.value;
-     this.validateLeaveType();
-   }
+    selectLeaveType(leavetyepe: any) {
+        this.isShowLeaveSelection = false;
+        this.model.leaveType = leavetyepe.value;
+        this.validateLeaveType();
+    }
+
+    onLeaveAdd()
+    {
+        // if (this.addLeaveArr.length === 0) {
+            this.validateLeaveType();
+            if (!this.leaveTypeValid)
+                return;
+            this.onAddLeave();
+        // }
+    }
 
 
     submitForm() {
@@ -215,12 +230,13 @@ export class ApplyForLeavePage {
         this.leaveService.submitLeaveRecord(this.addLeaveArr).subscribe(res => {
             if (res) {
                 this.spinnerService.stopSpinner();
-                this.leaveStatusChanged.publish('Applied Leave','status');
+                //this.leaveStatusChanged.publish('Applied Leave', 'status');
                 MessageService.addMessage({ severity: 'success', summary: 'Success', detail: MessageService.APPLY_LEAVE_2 });
-                this.showToast('MessageService.APPLY_LEAVE_2');
+                this.showToast(MessageService.APPLY_LEAVE_2 );
                 this.navCtrl.pop();
             } else {
                 this.spinnerService.stopSpinner();
+                this.showToast(MessageService.REQUEST_FAILED);
                 MessageService.addMessage({ severity: 'error', summary: 'Failed', detail: MessageService.REQUEST_FAILED });
             }
         });
@@ -248,10 +264,11 @@ export class ApplyForLeavePage {
                     LeaveType: { ID: this.model.leaveType.ID, Value: this.model.leaveType.Name }
                 };
                 this.addLeaveArr.push(leave);
+                this.isAddedLeave = true;
             }
         }
     }
-    
+
     deleteLeave(index: number) {
         this.addLeaveArr.splice(index, 1);
     }
@@ -278,8 +295,7 @@ export class ApplyForLeavePage {
     reasonTextChanged() {
         this.charsLeft = 600 - this.model.reason.length;
     }
-    focusremoved()
-    {
+    focusremoved() {
 
     }
 
@@ -318,7 +334,7 @@ export class ApplyForLeavePage {
             this.model.numDays = dayCount;
         }
         this.checkIfAlreadyApplied();
-        
+
 
     }
     checkIfAlreadyAdded() {
@@ -446,13 +462,13 @@ export class ApplyForLeavePage {
     }
 
 
- showToast(message: string) {
+    showToast(message: string) {
         //     Toast.show(message, '5000', 'center').subscribe(
         //   toast => {
         //     console.log(toast);
         //   }
         // );
     }
-  
+
 
 }
