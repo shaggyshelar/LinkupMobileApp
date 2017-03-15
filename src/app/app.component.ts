@@ -370,7 +370,7 @@ export class MyApp {
     this.timesheetService.getApproverPendingTimesheets().subscribe(res => {}, err => {});
     this.pendingCount = 0;
     this.pendingCount = parseInt(localStorage.getItem('PendingLeavesApprovalCount')) + parseInt(localStorage.getItem('PendingTimesheetApprovalCount'));
-    this.myTimesheetCount = parseInt(localStorage.getItem('PendingTimesheetApprovalCount'));;
+    this.myTimesheetCount = parseInt(localStorage.getItem('myTimesheetPending'));;
     this.approvedLeaveCount = parseInt(localStorage.getItem('approvedLeaveCount'));
 
 
