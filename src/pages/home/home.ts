@@ -30,6 +30,7 @@ export class HomePage {
   public myTimesheetNotSubmitted: string = '0';
   public myTimesheetRejected: string = '0';
   public dasboardStats: any;
+  public pieParams: any[] = [];
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
     public authService: AuthService,
@@ -55,7 +56,9 @@ export class HomePage {
     this.myTimesheetRejected = localStorage.getItem('myTimesheetRejected') || '0';
     this.myLeaveBalance = localStorage.getItem('myLeaveBalance') || '0';
     this.myLeaveTaken = localStorage.getItem('myLeaveTaken') || '0';
-    //TODO: Calculation for Pie Chart According to values
+
+    //Calculation for Pie Chart According to values
+    this.calculatePieChartParams();
   }
   showSearch() {
     this.isSearchShow = true;
@@ -74,7 +77,7 @@ export class HomePage {
         ],
         datasets: [
           {
-            data: [48, 1, 2, 0, 0, 4],
+            data: this.pieParams,
             backgroundColor: [
               "#79B334",
               "#7DC6E4",
@@ -128,5 +131,15 @@ export class HomePage {
   }
   gotoMyTimesheet() {
     this.navCtrl.push(MyTimesheetPage);
+  }
+
+  calculatePieChartParams() {
+    var total = parseInt(this.myTimesheetApproved + this.myTimesheetPending + this.myTimesheetSubmitted + this.myTimesheetPartiallyApproved + this.myTimesheetNotSubmitted + this.myTimesheetRejected);
+    this.pieParams[0] = (parseInt(this.myTimesheetApproved)/total)*100;
+    this.pieParams[1] = (parseInt(this.myTimesheetSubmitted)/total)*100;
+    this.pieParams[2] = (parseInt(this.myTimesheetPartiallyApproved)/total)*100;
+    this.pieParams[3] = (parseInt(this.myTimesheetNotSubmitted)/total)*100;
+    this.pieParams[4] = (parseInt(this.myTimesheetRejected)/total)*100;
+    this.pieParams[5] = (parseInt(this.myTimesheetPending)/total)*100;
   }
 }
