@@ -26,7 +26,7 @@ import { ApproveTimesheetPage } from '../pages/Timesheet/approve-timesheet/appro
 import { ApprovedTimesheetPage } from '../pages/Timesheet/approved-timesheet/approved-timesheet';
 import { TimesheetReportPage } from '../pages/Timesheet/timesheet-report/timesheet-report';
 import { BiometricDiscrepancyApprovalPage } from '../pages/Timesheet/biometric-discrepancy-approval/biometric-discrepancy-approval';
-import { EmployeeTimesheetService, TimesheetService } from '../pages/Timesheet/index';
+import { EmployeeTimesheetService } from '../pages/Timesheet/index';
 //import { TimesheetDetailsPage } from '../pages/Timesheet/timesheet-details/timesheet-details';
 
 
@@ -99,7 +99,6 @@ export class MyApp {
     public auth: AuthService,
     public leaveService: LeaveService,
     public timesheetService: EmployeeTimesheetService,
-    public myTimesheetService: TimesheetService,
     public loadingCtrl: LoadingController,
     public unauthorizedEvent: Events,
     public alertCtrl: AlertController,
@@ -138,8 +137,7 @@ export class MyApp {
     this.userDetail = this.auth.getCurrentUser();
     if (this.userDetail) {
       this.userName = this.userDetail.FirstName + ' ' + this.userDetail.LastName;
-      // this.designation = this.userDetail.Designation.Value;
-      this.designation = '';
+      this.designation = this.userDetail.Designation.Value;
       this.empID = this.userDetail.EmpID;
       // if (this.userDetail.ProfilePictureName) {
       //   this.profileImageSrc = 'http://linkup.eternussolutions.com/Profile%20Picture%20Library/' + this.userDetail.ProfilePictureName + '.JPG';
