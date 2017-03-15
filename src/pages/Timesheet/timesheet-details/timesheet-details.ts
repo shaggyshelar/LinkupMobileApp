@@ -1,11 +1,12 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 import { LoadingController } from 'ionic-angular';
-//import { Observable } from 'rxjs/Rx';
+import * as moment from 'moment/moment';
 
-import { EmployeeTimesheetService } from '../index';
+import { TimesheetService } from '../index';
+import { Timesheet } from '../models/timesheet.model';
 
-import { DailyTimesheetDetailPage } from '../daily-timesheet-detail/daily-timesheet-detail';
+import { TaskDetailPage } from '../task-detail/task-detail';
 
 @Component({
   selector: 'page-timesheet-details',
@@ -13,10 +14,17 @@ import { DailyTimesheetDetailPage } from '../daily-timesheet-detail/daily-timesh
 })
 export class TimesheetDetailsPage {
   timesheetID: Number = 0;
-  employeeTimesheet;
+  employeeTimesheet : any;
+  timesheets : any;
+
+  dayRec: any={
+    start: null,
+    end: null,
+    days: null
+  };
 
   constructor(public navCtrl: NavController, public navParams: NavParams
-    , private employeeTimesheetService: EmployeeTimesheetService
+    , private timesheetService: TimesheetService
     , public loadingCtrl: LoadingController) {
   }
 
@@ -38,6 +46,8 @@ export class TimesheetDetailsPage {
         break;
     }
 
+    
+
   }
 
   enterTimesheet() {
@@ -53,19 +63,43 @@ export class TimesheetDetailsPage {
     });
 
     loader.present().then(() => {
-      this.employeeTimesheetService.getMyTimesheetDetail(id).subscribe((res: any) => {
-        // if(res)
-        this.employeeTimesheet = res.ApproverTimesheet;
-
+      this.timesheetService.getMyTimesheet(id).subscribe((res: any) => {
+        this.employeeTimesheet = res;
+        this.timesheets = res.Timesheets;
+        console.log(res);
+        console.log(this.employeeTimesheet.Timesheets.length);
         loader.dismiss();
       }, (err) => {
         loader.dismiss();
       });
     });
+
   }
 
-  recordTapped(rec) {
-    this.navCtrl.push(DailyTimesheetDetailPage, { dailyData: rec, readOnly: true, submittedStatus: this.employeeTimesheet.SubmittedStatus });
+  itemClicked(rec) {
+    this.navCtrl.push(TaskDetailPage, rec);
   }
+
+  // arrangeDays() {
+  //   console.log(this.employeeTimesheet.StartDate);
+  //   this.dayRec = {
+  //     start: moment(this.employeeTimesheet.StartDate),
+  //     end: moment(this.employeeTimesheet.EndDate)
+  //   };
+  //   var dayData = [];
+  //   for (var i = 0; i < 7; i++) {
+     
+  //      dayData.push({
+  //         day: moment(this.employeeTimesheet.StartDate).add(i,'days'),
+  //       });
+     
+  //   }
+
+  //   this.dayRec.days = dayData;
+  //   console.log(this.dayRec.start);
+  //   console.log(this.dayRec.end);
+
+
+  // }
 
 }

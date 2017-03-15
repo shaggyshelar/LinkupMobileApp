@@ -14,7 +14,7 @@
 
 
 <ion-content>
-  <ion-list *ngFor="let rec of employeeTimesheet" (click)="recordTapped(rec)">
+  <!--<ion-list *ngFor="let rec of employeeTimesheet" (click)="recordTapped(rec)">
     <ion-item-divider color="light">
       {{rec.Date}}
       <ion-icon name="arrow-dropright" class="right"></ion-icon>
@@ -37,6 +37,24 @@
         Note for Non Billable Hours : <br><span *ngIf="rec.NoteForNonBillableHours">{{rec.NoteForNonBillableHours}}</span><span *ngIf="!rec.NoteForNonBillableHours"> No notes data available. </span>
       </p>
     </ion-item>
+  </ion-list>-->
+
+  <!--<ion-list *ngFor="let rec of employeeTimesheet.Timesheets">
+    <ion-item-divider>
+      {{rec.Project.Value}}
+    </ion-item-divider>
+  </ion-list>-->
+
+  <ion-list *ngFor="let rec of timesheets" (click)="itemClicked(rec)">
+    <ion-item-divider color="light">
+      {{rec.Project.Value}} - {{rec.Task}}
+    </ion-item-divider>
+    <ion-item>
+      <p>Approver user: {{rec.ApproverUser.Value}} </p>
+      <p>Start Date: {{rec.StartDate | date : fullDate}} </p>
+      <p>End Date: {{rec.EndDate | date : fullDate}} </p>
+    </ion-item>
+
   </ion-list>
 
 </ion-content>
