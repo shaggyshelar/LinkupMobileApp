@@ -65,7 +65,7 @@
     </ion-item>
   </ion-list>-->
 
-  <ion-list-header [hidden]="(myTimeSheets)?.length > 0">
+  <ion-list-header *ngIf ="(myTimeSheets)?.length == 0 && isDataretrived ==true">
     No Records Found
   </ion-list-header>
 
