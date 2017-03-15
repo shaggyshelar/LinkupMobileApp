@@ -342,26 +342,26 @@ export class MyApp {
 
   /** Get Pending approval counts */
   getPendingApprovalCount() {
-    this.leaveService.getLeaveByStatus('Pending')
-      .subscribe(
-      (res: any) => {
-      },
-      error => {
-      });
+    // this.leaveService.getLeaveByStatus('Pending')
+    //   .subscribe(
+    //   (res: any) => {
+    //   },
+    //   error => {
+    //   });
 
-    this.timesheetService.getApproverPendingTimesheets()
-      .subscribe(
-      (res: any) => {
-      },
-      error => {
-      });
-    this.pendingCount = 0;
-    if (this._cacheService.exists('PendingLeavesApprovalCount')) {
-      this.pendingCount = this.pendingCount + parseInt(this._cacheService.get('PendingLeavesApprovalCount'));
-    };
-    if (this._cacheService.exists('PendingTimesheetApprovalCount')) {
-      this.pendingCount = this.pendingCount + parseInt(this._cacheService.get('PendingLeavesApprovalCount'));
-    }
+    // this.timesheetService.getApproverPendingTimesheets()
+    //   .subscribe(
+    //   (res: any) => {
+    //   },
+    //   error => {
+    //   });
+    // this.pendingCount = 0;
+    // if (this._cacheService.exists('PendingLeavesApprovalCount')) {
+    //   this.pendingCount = this.pendingCount + parseInt(this._cacheService.get('PendingLeavesApprovalCount'));
+    // };
+    // if (this._cacheService.exists('PendingTimesheetApprovalCount')) {
+    //   this.pendingCount = this.pendingCount + parseInt(this._cacheService.get('PendingLeavesApprovalCount'));
+    // }
     this.updateBadges();
   }
 
