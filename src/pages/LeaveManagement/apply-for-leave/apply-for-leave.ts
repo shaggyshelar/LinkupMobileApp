@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, ActionSheetController, ModalController, Events ,AlertController,ToastController} from 'ionic-angular';
+import { NavController, NavParams, ActionSheetController, ModalController, Events, AlertController, ToastController } from 'ionic-angular';
 import { LeaveDetailsPage } from '../leave-details/leave-details';
 import { LeaveService } from '../index';
 import { Leave } from '../models/leave';
@@ -55,11 +55,11 @@ export class ApplyForLeavePage {
     charsLeft: number = 600;
     isLeaveAdded: boolean = false;
     isEndDtEnable: boolean = true;
-    isCommentValid:boolean = false;
+    isCommentValid: boolean = false;
 
     leaves: any[];
     model: ApplyLeaveValidation;
-    comment:string = '';
+    comment: string = '';
     finalLeaveData: any;
     userDetail: any;
     activeProjects: any;
@@ -74,7 +74,7 @@ export class ApplyForLeavePage {
     formDisabled: boolean = true;
     isShowLeaveSelection: boolean = false;
     isAllDataDownloaded: boolean = false;
-    isAddedLeave:boolean = false;
+    isAddedLeave: boolean = false;
 
     constructor(public navCtrl: NavController,
         public navParams: NavParams,
@@ -90,7 +90,7 @@ export class ApplyForLeavePage {
         private alertCtrl: AlertController
     ) {
 
-     
+
 
         this.leaves = [];
         this.addLeaveArr = [];
@@ -130,25 +130,23 @@ export class ApplyForLeavePage {
         //     reason: ['', Validators.compose([Validators.minLength(2), Validators.maxLength(600), Validators.required])]
         // });
 
-         this.applyLeaveForm = formBuilder.group({
+        this.applyLeaveForm = formBuilder.group({
             reason: ['', Validators.compose([Validators.minLength(2), Validators.maxLength(600), Validators.required])]
         });
 
 
     }
 
-    removeFocus()
-    {
+    removeFocus() {
         this.model.reason = this.comment;
     }
 
-    textChanged(event:any)
-    {
-        if(this.comment.length > 2)
-        this.isCommentValid = true;
+    textChanged(event: any) {
+        if (this.comment.length > 2)
+            this.isCommentValid = true;
         else
-        this.isCommentValid = false;
-        
+            this.isCommentValid = false;
+
         this.model.reason = this.comment;
 
     }
@@ -226,7 +224,7 @@ export class ApplyForLeavePage {
         this.validateLeaveType();
     }
 
-   
+
 
 
     submitForm() {
@@ -236,7 +234,7 @@ export class ApplyForLeavePage {
                 return;
             this.onAddLeave();
             this.hideLeaveList = true;
-            
+
         }
         this.spinnerService.createSpinner('Please wait..');
         this.leaveService.submitLeaveRecord(this.addLeaveArr).subscribe(res => {
@@ -244,7 +242,7 @@ export class ApplyForLeavePage {
                 this.spinnerService.stopSpinner();
                 //this.leaveStatusChanged.publish('Applied Leave', 'status');
                 MessageService.addMessage({ severity: 'success', summary: 'Success', detail: MessageService.APPLY_LEAVE_2 });
-                this.showToast(MessageService.APPLY_LEAVE_2 );
+                this.showToast(MessageService.APPLY_LEAVE_2);
                 this.navCtrl.pop();
             } else {
                 this.spinnerService.stopSpinner();
@@ -255,7 +253,7 @@ export class ApplyForLeavePage {
     }
 
     onAddLeave() {
-    
+
         this.checkIfAlreadyAdded();
         if (!this.isValidationMessage) {
             let totalNoOfdays = moment(this.model.end).diff(this.model.start, 'days') + 1;
@@ -281,7 +279,7 @@ export class ApplyForLeavePage {
                 //this.presentAlert('Leave Added');
                 //
             }
-            
+
         }
         this.presentAlert('Leave Added');
         this.removeFocus();
@@ -482,20 +480,20 @@ export class ApplyForLeavePage {
 
     showToast(message: string) {
         Toast.show(message, '5000', 'center').subscribe(
-          toast => {
-            console.log(toast);
-           }
-         );
+            toast => {
+                console.log(toast);
+            }
+        );
     }
 
-    presentAlert(msg:string) {
-  let alert = this.alertCtrl.create({
-    title: 'Alert',
-    subTitle: msg,
-    buttons: ['Dismiss']
-  });
-  alert.present();
-}
+    presentAlert(msg: string) {
+        let alert = this.alertCtrl.create({
+            title: 'Alert',
+            subTitle: msg,
+            buttons: ['Dismiss']
+        });
+        alert.present();
+    }
 
 
 }
