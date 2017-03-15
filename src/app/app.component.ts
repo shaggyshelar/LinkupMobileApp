@@ -133,10 +133,10 @@ export class MyApp {
 
   loadUserDetails(): void {
     this.userDetail = this.auth.getCurrentUser();
-    if (this.userDetail) {
-      this.userName = this.userDetail.FirstName + ' ' + this.userDetail.LastName;
-      this.designation = this.userDetail.Designation.Value;
-      this.empID = this.userDetail.EmpID;
+    if (this.userDetail && this.userDetail.EmployeeDetail) {
+      this.userName = this.userDetail.EmployeeDetail.FirstName + ' ' + this.userDetail.EmployeeDetail.LastName;
+      this.designation = this.userDetail.EmployeeDetail.Designation.Value;
+      this.empID = this.userDetail.EmployeeDetail.EmpID;
       // if (this.userDetail.ProfilePictureName) {
       //   this.profileImageSrc = 'http://linkup.eternussolutions.com/Profile%20Picture%20Library/' + this.userDetail.ProfilePictureName + '.JPG';
       // } else {
