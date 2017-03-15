@@ -476,11 +476,11 @@ export class LeaveApprovalPage {
   /* Show Toast*/
 
   showToast(message: string) {
-    //     Toast.show(message, '5000', 'center').subscribe(
-    //   toast => {
-    //     console.log(toast);
-    //   }
-    // );
+        Toast.show(message, '5000', 'center').subscribe(
+      toast => {
+        console.log(toast);
+      }
+    );
   }
   onFilter() {
     let modal = this.modalCtrl.create(LeaveApprovalFilterPage);

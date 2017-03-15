@@ -4,6 +4,7 @@ import { LeaveDetail } from '../models/leaveDetail';
 import { LeaveService } from '../index';
 import { Leave } from '../models/leave';
 import { SpinnerService } from '../../../providers/index';
+import { Toast } from 'ionic-native';
 
 
 /** Third Party Dependencies */
@@ -81,6 +82,7 @@ export class MyLeaveDetailPage {
       if (res) {
         this.spinnerService.stopSpinner();
        // this.leaveStatusChangedEvent.publish('Delected Leave','status');
+       this.showToast('Leave Canceled');
         this.navCtrl.pop();
       } else {
         this.spinnerService.stopSpinner();
@@ -108,5 +110,13 @@ export class MyLeaveDetailPage {
     });
     confirm.present();
   }
+
+  showToast(message: string) {
+        Toast.show(message, '5000', 'center').subscribe(
+          toast => {
+            console.log(toast);
+           }
+         );
+    }
 
 }

@@ -28,11 +28,11 @@
     <button ion-button *ngIf= "isshowApproveRejectItems == true">
        {{selectedEmployees.length}}
     </button>
-     <button *ngIf="isshowApproveRejectItems == true" ion-button (click)="selectAllLeaves()" icon-only>
-        <ion-icon name="checkbox"></ion-icon>
+     <button *ngIf="isshowApproveRejectItems == true" ion-button (click)="selectAllTimesheets()">
+        All
       </button>
-      <button *ngIf="isshowApproveRejectItems == true"ion-button [disabled] = "leavechecked == false" (click)="approveBulkTimesheet()" icon-only>
-        <ion-icon name="checkmark"></ion-icon>
+      <button *ngIf="isshowApproveRejectItems == true"ion-button [disabled] = "leavechecked == false" (click)="approveBulkTimesheet()">
+        Approve
       </button>
     </ion-buttons>
     <ion-title *ngIf="isshowApproveRejectItems == false">
