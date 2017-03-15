@@ -16,7 +16,7 @@ export class ManageMyProjectsPage {
   constructor(public navCtrl: NavController, public navParams: NavParams) { }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad ManageMyProjectsPage');
+    //console.log('ionViewDidLoad ManageMyProjectsPage');
   }
 
 }

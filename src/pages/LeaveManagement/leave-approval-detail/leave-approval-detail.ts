@@ -1,11 +1,11 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams, Events } from 'ionic-angular';
-import { Leave } from '../models/leave';
-import { LeaveDetail } from '../models/leaveDetail';
+//import { Leave } from '../models/leave';
+//import { LeaveDetail } from '../models/leaveDetail';
 import { SpinnerService } from '../../../providers/index';
 import { LeaveService } from '../index';
 /** Third Party Dependencies */
-import { Observable } from 'rxjs/Rx';
+//import { Observable } from 'rxjs/Rx';
 import { Toast } from 'ionic-native';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import * as moment from 'moment/moment';
@@ -158,7 +158,7 @@ export class LeaveApprovalDetailPage {
     showToast(message: string) {
         Toast.show(message, '5000', 'center').subscribe(
             toast => {
-                console.log(toast);
+                //console.log(toast);
             }
         );
     }

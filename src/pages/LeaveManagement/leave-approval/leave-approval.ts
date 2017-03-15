@@ -3,7 +3,7 @@ import { NavController, NavParams, ActionSheetController, Events, ModalControlle
 import { SpinnerService } from '../../../providers/index';
 import { LeaveService } from '../index';
 import { AuthService } from '../../../providers/index';
-import { AlertController, ItemSliding } from 'ionic-angular';
+import { AlertController } from 'ionic-angular';
 import { Leave } from '../models/leave';
 import { LeaveApprovalDetailPage } from '../leave-approval-detail/leave-approval-detail';
 import { Observable } from 'rxjs/Rx';
@@ -227,7 +227,7 @@ export class LeaveApprovalPage {
           handler: data => {
 
             this.comment = data.title;
-            var cmt = this.comment;//this.model.comments;
+           // var cmt = this.comment;//this.model.comments;
 
             if (isApprove == 'Approve') {
               if (this.comment.trim().length == 0) {
@@ -477,7 +477,7 @@ export class LeaveApprovalPage {
   showToast(message: string) {
     Toast.show(message, '5000', 'center').subscribe(
       toast => {
-        console.log(toast);
+        //console.log(toast);
       }
     );
   }

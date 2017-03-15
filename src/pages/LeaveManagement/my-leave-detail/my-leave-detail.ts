@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, AlertController,Events } from 'ionic-angular';
-import { LeaveDetail } from '../models/leaveDetail';
+import { NavController, NavParams, AlertController, Events } from 'ionic-angular';
+//import { LeaveDetail } from '../models/leaveDetail';
 import { LeaveService } from '../index';
 import { Leave } from '../models/leave';
 import { SpinnerService } from '../../../providers/index';
@@ -81,8 +81,8 @@ export class MyLeaveDetailPage {
     this.leaveService.deleteLeaveRecord(leaveTobeCancelled).subscribe(res => {
       if (res) {
         this.spinnerService.stopSpinner();
-       // this.leaveStatusChangedEvent.publish('Delected Leave','status');
-       this.showToast('Leave Canceled');
+        // this.leaveStatusChangedEvent.publish('Delected Leave','status');
+        this.showToast('Leave Canceled');
         this.navCtrl.pop();
       } else {
         this.spinnerService.stopSpinner();
@@ -112,11 +112,11 @@ export class MyLeaveDetailPage {
   }
 
   showToast(message: string) {
-        Toast.show(message, '5000', 'center').subscribe(
-          toast => {
-            console.log(toast);
-           }
-         );
-    }
+    Toast.show(message, '5000', 'center').subscribe(
+      toast => {
+        //console.log(toast);
+      }
+    );
+  }
 
 }

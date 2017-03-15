@@ -1,6 +1,6 @@
 /** Angular Dependencies */
 import { Injectable } from '@angular/core';
-import { Http, Headers, RequestOptions } from '@angular/http';
+import { Http } from '@angular/http';
 
 /** Third Party Dependencies */
 import { CacheService } from 'ng2-cache/ng2-cache';
@@ -11,8 +11,8 @@ import 'rxjs/add/operator/map';
 import { BaseService } from '../../../providers/shared';
 import { MessageService } from '../../../providers/shared';
 // import { Timesheet } from '../models/timesheet.model';
-import { Employee } from '../models/employee.model';
-import { EmployeeTimeSheet } from '../models/employee-timesheet.model';
+//import { Employee } from '../models/employee.model';
+//import { EmployeeTimeSheet } from '../models/employee-timesheet.model';
 /** Context for service calls */
 const CONTEXT = 'Timesheets';
 

@@ -18,7 +18,7 @@ export class HolidayDetailsPage {
   }
 
   ionViewDidLoad() {
-    console.log(this.selectedHoliday);
+    //console.log(this.selectedHoliday);
   }
 
 }

@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 import { LoadingController } from 'ionic-angular';
-import * as moment from 'moment/moment';
+//import * as moment from 'moment/moment';
 
 import { TimesheetService } from '../index';
-import { Timesheet } from '../models/timesheet.model';
+//import { Timesheet } from '../models/timesheet.model';
 
 import { TaskDetailPage } from '../task-detail/task-detail';
 
@@ -66,8 +66,8 @@ export class TimesheetDetailsPage {
       this.timesheetService.getMyTimesheet(id).subscribe((res: any) => {
         this.employeeTimesheet = res;
         this.timesheets = res.Timesheets;
-        console.log(res);
-        console.log(this.employeeTimesheet.Timesheets.length);
+        //console.log(res);
+        //console.log(this.employeeTimesheet.Timesheets.length);
         loader.dismiss();
       }, (err) => {
         loader.dismiss();

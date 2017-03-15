@@ -1,13 +1,13 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 import { LoadingController } from 'ionic-angular';
-import { Observable } from 'rxjs/Rx';
+//import { Observable } from 'rxjs/Rx';
 import { CacheService } from 'ng2-cache/ng2-cache';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import { EmployeeTimesheetService } from '../index';
 
-import { ApproveTimesheetPage } from '../approve-timesheet/approve-timesheet';
+//import { ApproveTimesheetPage } from '../approve-timesheet/approve-timesheet';
 /*
   Generated class for the TimesheetDetails page.
 
@@ -50,7 +50,7 @@ export class ApproveTimesheetDetailsPage {
         // if(res)
         this.employeeTimesheet = res.ApproverTimesheet;
         this.payload = res;
-        console.log(JSON.stringify(res));
+        //console.log(JSON.stringify(res));
         loader.dismiss();
       }, (err) => {
         loader.dismiss();
@@ -69,7 +69,7 @@ export class ApproveTimesheetDetailsPage {
         this.employeeTimesheetService.approveTimesheet(this.payload).subscribe(res => {
           this.clearCache();
           loader.dismiss();
-          console.log(res);
+          //console.log(res);
           this.navCtrl.pop();
         }, (err) => {
           loader.dismiss();

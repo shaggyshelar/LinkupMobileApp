@@ -8,7 +8,7 @@ import { Observable } from 'rxjs/Rx';
 import { CacheService } from 'ng2-cache/ng2-cache';
 
 import { BaseService } from '../../index';
-import { Select } from '../../../pages/LeaveManagement/models/select';
+//import { Select } from '../../../pages/LeaveManagement/models/select';
 // import { Employee } from '../models/employee';
 /** Context for service calls */
 const CONTEXT = 'LeaveType';
