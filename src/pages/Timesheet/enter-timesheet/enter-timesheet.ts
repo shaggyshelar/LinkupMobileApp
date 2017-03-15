@@ -4,7 +4,7 @@ import { AlertController } from 'ionic-angular';
 import { LoadingController } from 'ionic-angular';
 import { Observable } from 'rxjs/Rx';
 
-import { PhasesService, ProjectService, EmployeeTimesheetService } from '../index';
+import { PhasesService, ProjectService } from '../index';
 
 import { TimesheetDetailsPage } from '../timesheet-details/timesheet-details';
 

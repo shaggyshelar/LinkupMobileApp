@@ -6,8 +6,7 @@ import { ApproveTimesheetDetailsPage } from '../approve-timesheet-details/approv
 import { EmployeeTimesheetService } from '../index';
 import { AuthService } from '../../../providers/index';
 import { EmployeeTimeSheet } from '../models/employee-timesheet.model';
-import { AlertController, ItemSliding } from 'ionic-angular';
-import { Toast } from 'ionic-native';
+import { AlertController } from 'ionic-angular';
 import { ApproveTimesheetFilterPage } from '../approve-timesheet-filter/approve-timesheet-filter';
 import { SpinnerService } from '../../../providers/index';
 
@@ -211,7 +210,7 @@ export class ApproveTimesheetPage {
           handler: data => {
 
             this.comment = data.title;
-            var cmt = this.comment;//this.model.comments;
+            //var cmt = this.comment;//this.model.comments;
 
             if (isApprove == 'Approve') {
               if (this.comment.trim().length == 0) {

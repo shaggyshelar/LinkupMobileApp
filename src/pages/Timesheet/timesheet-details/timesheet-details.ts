@@ -1,10 +1,8 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 import { LoadingController } from 'ionic-angular';
-import * as moment from 'moment/moment';
 
 import { TimesheetService } from '../index';
-import { Timesheet } from '../models/timesheet.model';
 
 import { TaskDetailPage } from '../task-detail/task-detail';
 
