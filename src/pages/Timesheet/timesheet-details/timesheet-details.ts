@@ -64,8 +64,6 @@ export class TimesheetDetailsPage {
       this.timesheetService.getMyTimesheet(id).subscribe((res: any) => {
         this.employeeTimesheet = res;
         this.timesheets = res.Timesheets;
-        // console.log(res);
-        // console.log(this.employeeTimesheet.Timesheets.length);
         loader.dismiss();
       }, (err) => {
         loader.dismiss();

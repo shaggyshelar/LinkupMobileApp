@@ -10,7 +10,7 @@ import 'rxjs/add/operator/map';
 /** Module Level Dependencies */
 import { BaseService } from '../../../providers/index';
 import { Leave } from '../models/leave';
-import { Select } from '../models/select';
+//import { Select } from '../models/select';
 // import { Employee } from '../models/employee';
 import { LeaveDetail } from '../models/leaveDetail';
 import { Events } from 'ionic-angular';
@@ -21,7 +21,7 @@ const CONTEXT = 'Leave';
 @Injectable()
 export class LeaveService extends BaseService {
     editableLeave: any;
-    constructor(public http: Http, private _cacheService: CacheService, private leaveChangedEvent:Events) {
+    constructor(public http: Http, private _cacheService: CacheService, private leaveChangedEvent: Events) {
         super(http, CONTEXT);
     }
 
@@ -33,7 +33,7 @@ export class LeaveService extends BaseService {
         return this.get$(id).map(res => res.json());
     }
 
-   
+
 
     /**
      * getLeaves method
@@ -44,7 +44,7 @@ export class LeaveService extends BaseService {
     }
     getMyLeaves(): Observable<Leave> {
         //return this.getChildList$('myleaves', 0, 0, true).map(res => res.json());
-          if (this._cacheService.exists('myLeaveList')) {
+        if (this._cacheService.exists('myLeaveList')) {
             return new Observable<any>((observer: any) => {
                 observer.next(this._cacheService.get('myLeaveList'));
             });
@@ -148,7 +148,7 @@ export class LeaveService extends BaseService {
         headers.append('Authorization', 'Bearer ' + localStorage.getItem('accessToken'));
         let options = new RequestOptions({ headers: headers });
 
-         if (this._cacheService.exists('leaveapproveList')) {
+        if (this._cacheService.exists('leaveapproveList')) {
             return new Observable<any>((observer: any) => {
                 observer.next(this._cacheService.get('leaveapproveList'));
             });
@@ -213,7 +213,7 @@ export class LeaveService extends BaseService {
         //         return this.handleError(err);
         //     });
 
-         if (this._cacheService.exists('pendingApproverList')) {
+        if (this._cacheService.exists('pendingApproverList')) {
             return new Observable<any>((observer: any) => {
                 observer.next(this._cacheService.get('pendingApproverList'));
             });
@@ -221,7 +221,7 @@ export class LeaveService extends BaseService {
             return this.getChildList$('ApproverLeaves/' + status, 0, 0, true).map(res => {
                 this._cacheService.set('pendingApproverList', res.json(), { maxAge: 60 * 60 });
                 // this._cacheService.set('PendingLeavesApprovalCount', res.json().length, { maxAge: 60 * 60 });
-                localStorage.setItem('PendingLeavesApprovalCount', ''+res.json().length);
+                localStorage.setItem('PendingLeavesApprovalCount', '' + res.json().length);
                 return res.json();
             }).catch(err => {
                 return this.handleError(err);
@@ -238,7 +238,7 @@ export class LeaveService extends BaseService {
         return this.http.put(this.baseUrl + 'LeaveApprovers/ApproveByManager', body, options)
             .map(res => {
                 this.clearLeaveApprvalCache();
-                 this.leaveChangedEvent.publish('Approved single Leave');
+                this.leaveChangedEvent.publish('Approved single Leave');
                 return res.json();
             })
             .catch(err => {
@@ -254,8 +254,8 @@ export class LeaveService extends BaseService {
         let options = new RequestOptions({ headers: headers });
         return this.http.put(this.baseUrl + 'LeaveApprovers/RejectLeave', body, options)
             .map(res => {
-                 this.clearLeaveApprvalCache();
-                 this.leaveChangedEvent.publish('Rejected single Leave');
+                this.clearLeaveApprvalCache();
+                this.leaveChangedEvent.publish('Rejected single Leave');
                 return res.json();
             })
             .catch(err => {
@@ -265,17 +265,17 @@ export class LeaveService extends BaseService {
 
     /** Get Employee Leave details */
 
-    getEmployeeDetail(Id:any): Observable<any> {
+    getEmployeeDetail(Id: any): Observable<any> {
         let headers = new Headers();
         headers.append('Authorization', 'Bearer ' + localStorage.getItem('accessToken'));
         let options = new RequestOptions({ headers: headers });
-        return this.http.get(this.baseUrl+'Employee/'+Id,options)
-         .map(res => {
-            return res.json();
-        })
-        .catch(err => {
-            return this.handleError(err);
-        });
+        return this.http.get(this.baseUrl + 'Employee/' + Id, options)
+            .map(res => {
+                return res.json();
+            })
+            .catch(err => {
+                return this.handleError(err);
+            });
     }
 
     // Bulk approval 
@@ -289,7 +289,7 @@ export class LeaveService extends BaseService {
         return this.http.put(this.baseUrl + 'LeaveApprovers/BulkLeaveApproval', body, options)
             .map(res => {
                 this.clearLeaveApprvalCache();
-                 this.leaveChangedEvent.publish('Bulk Approval Leave changed');
+                this.leaveChangedEvent.publish('Bulk Approval Leave changed');
                 return res.json();
             })
             .catch(err => {
@@ -314,7 +314,7 @@ export class LeaveService extends BaseService {
             });
     }
 
-     getCurrentUserPendingLeaveCount() {
+    getCurrentUserPendingLeaveCount() {
         let headers = new Headers();
         headers.append('Authorization', 'Bearer ' + localStorage.getItem('accessToken'));
         let options = new RequestOptions({ headers: headers });
@@ -355,10 +355,10 @@ export class LeaveService extends BaseService {
             });
     }
 
-       /**
-     * addLeaveRecord method
-     * Adds leave record. returns true if successful, false if not.
-     */
+    /**
+  * addLeaveRecord method
+  * Adds leave record. returns true if successful, false if not.
+  */
     submitLeaveRecord(leavePayload: any): Observable<boolean> {
         let headers = new Headers();
         let body = JSON.stringify(leavePayload);
@@ -389,20 +389,17 @@ export class LeaveService extends BaseService {
             });
     }
 
-    setApprovedLeavesCount(count:string)
-    {
-       this._cacheService.set('approvedLeaveCount', count, { maxAge: 60 * 60 });
-       localStorage.setItem('approvedLeaveCount', ''+count);
+    setApprovedLeavesCount(count: string) {
+        this._cacheService.set('approvedLeaveCount', count, { maxAge: 60 * 60 });
+        localStorage.setItem('approvedLeaveCount', '' + count);
     }
 
-    clearLeaveApprvalCache()
-    {
+    clearLeaveApprvalCache() {
         this._cacheService.remove('pendingApproverList');
         this._cacheService.remove('leaveapproveList');
         this._cacheService.remove('approverList');
     }
-     clearLeaveCache()
-    {
+    clearLeaveCache() {
         this._cacheService.remove('approvedLeaveCount');
         this._cacheService.remove('myLeaveList');
     }

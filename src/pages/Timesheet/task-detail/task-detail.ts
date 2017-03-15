@@ -22,7 +22,6 @@ export class TaskDetailPage {
     this.taskDetail = this.navParams.data;
     this.project = this.navParams.data.Project;
     this.task = this.navParams.data.task;
-    // console.log(this.taskDetail);
   }
 
 }

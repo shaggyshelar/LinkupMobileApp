@@ -220,12 +220,12 @@ export class MyLeavesPage {
   }
 
   showToast(message: string) {
-        Toast.show(message, '5000', 'center').subscribe(
-          toast => {
-            console.log(toast);
-           }
-         );
-    }
+    Toast.show(message, '5000', 'center').subscribe(
+      toast => {
+        //console.log(toast);
+      }
+    );
+  }
 
   // Lazy Loading Functionality. TO DO:need to get only limited data from back end
   doInfinite(infiniteScroll) {
