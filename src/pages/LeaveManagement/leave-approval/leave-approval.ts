@@ -158,6 +158,7 @@ export class LeaveApprovalPage {
       {
         text: 'Approve',
         role: 'destructive',
+        icon: 'checkmark',
         handler: () => {
           this.selectedLeaveID = leaveID;
           this.showApproveRejectPromt(true);
@@ -165,6 +166,7 @@ export class LeaveApprovalPage {
         }
       }, {
         text: 'Reject',
+        icon: 'close',
         handler: () => {
           this.selectedLeaveID = leaveID;
           this.showApproveRejectPromt(false);
@@ -182,6 +184,7 @@ export class LeaveApprovalPage {
       }, {
         text: 'Cancel',
         role: 'cancel',
+        icon:'close-circle',
         handler: () => {
           this.isMoreclicked = false;
         }

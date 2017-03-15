@@ -125,6 +125,7 @@ export class HomePage {
   }
   ionViewDidLoad() {
     this.createCharts();
+    this.initializeItems();
   }
   gotoMyLeaves() {
     this.navCtrl.push(MyLeavesPage);

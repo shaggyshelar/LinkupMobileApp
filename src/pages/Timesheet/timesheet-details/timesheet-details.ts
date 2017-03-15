@@ -14,10 +14,10 @@ import { TaskDetailPage } from '../task-detail/task-detail';
 })
 export class TimesheetDetailsPage {
   timesheetID: Number = 0;
-  employeeTimesheet : any;
-  timesheets : any;
+  employeeTimesheet: any;
+  timesheets: any;
 
-  dayRec: any={
+  dayRec: any = {
     start: null,
     end: null,
     days: null
@@ -46,7 +46,7 @@ export class TimesheetDetailsPage {
         break;
     }
 
-    
+
 
   }
 
@@ -66,8 +66,8 @@ export class TimesheetDetailsPage {
       this.timesheetService.getMyTimesheet(id).subscribe((res: any) => {
         this.employeeTimesheet = res;
         this.timesheets = res.Timesheets;
-        console.log(res);
-        console.log(this.employeeTimesheet.Timesheets.length);
+        // console.log(res);
+        // console.log(this.employeeTimesheet.Timesheets.length);
         loader.dismiss();
       }, (err) => {
         loader.dismiss();
@@ -88,11 +88,11 @@ export class TimesheetDetailsPage {
   //   };
   //   var dayData = [];
   //   for (var i = 0; i < 7; i++) {
-     
+
   //      dayData.push({
   //         day: moment(this.employeeTimesheet.StartDate).add(i,'days'),
   //       });
-     
+
   //   }
 
   //   this.dayRec.days = dayData;

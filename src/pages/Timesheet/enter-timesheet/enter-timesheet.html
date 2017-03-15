@@ -17,19 +17,19 @@
 
 <ion-content>
 
-    <ion-row>
-      <ion-col width-10>
-        <button ion-button clear class="left-align"><ion-icon name="arrow-dropleft" class="left-align"></ion-icon></button>
-      </ion-col>
-      <ion-col width-80>
-          <ion-label class="center-align"> 05/03/2017 - 11/03/2017</ion-label>
-      </ion-col>
-      <ion-col width-10>
-        <button ion-button clear class="right-align"><ion-icon name="arrow-dropright" class="right-align"></ion-icon></button>
-      </ion-col>
-    </ion-row>
+  <ion-row>
+    <ion-col width-10>
+      <button ion-button clear class="left-align"><ion-icon name="arrow-dropleft" class="left-align"></ion-icon></button>
+    </ion-col>
+    <ion-col width-80>
+      <ion-label class="center-align"> 05/03/2017 - 11/03/2017</ion-label>
+    </ion-col>
+    <ion-col width-10>
+      <button ion-button clear class="right-align"><ion-icon name="arrow-dropright" class="right-align"></ion-icon></button>
+    </ion-col>
+  </ion-row>
 
-  <ion-card *ngFor="let rec of projectCount; let i = index" (click)="cardClick(i)" >
+  <ion-card *ngFor="let rec of projectCount; let i = index" (click)="cardClick(i)">
     <ion-row>
       <ion-col width-90></ion-col>
       <ion-col width-10>

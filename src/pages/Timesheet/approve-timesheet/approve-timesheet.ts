@@ -96,7 +96,7 @@ export class ApproveTimesheetPage {
       this.employeeTimesheetService.getMyTimesheets().subscribe((res: any) => {
         if (res.length > 0) {
           this.approveEmployee = res.reverse();
-          console.log(res);
+          // console.log(res);
         } else {
           this.noResponseMsg = 'No Records Received'
         }
