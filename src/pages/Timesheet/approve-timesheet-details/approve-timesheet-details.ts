@@ -50,7 +50,6 @@ export class ApproveTimesheetDetailsPage {
         // if(res)
         this.employeeTimesheet = res.ApproverTimesheet;
         this.payload = res;
-        //console.log(JSON.stringify(res));
         loader.dismiss();
       }, (err) => {
         loader.dismiss();
@@ -69,7 +68,6 @@ export class ApproveTimesheetDetailsPage {
         this.employeeTimesheetService.approveTimesheet(this.payload).subscribe(res => {
           this.clearCache();
           loader.dismiss();
-          //console.log(res);
           this.navCtrl.pop();
         }, (err) => {
           loader.dismiss();

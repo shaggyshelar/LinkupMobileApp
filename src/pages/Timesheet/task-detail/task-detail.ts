@@ -14,15 +14,14 @@ import { NavController, NavParams } from 'ionic-angular';
 export class TaskDetailPage {
   taskDetail: any;
   project: any;
-  task : any;
+  task: any;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {}
+  constructor(public navCtrl: NavController, public navParams: NavParams) { }
 
   ionViewDidLoad() {
     this.taskDetail = this.navParams.data;
     this.project = this.navParams.data.Project;
     this.task = this.navParams.data.task;
-   // console.log(this.taskDetail);
   }
 
 }

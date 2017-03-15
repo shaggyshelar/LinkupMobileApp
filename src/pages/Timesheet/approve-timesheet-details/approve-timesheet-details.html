@@ -20,8 +20,7 @@
     </ion-item-divider>
     <ion-item>
       <h3>
-        {{rec.Project.Value}} &mdash;
-        {{rec.Task}}
+        {{rec.Project.Value}} &mdash; {{rec.Task}}
       </h3>
       <p class="right">
         Hours : <span *ngIf="rec.BillableHours">{{rec.BillableHours}}</span> <span *ngIf="!rec.BillableHours">0:0</span>
@@ -34,7 +33,7 @@
         Hours : <span *ngIf="rec.NonBillableHours">{{rec.NonBillableHours}}</span> <span *ngIf="!rec.NonBillableHours">0:0</span>
       </p>
       <p>
-        Note for Non Billable Hours : <br><span *ngIf="rec.NoteForNonBillableHours">{{rec.NoteForNonBillableHours}}</span> <span *ngIf="!rec.NoteForNonBillableHours"> No notes data available. </span>
+        Note for Non Billable Hours : <br><span *ngIf="rec.NoteForNonBillableHours">{{rec.NoteForNonBillableHours}}</span>        <span *ngIf="!rec.NoteForNonBillableHours"> No notes data available. </span>
       </p>
     </ion-item>
   </ion-list>
@@ -42,10 +41,11 @@
   <div class="bottom">
     <form [formGroup]="approveTimesheetForm">
       <ion-item>
-      <ion-label floating>Comments</ion-label>
-      <ion-textarea formControlName="comment" (ngModel)="comment"></ion-textarea>
+        <ion-label floating>Comments</ion-label>
+        <ion-textarea formControlName="comment" (ngModel)="comment"></ion-textarea>
       </ion-item>
-      <p *ngIf="!approveTimesheetForm.controls.comment.valid && (approveTimesheetForm.controls.comment.dirty || approveTimesheetForm.controls.comment.touched)" class="warning">Field required.</p>
+      <p *ngIf="!approveTimesheetForm.controls.comment.valid && (approveTimesheetForm.controls.comment.dirty || approveTimesheetForm.controls.comment.touched)"
+        class="warning">Field required.</p>
       <ion-row>
         <ion-col width-50>
           <button ion-button full (click)="rejectClicked()" [disabled]="!approveTimesheetForm.controls.comment.valid">Reject</button>
@@ -54,7 +54,7 @@
           <button ion-button full (click)="approveClicked()" [disabled]="!approveTimesheetForm.controls.comment.valid">Approve</button>
         </ion-col>
       </ion-row>
-      </form>
+    </form>
   </div>
 
 </ion-content>

@@ -383,19 +383,12 @@ export class MyApp {
     // if (this._cacheService.exists('PendingTimesheetApprovalCount')) {
     //   this.pendingCount = this.pendingCount + parseInt(this._cacheService.get('PendingLeavesApprovalCount'));
     // }
-    this.updateBadges();
-  }
 
-  updateBadges() {
-    this.leaveService.getLeaveArray('Pending').subscribe(res => { }, err => { });
-    this.timesheetService.getApproverPendingTimesheets().subscribe(res => { }, err => { });
+
     this.pendingCount = 0;
     this.pendingCount = parseInt(localStorage.getItem('PendingLeavesApprovalCount')) + parseInt(localStorage.getItem('PendingTimesheetApprovalCount'));
     this.myTimesheetCount = parseInt(localStorage.getItem('myTimesheetPending'));;
     this.approvedLeaveCount = parseInt(localStorage.getItem('approvedLeaveCount'));
-
-
-
   }
 
   /** Get base64 Image  */

@@ -18,25 +18,25 @@ const CONTEXT = 'Project';
 /** Service Definition */
 @Injectable()
 export class ProjectService extends BaseService {
-    constructor( public http: Http, messageService: MessageService) {
-        super( http, CONTEXT);
+    constructor(public http: Http, messageService: MessageService) {
+        super(http, CONTEXT);
     }
-    getProjectList() : Observable < any[] > {
+    getProjectList(): Observable<any[]> {
         return this
-            .getChildList$('GetMyActiveProjects',0,0,true)
+            .getChildList$('GetMyActiveProjects', 0, 0, true)
             .map(res => res.json());
     }
-    getProjectById(id:string) : Observable < Project > {
+    getProjectById(id: string): Observable<Project> {
         return this
-            .get$(id,true)
+            .get$(id, true)
             .map(res => res.json());
     }
-    saveProject(project:any) : Observable < any > {
+    saveProject(project: any): Observable<any> {
         return this
             .post$(project)
             .map(res => res.json());
     }
-    editProject(project:any) : Observable < any > {
+    editProject(project: any): Observable<any> {
         return this
             .put$(project.Id, project)
             .map(res => res.json());

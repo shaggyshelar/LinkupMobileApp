@@ -10,9 +10,6 @@ import 'rxjs/add/operator/map';
 /** Module Level Dependencies */
 import { BaseService } from '../../../providers/shared';
 import { MessageService } from '../../../providers/shared';
-// import { Timesheet } from '../models/timesheet.model';
-//import { Employee } from '../models/employee.model';
-//import { EmployeeTimeSheet } from '../models/employee-timesheet.model';
 /** Context for service calls */
 const CONTEXT = 'Timesheets';
 
@@ -31,12 +28,12 @@ export class TimesheetService extends BaseService {
         //         observer.next(this._cacheService.get('timesheetApprovalData'));
         //     });
         // } else {
-            return this.get$('Edit/' + id, true).map(res => {
-                //this._cacheService.set('Edit' + id, res.json(), { maxAge: 60 * 60 * 24 });
-                return res.json();
-            }).catch(err => {
-                return this.handleError(err);
-            });
+        return this.get$('Edit/' + id, true).map(res => {
+            //this._cacheService.set('Edit' + id, res.json(), { maxAge: 60 * 60 * 24 });
+            return res.json();
+        }).catch(err => {
+            return this.handleError(err);
+        });
         // }
     }
 }

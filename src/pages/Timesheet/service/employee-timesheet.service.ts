@@ -86,7 +86,7 @@ export class EmployeeTimesheetService extends BaseService {
             return this.getChildList$('ApproverPendingTimesheets', 0, 0, true).map(res => {
                 this._cacheService.set('approverPendingTimesheets', res.json(), { maxAge: 60 * 60 });
                 // this._cacheService.set('PendingTimesheetApprovalCount', res.json().length, { maxAge: 60 * 60 });
-                localStorage.setItem('PendingTimesheetApprovalCount', ''+res.json().length);
+                localStorage.setItem('PendingTimesheetApprovalCount', '' + res.json().length);
                 return res.json();
             }).catch(err => {
                 return this.handleError(err);

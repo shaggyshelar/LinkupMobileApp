@@ -15,70 +15,70 @@
 
 <ion-content padding>
   <ion-list>
-    <ion-item-divider color="light" >
+    <ion-item-divider color="light">
       <h3>Billable Hours</h3>
     </ion-item-divider>
     <ion-item>
       <ion-item *ngIf="navParams.data.Mondayhrs">
-      <p  >Monday <span class="right" >{{navParams.data.Mondayhrs}} Hours</span></p>
-      <p >Desc: {{navParams.data.Mondaydesc}}</p>
-    </ion-item>
-    <ion-item *ngIf="navParams.data.Tuesdayhrs">
-      <p >Tuesday <span class="right" >{{navParams.data.Tuesdayhrs}} Hours</span></p>
-      <p >Desc: {{navParams.data.Tuesdaydesc}}</p>
-    </ion-item>
-    <ion-item *ngIf="navParams.data.Wednesdayhrs">
-      <p  >Wednesday <span class="right" >{{navParams.data.Wednesdayhrs}} Hours</span></p>
-      <p >Desc: {{navParams.data.Wednesdaydesc}}</p>
-    </ion-item>
-    <ion-item *ngIf="navParams.data.Thursdayhrs">
-      <p >Thursday <span class="right" >{{navParams.data.Thursdayhrs}} Hours</span></p>
-      <p *ngIf="navParams.data.Thursdaydesc">Desc: {{navParams.data.Thursdaydesc}}</p>
-    </ion-item>
-    <ion-item *ngIf="navParams.data.Fridayhrs">
-      <p >Friday <span class="right" >{{navParams.data.Fridayhrs}} Hours</span></p>
-      <p >Desc: {{navParams.data.Fridaydesc}}</p>
-    </ion-item>
-    <ion-item *ngIf="navParams.data.Saturdayhrs">
-      <p  >Saturday <span class="right" >{{navParams.data.Saturdayhrs}} Hours</span></p>
-      <p >Desc: {{navParams.data.Saturdaydesc}}</p>
-    </ion-item>
-    <ion-item *ngIf="navParams.data.Sundayhrs">
-      <p  >Sunday <span class="right" >{{navParams.data.Sundayhrs}} Hours</span></p>
-      <p >Desc: {{navParams.data.Sundaydesc}}</p>
-    </ion-item>
+        <p>Monday <span class="right">{{navParams.data.Mondayhrs}} Hours</span></p>
+        <p>Desc: {{navParams.data.Mondaydesc}}</p>
+      </ion-item>
+      <ion-item *ngIf="navParams.data.Tuesdayhrs">
+        <p>Tuesday <span class="right">{{navParams.data.Tuesdayhrs}} Hours</span></p>
+        <p>Desc: {{navParams.data.Tuesdaydesc}}</p>
+      </ion-item>
+      <ion-item *ngIf="navParams.data.Wednesdayhrs">
+        <p>Wednesday <span class="right">{{navParams.data.Wednesdayhrs}} Hours</span></p>
+        <p>Desc: {{navParams.data.Wednesdaydesc}}</p>
+      </ion-item>
+      <ion-item *ngIf="navParams.data.Thursdayhrs">
+        <p>Thursday <span class="right">{{navParams.data.Thursdayhrs}} Hours</span></p>
+        <p *ngIf="navParams.data.Thursdaydesc">Desc: {{navParams.data.Thursdaydesc}}</p>
+      </ion-item>
+      <ion-item *ngIf="navParams.data.Fridayhrs">
+        <p>Friday <span class="right">{{navParams.data.Fridayhrs}} Hours</span></p>
+        <p>Desc: {{navParams.data.Fridaydesc}}</p>
+      </ion-item>
+      <ion-item *ngIf="navParams.data.Saturdayhrs">
+        <p>Saturday <span class="right">{{navParams.data.Saturdayhrs}} Hours</span></p>
+        <p>Desc: {{navParams.data.Saturdaydesc}}</p>
+      </ion-item>
+      <ion-item *ngIf="navParams.data.Sundayhrs">
+        <p>Sunday <span class="right">{{navParams.data.Sundayhrs}} Hours</span></p>
+        <p>Desc: {{navParams.data.Sundaydesc}}</p>
+      </ion-item>
     </ion-item>
 
     <ion-item-divider color="light">
       <h3>Non Billable hours</h3>
     </ion-item-divider>
     <ion-item *ngIf="navParams.data.Mondaynbhrs">
-      <p  >Monday <span class="right" >{{navParams.data.Mondaynbhrs}} Hours</span></p>
-      <p >Desc: {{navParams.data.Mondaydescnb}}</p>
+      <p>Monday <span class="right">{{navParams.data.Mondaynbhrs}} Hours</span></p>
+      <p>Desc: {{navParams.data.Mondaydescnb}}</p>
     </ion-item>
     <ion-item *ngIf="navParams.data.Tuesdaynbhrs">
-      <p >Tuesday <span class="right" >{{navParams.data.Tuesdaynbhrs}} Hours</span></p>
-      <p >Desc: {{navParams.data.Tuesdaydescnb}}</p>
+      <p>Tuesday <span class="right">{{navParams.data.Tuesdaynbhrs}} Hours</span></p>
+      <p>Desc: {{navParams.data.Tuesdaydescnb}}</p>
     </ion-item>
     <ion-item *ngIf="navParams.data.Wednesdaynbhrs">
-      <p  >Wednesday <span class="right" >{{navParams.data.Wednesdaynbhrs}} Hours</span></p>
-      <p >Desc: {{navParams.data.Wednesdaydescnb}}</p>
+      <p>Wednesday <span class="right">{{navParams.data.Wednesdaynbhrs}} Hours</span></p>
+      <p>Desc: {{navParams.data.Wednesdaydescnb}}</p>
     </ion-item>
     <ion-item *ngIf="navParams.data.Thursdaynbhrs">
-      <p >Thursday <span class="right" >{{navParams.data.Thursdaynbhrs}} Hours</span></p>
+      <p>Thursday <span class="right">{{navParams.data.Thursdaynbhrs}} Hours</span></p>
       <p *ngIf="navParams.data.Thursdaydescnb">Desc: {{navParams.data.Thursdaydescnb}}</p>
     </ion-item>
     <ion-item *ngIf="navParams.data.Fridaynbhrs">
-      <p >Friday <span class="right" >{{navParams.data.Fridaynbhrs}} Hours</span></p>
-      <p >Desc: {{navParams.data.Fridaydescnb}}</p>
+      <p>Friday <span class="right">{{navParams.data.Fridaynbhrs}} Hours</span></p>
+      <p>Desc: {{navParams.data.Fridaydescnb}}</p>
     </ion-item>
     <ion-item *ngIf="navParams.data.Saturdaynbhrs">
-      <p  >Saturday <span class="right" >{{navParams.data.Saturdaynbhrs}} Hours</span></p>
-      <p >Desc: {{navParams.data.Saturdaydescnb}}</p>
+      <p>Saturday <span class="right">{{navParams.data.Saturdaynbhrs}} Hours</span></p>
+      <p>Desc: {{navParams.data.Saturdaydescnb}}</p>
     </ion-item>
     <ion-item *ngIf="navParams.data.Sundaynbhrs">
-      <p  >Sunday <span class="right" >{{navParams.data.Sundaynbhrs}} Hours</span></p>
-      <p >Desc: {{navParams.data.Sundaydescnb}}</p>
+      <p>Sunday <span class="right">{{navParams.data.Sundaynbhrs}} Hours</span></p>
+      <p>Desc: {{navParams.data.Sundaydescnb}}</p>
     </ion-item>
   </ion-list>
 

@@ -56,8 +56,8 @@ export class EnterTimesheetPage {
 
   addProjectClicked() {
     this.getProjects();
-    this.projectCount.push({project: null, phase: null});
-    this.currentTaskIndex = this.projectCount.length-1;
+    this.projectCount.push({ project: null, phase: null });
+    this.currentTaskIndex = this.projectCount.length - 1;
     // this.projectCount.push(this.projectCount.length);
   }
 

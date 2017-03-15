@@ -7,11 +7,11 @@
 <ion-header>
 
   <ion-navbar>
-    <button  ion-button icon-only menuToggle>
+    <button ion-button icon-only menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
 
-     
+
     <!--<ion-buttons start>
       <button (click)="onFilter()" ion-button icon-only> 
         <ion-icon name="ios-funnel"></ion-icon>
@@ -25,13 +25,13 @@
     </ion-buttons> -->
     <!--<ion-toolbar>-->
     <ion-buttons start *ngIf="isBulkApprovePermission == false">
-    <button ion-button *ngIf= "isshowApproveRejectItems == true">
+      <button ion-button *ngIf="isshowApproveRejectItems == true">
        {{selectedEmployees.length}}
     </button>
-     <button *ngIf="isshowApproveRejectItems == true" ion-button (click)="selectAllTimesheets()">
+      <button *ngIf="isshowApproveRejectItems == true" ion-button (click)="selectAllTimesheets()">
         All
       </button>
-      <button *ngIf="isshowApproveRejectItems == true"ion-button [disabled] = "leavechecked == false" (click)="approveBulkTimesheet()">
+      <button *ngIf="isshowApproveRejectItems == true" ion-button [disabled]="leavechecked == false" (click)="approveBulkTimesheet()">
         Approve
       </button>
     </ion-buttons>
@@ -66,29 +66,28 @@
 
 
   <ion-list>
-      <ion-item [ngStyle]="{'background-color': entry.selectionColor}" *ngFor="let entry of pendingtimesheetsArray" ion-item (click)="itemTapped(entry)" (press)="longPressedItem(entry)"
-      [attr.submittedstatus]="entry.SubmittedStatus | lowercase">
-        <h3><span *ngFor="let approver of entry.ApproverUser">{{entry.Employee.Name}}</span></h3>
-        <h3> 
-          {{entry.StartDate | date: 'dd/MM/yyyy'}} &mdash;
-          {{entry.EndDate | date: 'dd/MM/yyyy'}} 
-        </h3>
-        <p>
-          Billable Hours: {{entry.BillableHours}}
-        </p>
-        <p>
-          Non Billable Hours: {{entry.NonBillableHours}}
-          <span class="right">{{entry.SubmissionDate}}</span>
-        </p>
-         <!--<ion-icon *ngIf="entry.SubmittedStatus == 'Submitted' " name="more" item-right (click)="presentActionSheet(entry)"></ion-icon>-->
-      </ion-item>
+    <ion-item [ngStyle]="{'background-color': entry.selectionColor}" *ngFor="let entry of pendingtimesheetsArray" ion-item (click)="itemTapped(entry)"
+      (press)="longPressedItem(entry)" [attr.submittedstatus]="entry.SubmittedStatus | lowercase">
+      <h3><span *ngFor="let approver of entry.ApproverUser">{{entry.Employee.Name}}</span></h3>
+      <h3>
+        {{entry.StartDate | date: 'dd/MM/yyyy'}} &mdash; {{entry.EndDate | date: 'dd/MM/yyyy'}}
+      </h3>
+      <p>
+        Billable Hours: {{entry.BillableHours}}
+      </p>
+      <p>
+        Non Billable Hours: {{entry.NonBillableHours}}
+        <span class="right">{{entry.SubmissionDate}}</span>
+      </p>
+      <!--<ion-icon *ngIf="entry.SubmittedStatus == 'Submitted' " name="more" item-right (click)="presentActionSheet(entry)"></ion-icon>-->
+    </ion-item>
   </ion-list>
 
-   <ion-list-header *ngIf ="(pendingtimesheetsArray)?.length == 0 && isDataretrived ==true">
+  <ion-list-header *ngIf="(pendingtimesheetsArray)?.length == 0 && isDataretrived ==true">
     No Records Found
   </ion-list-header>
 
-   <ion-list-header [hidden]="isAuthorized == true">
+  <ion-list-header [hidden]="isAuthorized == true">
     You are not Authorized
   </ion-list-header>
 
