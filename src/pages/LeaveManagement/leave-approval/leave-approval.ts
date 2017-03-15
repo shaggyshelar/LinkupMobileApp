@@ -405,18 +405,17 @@ export class LeaveApprovalPage {
   selectLeave(leave: any, checked: boolean) {
     if (checked == false) {
       var index: number = 0;
-      if (this.selectedEmployees.length > 0)
-      {
+      if (this.selectedEmployees.length > 0) {
         this.leavesArray.forEach(leaves => {
-        if (leaves == leave) {
-          var sindex = this.selectedEmployees.indexOf(leave);
-          this.selectedEmployees.splice(sindex, 1);
-        }
-        index++;
-      });
-    }
-    else
-    this.isshowApproveRejectItems = false;
+          if (leaves == leave) {
+            var sindex = this.selectedEmployees.indexOf(leave);
+            this.selectedEmployees.splice(sindex, 1);
+          }
+          index++;
+        });
+      }
+      else
+        this.isshowApproveRejectItems = false;
 
       leave.selectionColor = "white";
       leave.selected = false;
@@ -479,11 +478,11 @@ export class LeaveApprovalPage {
   /* Show Toast*/
 
   showToast(message: string) {
-    //     Toast.show(message, '5000', 'center').subscribe(
-    //   toast => {
-    //     console.log(toast);
-    //   }
-    // );
+    Toast.show(message, '5000', 'center').subscribe(
+      toast => {
+        console.log(toast);
+      }
+    );
   }
   onFilter() {
     let modal = this.modalCtrl.create(LeaveApprovalFilterPage);

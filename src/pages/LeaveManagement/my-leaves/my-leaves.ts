@@ -9,6 +9,7 @@ import { MyLeaveDetailPage } from '../my-leave-detail/my-leave-detail';
 import { AlertController, ItemSliding } from 'ionic-angular';
 import { SpinnerService } from '../../../providers/index';
 import { Events } from 'ionic-angular';
+import { Toast } from 'ionic-native';
 import * as moment from 'moment/moment';
 
 import { ApplyForLeavePage } from '../apply-for-leave/apply-for-leave';
@@ -126,8 +127,9 @@ export class MyLeavesPage {
     this.leaveService.deleteLeaveRecord(leaveTobeCancelled).subscribe(res => {
       if (res) {
         //this.getMyLeaves();
+        this.showToast('Leave Canceled');
       } else {
-
+        this.showToast('Failed to cancel leave');
       }
     });
   }
@@ -216,6 +218,14 @@ export class MyLeavesPage {
     });
     actionSheet.present();
   }
+
+  showToast(message: string) {
+        Toast.show(message, '5000', 'center').subscribe(
+          toast => {
+            console.log(toast);
+           }
+         );
+    }
 
   // Lazy Loading Functionality. TO DO:need to get only limited data from back end
   doInfinite(infiniteScroll) {

@@ -6,6 +6,8 @@ import { LoadingController, AlertController, ToastController } from 'ionic-angul
 import { HomePage } from '../pages/home/home';
 import { Events } from 'ionic-angular';
 import { CacheService } from 'ng2-cache/ng2-cache';
+import 'rxjs/add/observable/fromEvent';
+import { Observable } from 'rxjs/Observable';
 
 // Leave Management
 
@@ -52,6 +54,7 @@ import { Subscription } from 'rxjs/Subscription';
 
 
 
+
 export interface PageInterface {
   title: string;
   component: any;
@@ -94,6 +97,7 @@ export class MyApp {
   pendingCount: number = 0;
   myTimesheetCount: number = 0;
   approvedLeaveCount: number = 0;
+  isOnline: boolean;
 
   constructor(public platform: Platform,
     public auth: AuthService,
@@ -104,6 +108,22 @@ export class MyApp {
     public alertCtrl: AlertController,
     public toastCtrl: ToastController,
     public _cacheService: CacheService) {
+
+    var offline = Observable.fromEvent(document, "offline");
+    var online = Observable.fromEvent(document, "online");
+    this.isOnline = false;
+
+    offline.subscribe(() => {
+      this.isOnline = false;
+      this.internetChecking();
+    });
+
+    online.subscribe(() => {
+      this.isOnline = true;
+      console.log('Internet Connection is avaialable!');
+      if (this.IntenetLoader)
+        this.IntenetLoader.dismiss();
+    });
     this.initializeApp();
 
 
@@ -362,6 +382,7 @@ export class MyApp {
     // if (this._cacheService.exists('PendingTimesheetApprovalCount')) {
     //   this.pendingCount = this.pendingCount + parseInt(this._cacheService.get('PendingLeavesApprovalCount'));
     // }
+
 
     this.pendingCount = 0;
     this.pendingCount = parseInt(localStorage.getItem('PendingLeavesApprovalCount')) + parseInt(localStorage.getItem('PendingTimesheetApprovalCount'));
