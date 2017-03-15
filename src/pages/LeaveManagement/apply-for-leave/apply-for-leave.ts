@@ -57,6 +57,7 @@ export class ApplyForLeavePage {
 
     leaves: any[];
     model: ApplyLeaveValidation;
+    comment:string = '';
     finalLeaveData: any;
     userDetail: any;
     activeProjects: any;
@@ -71,6 +72,7 @@ export class ApplyForLeavePage {
     formDisabled: boolean = true;
     isShowLeaveSelection: boolean = false;
     isAllDataDownloaded: boolean = false;
+    isAddedLeave:boolean = false;
 
     constructor(public navCtrl: NavController,
         public navParams: NavParams,
@@ -85,16 +87,12 @@ export class ApplyForLeavePage {
         public modalCtrl: ModalController
     ) {
 
-        this.applyLeaveForm = this.formBuilder.group({
-            leaveType: ['', [Validators.required]],
-            start: ['', [Validators.required]],
-            end: ['', [Validators.required]],
-            reason: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(600)]]
-        });
+     
 
         this.leaves = [];
         this.addLeaveArr = [];
         this.numberdays = true;
+        this.comment = '';
 
         this.leaves = [];
         this.startSDate = this.navParams.get('date');
@@ -119,8 +117,19 @@ export class ApplyForLeavePage {
             leaveType: { id: 0, name: 'Leave', ID: 1, Name: 'Leave', Type: 'Leave', Value: 'Leave' },
             end: this.sdate,
             start: this.edate,
-            reason: ''
+            reason: this.comment
         };
+
+        //    this.applyLeaveForm = this.formBuilder.group({
+        //     leaveType: ['', Validators.compose([Validators.required])],
+        //     start: ['', Validators.compose([Validators.required])],
+        //     end: ['', Validators.compose([Validators.required])],
+        //     reason: ['', Validators.compose([Validators.minLength(2), Validators.maxLength(600), Validators.required])]
+        // });
+
+        //  this.applyLeaveForm = formBuilder.group({
+        //     comment: ['', Validators.compose([Validators.minLength(2), Validators.maxLength(600), Validators.required])]
+        // });
 
 
     }
@@ -198,6 +207,16 @@ export class ApplyForLeavePage {
         this.validateLeaveType();
     }
 
+    onLeaveAdd()
+    {
+        // if (this.addLeaveArr.length === 0) {
+            this.validateLeaveType();
+            if (!this.leaveTypeValid)
+                return;
+            this.onAddLeave();
+        // }
+    }
+
 
     submitForm() {
         if (this.addLeaveArr.length === 0) {
@@ -211,12 +230,13 @@ export class ApplyForLeavePage {
         this.leaveService.submitLeaveRecord(this.addLeaveArr).subscribe(res => {
             if (res) {
                 this.spinnerService.stopSpinner();
-                this.leaveStatusChanged.publish('Applied Leave', 'status');
+                //this.leaveStatusChanged.publish('Applied Leave', 'status');
                 MessageService.addMessage({ severity: 'success', summary: 'Success', detail: MessageService.APPLY_LEAVE_2 });
-                this.showToast('MessageService.APPLY_LEAVE_2');
+                this.showToast(MessageService.APPLY_LEAVE_2 );
                 this.navCtrl.pop();
             } else {
                 this.spinnerService.stopSpinner();
+                this.showToast(MessageService.REQUEST_FAILED);
                 MessageService.addMessage({ severity: 'error', summary: 'Failed', detail: MessageService.REQUEST_FAILED });
             }
         });
@@ -244,6 +264,7 @@ export class ApplyForLeavePage {
                     LeaveType: { ID: this.model.leaveType.ID, Value: this.model.leaveType.Name }
                 };
                 this.addLeaveArr.push(leave);
+                this.isAddedLeave = true;
             }
         }
     }

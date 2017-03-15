@@ -111,7 +111,7 @@ export class LeaveApprovalDetailPage {
                     if (res) {
                         this.spinnerService.stopSpinner();
                         this.showToast('Leave is approved successfully!');
-                        this.leaveStatusChangedEvent.publish('Changed Leave Status', 'status');
+                        //this.leaveStatusChangedEvent.publish('Changed Leave Status', 'status');
                         this.navCtrl.pop();
                     } else {
                         this.showToast('Failed to approve Leave.');
@@ -141,7 +141,7 @@ export class LeaveApprovalDetailPage {
                     if (res) {
                         this.spinnerService.stopSpinner();
                         this.showToast('Leave is rejcted successfully!');
-                        this.leaveStatusChangedEvent.publish('Changed Leave Status', 'status');
+                        //this.leaveStatusChangedEvent.publish('Changed Leave Status', 'status');
                         this.navCtrl.pop();
                     } else {
                         this.showToast('Failed to reject Leave!');

@@ -82,11 +82,11 @@
   </ion-list>
 
   <!--Lazy loading Begin-->
-  <ion-infinite-scroll (ionInfinite)="doInfinite($event)">
+  <!--<ion-infinite-scroll (ionInfinite)="doInfinite($event)">
     <ion-infinite-scroll-content loadingSpinner="bubbles"
       loadingText="Loading more data..." threshold="5%">
     </ion-infinite-scroll-content>
-  </ion-infinite-scroll>
+  </ion-infinite-scroll>-->
   <!--Lazy loading End-->
   
   <ion-list-header *ngIf ="(leaveObs)?.length == 0 && isAllDataLoaded == true">
