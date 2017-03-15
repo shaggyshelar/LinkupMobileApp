@@ -15,7 +15,7 @@
 <ion-content padding>
   <!--{{employeeTimesheet.SubmittedStatus}}-->
   <ion-list *ngFor="let rec of employeeTimesheet">
-    <ion-item-divider color="light">
+    <ion-item-divider color="light" *ngIf="rec.Date">
       {{rec.Date}}
     </ion-item-divider>
     <ion-item>
@@ -40,18 +40,21 @@
   </ion-list>
 
   <div class="bottom">
-    <ion-item>
-    <ion-label floating>Comments</ion-label>
-    <ion-textarea (ngModel)="comment"></ion-textarea>
-    </ion-item>
-    <ion-row>
-      <ion-col width-50>
-        <button ion-button full (click)="rejectClicked()">Reject</button>
-      </ion-col>
-      <ion-col width-50>
-        <button ion-button full (click)="approveClicked()">Approve</button>
-      </ion-col>
-    </ion-row>
+    <form [formGroup]="approveTimesheetForm">
+      <ion-item>
+      <ion-label floating>Comments</ion-label>
+      <ion-textarea formControlName="comment" (ngModel)="comment"></ion-textarea>
+      </ion-item>
+      <p *ngIf="!approveTimesheetForm.controls.comment.valid && (approveTimesheetForm.controls.comment.dirty || approveTimesheetForm.controls.comment.touched)" class="warning">Field required.</p>
+      <ion-row>
+        <ion-col width-50>
+          <button ion-button full (click)="rejectClicked()" [disabled]="!approveTimesheetForm.controls.comment.valid">Reject</button>
+        </ion-col>
+        <ion-col width-50>
+          <button ion-button full (click)="approveClicked()" [disabled]="!approveTimesheetForm.controls.comment.valid">Approve</button>
+        </ion-col>
+      </ion-row>
+      </form>
   </div>
 
 </ion-content>
