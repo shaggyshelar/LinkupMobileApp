@@ -366,8 +366,6 @@ export class MyApp {
   }
 
   updateBadges() {
-    this.leaveService.getLeaveArray('Pending').subscribe(res => {}, err => {});
-    this.timesheetService.getApproverPendingTimesheets().subscribe(res => {}, err => {});
     this.pendingCount = 0;
     this.pendingCount = parseInt(localStorage.getItem('PendingLeavesApprovalCount')) + parseInt(localStorage.getItem('PendingTimesheetApprovalCount'));
     this.myTimesheetCount = parseInt(localStorage.getItem('myTimesheetPending'));;
