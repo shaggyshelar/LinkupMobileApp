@@ -1,7 +1,7 @@
 
 import { Component, ViewChild } from '@angular/core';
 import { Nav, Platform } from 'ionic-angular';
-import { StatusBar, Splashscreen, Network, InAppBrowser } from 'ionic-native';
+import { StatusBar, Splashscreen, InAppBrowser } from 'ionic-native';
 import { LoadingController, AlertController, ToastController } from 'ionic-angular';
 import { HomePage } from '../pages/home/home';
 import { Events } from 'ionic-angular';
@@ -264,6 +264,7 @@ export class MyApp {
   openLinkupWebsite() {
     this.platform.ready().then(() => {
       let browser = new InAppBrowser('http://linkup.eternussolutions.com/', '_system');
+      browser.show();
     });
   }
 

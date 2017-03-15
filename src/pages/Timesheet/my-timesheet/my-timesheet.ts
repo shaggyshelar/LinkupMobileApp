@@ -33,7 +33,7 @@ export class MyTimesheetPage {
     this.employeeTimesheetService.getMyTimesheets().subscribe((res: any) => {
       this.myTimeSheets = [];
       this.myTimeSheets = res.reverse();
-      console.log(this.myTimeSheets);
+      //console.log(this.myTimeSheets);
       this.isDataReceived = true;
       this.loader.dismiss();
     }, err => {

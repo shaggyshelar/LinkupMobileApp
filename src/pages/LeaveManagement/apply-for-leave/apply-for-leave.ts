@@ -12,7 +12,7 @@ import { HolidayService } from '../services/holiday.service';
 import { LeaveTypeMasterService } from '../../../providers/shared/master/leaveTypeMaster.service';
 
 /** Third Party Dependencies */
-import { FormBuilder, FormGroup, Validators, NgForm } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Observable } from 'rxjs/Rx';
 import * as moment from 'moment/moment';
 import { Toast } from 'ionic-native';
@@ -87,7 +87,8 @@ export class ApplyForLeavePage {
         public actionsheetCtr: ActionSheetController,
         public leaveStatusChanged: Events,
         public modalCtrl: ModalController,
-        private alertCtrl: AlertController
+        private alertCtrl: AlertController,
+        private toastCtrl: ToastController,
     ) {
 
 
@@ -282,6 +283,7 @@ export class ApplyForLeavePage {
 
         }
         this.presentAlert('Leave Added');
+        //this.toastPresent('Leave Added');
         this.removeFocus();
     }
 
@@ -324,7 +326,7 @@ export class ApplyForLeavePage {
         let dayCount = (moment(this.model.end).diff(this.model.start, 'days') + 1);
         if (this.model.leaveType !== null) {
             let weekendCount = 0;
-            let holidayCount = 0;
+            // let holidayCount = 0;
             if (this.model.leaveType.Type === 'Half Day Absent (LWP)' || this.model.leaveType.Type === 'Half Day Leave') {
                 leavevalue = 0.5;
             }
@@ -481,9 +483,16 @@ export class ApplyForLeavePage {
     showToast(message: string) {
         Toast.show(message, '5000', 'center').subscribe(
             toast => {
-                console.log(toast);
+                //console.log(toast);
             }
         );
+    }
+    toastPresent(message: string) {
+        let toast = this.toastCtrl.create({
+            message: message,
+            duration: 5000
+        });
+        toast.present();
     }
 
     presentAlert(msg: string) {
@@ -494,6 +503,4 @@ export class ApplyForLeavePage {
         });
         alert.present();
     }
-
-
 }

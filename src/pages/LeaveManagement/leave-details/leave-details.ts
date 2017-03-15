@@ -19,7 +19,7 @@ public leaveDetails:any;
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad LeaveDetailsPage');
+    //console.log('ionViewDidLoad LeaveDetailsPage');
     
   }
 

@@ -16,7 +16,7 @@ export class EmployeeProjectManagementPage {
   constructor(public navCtrl: NavController, public navParams: NavParams) { }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad EmployeeProjectManagementPage');
+    //console.log('ionViewDidLoad EmployeeProjectManagementPage');
   }
 
 }

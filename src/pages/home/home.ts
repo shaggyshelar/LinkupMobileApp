@@ -135,11 +135,11 @@ export class HomePage {
 
   calculatePieChartParams() {
     var total = parseInt(this.myTimesheetApproved + this.myTimesheetPending + this.myTimesheetSubmitted + this.myTimesheetPartiallyApproved + this.myTimesheetNotSubmitted + this.myTimesheetRejected);
-    this.pieParams[0] = (parseInt(this.myTimesheetApproved)/total)*100;
-    this.pieParams[1] = (parseInt(this.myTimesheetSubmitted)/total)*100;
-    this.pieParams[2] = (parseInt(this.myTimesheetPartiallyApproved)/total)*100;
-    this.pieParams[3] = (parseInt(this.myTimesheetNotSubmitted)/total)*100;
-    this.pieParams[4] = (parseInt(this.myTimesheetRejected)/total)*100;
-    this.pieParams[5] = (parseInt(this.myTimesheetPending)/total)*100;
+    this.pieParams[0] = (parseInt(this.myTimesheetApproved) / total) * 100;
+    this.pieParams[1] = (parseInt(this.myTimesheetSubmitted) / total) * 100;
+    this.pieParams[2] = (parseInt(this.myTimesheetPartiallyApproved) / total) * 100;
+    this.pieParams[3] = (parseInt(this.myTimesheetNotSubmitted) / total) * 100;
+    this.pieParams[4] = (parseInt(this.myTimesheetRejected) / total) * 100;
+    this.pieParams[5] = (parseInt(this.myTimesheetPending) / total) * 100;
   }
 }
