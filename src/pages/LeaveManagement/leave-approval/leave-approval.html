@@ -37,11 +37,11 @@
       <!--<button ion-button *ngIf= "editMode == false" (click)="editleaves()">
         <ion-icon name="logo-buffer"></ion-icon>
       </button>-->
-        <button *ngIf="isshowApproveRejectItems == true" ion-button (click)="selectAllLeaves()" icon-only>
-        <ion-icon name="checkbox"></ion-icon>
+        <button *ngIf="isshowApproveRejectItems == true" ion-button (click)="selectAllLeaves()">
+        All
       </button>
-      <button *ngIf="isshowApproveRejectItems == true"ion-button [disabled] = "leavechecked == false" (click)="approveBulkLeave()" icon-only>
-        <ion-icon name="checkmark"></ion-icon>
+      <button *ngIf="isshowApproveRejectItems == true"ion-button [disabled] = "leavechecked == false" (click)="approveBulkLeave()">
+        Approve
       </button>
        <!--<button *ngIf="isshowApproveRejectItems == true" ion-button [disabled] = "leavechecked == false" (click)="rejectBulkLeave()">
        <ion-icon name="close"></ion-icon>

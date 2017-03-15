@@ -121,8 +121,8 @@ export class LeaveService extends BaseService {
         let options = new RequestOptions({ headers: headers });
         return this.http.post(this.baseUrl + 'Leave/cancel', body, options)
             .map(res => {
-                this.leaveChangedEvent.publish('Delected Leave');
                 this.clearLeaveCache();
+                this.leaveChangedEvent.publish('Delected Leave');
                 return res.json();
             })
             .catch(err => {
@@ -218,7 +218,7 @@ export class LeaveService extends BaseService {
                 observer.next(this._cacheService.get('pendingApproverList'));
             });
         } else {
-            return this.getChildList$('ByStatus/' + status, 0, 0, true).map(res => {
+            return this.getChildList$('ApproverLeaves/' + status, 0, 0, true).map(res => {
                 this._cacheService.set('pendingApproverList', res.json(), { maxAge: 60 * 60 });
                 this._cacheService.set('PendingLeavesApprovalCount', res.json().length, { maxAge: 60 * 60 });
                 return res.json();
@@ -236,8 +236,8 @@ export class LeaveService extends BaseService {
         let options = new RequestOptions({ headers: headers });
         return this.http.put(this.baseUrl + 'LeaveApprovers/ApproveByManager', body, options)
             .map(res => {
+                this.clearLeaveApprvalCache();
                  this.leaveChangedEvent.publish('Approved single Leave');
-                 this.clearLeaveApprvalCache();
                 return res.json();
             })
             .catch(err => {
@@ -253,8 +253,8 @@ export class LeaveService extends BaseService {
         let options = new RequestOptions({ headers: headers });
         return this.http.put(this.baseUrl + 'LeaveApprovers/RejectLeave', body, options)
             .map(res => {
+                 this.clearLeaveApprvalCache();
                  this.leaveChangedEvent.publish('Rejected single Leave');
-                this.clearLeaveApprvalCache();
                 return res.json();
             })
             .catch(err => {
@@ -287,8 +287,8 @@ export class LeaveService extends BaseService {
         let options = new RequestOptions({ headers: headers });
         return this.http.put(this.baseUrl + 'LeaveApprovers/BulkLeaveApproval', body, options)
             .map(res => {
-                 this.leaveChangedEvent.publish('Bulk Approval Leave changed');
                 this.clearLeaveApprvalCache();
+                 this.leaveChangedEvent.publish('Bulk Approval Leave changed');
                 return res.json();
             })
             .catch(err => {
@@ -304,8 +304,8 @@ export class LeaveService extends BaseService {
         let options = new RequestOptions({ headers: headers });
         return this.http.put(this.baseUrl + 'LeaveApprovers/ApproveByHR', body, options)
             .map(res => {
-                this.leaveChangedEvent.publish('Hr Approval Leave changed');
                 this.clearLeaveApprvalCache();
+                this.leaveChangedEvent.publish('Hr Approval Leave changed');
                 return res.json();
             })
             .catch(err => {
@@ -366,8 +366,8 @@ export class LeaveService extends BaseService {
         let options = new RequestOptions({ headers: headers });
         return this.http.post(this.baseUrl + 'LeaveDetails', body, options)
             .map(res => {
-                this.leaveChangedEvent.publish('Applied Leave');
                 this.clearLeaveCache();
+                this.leaveChangedEvent.publish('Applied Leave');
                 return res.json();
             })
             .catch(err => {

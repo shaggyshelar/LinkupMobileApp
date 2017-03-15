@@ -97,7 +97,7 @@ export class AuthService extends BaseService {
             throw new Error('Bad response status: ' + res.status);
         }
         let body = res.json();
-        localStorage.setItem('loggedInUserDetails', JSON.stringify(body));
+        localStorage.setItem('loggedInUserDetails', JSON.stringify(body.EmployeeDetail));
         let dasboardStats = body.DashboardStats;
         if (dasboardStats) {
             if (dasboardStats.MyTimesheetStats) {

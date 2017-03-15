@@ -80,7 +80,7 @@ export class MyLeaveDetailPage {
     this.leaveService.deleteLeaveRecord(leaveTobeCancelled).subscribe(res => {
       if (res) {
         this.spinnerService.stopSpinner();
-        this.leaveStatusChangedEvent.publish('Delected Leave','status');
+       // this.leaveStatusChangedEvent.publish('Delected Leave','status');
         this.navCtrl.pop();
       } else {
         this.spinnerService.stopSpinner();

@@ -21,14 +21,14 @@ export class HomePage {
   public isSearchShow: boolean;
   public myTimesheetPieChart: any;
   public teamTimesheetPieChart: any;
-  public myLeaveTaken: number = 0;
-  public myLeaveBalance: number = 0;
-  public myTimesheetApproved: number = 0;
-  public myTimesheetPending: number = 0;
-  public myTimesheetSubmitted: number = 0;
-  public myTimesheetPartiallyApproved: number = 0;
-  public myTimesheetNotSubmitted: number = 0;
-  public myTimesheetRejected: number = 0;
+  public myLeaveTaken: string = '0';
+  public myLeaveBalance: string = '0';
+  public myTimesheetApproved: string = '0';
+  public myTimesheetPending: string = '0';
+  public myTimesheetSubmitted: string = '0';
+  public myTimesheetPartiallyApproved: string = '0';
+  public myTimesheetNotSubmitted: string = '0';
+  public myTimesheetRejected: string = '0';
   public dasboardStats: any;
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
@@ -47,28 +47,15 @@ export class HomePage {
       'Skill',
       'Ticket'
     ];
-    this.dasboardStats = JSON.parse(localStorage.getItem('loggedInUserDetails')).DashboardStats;
-    if (this.dasboardStats) {
-      if (this.dasboardStats.MyTimesheetStats) {
-        this.myTimesheetApproved = this.dasboardStats.MyTimesheetStats.Approved;
-        this.myTimesheetPending = this.dasboardStats.MyTimesheetStats.Pending;
-        this.myTimesheetSubmitted = this.dasboardStats.MyTimesheetStats.Submitted;
-        this.myTimesheetPartiallyApproved = this.dasboardStats.MyTimesheetStats.PartiallyApproved;
-        this.myTimesheetNotSubmitted = this.dasboardStats.MyTimesheetStats.NotSubmitted;
-        this.myTimesheetRejected = this.dasboardStats.MyTimesheetStats.Rejected;
-      }
-      if (this.dasboardStats.MyLeavesStats) {
-        this.myLeaveBalance = this.dasboardStats.MyLeavesStats.Balance;
-        this.myLeaveTaken = this.dasboardStats.MyLeavesStats.Taken;
-      }
-      if (this.dasboardStats.TeamsTimesheetStats) {
-
-      }
-      if (this.dasboardStats.TeamsLeaveStats) {
-
-      }
-      //TODO: Calculation for Pie Chart According to values
-    }
+    this.myTimesheetApproved = localStorage.getItem('myTimesheetApproved') || '0';
+    this.myTimesheetPending = localStorage.getItem('myTimesheetPending') || '0';
+    this.myTimesheetSubmitted = localStorage.getItem('myTimesheetSubmitted') || '0';
+    this.myTimesheetPartiallyApproved = localStorage.getItem('myTimesheetPartiallyApproved') || '0';
+    this.myTimesheetNotSubmitted = localStorage.getItem('myTimesheetNotSubmitted') || '0';
+    this.myTimesheetRejected = localStorage.getItem('myTimesheetRejected') || '0';
+    this.myLeaveBalance = localStorage.getItem('myLeaveBalance') || '0';
+    this.myLeaveTaken = localStorage.getItem('myLeaveTaken') || '0';
+    //TODO: Calculation for Pie Chart According to values
   }
   showSearch() {
     this.isSearchShow = true;
