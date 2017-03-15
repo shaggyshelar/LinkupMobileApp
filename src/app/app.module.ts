@@ -73,6 +73,9 @@ import { EmployeeTimesheetService, PhasesService, ProjectService, TimesheetServi
 // Direrctives
 import { LimitToDirective } from '../providers/shared/directives/limit-to';
 
+// Pipes
+import { KebabCasePipe } from '../providers/pipes/kebab-case.pipe';
+
 //Custom Components
 import { ProgressBarComponent } from '../components/progress-bar/progress-bar';
 import { CacheService, CacheStorageAbstract, CacheLocalStorage } from 'ng2-cache/ng2-cache';
@@ -126,6 +129,8 @@ import { CacheService, CacheStorageAbstract, CacheLocalStorage } from 'ng2-cache
     SkillSetPage,
 
     LimitToDirective,
+
+    KebabCasePipe,
 
     ProgressBarComponent
 
@@ -185,7 +190,7 @@ import { CacheService, CacheStorageAbstract, CacheLocalStorage } from 'ng2-cache
       provide: ErrorHandler,
       useClass: IonicErrorHandler
     }, 
-    Auth, AuthService, LeaveService, HolidayService, UserService, MessageService, CommonService, LimitToDirective,
+    Auth, AuthService, LeaveService, HolidayService, UserService, MessageService, CommonService, LimitToDirective, KebabCasePipe,
     CacheService, EmployeeTimesheetService, PhasesService, ProjectService, TimesheetService,
     { provide: CacheStorageAbstract, useClass: CacheLocalStorage }]
 })
