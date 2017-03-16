@@ -19,7 +19,7 @@ const CONTEXT = 'Project';
 /** Service Definition */
 @Injectable()
 export class ProjectService extends BaseService {
-    constructor(public http: Http, messageService: MessageService,private _cacheService:CacheService) {
+    constructor(public http: Http, messageService: MessageService, private _cacheService: CacheService) {
         super(http, CONTEXT);
     }
     getProjectList(): Observable<any[]> {
@@ -42,8 +42,7 @@ export class ProjectService extends BaseService {
             .put$(project.Id, project)
             .map(res => res.json());
     }
-
-     getMyProjectsForTimesheet(payload: any) {
+    getMyProjectsForTimesheet(payload: any) {
         if (this._cacheService.exists('projectsForTimesheet')) {
             return new Observable<any>((observer: any) => {
                 observer.next(this._cacheService.get('projectsForTimesheet'));
@@ -53,6 +52,7 @@ export class ProjectService extends BaseService {
             let body = JSON.stringify(payload);
             headers.append('Authorization', 'Bearer ' + localStorage.getItem('accessToken'));
             headers.append('Content-Type', 'application/json');
+
             let options = new RequestOptions({ headers: headers });
             return this.http.post(this.baseUrl + 'Project/GetMyProjectsForTimesheet', body, options)
                 .map(res => {
@@ -63,5 +63,6 @@ export class ProjectService extends BaseService {
                     return this.handleError(err);
                 });
         }
+
     }
 }

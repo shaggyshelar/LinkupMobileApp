@@ -6,7 +6,7 @@ import { ApproveTimesheetDetailsPage } from '../approve-timesheet-details/approv
 import { EmployeeTimesheetService } from '../index';
 import { AuthService } from '../../../providers/index';
 import { EmployeeTimeSheet } from '../models/employee-timesheet.model';
-import { AlertController } from 'ionic-angular';
+import { AlertController, Events } from 'ionic-angular';
 import { ApproveTimesheetFilterPage } from '../approve-timesheet-filter/approve-timesheet-filter';
 import { SpinnerService } from '../../../providers/index';
 
@@ -45,6 +45,7 @@ export class ApproveTimesheetPage {
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
     private employeeTimesheetService: EmployeeTimesheetService,
+    public timesheetChangedEvent: Events,
     private spinnerService: SpinnerService,
     private auth: AuthService,
     public loadingCtrl: LoadingController,
@@ -54,6 +55,12 @@ export class ApproveTimesheetPage {
     public toastCtrl: ToastController) {
     this.isAuthorized = this.auth.checkPermission('TIMESHEET.APPROVETIMESHEETS.MANAGE');
     this.isBulkApprovePermission = this.auth.checkPermission('TIMESHEET.BULK_APPROVAL.MANAGE');
+    this.timesheetChangedEvent.subscribe('Timesheet Rejected', () => {
+      this.getPendingTimesheetsToApprove();
+    });
+    this.timesheetChangedEvent.subscribe('Timesheet Approved', () => {
+      this.getPendingTimesheetsToApprove();
+    });
     this.timesheetReport = {};
   }
 
