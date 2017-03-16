@@ -178,6 +178,9 @@ export class MyApp {
     }
 
     this.pages.push({ title: 'Timesheets', component: MyTimesheetPage, icon: 'md-clock' });
+    this.pages.push({ title: 'Manage My Projects', component: ManageMyProjectsPage, icon: 'calendar'},
+        { title: 'Employee Project Management', component: EmployeeProjectManagementPage, icon: 'contacts'})
+
   }
 
   initializeApp() {
@@ -363,28 +366,7 @@ export class MyApp {
 
   /** Get Pending approval counts */
   getPendingApprovalCount() {
-    // this.leaveService.getLeaveByStatus('Pending')
-    //   .subscribe(
-    //   (res: any) => {
-    //   },
-    //   error => {
-    //   });
-
-    // this.timesheetService.getApproverPendingTimesheets()
-    //   .subscribe(
-    //   (res: any) => {
-    //   },
-    //   error => {
-    //   });
-    // this.pendingCount = 0;
-    // if (this._cacheService.exists('PendingLeavesApprovalCount')) {
-    //   this.pendingCount = this.pendingCount + parseInt(this._cacheService.get('PendingLeavesApprovalCount'));
-    // };
-    // if (this._cacheService.exists('PendingTimesheetApprovalCount')) {
-    //   this.pendingCount = this.pendingCount + parseInt(this._cacheService.get('PendingLeavesApprovalCount'));
-    // }
-
-
+    
     this.pendingCount = 0;
     this.pendingCount = parseInt(localStorage.getItem('PendingLeavesApprovalCount')) + parseInt(localStorage.getItem('PendingTimesheetApprovalCount'));
     this.myTimesheetCount = parseInt(localStorage.getItem('myTimesheetPending'));;

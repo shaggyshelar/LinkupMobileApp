@@ -67,8 +67,14 @@ import { HolidayService } from '../pages/LeaveManagement/index';
 import { UserService } from '../pages/LeaveManagement/index';
 import { MessageService } from '../providers/index';
 import { CommonService } from '../providers/index';
-import { EmployeeTimesheetService, PhasesService, ProjectService, TimesheetService } from '../pages/Timesheet/index';
-
+import { EmployeeTimesheetService, TimesheetService } from '../pages/Timesheet/index';
+import { PhasesService, ProjectService } from '../pages/Projects/index';
+import { ClientService } from '../providers/shared/master/client.service';
+import { ProjectTypeService } from '../providers/shared/master/projectType.service';
+import { ProjectCategoryService } from '../providers/shared/master/projectCategory.service';
+import { DeliveryUnitService} from '../providers/shared/master/deliveryUnit.service';
+import { DeliveryModelService } from '../providers/shared/master/deliveryModel.service';
+import { PriceTypeService } from '../providers/shared/master/priceType.service';
 
 // Direrctives
 import { LimitToDirective } from '../providers/shared/directives/limit-to';
@@ -191,7 +197,7 @@ import { CacheService, CacheStorageAbstract, CacheLocalStorage } from 'ng2-cache
       useClass: IonicErrorHandler
     }, 
     Auth, AuthService, LeaveService, HolidayService, UserService, MessageService, CommonService, LimitToDirective, KebabCasePipe,
-    CacheService, EmployeeTimesheetService, PhasesService, ProjectService, TimesheetService,
+    CacheService, EmployeeTimesheetService, ClientService, ProjectTypeService, PriceTypeService, ProjectCategoryService, DeliveryUnitService, DeliveryModelService, PhasesService, ProjectService, TimesheetService,
     { provide: CacheStorageAbstract, useClass: CacheLocalStorage }]
 })
 export class AppModule { }
