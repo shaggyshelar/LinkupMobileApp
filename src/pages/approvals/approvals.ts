@@ -34,7 +34,7 @@ export class ApprovalsPage {
     //   this.leavesToApproveCount = this._cacheService.get('PendingLeavesApprovalCount');
 
     // };
-    this.leavesToApproveCount = localStorage.getItem('approvedLeaveCount');
+    this.leavesToApproveCount = localStorage.getItem('PendingLeavesApprovalCount');
     this.approveTimesheetsBadgeCount = parseInt(localStorage.getItem('PendingTimesheetApprovalCount'));
 
   }
