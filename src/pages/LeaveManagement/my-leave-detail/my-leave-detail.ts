@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, AlertController, Events } from 'ionic-angular';
+import { NavController, NavParams, AlertController, Events , ToastController } from 'ionic-angular';
 //import { LeaveDetail } from '../models/leaveDetail';
 import { LeaveService } from '../index';
 import { Leave } from '../models/leave';
@@ -36,7 +36,8 @@ export class MyLeaveDetailPage {
     public leaveService: LeaveService,
     public spinnerService: SpinnerService,
     public alertCtrl: AlertController,
-    public leaveStatusChangedEvent: Events) {
+    public leaveStatusChangedEvent: Events,
+    public toastCtrl:ToastController) {
     this.leaveid = navParams.get('leaveid');
     this.selectedLeave = navParams.get('leave');
     this.today = new Date();
@@ -92,7 +93,7 @@ export class MyLeaveDetailPage {
       if (res) {
         this.spinnerService.stopSpinner();
         // this.leaveStatusChangedEvent.publish('Delected Leave','status');
-        this.showToast('Leave Canceled');
+        this.toastPresent('Leave Canceled');
         this.navCtrl.pop();
       } else {
         this.spinnerService.stopSpinner();
@@ -120,6 +121,14 @@ export class MyLeaveDetailPage {
     });
     confirm.present();
   }
+
+  toastPresent(message: string) {
+        let toast = this.toastCtrl.create({
+            message: message,
+            duration: 5000
+        });
+        toast.present();
+    }
 
   showToast(message: string) {
     Toast.show(message, '5000', 'center').subscribe(

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, ActionSheetController, ModalController } from 'ionic-angular';
+import { NavController, NavParams, ActionSheetController, ModalController,ToastController } from 'ionic-angular';
 import { LeaveService } from '../index';
 import { Observable } from 'rxjs/Rx';
 import { Leave } from '../models/leave';
@@ -38,7 +38,8 @@ export class MyLeavesPage {
     public alertCtrl: AlertController,
     public actionSheetCtrl: ActionSheetController,
     public modalCtrl: ModalController,
-    public leaveChangeEvent: Events) {
+    public leaveChangeEvent: Events,
+    public toastCtrl:ToastController) {
 
     this.leaveChangeEvent.subscribe('Delected Leave', () => {
       this.getMyLeaves();
@@ -137,9 +138,9 @@ export class MyLeavesPage {
     this.leaveService.deleteLeaveRecord(leaveTobeCancelled).subscribe(res => {
       if (res) {
         //this.getMyLeaves();
-        this.showToast('Leave Canceled');
+        this.toastPresent('Leave Canceled');
       } else {
-        this.showToast('Failed to cancel leave');
+        this.toastPresent('Failed to cancel leave');
       }
     });
   }
@@ -229,6 +230,13 @@ export class MyLeavesPage {
     actionSheet.present();
   }
 
+ toastPresent(message: string) {
+        let toast = this.toastCtrl.create({
+            message: message,
+            duration: 5000
+        });
+        toast.present();
+    }
   showToast(message: string) {
     Toast.show(message, '5000', 'center').subscribe(
       toast => {

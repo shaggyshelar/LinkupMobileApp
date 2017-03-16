@@ -77,14 +77,11 @@
 </form>
 
 <button ion-button class="add-leave-button"  [disabled]="!isCommentValid  || this.isValidationMessage || this.itsWeekend" (click)="onAddLeave()"> Add Leaves </button>
-<ion-list *ngIf="this.addLeaveArr.length>0">
-  
+<ion-list *ngIf="addLeaveArr.length>0">
   <ion-item >
     Added Leaves
   </ion-item>
-  <ion-item-sliding *ngFor="let leave of addLeaveArr" #slidingItem>
-
-         <ion-item ion-item >
+         <ion-item ion-item  *ngFor="let leave of addLeaveArr">
           <h3>{{leave.LeaveType.Value}}</h3>
           <p>
             {{leave.StartDate | date:"MM/dd/yyyy"}} &mdash;
@@ -96,12 +93,7 @@
           </p>
           
           <ion-badge item-right>{{leave.NumberOfLeaves | number : '1.1-3' }}</ion-badge>
+          <ion-icon name="close" item-right (click)="cancelLeave(leave)"></ion-icon>
         </ion-item>
-         <ion-item-options *ngIf="leave.Status == 'Pending'">
-        <button ion-button color="favorite" (click)="cancelLeave(slidingItem, leave)">
-            Cancel
-          </button>
-      </ion-item-options>
-  </ion-item-sliding>
 </ion-list>
 </ion-content>

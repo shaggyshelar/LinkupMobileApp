@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, Events } from 'ionic-angular';
+import { NavController, NavParams, Events , ToastController} from 'ionic-angular';
 //import { Leave } from '../models/leave';
 //import { LeaveDetail } from '../models/leaveDetail';
 import { SpinnerService } from '../../../providers/index';
@@ -41,7 +41,8 @@ export class LeaveApprovalDetailPage {
         public leaveService: LeaveService,
         public spinnerService: SpinnerService,
         public formBuilder: FormBuilder,
-        public leaveStatusChangedEvent: Events) {
+        public leaveStatusChangedEvent: Events,
+        public toastCtrl:ToastController) {
         this.leave = navParams.get('leave');
         this.leaveID = this.leave.LeaveRequestMasterId;
         this.comment = '';
@@ -110,16 +111,16 @@ export class LeaveApprovalDetailPage {
                 .subscribe(res => {
                     if (res) {
                         this.spinnerService.stopSpinner();
-                        this.showToast('Leave is approved successfully!');
+                        this.toastPresent('Leave is approved successfully!');
                         //this.leaveStatusChangedEvent.publish('Changed Leave Status', 'status');
                         this.navCtrl.pop();
                     } else {
-                        this.showToast('Failed to approve Leave.');
+                        this.toastPresent('Failed to approve Leave.');
                         this.spinnerService.stopSpinner();
                     }
                 },
                 error => {
-                    this.showToast('Failed to approve Leave.');
+                    this.toastPresent('Failed to approve Leave.');
                     this.spinnerService.stopSpinner();
                 });
         }
@@ -142,19 +143,27 @@ export class LeaveApprovalDetailPage {
                 .subscribe(res => {
                     if (res) {
                         this.spinnerService.stopSpinner();
-                        this.showToast('Leave is rejcted successfully!');
+                        this.toastPresent('Leave is rejcted successfully!');
                         //this.leaveStatusChangedEvent.publish('Changed Leave Status', 'status');
                         this.navCtrl.pop();
                     } else {
-                        this.showToast('Failed to reject Leave!');
+                        this.toastPresent('Failed to reject Leave!');
                         this.spinnerService.stopSpinner();
                     }
                 },
                 error => {
-                    this.showToast('Failed to reject Leave!');
+                    this.toastPresent('Failed to reject Leave!');
                     this.spinnerService.stopSpinner();
                 });
         }
+    }
+
+    toastPresent(message: string) {
+        let toast = this.toastCtrl.create({
+            message: message,
+            duration: 5000
+        });
+        toast.present();
     }
 
     showToast(message: string) {

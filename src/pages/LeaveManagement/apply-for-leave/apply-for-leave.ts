@@ -243,17 +243,18 @@ export class ApplyForLeavePage {
                 this.spinnerService.stopSpinner();
                 //this.leaveStatusChanged.publish('Applied Leave', 'status');
                 MessageService.addMessage({ severity: 'success', summary: 'Success', detail: MessageService.APPLY_LEAVE_2 });
-                this.showToast(MessageService.APPLY_LEAVE_2);
+               // this.showToast(MessageService.APPLY_LEAVE_2);
+               this.toastPresent('Leave Applied successfully');
                 this.navCtrl.pop();
             } else {
                 this.spinnerService.stopSpinner();
-                this.showToast(MessageService.REQUEST_FAILED);
+                this.toastPresent('Leave Applied successfully');
                 MessageService.addMessage({ severity: 'error', summary: 'Failed', detail: MessageService.REQUEST_FAILED });
             }
         });
     }
 
-    cancelLeave(slidingItem: ItemSliding, leaveData: any) {
+    cancelLeave(leaveData: any) {
        var selectedIndex = this.addLeaveArr.indexOf(leaveData);
        this.addLeaveArr.splice(selectedIndex,1);
     }
