@@ -6,6 +6,7 @@ import { Http, Headers, RequestOptions } from '@angular/http';
 /** Third Party Dependencies */
 import { Observable } from 'rxjs/Rx';
 import 'rxjs/add/operator/map';
+import { CacheService } from 'ng2-cache/ng2-cache';
 
 /** Module Level Dependencies */
 import { BaseService } from '../../../providers/shared';
@@ -18,7 +19,7 @@ const CONTEXT = 'Project';
 /** Service Definition */
 @Injectable()
 export class ProjectService extends BaseService {
-    constructor(public http: Http, messageService: MessageService) {
+    constructor(public http: Http, messageService: MessageService, private _cacheService: CacheService) {
         super(http, CONTEXT);
     }
     getProjectList(): Observable<any[]> {
@@ -42,28 +43,26 @@ export class ProjectService extends BaseService {
             .map(res => res.json());
     }
     getMyProjectsForTimesheet(payload: any) {
-        // if (this._cacheService.exists('projectsForTimesheet')) {
-        //     return new Observable<any>((observer: any) => {
-        //         observer.next(this._cacheService.get('projectsForTimesheet'));
-        //     });
-        // } else {
+        if (this._cacheService.exists('projectsForTimesheet')) {
+            return new Observable<any>((observer: any) => {
+                observer.next(this._cacheService.get('projectsForTimesheet'));
+            });
+        } else {
             let headers = new Headers();
             let body = JSON.stringify(payload);
             headers.append('Authorization', 'Bearer ' + localStorage.getItem('accessToken'));
             headers.append('Content-Type', 'application/json');
-            // let windowRef = this._window();
-            // windowRef['App'].blockUI();
+
             let options = new RequestOptions({ headers: headers });
             return this.http.post(this.baseUrl + 'Project/GetMyProjectsForTimesheet', body, options)
                 .map(res => {
-                    // this._cacheService.set('projectsForTimesheet', res.json(), { maxAge: 60 * 60 });
-                    // windowRef['App'].unblockUI();
+                    this._cacheService.set('projectsForTimesheet', res.json(), { maxAge: 60 * 60 });
                     return res.json();
                 })
                 .catch(err => {
-                    // windowRef['App'].unblockUI();
                     return this.handleError(err);
                 });
-        // }
+        }
+
     }
 }
