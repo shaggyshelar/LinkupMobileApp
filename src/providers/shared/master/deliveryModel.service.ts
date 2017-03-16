@@ -5,7 +5,7 @@ import { Http } from '@angular/http';
 /** Module Level Dependencies */
 import { BaseService } from '../../index';
 /** Context for service calls */
-const CONTEXT = 'deliveryModelMaster';
+const CONTEXT = 'deliverymodel';
 
 /** Service Definition */
 @Injectable()
