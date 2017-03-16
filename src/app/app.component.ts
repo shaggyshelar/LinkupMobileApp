@@ -178,6 +178,9 @@ export class MyApp {
     }
 
     this.pages.push({ title: 'Timesheets', component: MyTimesheetPage, icon: 'md-clock' });
+    this.pages.push({ title: 'Manage My Projects', component: ManageMyProjectsPage, icon: 'calendar'},
+        { title: 'Employee Project Management', component: EmployeeProjectManagementPage, icon: 'contacts'})
+
   }
 
   initializeApp() {
