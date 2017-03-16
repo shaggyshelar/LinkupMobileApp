@@ -1,6 +1,6 @@
 /** Angular Dependencies */
 import { Injectable } from '@angular/core';
-import { Http } from '@angular/http';
+import { Http, Headers, RequestOptions } from '@angular/http';
 // import { Router } from '@angular/router';
 
 /** Third Party Dependencies */
@@ -40,5 +40,30 @@ export class ProjectService extends BaseService {
         return this
             .put$(project.Id, project)
             .map(res => res.json());
+    }
+    getMyProjectsForTimesheet(payload: any) {
+        // if (this._cacheService.exists('projectsForTimesheet')) {
+        //     return new Observable<any>((observer: any) => {
+        //         observer.next(this._cacheService.get('projectsForTimesheet'));
+        //     });
+        // } else {
+            let headers = new Headers();
+            let body = JSON.stringify(payload);
+            headers.append('Authorization', 'Bearer ' + localStorage.getItem('accessToken'));
+            headers.append('Content-Type', 'application/json');
+            // let windowRef = this._window();
+            // windowRef['App'].blockUI();
+            let options = new RequestOptions({ headers: headers });
+            return this.http.post(this.baseUrl + 'Project/GetMyProjectsForTimesheet', body, options)
+                .map(res => {
+                    // this._cacheService.set('projectsForTimesheet', res.json(), { maxAge: 60 * 60 });
+                    // windowRef['App'].unblockUI();
+                    return res.json();
+                })
+                .catch(err => {
+                    // windowRef['App'].unblockUI();
+                    return this.handleError(err);
+                });
+        // }
     }
 }
