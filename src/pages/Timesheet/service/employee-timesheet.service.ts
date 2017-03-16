@@ -5,6 +5,7 @@ import { Http, Headers, RequestOptions } from '@angular/http';
 /** Third Party Dependencies */
 import { CacheService } from 'ng2-cache/ng2-cache';
 import { Observable } from 'rxjs/Rx';
+import { Events } from 'ionic-angular';
 import 'rxjs/add/operator/map';
 
 /** Module Level Dependencies */
@@ -55,6 +56,7 @@ export class EmployeeTimesheetService extends BaseService {
     };
 
     constructor(public http: Http, messageService: MessageService, public _cacheService: CacheService
+    , public timesheetChangedEvent: Events
     ) {
         super(http, CONTEXT);
     }
@@ -129,6 +131,8 @@ export class EmployeeTimesheetService extends BaseService {
         let options = new RequestOptions({ headers: headers });
         return this.http.post(this.baseUrl + '/EmployeeTimesheet/Approve ', body, options)
             .map(res => {
+                this._cacheService.remove('approverPendingTimesheets');
+                this.timesheetChangedEvent.publish('Timesheet Approved');
                 return res.json();
             })
             .catch(err => {
@@ -143,6 +147,8 @@ export class EmployeeTimesheetService extends BaseService {
         let options = new RequestOptions({ headers: headers });
         return this.http.post(this.baseUrl + '/EmployeeTimesheet/Reject ', body, options)
             .map(res => {
+                this._cacheService.remove('approverPendingTimesheets');
+                this.timesheetChangedEvent.publish('Timesheet Rejected');
                 return res.json();
             })
             .catch(err => {
@@ -179,50 +185,6 @@ export class EmployeeTimesheetService extends BaseService {
         // return new Observable<any>((observer: any) => {
         //     observer.next(this.MytimesheetStub);
         // });
-    }
-
-    /** SubmitDailySheet API Service Call
-     *  TODO: Change API URL
-     */
-    submitDailyTimesheet(payload: any) {
-        let headers = new Headers();
-        let body = JSON.stringify(payload);
-        headers.append('Authorization', 'Bearer ' + localStorage.getItem('accessToken'));
-        headers.append('Content-Type', 'application/json');
-        // let windowRef = this._window();              used for loader
-        // windowRef['App'].blockUI();
-        let options = new RequestOptions({ headers: headers });
-        return this.http.post(this.baseUrl + 'LeaveDetails', body, options)
-            .map(res => {
-                // windowRef['App'].unblockUI();
-                return res.json();
-            })
-            .catch(err => {
-                // windowRef['App'].unblockUI();
-                return this.handleError(err);
-            });
-    }
-
-    /** submitWeeklyTimesheetForApproval API Service Call
-     *  TODO: Change API URL
-     */
-    submitWeeklyTimesheetForApproval(payload: any) {
-        let headers = new Headers();
-        let body = JSON.stringify(payload);
-        headers.append('Authorization', 'Bearer ' + localStorage.getItem('accessToken'));
-        headers.append('Content-Type', 'application/json');
-        // let windowRef = this._window();
-        // windowRef['App'].blockUI();
-        let options = new RequestOptions({ headers: headers });
-        return this.http.post(this.baseUrl + 'LeaveDetails', body, options)
-            .map(res => {
-                // windowRef['App'].unblockUI();
-                return res.json();
-            })
-            .catch(err => {
-                // windowRef['App'].unblockUI();
-                return this.handleError(err);
-            });
     }
 
 }
