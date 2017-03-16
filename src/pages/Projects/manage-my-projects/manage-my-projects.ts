@@ -1,5 +1,9 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
+import { ProjectService } from '../index';
+import { Project } from '../models/project';
+/** Component Declaration */
+import { Observable } from 'rxjs/Rx';
 
 /*
   Generated class for the ManageMyProjects page.
@@ -9,14 +13,25 @@ import { NavController, NavParams } from 'ionic-angular';
 */
 @Component({
   selector: 'page-manage-my-projects',
-  templateUrl: 'manage-my-projects.html'
+  templateUrl: 'manage-my-projects.html',
+  providers:[ProjectService]
 })
 export class ManageMyProjectsPage {
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) { }
+projectList: Observable<Project[]>;
+  constructor(public navCtrl: NavController, 
+  public navParams: NavParams,
+   private projectService: ProjectService) { 
+   
+   }
 
   ionViewDidLoad() {
     //console.log('ionViewDidLoad ManageMyProjectsPage');
+    this.getActiveProjects();
+  }
+  getActiveProjects()
+  {
+     this.projectList = this.projectService.getProjectList();
   }
 
 }
