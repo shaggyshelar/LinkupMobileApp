@@ -103,7 +103,7 @@ export class LeaveApprovalDetailPage {
             var params = {
                 Comments: this.comment.trim(),
                 Status: 'Approved',
-                LeaveRequestRefId: this.leaveID
+                LeaveRequestRefId: this.leaveID,
             };
             this.spinnerService.createSpinner('Please wait..');
             this.leaveService.singleLeaveApprove(params)
@@ -133,7 +133,9 @@ export class LeaveApprovalDetailPage {
             var params = {
                 Comments: this.comment.trim(),
                 Status: 'Rejected',
-                LeaveRequestRefId: this.leaveID
+                LeaveRequestRefId: this.leaveID,
+                startdate:this.leave.StartDate,
+                enddate:this.leave.EndDate
             };
 
             this.leaveService.singleLeaveReject(params)

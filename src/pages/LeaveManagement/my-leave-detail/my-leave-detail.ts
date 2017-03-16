@@ -76,7 +76,17 @@ export class MyLeaveDetailPage {
     let leaveTobeCancelled = {
       Status: 'Cancelled',
       LeaveRequestMasterId: this.leaveid,
-      ID: this.selectedLeave.ID
+      ID: this.selectedLeave.ID,
+      startdate:this.selectedLeave.StartDate,
+      enddate:this.selectedLeave.EndDate,
+      LeaveTotal:this.selectedLeave.LeaveTotal,
+      FloatingHolidayTotal:this.selectedLeave.FloatingHolidayTotal,
+      HalfdayLeaveTotal:this.selectedLeave.HalfdayLeaveTotal,
+      AbsentTotal:this.selectedLeave.AbsentTotal,
+      HalfdayAbsentTotal:this.selectedLeave.HalfdayAbsentTotal,
+      MaternityLeaveTotal:this.selectedLeave.MaternityLeaveTotal,
+      PaternityLeaveTotal:this.selectedLeave.PaternityLeaveTotal,
+      MarriageLeaveTotal:this.selectedLeave.MarriageLeaveTotal,
     };
     this.leaveService.deleteLeaveRecord(leaveTobeCancelled).subscribe(res => {
       if (res) {

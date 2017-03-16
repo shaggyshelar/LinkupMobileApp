@@ -29,6 +29,7 @@ export class LeaveApprovalPage {
   public userPermissions: any[];
   public isBulkApprovePermission: boolean;
   public selectedLeaveID: string;
+  public selectedLeave:any;
   public isMoreclicked: boolean;
   public isHrApprove: boolean;
   public leavechecked: boolean;
@@ -154,6 +155,7 @@ export class LeaveApprovalPage {
     this.isMoreclicked = true;
     if (leave.Status == 'Approved' || leave.Status == 'Rejected' || leave.Status == 'Cancelled')
       return;
+    this.selectedLeave = leave;  
     let actbuttons: any[] = [
       {
         text: 'Approve',
@@ -175,6 +177,7 @@ export class LeaveApprovalPage {
       },
       {
         text: 'HR Approve',
+        icon: 'checkmark',
         handler: () => {
           this.selectedLeaveID = leaveID;
           this.isHrApprove = true;
@@ -351,7 +354,9 @@ export class LeaveApprovalPage {
     var params = {
       LeaveRequestRefId: this.selectedLeaveID,
       Comments: this.comment,
-      Status: 'Rejected'
+      Status: 'Rejected',
+      startdate:this.selectedLeave.StartDate,
+      enddate:this.selectedLeave.EndDate
     };
 
     this.leaveService.singleLeaveReject(params)
