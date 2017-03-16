@@ -1,7 +1,7 @@
 /** Angular Dependencies */
 import { Injectable } from '@angular/core';
 import { Http, Headers, RequestOptions } from '@angular/http';
-import { Router } from '@angular/router';
+//import { Router } from '@angular/router';
 import { CacheService } from 'ng2-cache/ng2-cache';
 
 /** Third Party Dependencies */

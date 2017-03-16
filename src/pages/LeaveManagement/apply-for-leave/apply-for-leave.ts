@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, ActionSheetController, ModalController, Events, AlertController, ToastController, ItemSliding } from 'ionic-angular';
+import { NavController, NavParams, ActionSheetController, ModalController, Events, AlertController, ToastController } from 'ionic-angular';
 import { LeaveDetailsPage } from '../leave-details/leave-details';
 import { LeaveService } from '../index';
 import { Leave } from '../models/leave';
