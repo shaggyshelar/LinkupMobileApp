@@ -22,14 +22,14 @@
       <button ion-button clear class="left-align"><ion-icon name="arrow-dropleft" class="left-align"></ion-icon></button>
     </ion-col>
     <ion-col width-80>
-      <ion-label class="center-align"> 05/03/2017 - 11/03/2017</ion-label>
+      <ion-label class="center-align"> {{weekStartDate | date:'d/M'}} - {{weekEndDate | date:'d/M'}}</ion-label>
     </ion-col>
     <ion-col width-10>
       <button ion-button clear class="right-align"><ion-icon name="arrow-dropright" class="right-align"></ion-icon></button>
     </ion-col>
   </ion-row>
 
-  <ion-card *ngFor="let rec of projectCount; let i = index" (click)="cardClick(i)">
+  <ion-card *ngFor="let timesheet of timesheetList; let i = index" (click)="cardClick(i)">
     <ion-row>
       <ion-col width-90></ion-col>
       <ion-col width-10>
@@ -39,17 +39,15 @@
 
     <ion-item>
       <ion-label>Project</ion-label>
-      <ion-select [(ngModel)]="project" [ngModel]="project" (ngModelChange)="projectChanged($event)">
-        <ion-option [value]="null">Select</ion-option>
-        <ion-option *ngFor="let proj of projects" [value]="proj">{{proj.ProjectSummary}}</ion-option>
+      <ion-select [(ngModel)]="timesheet.Project" (ngModelChange)="projectChanged(timesheet.Project, i)">
+        <ion-option *ngFor="let proj of projectList" [value]="proj">{{proj.label}}</ion-option>
       </ion-select>
     </ion-item>
 
     <ion-item>
       <ion-label>Task</ion-label>
-      <ion-select [(ngModel)]="phase" [ngModel]="phase" (ngModelChange)="phaseChanged($event)">
-        <ion-option [value]="null">Select</ion-option>
-        <ion-option *ngFor="let phse of phases" [value]="phse">{{phse.PhaseName}}</ion-option>
+      <ion-select [(ngModel)]="timesheet.Task" (ngModelChange)="phaseChanged(timesheet.Task, i)">
+        <ion-option *ngFor="let phse of tasksList[i]" [value]="phse">{{phse.label}}</ion-option>
       </ion-select>
     </ion-item>
     <ion-item>

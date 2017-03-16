@@ -4,7 +4,11 @@ import { AlertController } from 'ionic-angular';
 import { LoadingController } from 'ionic-angular';
 import { Observable } from 'rxjs/Rx';
 
+import * as moment from 'moment'
+
 import { PhasesService, ProjectService } from '../index';
+
+import { Timesheet } from '../models/timesheet.model';
 
 import { TimesheetDetailsPage } from '../timesheet-details/timesheet-details';
 
@@ -20,45 +24,53 @@ export class EnterTimesheetPage {
 
   project: any = '';
   phase: any = '';
-  currentTaskIndex = 0;
-  cardSelectionIndex: Number;
+  currentTaskIndex: number = 0;
+  cardSelectionIndex: number;
 
   projectData: any = {};
 
+  /** New Approach */
+  timesheetList: any[];
+  weekStartDate: any = {};
+  weekEndDate: any = {};
+  projectList: any[];
+  tasksList: any[];
+  //
 
   constructor(public navCtrl: NavController, public navParams: NavParams
     , public alertCtrl: AlertController
     , public phasesService: PhasesService
     , public projectService: ProjectService
     , public loadingCtrl: LoadingController
-  ) { this.project = {} }
-
-  ionViewDidLoad() {
-
+  ) {
+    this.weekStartDate = moment().add(0, 'weeks').isoWeekday(1);
+    this.weekEndDate = moment().add(1, 'weeks').isoWeekday(0);
+    this.projectList = [];
+    this.timesheetList = [];
+    this.tasksList = [];
   }
 
-  getProjects() {
-    var loader = this.loadingCtrl.create({
-      content: 'Please wait...'
-    });
-
-    loader.present().then(() => {
-      this.projectService.getProjectList().subscribe((res) => {
-        if (res)
-          this.projects = res;
-        loader.dismiss();
-      }, (err) => {
-        loader.dismiss();
-      });
-    });
-
+  ionViewDidLoad() {
   }
 
   addProjectClicked() {
+    this.pushTimeSheet();
     this.getProjects();
-    this.projectCount.push({ project: null, phase: null });
-    this.currentTaskIndex = this.projectCount.length - 1;
-    // this.projectCount.push(this.projectCount.length);
+  }
+
+  pushTimeSheet() {
+    let time = new Timesheet(null, null, '', '', '', '', '', '', '', '',
+      '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', 0);
+    this.timesheetList.push(time);
+  }
+
+  getProjects() {
+    this.projectService.getMyProjectsForTimesheet({ Date: this.weekStartDate }).subscribe(res => {
+      this.projectList.push({ label: 'Select', value: null });
+      for (var index in res) {
+        this.projectList.push({ label: res[index].Title, value: res[index] });
+      }
+    });
   }
 
   closeClicked(i) {
@@ -76,6 +88,7 @@ export class EnterTimesheetPage {
           text: 'Yes',
           handler: () => {
             this.projectCount.splice(i, 1);
+            this.currentTaskIndex--;
           }
         }
       ]
@@ -83,27 +96,19 @@ export class EnterTimesheetPage {
     alert.present();
   }
 
-  projectChanged(event) {
-    var loader = this.loadingCtrl.create({
-      content: 'Please wait...'
-    });
-
-    loader.present().then(() => {
-      this.phasesService.getPhasesByProject(this.project).subscribe((res) => {
-        if (res)
-          this.phases = res;
-        loader.dismiss();
-      }, (err) => {
-        loader.dismiss();
-      });
+  projectChanged(event, index) {
+    this.tasksList[index] = [];
+    this.phasesService.getPhasesByProject(event.value).subscribe((res: any) => {
+      this.tasksList[index].push({ label: 'Select', value: null });
+      for (var i in res) {
+        this.tasksList[index].push({ label: res[i].PhaseName, value: res[i].PhaseName });
+      }
     });
   }
 
-  phaseChanged(event) {
-    this.projectCount.push({
-      project: this.project,
-      phase: this.phase
-    });
+  phaseChanged(event, i) {
+    this.projectCount[i] = { phase: event };
+    this.currentTaskIndex = i;
   }
 
   cardClick(index) {
