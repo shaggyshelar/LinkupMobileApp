@@ -10,12 +10,153 @@
     <button ion-button icon-only menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
-    <ion-title>Employy Project Management</ion-title>
+    <ion-title>Employee Project Management</ion-title>
   </ion-navbar>
 
 </ion-header>
 
 
 <ion-content padding>
-
+  <form [formGroup]="complexForm">
+   <ion-list>
+    <ion-item>
+      <ion-label floating>Client Name <span class="required">*</span></ion-label>
+      <ion-select name="selectClientName" [(ngModel)]="ProjectDetails.ClientName" formControlName="clientname" [class.invalid]="!complexForm.controls.clientname.valid">
+        <ion-option *ngFor="let client of clients" value={{client.value}}>{{client.label}}</ion-option>
+      </ion-select>
+    </ion-item>
+    <p *ngIf="!complexForm.controls.clientname.valid" class="error">Please select client name</p>
+    <ion-item>
+      <ion-label floating>Billable/Non-Billable <span class="required">*</span></ion-label>
+      <ion-select name="selectBillable" [(ngModel)]="ProjectDetails.Billable" formControlName="billable" [class.invalid]="!complexForm.controls.billable.valid">
+        <ion-option *ngFor="let bill of billTypes" value={{bill.value}}>{{bill.label}}</ion-option>
+      </ion-select>
+    </ion-item>
+    <p *ngIf="!complexForm.controls.billable.valid" class="error">Please select Billable/Non-Billable</p>
+    <ion-item>
+      <ion-label floating>Project Name <span class="required">*</span></ion-label>
+      <ion-input type="text" name="txtProject" [(ngModel)]="ProjectDetails.ProjectName" formControlName="projectname" [class.invalid]="!complexForm.controls.projectname.valid"></ion-input>
+    </ion-item>
+    <p *ngIf="!complexForm.controls.projectname.valid" class="error">Please enter project name</p>
+    <ion-item>
+      <ion-label floating>Project Summary</ion-label>
+      <ion-textarea></ion-textarea>
+    </ion-item>
+    <ion-item>
+      <ion-label floating>Project Manager <span class="required">*</span></ion-label>
+      <ion-input type="text" name="txtProjectmanager" [(ngModel)]="ProjectDetails.ProjectManager" formControlName="projectmanager" [class.invalid]="!complexForm.controls.projectmanager.valid"></ion-input>
+    </ion-item>
+    <p *ngIf="!complexForm.controls.projectmanager.valid" class="error">Please enter project manager</p>
+    <ion-item>
+      <ion-label floating>Project Type <span class="required">*</span></ion-label>
+      <ion-select name="txtProjecttype" [(ngModel)]="ProjectDetails.ProjectType" formControlName="projecttype" [class.invalid]="!complexForm.controls.projecttype.valid">
+        <ion-option *ngFor="let proj of projectType" value={{proj.value}}>{{proj.label}}</ion-option>
+      </ion-select>
+    </ion-item>
+    <p *ngIf="!complexForm.controls.projecttype.valid" class="error">Please enter project type</p>
+    <ion-item>
+      <ion-label floating>Project Category <span class="required">*</span></ion-label>
+      <ion-select name="txtProjectcategory" [(ngModel)]="ProjectDetails.ProjectCategory" formControlName="projectcategory" [class.invalid]="!complexForm.controls.projectcategory.valid">
+        <ion-option *ngFor="let projectCat of projectCategory" value={{projectCat.value}}>{{projectCat.label}}</ion-option>
+      </ion-select>
+    </ion-item>
+    <p *ngIf="!complexForm.controls.projectcategory.valid" class="error">Please enter project category</p>
+    <ion-item>
+      <ion-label floating>Project Start Date (DD/MM/YYYY) <span class="required">*</span></ion-label>
+      <ion-datetime displayFormat="DD/MM/YYYY" name="txtProjectstart" [(ngModel)]="ProjectDetails.ProjectStartDate" formControlName="projectstart" [class.invalid]="!complexForm.controls.projectstart.valid"></ion-datetime>
+    </ion-item>
+    <p *ngIf="!complexForm.controls.projectstart.valid" class="error">Please select project start date</p>
+    <ion-item>
+      <ion-label floating>Project End Date (DD/MM/YYYY) <span class="required">*</span></ion-label>
+      <ion-datetime displayFormat="DD/MM/YYYY" name="txtProjectend" [(ngModel)]="ProjectDetails.ProjectEndDate" formControlName="projectend" [class.invalid]="!complexForm.controls.projectend.valid"></ion-datetime>
+    </ion-item>
+    <p *ngIf="!complexForm.controls.projectend.valid" class="error">Please select project end date</p>
+    <ion-item>
+      <ion-label floating>Delivery Unit <span class="required">*</span></ion-label>
+      <ion-select name="selectDeliveryunit" [(ngModel)]="ProjectDetails.DeliveryUnit" formControlName="deliveryunit" [class.invalid]="!complexForm.controls.deliveryunit.valid">
+        <ion-option *ngFor="let deliveryunit of deliverUnits" value={{deliveryunit.value}}>{{deliveryunit.label}}</ion-option>
+      </ion-select>
+    </ion-item>
+    <p *ngIf="!complexForm.controls.deliveryunit.valid" class="error">Please select delivery unit</p>
+    <ion-item>
+      <ion-label floating>Delivery Model <span class="required">*</span></ion-label>
+      <ion-select name="selectDeliverymodel" [(ngModel)]="ProjectDetails.DeliveryModel" formControlName="deliverymodel" [class.invalid]="!complexForm.controls.deliverymodel.valid">
+        <ion-option *ngFor="let deliverymodel of deliverModels" value={{deliverymodel.value}}>{{deliverymodel.label}}</ion-option>
+      </ion-select>
+    </ion-item>
+    <p *ngIf="!complexForm.controls.deliverymodel.valid" class="error">Please select delivery model</p>
+    <ion-item>
+      <ion-label floating>Account Manager <span class="required">*</span></ion-label>
+      <ion-input type="text" name="txtAccountmgr" [(ngModel)]="ProjectDetails.AccountManager" formControlName="accountmanager" [class.invalid]="!complexForm.controls.accountmanager.valid"></ion-input>
+    </ion-item>
+    <p *ngIf="!complexForm.controls.accountmanager.valid" class="error">Please enter account manager</p>
+    <ion-item>
+      <ion-label floating>Delivery Manager <span class="required">*</span></ion-label>
+      <ion-input type="text" name="txtDeliveryMgr" [(ngModel)]="ProjectDetails.DeliveryManager" formControlName="deliverymanager" [class.invalid]="!complexForm.controls.deliverymanager.valid"></ion-input>
+    </ion-item>
+    <p *ngIf="!complexForm.controls.deliverymanager.valid" class="error">Please enter delivery manager</p>
+    <ion-item>
+      <ion-label floating>Price Type <span class="required">*</span></ion-label>
+      <ion-select name="selectPriceType" [(ngModel)]="ProjectDetails.PriceType" formControlName="pricetype" [class.invalid]="!complexForm.controls.pricetype.valid">
+        <ion-option *ngFor="let price of priceType" value={{price.value}}>{{price.label}}</ion-option>
+      </ion-select>
+    </ion-item>
+    <p *ngIf="!complexForm.controls.pricetype.valid" class="error">Please select price type</p>
+   </ion-list>
+   <ion-row>
+     <ion-col col-sm-9>
+       <ion-input type="text" placeholder="Team members" formControlName="teammembers" [(ngModel)]="ProjectDetails.TeamMembers"></ion-input>
+     </ion-col>
+     <ion-col col-3>
+      <button ion-button (click)="addMembers(ProjectDetails.TeamMembers)">Add</button>
+     </ion-col>
+    </ion-row>
+    <ion-row *ngIf="teamMember.length>0" class="memberDetails">
+      <ion-col width-20>
+        <strong>SR.No.</strong>
+      </ion-col>
+      <ion-col width-60>
+        <strong>Members</strong>
+      </ion-col>
+      <ion-col width-20>
+        <strong>Action</strong>
+      </ion-col>
+    </ion-row>
+    <ion-row *ngFor='let member of teamMember;let i = index;' class="memberDetails">
+      <ion-col width-20>
+        {{i+1}}
+      </ion-col>
+      <ion-col width-60>
+        {{member}}
+      </ion-col>
+      <ion-col width-20>
+        <a (click)="onDeleteMembers(i)">delete</a>
+      </ion-col>
+    </ion-row>
+    <ion-row  *ngIf="teamMember.length == 0" class="memberDetails">
+      No Members yet..
+    </ion-row>
+    <ion-list>
+    <ion-item>
+      <ion-label floating>Team Size</ion-label>
+      <ion-input type="number"></ion-input>
+    </ion-item>
+    <ion-item>
+        <ion-label>Is Global Project?</ion-label>
+        <ion-checkbox color="blue" checked="true"></ion-checkbox>
+    </ion-item>
+    <ion-item>
+        <ion-label>Active</ion-label>
+        <ion-checkbox color="blue" checked="true"></ion-checkbox>
+    </ion-item>
+  </ion-list>
+  <ion-row>
+    <ion-col width-20>
+      <button ion-button [disabled]="!complexForm.valid">Save</button>
+    </ion-col>
+    <ion-col width-30>
+      <button ion-button>Deactivate</button>
+    </ion-col>
+  </ion-row>
+  </form>
 </ion-content>
