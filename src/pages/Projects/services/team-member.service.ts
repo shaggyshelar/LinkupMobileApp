@@ -4,14 +4,14 @@ import { Http } from '@angular/http';
 import { Router } from '@angular/router';
 
 /** Third Party Dependencies */
-import { Observable } from 'rxjs/Rx';
+//import { Observable } from 'rxjs/Rx';
 import 'rxjs/add/operator/map';
 import { MessageService } from '../../../providers/shared';
 
 
 /** Module Level Dependencies */
 import { BaseService } from '../../../providers/shared';
-import { Project } from '../models/project';
+//import { Project } from '../models/project';
 
 /** Context for service calls */
 const CONTEXT = 'TeamMembers';

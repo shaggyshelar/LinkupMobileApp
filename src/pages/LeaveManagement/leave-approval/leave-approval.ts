@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, ActionSheetController, Events, ModalController } from 'ionic-angular';
+import { NavController, NavParams, ActionSheetController, Events, ModalController,ToastController } from 'ionic-angular';
 import { SpinnerService } from '../../../providers/index';
 import { LeaveService } from '../index';
 import { AuthService } from '../../../providers/index';
@@ -29,6 +29,7 @@ export class LeaveApprovalPage {
   public userPermissions: any[];
   public isBulkApprovePermission: boolean;
   public selectedLeaveID: string;
+  public selectedLeave:any;
   public isMoreclicked: boolean;
   public isHrApprove: boolean;
   public leavechecked: boolean;
@@ -50,7 +51,8 @@ export class LeaveApprovalPage {
     public actionSheetCtrl: ActionSheetController,
     public alertCtrl: AlertController,
     public leaveStatusChangedEvent: Events,
-    public modalCtrl: ModalController) {
+    public modalCtrl: ModalController,
+    public toastCtrl:ToastController) {
     this.userPermissions = JSON.parse(localStorage.getItem("loggedInUserPermission"));
     this.isAuthorized = this.auth.checkPermission('LEAVE.APPROVAL.MANAGE');
     this.isBulkApprovePermission = this.checkBulkApprovePermission('LEAVE.BULK_APPROVAL.MANAGE');
@@ -127,7 +129,7 @@ export class LeaveApprovalPage {
       error => {
         this.isDataretrived = true;
         this.spinnerService.stopSpinner();
-        this.showToast('Failed to get Pending Leaves.');
+        this.toastPresent('Failed to get Pending Leaves.');
       });
   }
 
@@ -154,6 +156,7 @@ export class LeaveApprovalPage {
     this.isMoreclicked = true;
     if (leave.Status == 'Approved' || leave.Status == 'Rejected' || leave.Status == 'Cancelled')
       return;
+    this.selectedLeave = leave;  
     let actbuttons: any[] = [
       {
         text: 'Approve',
@@ -175,6 +178,7 @@ export class LeaveApprovalPage {
       },
       {
         text: 'HR Approve',
+        icon: 'checkmark',
         handler: () => {
           this.selectedLeaveID = leaveID;
           this.isHrApprove = true;
@@ -291,7 +295,7 @@ export class LeaveApprovalPage {
         if (res) {
           this.getApproverLeave();
           this.selectedEmployees = [];
-          this.showToast('Selected Leaves are ' + status + '.');
+          this.toastPresent('Selected Leaves are ' + status + '.');
         } else {
           this.resetAllFlags();
         }
@@ -315,16 +319,16 @@ export class LeaveApprovalPage {
         .subscribe(res => {
           this.spinnerService.stopSpinner();
           if (res) {
-            this.showToast('Leave is Approved successfully!');
+            this.toastPresent('Leave is Approved successfully!');
             this.getApproverLeave();
           } else {
-            this.showToast('Failed to Approve Please try again!');
+            this.toastPresent('Failed to Approve Please try again!');
             this.resetAllFlags();
           }
         },
         error => {
           this.spinnerService.stopSpinner();
-          this.showToast('Failed to Approve Please try again!');
+          this.toastPresent('Failed to Approve Please try again!');
         });
     }
     else {
@@ -332,15 +336,15 @@ export class LeaveApprovalPage {
         .subscribe(res => {
           this.spinnerService.stopSpinner();
           if (res) {
-            this.showToast('Leave is Approved successfully!');
+            this.toastPresent('Leave is Approved successfully!');
             this.getApproverLeave();
           } else {
-            this.showToast('Failed to Approve Please try again!');
+            this.toastPresent('Failed to Approve Please try again!');
             this.resetAllFlags();
           }
         },
         error => {
-          this.showToast('Failed to Approve Please try again!');
+          this.toastPresent('Failed to Approve Please try again!');
           this.resetAllFlags();
         });
     }
@@ -351,22 +355,24 @@ export class LeaveApprovalPage {
     var params = {
       LeaveRequestRefId: this.selectedLeaveID,
       Comments: this.comment,
-      Status: 'Rejected'
+      Status: 'Rejected',
+      startdate:this.selectedLeave.StartDate,
+      enddate:this.selectedLeave.EndDate
     };
 
     this.leaveService.singleLeaveReject(params)
       .subscribe(res => {
         this.spinnerService.stopSpinner();
         if (res) {
-          this.showToast('Leave is Rejected successfully!');
+          this.toastPresent('Leave is Rejected successfully!');
           this.getApproverLeave();
         } else {
-          this.showToast('Failed to Reject Please try again!');
+          this.toastPresent('Failed to Reject Please try again!');
           this.resetAllFlags();
         }
       },
       error => {
-        this.showToast('Failed to Reject Please try again!');
+        this.toastPresent('Failed to Reject Please try again!');
         this.resetAllFlags();
       });
   }
@@ -484,6 +490,15 @@ export class LeaveApprovalPage {
       }
     );
   }
+
+   toastPresent(message: string) {
+        let toast = this.toastCtrl.create({
+            message: message,
+            duration: 5000
+        });
+        toast.present();
+    }
+
   onFilter() {
     let modal = this.modalCtrl.create(LeaveApprovalFilterPage);
     modal.present();
