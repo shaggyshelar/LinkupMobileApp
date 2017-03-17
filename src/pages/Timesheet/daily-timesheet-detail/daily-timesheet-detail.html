@@ -9,7 +9,7 @@
   <ion-navbar>
     <ion-title>DailyTimesheetDetail</ion-title>
     <ion-buttons end *ngIf="!navParams.data.readOnly">
-      <button ion-button end>
+      <button ion-button end (click)="submit(dailyTimesheetForm.value)">
           <ion-icon name="checkmark"></ion-icon>
       </button>
     </ion-buttons>
@@ -19,6 +19,11 @@
 
 
 <ion-content padding>
+  <ion-item>
+    <ion-label>Date</ion-label>
+    <ion-datetime displayFormat="MMMM DDDD" pickerFormat="MMMM DDDD" [min]="weekStartDate" [max]="weekEndDate" [(ngModel)]="dateSelected">
+    </ion-datetime>
+  </ion-item>
   <form [formGroup]="dailyTimesheetForm" class="extend-bottom margin-left">
     <ion-card>
       <ion-item>
