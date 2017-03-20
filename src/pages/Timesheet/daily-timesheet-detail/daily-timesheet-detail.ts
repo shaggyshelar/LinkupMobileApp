@@ -76,52 +76,80 @@ export class DailyTimesheetDetailPage {
   assembleObj(inputs) {
     switch (moment(this.dateSelected).day() - 1) {
       case 0:
-        this.timesheet[this.timesheetIndex].Mondayhrs = inputs.billableHours;
-        this.timesheet[this.timesheetIndex].Mondaydesc = inputs.noteForBillableHours;
-        this.timesheet[this.timesheetIndex].Mondaynbhrs = inputs.nonBillableHours;
-        this.timesheet[this.timesheetIndex].Mondaydescnb = inputs.noteForNonBillableHours;
+        if (inputs.billableHours && inputs.billableHours) {
+          this.timesheet[this.timesheetIndex].Mondayhrs = inputs.billableHours;
+          this.timesheet[this.timesheetIndex].Mondaydesc = inputs.noteForBillableHours;
+        }
+        if (inputs.nonBillableHours && inputs.noteForNonBillableHours) {
+          this.timesheet[this.timesheetIndex].Mondaynbhrs = inputs.nonBillableHours;
+          this.timesheet[this.timesheetIndex].Mondaydescnb = inputs.noteForNonBillableHours;
+        }
         break;
       case 1:
-        this.timesheet[this.timesheetIndex].Tuesdayhrs = inputs.billableHours;
-        this.timesheet[this.timesheetIndex].Tuesdaydesc = inputs.noteForBillableHours;
-        this.timesheet[this.timesheetIndex].Tuesdaynbhrs = inputs.nonBillableHours;
-        this.timesheet[this.timesheetIndex].Tuesdaydescnb = inputs.noteForNonBillableHours;
+        if (inputs.billableHours && inputs.billableHours) {
+          this.timesheet[this.timesheetIndex].Tuesdayhrs = inputs.billableHours;
+          this.timesheet[this.timesheetIndex].Tuesdaydesc = inputs.noteForBillableHours;
+        }
+        if (inputs.nonBillableHours && inputs.noteForNonBillableHours) {
+          this.timesheet[this.timesheetIndex].Tuesdaynbhrs = inputs.nonBillableHours;
+          this.timesheet[this.timesheetIndex].Tuesdaydescnb = inputs.noteForNonBillableHours;
+        }
         break;
       case 2:
-        this.timesheet[this.timesheetIndex].Wednesdayhrs = inputs.billableHours;
-        this.timesheet[this.timesheetIndex].Wednesdaydesc = inputs.noteForBillableHours;
-        this.timesheet[this.timesheetIndex].Wednesdaynbhrs = inputs.nonBillableHours;
-        this.timesheet[this.timesheetIndex].Wednesdaydescnb = inputs.noteForNonBillableHours;
+        if (inputs.billableHours && inputs.billableHours) {
+          this.timesheet[this.timesheetIndex].Wednesdayhrs = inputs.billableHours;
+          this.timesheet[this.timesheetIndex].Wednesdaydesc = inputs.noteForBillableHours;
+        }
+        if (inputs.nonBillableHours && inputs.noteForNonBillableHours) {
+          this.timesheet[this.timesheetIndex].Wednesdaynbhrs = inputs.nonBillableHours;
+          this.timesheet[this.timesheetIndex].Wednesdaydescnb = inputs.noteForNonBillableHours;
+        }
         break;
       case 3:
-        this.timesheet[this.timesheetIndex].Thursdayhrs = inputs.billableHours;
-        this.timesheet[this.timesheetIndex].Thursdaydesc = inputs.noteForBillableHours;
-        this.timesheet[this.timesheetIndex].Thursdaynbhrs = inputs.nonBillableHours;
-        this.timesheet[this.timesheetIndex].Thursdaydescnb = inputs.noteForNonBillableHours;
+        if (inputs.billableHours && inputs.billableHours) {
+          this.timesheet[this.timesheetIndex].Thursdayhrs = inputs.billableHours;
+          this.timesheet[this.timesheetIndex].Thursdaydesc = inputs.noteForBillableHours;
+        }
+        if (inputs.nonBillableHours && inputs.noteForNonBillableHours) {
+          this.timesheet[this.timesheetIndex].Thursdaynbhrs = inputs.nonBillableHours;
+          this.timesheet[this.timesheetIndex].Thursdaydescnb = inputs.noteForNonBillableHours;
+        }
         break;
       case 4:
-        this.timesheet[this.timesheetIndex].Fridayhrs = inputs.billableHours;
-        this.timesheet[this.timesheetIndex].Fridaydesc = inputs.noteForBillableHours;
-        this.timesheet[this.timesheetIndex].Fridaynbhrs = inputs.nonBillableHours;
-        this.timesheet[this.timesheetIndex].Fridaydescnb = inputs.noteForNonBillableHours;
+        if (inputs.billableHours && inputs.billableHours) {
+          this.timesheet[this.timesheetIndex].Fridayhrs = inputs.billableHours;
+          this.timesheet[this.timesheetIndex].Fridaydesc = inputs.noteForBillableHours;
+        }
+        if (inputs.nonBillableHours && inputs.noteForNonBillableHours) {
+          this.timesheet[this.timesheetIndex].Fridaynbhrs = inputs.nonBillableHours;
+          this.timesheet[this.timesheetIndex].Fridaydescnb = inputs.noteForNonBillableHours;
+        }
         break;
       case 5:
-        this.timesheet[this.timesheetIndex].Saturdayhrs = inputs.billableHours;
-        this.timesheet[this.timesheetIndex].Saturdaydesc = inputs.noteForBillableHours;
-        this.timesheet[this.timesheetIndex].Saturdaynbhrs = inputs.nonBillableHours;
-        this.timesheet[this.timesheetIndex].Saturdaydescnb = inputs.noteForNonBillableHours;
+        if (inputs.billableHours && inputs.billableHours) {
+          this.timesheet[this.timesheetIndex].Saturdayhrs = inputs.billableHours;
+          this.timesheet[this.timesheetIndex].Saturdaydesc = inputs.noteForBillableHours;
+        }
+        if (inputs.nonBillableHours && inputs.noteForNonBillableHours) {
+          this.timesheet[this.timesheetIndex].Saturdaynbhrs = inputs.nonBillableHours;
+          this.timesheet[this.timesheetIndex].Saturdaydescnb = inputs.noteForNonBillableHours;
+        }
         break;
       case 6:
-        this.timesheet[this.timesheetIndex].Sundayhrs = inputs.billableHours;
-        this.timesheet[this.timesheetIndex].Sundaydesc = inputs.noteForBillableHours;
-        this.timesheet[this.timesheetIndex].Sundaynbhrs = inputs.nonBillableHours;
-        this.timesheet[this.timesheetIndex].Sundaydescnb = inputs.noteForNonBillableHours;
+        if (inputs.billableHours && inputs.billableHours) {
+          this.timesheet[this.timesheetIndex].Sundayhrs = inputs.billableHours;
+          this.timesheet[this.timesheetIndex].Sundaydesc = inputs.noteForBillableHours;
+        }
+        if (inputs.nonBillableHours && inputs.noteForNonBillableHours) {
+          this.timesheet[this.timesheetIndex].Sundaynbhrs = inputs.nonBillableHours;
+          this.timesheet[this.timesheetIndex].Sundaydescnb = inputs.noteForNonBillableHours;
+        }
         break;
       default:
         alert('Something went wrong!');
         break;
     }
-    
+
   }
 
 }
