@@ -40,7 +40,7 @@
     <p *ngIf="!complexForm.controls.projectname.valid" class="error">Please enter project name</p>
     <ion-item>
       <ion-label floating>Project Summary</ion-label>
-      <ion-textarea></ion-textarea>
+      <ion-textarea [(ngModel)]="ProjectDetails.ProjectSummary" formControlName="projectsummary"></ion-textarea>
     </ion-item>
     <ion-item>
       <ion-label floating>Project Manager <span class="required">*</span></ion-label>
@@ -105,10 +105,10 @@
    </ion-list>
    <ion-row>
      <ion-col col-sm-9>
-       <ion-input type="text" placeholder="Team members" formControlName="teammembers" [(ngModel)]="ProjectDetails.TeamMembers"></ion-input>
+       <ion-input type="text" placeholder="Team members" formControlName="teammembers" [(ngModel)]="ProjectDetails.TeamMembers" (input)="textChanged($event)"></ion-input>
      </ion-col>
      <ion-col col-3>
-      <button ion-button (click)="addMembers(ProjectDetails.TeamMembers)">Add</button>
+      <button ion-button (click)="addMembers(ProjectDetails.TeamMembers)" [disabled]="!isTeamValid">Add</button>
      </ion-col>
     </ion-row>
     <ion-row *ngIf="teamMember.length>0" class="memberDetails">
@@ -139,15 +139,15 @@
     <ion-list>
     <ion-item>
       <ion-label floating>Team Size</ion-label>
-      <ion-input type="number"></ion-input>
+      <ion-input type="number" [(ngModel)]="ProjectDetails.TeamSize" formControlName="teamsize"></ion-input>
     </ion-item>
     <ion-item>
         <ion-label>Is Global Project?</ion-label>
-        <ion-checkbox color="blue" checked="true"></ion-checkbox>
+        <ion-checkbox color="blue" [(ngModel)]="ProjectDetails.IsGlobal" formControlName="isglobal"></ion-checkbox>
     </ion-item>
     <ion-item>
         <ion-label>Active</ion-label>
-        <ion-checkbox color="blue" checked="true"></ion-checkbox>
+        <ion-checkbox color="blue" [(ngModel)]="ProjectDetails.Active" formControlName="active"></ion-checkbox>
     </ion-item>
   </ion-list>
   <ion-row>
