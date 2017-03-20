@@ -5,7 +5,7 @@ import { Http } from '@angular/http';
 /** Module Level Dependencies */
 import { BaseService } from '../../index';
 /** Context for service calls */
-const CONTEXT = 'projectCategoryMaster';
+const CONTEXT = 'projectcategory';
 
 /** Service Definition */
 @Injectable()

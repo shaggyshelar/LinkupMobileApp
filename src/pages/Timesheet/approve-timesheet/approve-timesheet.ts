@@ -1,12 +1,12 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, ActionSheetController, ModalController } from 'ionic-angular';
+import { NavController, NavParams, ActionSheetController, ModalController, ToastController } from 'ionic-angular';
 import { LoadingController } from 'ionic-angular';
 import { Observable } from 'rxjs/Rx';
 import { ApproveTimesheetDetailsPage } from '../approve-timesheet-details/approve-timesheet-details';
 import { EmployeeTimesheetService } from '../index';
 import { AuthService } from '../../../providers/index';
 import { EmployeeTimeSheet } from '../models/employee-timesheet.model';
-import { AlertController } from 'ionic-angular';
+import { AlertController, Events } from 'ionic-angular';
 import { ApproveTimesheetFilterPage } from '../approve-timesheet-filter/approve-timesheet-filter';
 import { SpinnerService } from '../../../providers/index';
 
@@ -20,7 +20,7 @@ export class ApproveTimesheetPage {
 
 
   public timesheetReport: any;
-  public isBulkApprovePermission:boolean = false;
+  public isBulkApprovePermission: boolean = false;
   public timesheetID: string;
   public timesheetObs: Observable<EmployeeTimeSheet[]>;
   public pendingtimesheetsArray: EmployeeTimeSheet[];
@@ -38,21 +38,29 @@ export class ApproveTimesheetPage {
   public isDataretrived: boolean = false;
   public isAuthorized: boolean;
 
-  public timesheetchecked : boolean = false;
-  public selectedLeaveID:string;
+  public timesheetchecked: boolean = false;
+  public selectedLeaveID: string;
   public approveEmployee: Observable<EmployeeTimesheetService>;
   public noResponseMsg: String;
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
     private employeeTimesheetService: EmployeeTimesheetService,
+    public timesheetChangedEvent: Events,
     private spinnerService: SpinnerService,
     private auth: AuthService,
     public loadingCtrl: LoadingController,
     public actionSheetCtrl: ActionSheetController,
-    public alertCtrl:AlertController,
-    public modalCtrl: ModalController) {
+    public alertCtrl: AlertController,
+    public modalCtrl: ModalController,
+    public toastCtrl: ToastController) {
     this.isAuthorized = this.auth.checkPermission('TIMESHEET.APPROVETIMESHEETS.MANAGE');
     this.isBulkApprovePermission = this.auth.checkPermission('TIMESHEET.BULK_APPROVAL.MANAGE');
+    this.timesheetChangedEvent.subscribe('Timesheet Rejected', () => {
+      this.getPendingTimesheetsToApprove();
+    });
+    this.timesheetChangedEvent.subscribe('Timesheet Approved', () => {
+      this.getPendingTimesheetsToApprove();
+    });
     this.timesheetReport = {};
   }
 
@@ -61,7 +69,7 @@ export class ApproveTimesheetPage {
     this.getApproverData();
     if (this.isAuthorized == true)
       this.getPendingTimesheetsToApprove();
-    localStorage.setItem('approveTimesheetsBadgeCount', ''+this.pendingtimesheetsArray.length);
+    localStorage.setItem('approveTimesheetsBadgeCount', '' + this.pendingtimesheetsArray.length);
   }
 
   ionViewDidEnter() {
@@ -174,15 +182,14 @@ export class ApproveTimesheetPage {
   }
 
 
-   /* Approve/Reject prompt */
+  /* Approve/Reject prompt */
 
   showApproveRejectPromt(approve: boolean) {
-      if (this.timesheetchecked)
-      {
-        this.sendRequest('Approved');
-        return;
-      }
-      
+    if (this.timesheetchecked) {
+      this.sendRequest('Approved');
+      return;
+    }
+
     var isApprove: String = "Approve";
     if (approve)
       isApprove = "Approve";
@@ -242,34 +249,37 @@ export class ApproveTimesheetPage {
   }
 
 
-   approveBulkTimesheet() {
+  approveBulkTimesheet() {
     this.showApproveRejectPromt(true);
   }
 
-   /*Bulk Approve Reject API*/
- 
+  /*Bulk Approve Reject API*/
+
   sendRequest(status: any) {
     this.spinnerService.createSpinner('Please wait..');
     if (this.selectedEmployees.length > 0) {
       let payload: any = {};
       payload.Comments = this.comment;
       payload.TimesheetIDs = [];
-      for(let i=0;i<this.selectedEmployees.length;i++){
+      for (let i = 0; i < this.selectedEmployees.length; i++) {
         payload.TimesheetIDs.push(this.selectedEmployees[i].ID);
       }
       //    BACKEND CALL HERE
       this.employeeTimesheetService.bulkApproval(payload).subscribe(res => {
         this.spinnerService.stopSpinner();
         if (res) {
+          this.toastPresent('Timesheets are approved successfully');
           this.getPendingTimesheetsToApprove();
           this.selectedEmployees = [];
           //this.showToast('Selected Leaves are ' + status + '.');
         } else {
           this.resetAllFlags();
+          this.toastPresent('Failed request');
         }
       },
         error => {
-        this.resetAllFlags();
+          this.resetAllFlags();
+          this.toastPresent('Failed request');
         });
     }
   }
@@ -282,22 +292,25 @@ export class ApproveTimesheetPage {
       Status: 'Approved'
     };
     this.spinnerService.createSpinner('Please wait..');
-      this.employeeTimesheetService.approveTimesheet(params)
-        .subscribe(res => {
-          this.spinnerService.stopSpinner();
-          if (res) {
-            //his.showToast('Leave is Approved successfully!');
-            this
-          } else {
-            //this.showToast('Failed to Approve Please try again!');
-            this.resetAllFlags();
-          }
-        },
-        error => {
+    this.employeeTimesheetService.approveTimesheet(params)
+      .subscribe(res => {
+        this.spinnerService.stopSpinner();
+        if (res) {
+          //his.showToast('Leave is Approved successfully!');
+          this.toastPresent('Timesheet is approved successfully');
+          this
+        } else {
           //this.showToast('Failed to Approve Please try again!');
+          this.toastPresent('Failed Request');
           this.resetAllFlags();
-        });
-    
+        }
+      },
+      error => {
+        //this.showToast('Failed to Approve Please try again!');
+        this.toastPresent('Failed Request');
+        this.resetAllFlags();
+      });
+
   }
 
   rejectClicked() {
@@ -313,18 +326,21 @@ export class ApproveTimesheetPage {
         this.spinnerService.stopSpinner();
         if (res) {
           //this.showToast('Leave is Rejected successfully!');
+          this.toastPresent('Timesheet is Rejected successfully');
           this.getPendingTimesheetsToApprove();
         } else {
           //this.showToast('Failed to Reject Please try again!');
+          this.toastPresent('Failed Request');
           this.resetAllFlags();
         }
       },
       error => {
         //this.showToast('Failed to Reject Please try again!');
+        this.toastPresent('Failed Request');
         this.resetAllFlags();
       });
   }
- 
+
 
 
 
@@ -349,11 +365,12 @@ export class ApproveTimesheetPage {
       error => {
         this.isDataretrived = true;
         this.spinnerService.stopSpinner();
+        this.toastPresent('Failed request');
         //this.showToast('Failed to get Pending Leaves.');
       });
   }
 
-   /* Show Leave Deatails */
+  /* Show Leave Deatails */
 
   itemTapped(entry: any) {
     if (this.isshowApproveRejectItems == true)
@@ -361,7 +378,7 @@ export class ApproveTimesheetPage {
     else {
       if (this.isMoreclicked == true)
         return;
-       this.navCtrl.push(ApproveTimesheetDetailsPage, { id: entry.ID, caller: 'approve-timesheet' });
+      this.navCtrl.push(ApproveTimesheetDetailsPage, { id: entry.ID, caller: 'approve-timesheet' });
     }
 
   }
@@ -411,12 +428,11 @@ export class ApproveTimesheetPage {
   /** Multiselction of List item */
 
 
-  longPressedItem(entry: any)
-  {
-  if (this.isBulkApprovePermission == true) {
-  this.isshowApproveRejectItems = true;
-  this.selectTimesheet(entry,true);
-  }
+  longPressedItem(entry: any) {
+    if (this.isBulkApprovePermission == true) {
+      this.isshowApproveRejectItems = true;
+      this.selectTimesheet(entry, true);
+    }
   }
 
   selectAllTimesheets() {
@@ -478,7 +494,14 @@ export class ApproveTimesheetPage {
     this.isDataretrived = false;
   }
 
-  
+
+  toastPresent(message: string) {
+    let toast = this.toastCtrl.create({
+      message: message,
+      duration: 5000
+    });
+    toast.present();
+  }
 
 
 }

@@ -18,4 +18,17 @@
 
 <ion-content padding>
 
+   <ion-list>
+    <ion-item *ngFor="let project of projectList"  ion-item [attr.billablenonbillable]="project.BillableNonBillable | lowercase" (click)="goToProjectDetail(project)">
+      <h3>{{project.Title}}</h3>
+      <p>
+        {{project.StartDate | date:"MM/dd/yyyy" }} &mdash; {{project.EndDate | date:"MM/dd/yyyy" }}
+      </p>
+      <p>
+       {{ project.ProjectManager.Name }}
+        <span class="right">{{project.DeliveryUnit.Value}}</span>
+      </p>
+    </ion-item>
+  </ion-list>
+
 </ion-content>

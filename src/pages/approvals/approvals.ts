@@ -30,14 +30,12 @@ export class ApprovalsPage {
 
   ionViewDidLoad() {
 
-    if (this._cacheService.exists('PendingLeavesApprovalCount')) {
-      this.leavesToApproveCount = this._cacheService.get('PendingLeavesApprovalCount');
+    // if (this._cacheService.exists('PendingLeavesApprovalCount')) {
+    //   this.leavesToApproveCount = this._cacheService.get('PendingLeavesApprovalCount');
 
-    };
-
-    if (this._cacheService.exists('PendingLeavesApprovalCount')) {
-      this.approveTimesheetsBadgeCount = parseInt(localStorage.getItem('PendingTimesheetApprovalCount'));
-    }
+    // };
+    this.leavesToApproveCount = localStorage.getItem('PendingLeavesApprovalCount');
+    this.approveTimesheetsBadgeCount = parseInt(localStorage.getItem('PendingTimesheetApprovalCount'));
 
   }
 

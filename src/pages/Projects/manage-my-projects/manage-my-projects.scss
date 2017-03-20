@@ -1,3 +1,25 @@
+$categories: (
+ ionic: color($colors, primary),
+ non-billable: #0000FF,
+ billable: #69BB7B,
+);
+
+@function auxiliary-categories() {
+  @return map-remove($categories);
+}
+
+
 page-manage-my-projects {
+
+       @each $billablenonbillable, $value in auxiliary-categories() {
+   ion-item[billablenonbillable=#{$billablenonbillable}] ion-label {
+     border-left: 2px solid $value;
+     padding-left: 10px;
+   }
+  }
+
+  .right {
+      float: right;
+  }
 
 }

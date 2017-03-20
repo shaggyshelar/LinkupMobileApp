@@ -1,5 +1,11 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
+import { ProjectService } from '../index';
+import { EmployeeProjectManagementPage } from '../employee-project-management/employee-project-management';
+import { Project } from '../models/project';
+import { SpinnerService } from '../../../providers/index';
+/** Component Declaration */
+import { Observable } from 'rxjs/Rx';
 
 /*
   Generated class for the ManageMyProjects page.
@@ -9,14 +15,39 @@ import { NavController, NavParams } from 'ionic-angular';
 */
 @Component({
   selector: 'page-manage-my-projects',
-  templateUrl: 'manage-my-projects.html'
+  templateUrl: 'manage-my-projects.html',
+  providers:[ProjectService,SpinnerService]
 })
 export class ManageMyProjectsPage {
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) { }
+    projectList: Observable<Project[]>;
+  constructor(public navCtrl: NavController, 
+  public navParams: NavParams,
+   private projectService: ProjectService,
+   private spinnerService:SpinnerService) { 
+   
+   }
 
   ionViewDidLoad() {
     //console.log('ionViewDidLoad ManageMyProjectsPage');
+    this.getActiveProjects();
+  }
+  getActiveProjects()
+  {
+     //this.projectList = this.projectService.getProjectList();
+      this.spinnerService.createSpinner('Please wait');
+      this.projectService.getProjectList().subscribe(
+      (res: any) => {
+        this.spinnerService.stopSpinner();
+       this.projectList = res;   
+      },error=>{
+       this.spinnerService.stopSpinner();
+      });
+     
+  }
+  goToProjectDetail(project:any)
+  {
+     this.navCtrl.push(EmployeeProjectManagementPage, { selectedProject: project});
   }
 
 }

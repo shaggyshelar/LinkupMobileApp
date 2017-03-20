@@ -1,17 +1,17 @@
 /** Angular Dependencies */
 import { Injectable } from '@angular/core';
 import { Http, Headers, RequestOptions } from '@angular/http';
-// import { Router } from '@angular/router';
+//import { Router } from '@angular/router';
+import { CacheService } from 'ng2-cache/ng2-cache';
 
 /** Third Party Dependencies */
 import { Observable } from 'rxjs/Rx';
 import 'rxjs/add/operator/map';
-import { CacheService } from 'ng2-cache/ng2-cache';
+import { MessageService } from '../../../providers/shared';
 
 /** Module Level Dependencies */
 import { BaseService } from '../../../providers/shared';
-import { MessageService } from '../../../providers/shared';
-import { Project } from '../models/project.model';
+import { Project } from '../models/project';
 
 /** Context for service calls */
 const CONTEXT = 'Project';
@@ -19,10 +19,10 @@ const CONTEXT = 'Project';
 /** Service Definition */
 @Injectable()
 export class ProjectService extends BaseService {
-    constructor(public http: Http, messageService: MessageService, private _cacheService: CacheService) {
+    constructor(public http: Http, private _cacheService: CacheService, messageService: MessageService) {
         super(http, CONTEXT);
     }
-    getProjectList(): Observable<any[]> {
+    getProjectList(): Observable<Project[]> {
         return this
             .getChildList$('GetMyActiveProjects', 0, 0, true)
             .map(res => res.json());
@@ -52,7 +52,6 @@ export class ProjectService extends BaseService {
             let body = JSON.stringify(payload);
             headers.append('Authorization', 'Bearer ' + localStorage.getItem('accessToken'));
             headers.append('Content-Type', 'application/json');
-
             let options = new RequestOptions({ headers: headers });
             return this.http.post(this.baseUrl + 'Project/GetMyProjectsForTimesheet', body, options)
                 .map(res => {
@@ -63,6 +62,5 @@ export class ProjectService extends BaseService {
                     return this.handleError(err);
                 });
         }
-
     }
 }

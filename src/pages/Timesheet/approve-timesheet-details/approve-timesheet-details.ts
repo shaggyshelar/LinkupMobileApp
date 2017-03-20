@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
+import { NavController, NavParams, ToastController } from 'ionic-angular';
 import { LoadingController } from 'ionic-angular';
 //import { Observable } from 'rxjs/Rx';
 import { CacheService } from 'ng2-cache/ng2-cache';
@@ -31,6 +31,7 @@ export class ApproveTimesheetDetailsPage {
     , public loadingCtrl: LoadingController
     , public cacheService: CacheService
     , public formBuilder: FormBuilder
+    , public toastCtrl: ToastController
   ) {
     this.approveTimesheetForm = formBuilder.group({
       comment: ['', Validators.compose([Validators.minLength(3), Validators.required])]
@@ -68,6 +69,7 @@ export class ApproveTimesheetDetailsPage {
         this.employeeTimesheetService.approveTimesheet(this.payload).subscribe(res => {
           this.clearCache();
           loader.dismiss();
+          this.toastPresent('Approved Timesheet successfully');
           this.navCtrl.pop();
         }, (err) => {
           loader.dismiss();
@@ -89,6 +91,7 @@ export class ApproveTimesheetDetailsPage {
         this.employeeTimesheetService.rejectTimesheet(this.payload).subscribe(res => {
           this.clearCache();
           loader.dismiss();
+          this.toastPresent('Rejected Timesheet successfully');
           this.navCtrl.pop();
         }, (err) => {
           loader.dismiss();
@@ -96,6 +99,14 @@ export class ApproveTimesheetDetailsPage {
         });
       });
     }
+  }
+
+  toastPresent(message: string) {
+    let toast = this.toastCtrl.create({
+      message: message,
+      duration: 5000
+    });
+    toast.present();
   }
 
   clearCache() {

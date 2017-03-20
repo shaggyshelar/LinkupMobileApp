@@ -47,6 +47,10 @@ import { MyProfilePage } from '../pages/Corporate/MyProfile/my-profile/my-profil
 import { ManageMyProjectsPage } from '../pages/Projects/manage-my-projects/manage-my-projects';
 import { EmployeeProjectManagementPage } from '../pages/Projects/employee-project-management/employee-project-management';
 
+//HR
+import { ResignedEmployeeLeavesPage } from '../pages/HR/resigned-employee-leaves/resigned-employee-leaves';
+import { EmployeeLeaveBalancePage } from '../pages/HR/employee-leave-balance/employee-leave-balance';
+
 import { LoginPage } from '../pages/login/login';
 import { AuthService, MessageService } from '../providers/index';
 
@@ -178,6 +182,11 @@ export class MyApp {
     }
 
     this.pages.push({ title: 'Timesheets', component: MyTimesheetPage, icon: 'md-clock' });
+    this.pages.push({ title: 'Manage My Projects', component: ManageMyProjectsPage, icon: 'calendar'},
+        { title: 'Employee Project Management', component: EmployeeProjectManagementPage, icon: 'contacts'});
+    this.pages.push({title:'Resigned Employee Leaves',component:ResignedEmployeeLeavesPage,icon:'contacts'},
+        { title:'Employee Leave Balance',component:EmployeeLeaveBalancePage,icon:'contacts'})
+
   }
 
   initializeApp() {
@@ -363,28 +372,7 @@ export class MyApp {
 
   /** Get Pending approval counts */
   getPendingApprovalCount() {
-    // this.leaveService.getLeaveByStatus('Pending')
-    //   .subscribe(
-    //   (res: any) => {
-    //   },
-    //   error => {
-    //   });
-
-    // this.timesheetService.getApproverPendingTimesheets()
-    //   .subscribe(
-    //   (res: any) => {
-    //   },
-    //   error => {
-    //   });
-    // this.pendingCount = 0;
-    // if (this._cacheService.exists('PendingLeavesApprovalCount')) {
-    //   this.pendingCount = this.pendingCount + parseInt(this._cacheService.get('PendingLeavesApprovalCount'));
-    // };
-    // if (this._cacheService.exists('PendingTimesheetApprovalCount')) {
-    //   this.pendingCount = this.pendingCount + parseInt(this._cacheService.get('PendingLeavesApprovalCount'));
-    // }
-
-
+    
     this.pendingCount = 0;
     this.pendingCount = parseInt(localStorage.getItem('PendingLeavesApprovalCount')) + parseInt(localStorage.getItem('PendingTimesheetApprovalCount'));
     this.myTimesheetCount = parseInt(localStorage.getItem('myTimesheetPending'));;
