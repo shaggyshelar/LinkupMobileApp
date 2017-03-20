@@ -48,8 +48,8 @@ import { ManageMyProjectsPage } from '../pages/Projects/manage-my-projects/manag
 import { EmployeeProjectManagementPage } from '../pages/Projects/employee-project-management/employee-project-management';
 
 //HR
-import { ResignedEmployeeLeavesPage } from '../pages/HR/resigned-employee-leaves/resigned-employee-leaves';
-import { EmployeeLeaveBalancePage } from '../pages/HR/employee-leave-balance/employee-leave-balance';
+import { ManageResignedEmployeeLeavesPage } from '../pages/HR/manage-resigned-employee-leaves/manage-resigned-employee-leaves';
+import { ManageEmployeeLeaveBalancePage } from '../pages/HR/manage-employee-leave-balance/manage-employee-leave-balance';
 
 import { LoginPage } from '../pages/login/login';
 import { AuthService, MessageService } from '../providers/index';
@@ -184,8 +184,8 @@ export class MyApp {
     this.pages.push({ title: 'Timesheets', component: MyTimesheetPage, icon: 'md-clock' });
     this.pages.push({ title: 'Manage My Projects', component: ManageMyProjectsPage, icon: 'calendar'},
         { title: 'Employee Project Management', component: EmployeeProjectManagementPage, icon: 'contacts'});
-    this.pages.push({title:'Resigned Employee Leaves',component:ResignedEmployeeLeavesPage,icon:'contacts'},
-        { title:'Employee Leave Balance',component:EmployeeLeaveBalancePage,icon:'contacts'})
+    this.pages.push({title:'Resigned Employee Leaves',component:ManageResignedEmployeeLeavesPage,icon:'contacts'},
+        { title:'Employee Leave Balance',component:ManageEmployeeLeaveBalancePage,icon:'contacts'})
 
   }
 
@@ -273,7 +273,6 @@ export class MyApp {
   openLinkupWebsite() {
     this.platform.ready().then(() => {
       let browser = new InAppBrowser('http://linkup.eternussolutions.com/', '_system');
-      browser.show();
     });
   }
 

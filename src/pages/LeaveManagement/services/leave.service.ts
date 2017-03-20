@@ -388,7 +388,74 @@ export class LeaveService extends BaseService {
                 return this.handleError(err);
             });
     }
-
+    getEmployeeLeaveBalance(year: string) {
+        if (this._cacheService.exists('employeeLeaves')) {
+            return new Observable<any>((observer: any) => {
+                observer.next(this._cacheService.get('employeeLeaves'));
+            });
+        } else {
+            let headers = new Headers();
+            headers.append('Authorization', 'Bearer ' + localStorage.getItem('accessToken'));
+            let options = new RequestOptions({ headers: headers });
+            return this.http.get(this.baseUrl + 'EmployeeLeaves/' + year, options)
+                .map(res => {
+                    this._cacheService.set('employeeLeaves', res.json(), { maxAge: 60 * 60 });
+                    return res.json();
+                })
+                .catch(err => {
+                    return this.handleError(err);
+                });
+        }
+    }
+    getResignedEmployeeLeave(): Observable<any> {
+        if (this._cacheService.exists('resignedEmployeeLeaves')) {
+            return new Observable<any>((observer: any) => {
+                observer.next(this._cacheService.get('resignedEmployeeLeaves'));
+            });
+        } else {
+            let headers = new Headers();
+            headers.append('Authorization', 'Bearer ' + localStorage.getItem('accessToken'));
+            let options = new RequestOptions({ headers: headers });
+            return this.http.get(this.baseUrl + 'Employee/GetResignedEmployeesLeaveBalance', options)
+                .map(res => {
+                    this._cacheService.set('resignedEmployeeLeaves', res.json(), { maxAge: 60 * 60 });
+                    return res.json();
+                })
+                .catch(err => {
+                    return this.handleError(err);
+                });
+        }
+    }
+    updateResignedEmpLeave(payload: any) {
+        let headers = new Headers();
+        let body = JSON.stringify(payload);
+        headers.append('Authorization', 'Bearer ' + localStorage.getItem('accessToken'));
+        headers.append('Content-Type', 'application/json');
+        let options = new RequestOptions({ headers: headers });
+        return this.http.post(this.baseUrl + 'EmployeeLeaves/UpdateResignedEmployeeLeaves', body, options)
+            .map(res => {
+                this._cacheService.remove('resignedEmployeeLeaves');
+                return res.json();
+            })
+            .catch(err => {
+                return this.handleError(err);
+            });
+    }
+    updateEmpLeaveBalance(payload: any) {
+        let headers = new Headers();
+        let body = JSON.stringify(payload);
+        headers.append('Authorization', 'Bearer ' + localStorage.getItem('accessToken'));
+        headers.append('Content-Type', 'application/json');
+        let options = new RequestOptions({ headers: headers });
+        return this.http.post(this.baseUrl + 'EmployeeLeaves/Update', body, options)
+            .map(res => {
+                this._cacheService.remove('employeeLeaves');
+                return res.json();
+            })
+            .catch(err => {
+                return this.handleError(err);
+            });
+    }
     setApprovedLeavesCount(count: string) {
         this._cacheService.set('approvedLeaveCount', count, { maxAge: 60 * 60 });
         localStorage.setItem('approvedLeaveCount', '' + count);

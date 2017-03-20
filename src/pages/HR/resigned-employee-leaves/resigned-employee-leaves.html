@@ -21,7 +21,7 @@
     <ion-list>
       <ion-item>
         <ion-label floating>Employee</ion-label>
-        <ion-input type="text" name="txtEmployee" [(ngModel)]="HR.Employee"></ion-input>
+        <ion-input type="text" disabled="true" name="txtEmployee" [(ngModel)]="HR.Employee"></ion-input>
       </ion-item>
       <ion-item>
         <ion-label floating>Leave Balance</ion-label>
@@ -29,7 +29,7 @@
       </ion-item>
       <ion-item>
         <ion-label floating>Actual Leave Balance</ion-label>
-        <ion-input type="number" name="txtActualLeaveBal" [(ngModel)]="HR.ActualLeaveBalance"></ion-input>
+        <ion-input type="number" disabled="true" name="txtActualLeaveBal" [(ngModel)]="HR.ActualLeaveBalance"></ion-input>
       </ion-item>
       <ion-item>
         <ion-label floating>FH Balance</ion-label>
@@ -37,7 +37,7 @@
       </ion-item>
       <ion-item>
         <ion-label floating>Actual FH Balance</ion-label>
-        <ion-input type="number" name="txtActualFHBal" [(ngModel)]="HR.ActualFHBalance"></ion-input>
+        <ion-input type="number" disabled="true" name="txtActualFHBal" [(ngModel)]="HR.ActualFHBalance"></ion-input>
       </ion-item>
       <ion-item>
         <ion-label floating>Leave Taken</ion-label>
@@ -50,7 +50,7 @@
     </ion-list>
     <ion-row>
       <ion-col width-20>
-        <button ion-button>Submit</button>
+        <button ion-button (click)="onSubmit()">Submit</button>
       </ion-col>
     </ion-row>
   </form>
