@@ -3,6 +3,7 @@ import { NavController, NavParams } from 'ionic-angular';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 /** Third Party Dependencies */
 import * as _ from 'lodash';
+import * as moment from 'moment/moment';
 /** Module Level Dependencies */
 import { ProjectService } from '../services/project.service';
 import { ClientService } from '../../../providers/shared/master/client.service';
@@ -32,6 +33,8 @@ export class EmployeeProjectManagementPage {
   deliverModels: any[];
   priceType: any[];
   teamMember:any;
+  selectedProjectDetails:any;
+  isTeamValid:boolean = false;
   ProjectDetails : Project = new Project();
   constructor(public navCtrl: NavController,
               public navParams: NavParams, 
@@ -57,19 +60,24 @@ export class EmployeeProjectManagementPage {
                   'accountmanager' : [null, Validators.required],
                   'deliverymanager' : [null, Validators.required],
                   'pricetype' : [null, Validators.required],
-                  'teammembers' : [null]
+                  'teammembers' : [null],
+                  'projectsummary' : [null],
+                  'teamsize' : [null],
+                  'isglobal' : [null],
+                  'active' : [null]
                   })
                   this.teamMember=[];
+                  this.selectedProjectDetails=[];
               }
 
   ionViewDidLoad() {
     //console.log('ionViewDidLoad EmployeeProjectManagementPage');
-    this.billTypes = [{ label: 'Select ', value: null }, {
+    this.billTypes = [{
       label: 'Billable',
       value: 'Billable'
     }, {
-      label: 'Non Billable',
-      value: 'Non Billable'
+      label: 'Non-Billable',
+      value: 'Non-Billable'
     }];
     this.loadClients();
     this.loadProjectTypes();
@@ -77,6 +85,37 @@ export class EmployeeProjectManagementPage {
     this.loadDeliveryUnit();
     this.loadDeliveryModels();
     this.loadPriceType();
+    this.selectedProjectDetails = this.navParams.get('selectedProject');
+    this.showProjectDetails(this.selectedProjectDetails);
+  }
+  showProjectDetails(selectedproject) {
+    this.ProjectDetails.ClientName = selectedproject.ClientName.Value;
+    this.ProjectDetails.Billable = selectedproject.BillableNonBillable;
+    this.ProjectDetails.ProjectName = selectedproject.Title;
+    this.ProjectDetails.ProjectSummary = selectedproject.ProjectSummary;
+    this.ProjectDetails.ProjectManager = selectedproject.ProjectManager.Name;
+    this.ProjectDetails.ProjectType = selectedproject.ProjectType;
+    this.ProjectDetails.ProjectCategory = selectedproject.ProjectCategory.Value;
+    this.ProjectDetails.ProjectStartDate = selectedproject.StartDate;
+    this.ProjectDetails.ProjectEndDate = selectedproject.EndDate;
+    this.ProjectDetails.DeliveryUnit = selectedproject.DeliveryUnit.Value;
+    this.ProjectDetails.DeliveryModel = selectedproject.DeliveryModel.Value;
+    this.ProjectDetails.AccountManager = selectedproject.AccountManager.Name;
+    this.ProjectDetails.DeliveryManager = selectedproject.DeliveryManager.Name;
+    this.ProjectDetails.PriceType = selectedproject.PriceType;
+    this.ProjectDetails.TeamSize = selectedproject.TeamSize;
+    if(selectedproject.Isglobal.toLowerCase() === 'no'){
+      this.ProjectDetails.IsGlobal = false;
+    }
+    if(selectedproject.Isglobal.toLowerCase() === 'yes'){
+      this.ProjectDetails.IsGlobal = true;
+    }
+    if(selectedproject.Active.toLowerCase() === 'no'){
+      this.ProjectDetails.Active = false;
+    }
+    if(selectedproject.Active.toLowerCase() === 'yes'){
+      this.ProjectDetails.Active = true;
+    }
   }
   loadClients() {
     this.clients = [];
@@ -107,7 +146,6 @@ export class EmployeeProjectManagementPage {
   loadProjectCategories() {
     this.projectCategory = [];
     this.projectCategoryService.getProjectCategory().subscribe(result => {
-            this.projectCategory.push({ label: 'Select Project Category', value: null });
             _.forEach(result, (element:any) => {
                 this.projectCategory.push({
                     label: element.Category,
@@ -119,7 +157,6 @@ export class EmployeeProjectManagementPage {
   loadDeliveryUnit() {
     this.deliverUnits = [];
     this.deliveryUnitService.getDeliveryUnit().subscribe(result => {
-            this.deliverUnits.push({ label: 'Select Delivery Unit', value: null });
             _.forEach(result, (element:any) => {
                 this.deliverUnits.push({
                     label: element.Title,
@@ -131,7 +168,6 @@ export class EmployeeProjectManagementPage {
   loadDeliveryModels() {
     this.deliverModels = [];
     this.deliveryModelService.getDeliveryModel().subscribe(result => {
-            this.deliverModels.push({ label: 'Select Delivery Model', value: null });
             _.forEach(result, (element:any) => {
                 this.deliverModels.push({
                     label: element.Title,
@@ -156,8 +192,16 @@ export class EmployeeProjectManagementPage {
   addMembers(member:string) {
     this.teamMember.push(member);
     this.ProjectDetails.TeamMembers='';
+    this.isTeamValid = false;
   }
   onDeleteMembers(index:number) {
     this.teamMember.splice(index,1);
   }
+  textChanged(event: any) {
+        if (this.ProjectDetails.TeamMembers.length > 2)
+            this.isTeamValid = true;
+        else
+            this.isTeamValid = false;
+
+    }
 }

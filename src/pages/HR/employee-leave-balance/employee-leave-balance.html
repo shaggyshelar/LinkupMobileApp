@@ -1,0 +1,90 @@
+<!--
+  Generated template for the EmployeeLeaveBalance page.
+
+  See http://ionicframework.com/docs/v2/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar>
+    <button ion-button icon-only menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Employee Leave Balance</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+  <form [formGroup]="complexForm">
+    <ion-list>
+      <ion-item>
+        <ion-label floating>Current Year</ion-label>
+        <ion-input type="text" name="txtCurrentYear" [(ngModel)]="HR.CurentYear" formControlName="currentyear"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label floating>Employee ID</ion-label>
+        <ion-input type="text" name="txtEmpID" [(ngModel)]="HR.EmployeeID" formControlName="empid"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label floating>Previous Leave Balance</ion-label>
+        <ion-input type="text" name="txtPrevLeaveBal" [(ngModel)]="HR.PrevLeaveBalance" formControlName="prevleavebal"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label floating>Accured Leaves</ion-label>
+        <ion-input type="text" name="txtAccuredLeaves" [(ngModel)]="HR.AccuredLeaves" formControlName="acuredleave"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label floating>Adjustment Entry Type</ion-label>
+        <ion-select name="selectAdjustmentEntryType" [(ngModel)]="HR.AdjustmentEntryType" formControlName="adjustmententrytype">
+          <ion-option value='Paternity Leaves'>Paternity Leaves</ion-option>
+          <ion-option value='Maternity Leaves'>Maternity Leaves</ion-option>
+          <ion-option value='Divorce Leaves'>Divorce Leaves</ion-option>
+      </ion-select>
+      </ion-item>
+      <ion-item>
+        <ion-label floating>Adjustment Entry</ion-label>
+        <ion-input type="number" name="txtAdjustmentEntry" [(ngModel)]="HR.AdjustmentEntry" formControlName="adjustmententry" [class.invalid]="!complexForm.controls.adjustmententry.valid"></ion-input>
+      </ion-item>
+      <p *ngIf="!complexForm.controls.adjustmententry.valid" class="error">Please enter adjustment entry</p>
+      <ion-item>
+        <ion-label floating>Paternity Adjustment Entry</ion-label>
+        <ion-input type="number" name="txtPaternityAdjustmentEntry" [(ngModel)]="HR.PaternityAdjustmentEntry" formControlName="paternityentry"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label floating>Marriage Adjustment Entry</ion-label>
+        <ion-input type="number" name="txtMarriageAdjustmentEntry" [(ngModel)]="HR.MarriageAdjustmentEntry" formControlName="marriageentry"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label floating>Maternity Adjustment Entry</ion-label>
+        <ion-input type="number" name="txtMaternityAdjustmentEntry" [(ngModel)]="HR.MaternityAdjustmentEntry" formControlName="maternityentry"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label floating>Leave Taken</ion-label>
+        <ion-input type="number" name="txtLeaveTaken" [(ngModel)]="HR.LeaveTaken" formControlName="leavetaken"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label floating>Half Day Leave Taken</ion-label>
+        <ion-input type="number" name="txtHalfDayLeaveTaken" [(ngModel)]="HR.HalfDayLeaveTaken" formControlName="halfdayleave"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label floating>Actual Leave Balance</ion-label>
+        <ion-input type="number" name="txtActualLeaveBalance" [(ngModel)]="HR.ActualLeaveBalance" formControlName="actualleave"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label floating>Absent Leave Taken</ion-label>
+        <ion-input type="number" name="txtAbsentLeaveTaken" [(ngModel)]="HR.AbsentLeaveTaken" formControlName="absentleave"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label floating>Half Day Absent</ion-label>
+        <ion-input type="number" name="txtHalfDayAbsent" [(ngModel)]="HR.HalfDayAbsent" formControlName="halfdayabsent"></ion-input>
+      </ion-item>
+    </ion-list>
+    <ion-row>
+      <ion-col width-20>
+        <button ion-button>Submit</button>
+      </ion-col>
+    </ion-row>
+  </form>
+</ion-content>

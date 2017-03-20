@@ -11,8 +11,11 @@ export class Project {
        public AccountManager: string;
        public DeliveryManager: string;
        public IsGlobal: boolean;
+       public Active: boolean;
        public TeamMembers:any;
+       public TeamSize: any;
        public Billable:string;
        public DeliveryModel: string;
        public PriceType: string;
+       public ProjectSummary: string;
 }

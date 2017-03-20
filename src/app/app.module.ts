@@ -58,6 +58,9 @@ import { PersonalInfoPage } from '../pages/Corporate/MyProfile/personal-info/per
 import { ProfileDetailsPage } from '../pages/Corporate/MyProfile/profile-details/profile-details';
 import { SkillSetPage } from '../pages/Corporate/MyProfile/skill-set/skill-set';
 
+//HR
+import { ResignedEmployeeLeavesPage } from '../pages/HR/resigned-employee-leaves/resigned-employee-leaves';
+import { EmployeeLeaveBalancePage } from '../pages/HR/employee-leave-balance/employee-leave-balance';
 
 // Providers
 import { Auth } from '../providers/auth';
@@ -133,6 +136,8 @@ import { CacheService, CacheStorageAbstract, CacheLocalStorage } from 'ng2-cache
     PersonalInfoPage,
     ProfileDetailsPage,
     SkillSetPage,
+    ResignedEmployeeLeavesPage,
+    EmployeeLeaveBalancePage,
 
     LimitToDirective,
 
@@ -189,7 +194,9 @@ import { CacheService, CacheStorageAbstract, CacheLocalStorage } from 'ng2-cache
     MyProfilePage,
     PersonalInfoPage,
     ProfileDetailsPage,
-    SkillSetPage
+    SkillSetPage,
+    ResignedEmployeeLeavesPage,
+    EmployeeLeaveBalancePage
   ],
   providers: [
     {
