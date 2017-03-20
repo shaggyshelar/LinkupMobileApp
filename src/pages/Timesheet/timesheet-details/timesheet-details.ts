@@ -5,6 +5,7 @@ import { LoadingController } from 'ionic-angular';
 import { TimesheetService } from '../index';
 
 import { TaskDetailPage } from '../task-detail/task-detail';
+import { DailyTimesheetDetailPage } from '../daily-timesheet-detail/daily-timesheet-detail';
 
 @Component({
   selector: 'page-timesheet-details',
@@ -14,6 +15,7 @@ export class TimesheetDetailsPage {
   timesheetID: Number = 0;
   employeeTimesheet: any;
   timesheets: any;
+  isSubmitted: boolean = true;
 
   dayRec: any = {
     start: null,
@@ -43,14 +45,11 @@ export class TimesheetDetailsPage {
         this.enterTimesheet();
         break;
     }
-
-
-
   }
 
   enterTimesheet() {
-    this.getMyTimesheetDetails(1);  //getting stub data
-    // this.navCtrl.push(DailyTimesheetDetailPage, { readOnly: false });
+    // this.getMyTimesheetDetails(1);  //getting stub data
+    this.navCtrl.push(DailyTimesheetDetailPage, { readOnly: false });
   }
 
   getMyTimesheetDetails(id) {
@@ -64,6 +63,7 @@ export class TimesheetDetailsPage {
       this.timesheetService.getMyTimesheet(id).subscribe((res: any) => {
         this.employeeTimesheet = res;
         this.timesheets = res.Timesheets;
+        res.SubmittedStatus === 'Not Submitted' ? this.isSubmitted = false : this.isSubmitted = true;
         loader.dismiss();
       }, (err) => {
         loader.dismiss();
@@ -73,7 +73,7 @@ export class TimesheetDetailsPage {
   }
 
   itemClicked(rec) {
-    this.navCtrl.push(TaskDetailPage, rec);
+    this.navCtrl.push(TaskDetailPage, { caller: 'timesheet-details', isEnterTimesheet: false, payload: { data: rec, isSubmitted: this.isSubmitted } });
   }
 
   // arrangeDays() {
@@ -97,5 +97,9 @@ export class TimesheetDetailsPage {
 
 
   // }
+
+  addDailyTask() {
+    this.navCtrl.push(DailyTimesheetDetailPage);
+  }
 
 }
