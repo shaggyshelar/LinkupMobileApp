@@ -47,6 +47,10 @@ import { MyProfilePage } from '../pages/Corporate/MyProfile/my-profile/my-profil
 import { ManageMyProjectsPage } from '../pages/Projects/manage-my-projects/manage-my-projects';
 import { EmployeeProjectManagementPage } from '../pages/Projects/employee-project-management/employee-project-management';
 
+//HR
+import { ResignedEmployeeLeavesPage } from '../pages/HR/resigned-employee-leaves/resigned-employee-leaves';
+import { EmployeeLeaveBalancePage } from '../pages/HR/employee-leave-balance/employee-leave-balance';
+
 import { LoginPage } from '../pages/login/login';
 import { AuthService, MessageService } from '../providers/index';
 
@@ -180,7 +184,9 @@ export class MyApp {
 
     this.pages.push({ title: 'Timesheets', component: MyTimesheetPage, icon: 'md-clock' });
     this.pages.push({ title: 'Manage My Projects', component: ManageMyProjectsPage, icon: 'calendar'},
-        { title: 'Employee Project Management', component: EmployeeProjectManagementPage, icon: 'contacts'})
+        { title: 'Employee Project Management', component: EmployeeProjectManagementPage, icon: 'contacts'});
+    this.pages.push({title:'Resigned Employee Leaves',component:ResignedEmployeeLeavesPage,icon:'contacts'},
+        { title:'Employee Leave Balance',component:EmployeeLeaveBalancePage,icon:'contacts'})
 
   }
 
