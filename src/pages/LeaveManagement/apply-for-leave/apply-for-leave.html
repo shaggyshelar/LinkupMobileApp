@@ -30,15 +30,6 @@
         <p class="validationerror">{{ validationMessage }}</p>
   </ion-item>
   <ion-list>
-    <!--<ion-item>
-    <ion-label floating>Leave Type <span class="required">*</span></ion-label>
-    <ion-input readonly="true" [(ngModel)]="model.leaveType.Type" (focus) = "getLeaveType($event)" type="text" ></ion-input>
-  </ion-item>
-  <ion-list *ngIf="isShowLeaveSelection == true">
-    <ion-item *ngFor="let leavetype of leaves" (click)="selectLeaveType(leavetype)">
-     {{ leavetype.label}}
-    </ion-item>
-  </ion-list>-->
       <ion-item>
         <ion-label floating>Leave Type<span class="required">*</span></ion-label>
         <ion-select [(ngModel)]="model.leaveType.ID" name ="leavetype" (ionChange)= "validateLeaveType()">
