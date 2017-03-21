@@ -1,0 +1,18 @@
+$categories: (
+ ionic: color($colors, primary),
+ active: #4caf50,
+ inctive: #f44336,
+);
+
+@function auxiliary-categories() {
+  @return map-remove($categories);
+}
+
+page-manage-employee-leave-balance {
+     @each $activeinactive, $value in auxiliary-categories() {
+   ion-item[activeinactive=#{$activeinactive}] ion-label {
+     border-left: 2px solid $value;
+     padding-left: 10px;
+   }
+  }
+}
