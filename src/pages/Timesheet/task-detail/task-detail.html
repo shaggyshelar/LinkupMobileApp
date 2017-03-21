@@ -40,14 +40,13 @@
       </div>
     </ion-item>
     <ion-item (click)="addRecord(1)">
-      <p>Tuesday
-      </p>
+      <p>Tuesday</p>
       <div *ngIf="taskDetail.Tuesdaydesc">
         <p>Billable <span class="right">{{taskDetail.Tuesdayhrs}} Hours</span></p>
 
         <p>{{taskDetail.Tuesdaydesc}}</p>
       </div>
-      <div *ngIf="taskDetail.Tuedaydescnb">
+      <div *ngIf="taskDetail.Tuesdaydescnb">
         <p>Non Billable <span class="right">{{taskDetail.Tuesdaynbhrs}} Hours</span></p>
 
         <p>{{taskDetail.Tuesdaydescnb}}</p>
