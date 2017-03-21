@@ -87,6 +87,7 @@ import { KebabCasePipe } from '../providers/pipes/kebab-case.pipe';
 
 //Custom Components
 import { ProgressBarComponent } from '../components/progress-bar/progress-bar';
+import { ExpandableHeaderComponent } from '../components/expandable-header/expandable-header';
 import { CacheService, CacheStorageAbstract, CacheLocalStorage } from 'ng2-cache/ng2-cache';
 
 
@@ -138,13 +139,10 @@ import { CacheService, CacheStorageAbstract, CacheLocalStorage } from 'ng2-cache
     SkillSetPage,
     ResignedEmployeeLeavesPage,
     EmployeeLeaveBalancePage,
-
     LimitToDirective,
-
     KebabCasePipe,
-
-    ProgressBarComponent
-
+    ProgressBarComponent,
+    ExpandableHeaderComponent
   ],
   imports: [
     IonicModule.forRoot(MyApp),
