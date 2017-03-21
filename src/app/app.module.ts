@@ -61,6 +61,8 @@ import { SkillSetPage } from '../pages/Corporate/MyProfile/skill-set/skill-set';
 //HR
 import { ResignedEmployeeLeavesPage } from '../pages/HR/resigned-employee-leaves/resigned-employee-leaves';
 import { EmployeeLeaveBalancePage } from '../pages/HR/employee-leave-balance/employee-leave-balance';
+import { ManageEmployeeLeaveBalancePage } from '../pages/HR/manage-employee-leave-balance/manage-employee-leave-balance';
+import { ManageResignedEmployeeLeavesPage } from '../pages/HR/manage-resigned-employee-leaves/manage-resigned-employee-leaves';
 
 // Providers
 import { Auth } from '../providers/auth';
@@ -138,6 +140,8 @@ import { CacheService, CacheStorageAbstract, CacheLocalStorage } from 'ng2-cache
     SkillSetPage,
     ResignedEmployeeLeavesPage,
     EmployeeLeaveBalancePage,
+    ManageEmployeeLeaveBalancePage,
+    ManageResignedEmployeeLeavesPage,
 
     LimitToDirective,
 
@@ -196,7 +200,9 @@ import { CacheService, CacheStorageAbstract, CacheLocalStorage } from 'ng2-cache
     ProfileDetailsPage,
     SkillSetPage,
     ResignedEmployeeLeavesPage,
-    EmployeeLeaveBalancePage
+    EmployeeLeaveBalancePage,
+    ManageEmployeeLeaveBalancePage,
+    ManageResignedEmployeeLeavesPage
   ],
   providers: [
     {

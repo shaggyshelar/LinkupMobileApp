@@ -1,0 +1,29 @@
+<!--
+  Generated template for the ManageEmployeeLeaveBalance page.
+
+  See http://ionicframework.com/docs/v2/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar>
+    <button ion-button icon-only menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Employee Leave Balance</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+  <ion-list *ngIf="employeeLeaveList.length > 0">
+    <ion-item *ngFor="let empLeaves of employeeLeaveList" ion-item [attr.activeinactive]="empLeaves.Status.Value | lowercase" (click)="goToEmpLeaveDetail(empLeaves)">
+      <h3>{{empLeaves.Employee.Name ? empLeaves.Employee.Name : ''}}</h3>
+      <ion-badge item-right>{{empLeaves.ActualBalance | number : '1.1-3'}}</ion-badge>
+    </ion-item>
+  </ion-list>
+  <ion-list-header *ngIf="employeeLeaveList.length == 0">
+    No Records Found
+  </ion-list-header>
+</ion-content>

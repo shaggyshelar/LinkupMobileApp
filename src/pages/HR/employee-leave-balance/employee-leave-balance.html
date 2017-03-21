@@ -28,6 +28,10 @@
         <ion-input type="text" name="txtEmpID" [(ngModel)]="HR.EmployeeID" formControlName="empid"></ion-input>
       </ion-item>
       <ion-item>
+        <ion-label floating>Employee</ion-label>
+        <ion-input type="text" name="txtEmp" [(ngModel)]="HR.Employee" formControlName="employee"></ion-input>
+      </ion-item>
+      <ion-item>
         <ion-label floating>Previous Leave Balance</ion-label>
         <ion-input type="text" name="txtPrevLeaveBal" [(ngModel)]="HR.PrevLeaveBalance" formControlName="prevleavebal"></ion-input>
       </ion-item>
@@ -40,7 +44,7 @@
         <ion-select name="selectAdjustmentEntryType" [(ngModel)]="HR.AdjustmentEntryType" formControlName="adjustmententrytype">
           <ion-option value='Paternity Leaves'>Paternity Leaves</ion-option>
           <ion-option value='Maternity Leaves'>Maternity Leaves</ion-option>
-          <ion-option value='Divorce Leaves'>Divorce Leaves</ion-option>
+          <ion-option value='Marriage Leave'>Marriage Leave</ion-option>
       </ion-select>
       </ion-item>
       <ion-item>
@@ -83,7 +87,7 @@
     </ion-list>
     <ion-row>
       <ion-col width-20>
-        <button ion-button>Submit</button>
+        <button ion-button (click)="onSubmit()" [disabled]="!complexForm.valid">Submit</button>
       </ion-col>
     </ion-row>
   </form>
