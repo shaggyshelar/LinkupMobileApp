@@ -7,10 +7,13 @@ import { Component, Input, ElementRef, Renderer } from '@angular/core';
 export class ExpandableFooterComponent {
   @Input('scrollFooter') scrollFooter: any;
   headerHeight: any;
-  newHeaderHeight: any;
+  newFooterHeight: any;
+  lastScrollTop: any;
+  lastScrollDirection: any;
+  startShowing: any;
 
   constructor(public element: ElementRef, public renderer: Renderer) {
-    this.headerHeight = 150;
+    this.headerHeight = 65;
     this.renderer.setElementStyle(this.element.nativeElement, 'height', this.headerHeight + 'px');
   }
 
@@ -22,14 +25,26 @@ export class ExpandableFooterComponent {
 
   resizeHeader(ev) {
     ev.domWrite(() => {
-      //console.log(ev.scrollTop);
-      this.newHeaderHeight = this.headerHeight - ev.scrollTop;
-      console.log('New=' + this.newHeaderHeight + ', top=' + ev.scrollTop);
-      if (this.newHeaderHeight < 0) {
-        this.newHeaderHeight = 0;
-        //this.renderer.setElementStyle(this.element.nativeElement, 'margin-top', this.newHeaderHeight + 'px');
+      console.log('DirY=' + ev.directionY + ',ScrollTop=' + ev.scrollTop + ',contentBottom=' + ev.contentBottom);
+      if (this.lastScrollDirection == 'down' && ev.directionY == 'up') {
+        this.startShowing = true;
       }
-      this.renderer.setElementStyle(this.element.nativeElement, 'height', this.newHeaderHeight + 'px');
+      if (ev.directionY == 'down') {
+        this.lastScrollTop = ev.scrollTop;
+        this.newFooterHeight = this.headerHeight - ev.scrollTop;
+        if (this.newFooterHeight < 0) {
+          this.newFooterHeight = 0;
+        }
+      }
+      if (ev.directionY == 'up' && this.startShowing) {
+        let newHeight = this.lastScrollTop - ev.scrollTop;
+        if (newHeight < 56) {
+          this.newFooterHeight = newHeight;
+        }
+      }
+
+      this.lastScrollDirection = ev.directionY;
+      this.renderer.setElementStyle(this.element.nativeElement, 'height', this.newFooterHeight + 'px');
     });
   }
 }
