@@ -44,6 +44,7 @@ export class ApplyForLeavePage {
     public endEDate: Date;
     numberdays: boolean;
     applyLeaveForm: FormGroup;
+    //commentForm: FormGroup;
     addLeaveArr: any[];
     leaveTypeValid: boolean = true;
     leaveID: number;
@@ -75,6 +76,7 @@ export class ApplyForLeavePage {
     isShowLeaveSelection: boolean = false;
     isAllDataDownloaded: boolean = false;
     isAddedLeave: boolean = false;
+    selectedLeaveType:string = 'Leave';
 
     constructor(public navCtrl: NavController,
         public navParams: NavParams,
@@ -134,6 +136,10 @@ export class ApplyForLeavePage {
         this.applyLeaveForm = formBuilder.group({
             reason: ['', Validators.compose([Validators.minLength(2), Validators.maxLength(600), Validators.required])]
         });
+
+        //  this.commentForm = formBuilder.group({
+        //     comment: ['', Validators.compose([Validators.minLength(2), Validators.maxLength(600), Validators.required])]
+        // });
 
 
     }
@@ -220,6 +226,7 @@ export class ApplyForLeavePage {
     }
 
     selectLeaveType(leavetyepe: any) {
+
         this.isShowLeaveSelection = false;
         this.model.leaveType = leavetyepe.value;
         this.validateLeaveType();
@@ -309,11 +316,24 @@ export class ApplyForLeavePage {
     }
 
     validateLeaveType() {
+       this.model.leaveType = this.getLeaveTypeModel();
         if (this.model.leaveType !== null) {
             this.leaveTypeValid = true;
             this.dayDiffCalc();
             return;
         }
+    }
+    getLeaveTypeModel()
+    {
+        var leavetypeid:number = this.model.leaveType.ID;
+        var leavetype : any;
+      this.leaves.forEach(element => {
+          if(leavetypeid == element.value.ID)
+          {
+           leavetype = element.value;
+          }
+      });
+      return leavetype;
     }
 
     reasonTextChanged() {
