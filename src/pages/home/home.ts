@@ -6,6 +6,8 @@ import { MyLeavesPage } from '../LeaveManagement/my-leaves/my-leaves';
 import { Chart } from 'chart.js';
 import { ModalController } from 'ionic-angular';
 
+import { Subscription } from 'rxjs/Subscription';
+
 
 @Component({
   selector: 'page-home',
@@ -16,6 +18,7 @@ export class HomePage {
   @ViewChild('pieTeamTimesheetCanvas') pieTeamTimesheetCanvas;
   @ViewChild('Slides') slides: Slides;
 
+  subscription: Subscription;
   public filters: any[];
   public items: any[];
   public isSearchShow: boolean;
@@ -36,7 +39,14 @@ export class HomePage {
     public authService: AuthService,
     public modalCtrl: ModalController) {
     this.isSearchShow = false;
-    this.initializeItems();
+
+
+    this.subscription = this.authService.onAuthStatusChanged$.subscribe(
+      isAuthenticated => {
+        if (isAuthenticated == "true") {
+          this.initializeItems();
+        }
+      });
   }
 
   initializeItems() {
@@ -142,4 +152,5 @@ export class HomePage {
     this.pieParams[4] = parseInt(this.myTimesheetRejected);
     this.pieParams[5] = parseInt(this.myTimesheetPending);
   }
+
 }
