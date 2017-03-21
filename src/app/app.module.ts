@@ -75,7 +75,7 @@ import { PhasesService, ProjectService } from '../pages/Projects/index';
 import { ClientService } from '../providers/shared/master/client.service';
 import { ProjectTypeService } from '../providers/shared/master/projectType.service';
 import { ProjectCategoryService } from '../providers/shared/master/projectCategory.service';
-import { DeliveryUnitService} from '../providers/shared/master/deliveryUnit.service';
+import { DeliveryUnitService } from '../providers/shared/master/deliveryUnit.service';
 import { DeliveryModelService } from '../providers/shared/master/deliveryModel.service';
 import { PriceTypeService } from '../providers/shared/master/priceType.service';
 
@@ -88,6 +88,7 @@ import { KebabCasePipe } from '../providers/pipes/kebab-case.pipe';
 //Custom Components
 import { ProgressBarComponent } from '../components/progress-bar/progress-bar';
 import { ExpandableHeaderComponent } from '../components/expandable-header/expandable-header';
+import { ExpandableFooterComponent } from '../components/expandable-footer/expandable-footer';
 import { CacheService, CacheStorageAbstract, CacheLocalStorage } from 'ng2-cache/ng2-cache';
 
 
@@ -142,7 +143,8 @@ import { CacheService, CacheStorageAbstract, CacheLocalStorage } from 'ng2-cache
     LimitToDirective,
     KebabCasePipe,
     ProgressBarComponent,
-    ExpandableHeaderComponent
+    ExpandableHeaderComponent,
+    ExpandableFooterComponent
   ],
   imports: [
     IonicModule.forRoot(MyApp),
@@ -200,7 +202,7 @@ import { CacheService, CacheStorageAbstract, CacheLocalStorage } from 'ng2-cache
     {
       provide: ErrorHandler,
       useClass: IonicErrorHandler
-    }, 
+    },
     Auth, AuthService, LeaveService, HolidayService, UserService, MessageService, CommonService, LimitToDirective, KebabCasePipe,
     CacheService, EmployeeTimesheetService, ClientService, ProjectTypeService, PriceTypeService, ProjectCategoryService, DeliveryUnitService, DeliveryModelService, PhasesService, ProjectService, TimesheetService,
     { provide: CacheStorageAbstract, useClass: CacheLocalStorage }]

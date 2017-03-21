@@ -1,11 +1,11 @@
 import { Component, Input, ElementRef, Renderer } from '@angular/core';
 
 @Component({
-  selector: 'expandable-header',
-  templateUrl: 'expandable-header.html'
+  selector: 'expandable-footer',
+  templateUrl: 'expandable-footer.html'
 })
-export class ExpandableHeaderComponent {
-  @Input('scrollHeader') scrollArea: any;
+export class ExpandableFooterComponent {
+  @Input('scrollFooter') scrollFooter: any;
   headerHeight: any;
   newHeaderHeight: any;
 
@@ -15,7 +15,7 @@ export class ExpandableHeaderComponent {
   }
 
   ngAfterViewInit() {
-    this.scrollArea.ionScroll.subscribe((ev) => {
+    this.scrollFooter.ionScroll.subscribe((ev) => {
       this.resizeHeader(ev);
     });
   }
@@ -32,5 +32,4 @@ export class ExpandableHeaderComponent {
       this.renderer.setElementStyle(this.element.nativeElement, 'height', this.newHeaderHeight + 'px');
     });
   }
-
 }
