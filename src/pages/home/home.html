@@ -1,5 +1,5 @@
 <ion-header>
-  <expandable-header>
+  <expandable-header [scrollArea]="mycontent">
   </expandable-header>
   <ion-navbar>
     <button ion-button menuToggle>
@@ -23,7 +23,7 @@
   </ion-navbar>
 
 </ion-header>
-<ion-content padding>
+<ion-content fullscreen #mycontent padding>
   <!--<ion-list>
     <ion-item *ngFor="let item of filters">
       {{ item }}
