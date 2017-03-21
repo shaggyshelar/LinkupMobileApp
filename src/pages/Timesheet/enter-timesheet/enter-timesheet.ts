@@ -309,17 +309,19 @@ export class EnterTimesheetPage {
     this.weekEndDate = this.weekEndDate.subtract(1, 'w');
     this.showWeekEnd = new Date(this.weekEndDate);
     this.showWeekStart = new Date(this.weekStartDate);
-
+    this.timesheetList = [];
+    this.cacheData = {};
     /** TODO: get timesheet acc to date selected for edit mode */
     var loader = this.loadingCtrl.create({
       content: 'Please wait...'
     });
 
     loader.present().then(() => {
-      this.timesheetService.getCurrentEmpTimesheetByDate(this.showWeekStart).subscribe(res => {
+      this.timesheetService.getCurrentEmpTimesheetByDate({ Date: this.showWeekStart }).subscribe(res => {
         this.cacheData = res;
-        this.timesheetList = this.cacheData.Timesheets;
+        // this.timesheetList = this.cacheData.Timesheets;
         console.log(res);
+        loader.dismiss();
       });
     });
   }
@@ -329,17 +331,19 @@ export class EnterTimesheetPage {
     this.weekEndDate = this.weekEndDate.add(1, 'w');
     this.showWeekEnd = new Date(this.weekEndDate);
     this.showWeekStart = new Date(this.weekStartDate);
-
+    this.timesheetList = [];
+    this.cacheData = {};
     /** TODO: get timesheet acc to date selected for edit mode */
     var loader = this.loadingCtrl.create({
       content: 'Please wait...'
     });
 
     loader.present().then(() => {
-      this.timesheetService.getCurrentEmpTimesheetByDate(this.showWeekStart).subscribe(res => {
+      this.timesheetService.getCurrentEmpTimesheetByDate({ Date: this.showWeekStart }).subscribe(res => {
         this.cacheData = res;
-        this.timesheetList = this.cacheData.Timesheets;
+        // this.timesheetList = this.cacheData.Timesheets;
         console.log(res);
+        loader.dismiss();
       });
     });
   }
