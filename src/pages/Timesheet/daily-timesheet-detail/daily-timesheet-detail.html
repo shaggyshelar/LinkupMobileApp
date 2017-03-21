@@ -27,7 +27,7 @@
   <form [formGroup]="dailyTimesheetForm" class="extend-bottom margin-left">
     <ion-card>
       <ion-item>
-        <ion-input placeholder="Billable Hours" formControlName="billableHours"></ion-input>
+        <ion-input placeholder="Billable Hours" formControlName="billableHours" [ngModel]="billHrs"></ion-input>
         <ion-icon name="clock" item-right></ion-icon>
       </ion-item>
       <p *ngIf="!dailyTimesheetForm.controls.billableHours.valid && (dailyTimesheetForm.controls.billableHours.dirty || dailyTimesheetForm.controls.billableHours.touched)"
@@ -35,7 +35,7 @@
 
       <ion-item>
         <ion-label floating>Note</ion-label>
-        <ion-textarea formControlName="noteForBillableHours"></ion-textarea>
+        <ion-textarea formControlName="noteForBillableHours" [ngModel]="billDesc"></ion-textarea>
       </ion-item>
       <p *ngIf="!dailyTimesheetForm.controls.noteForBillableHours.valid && (dailyTimesheetForm.controls.noteForBillableHours.dirty || dailyTimesheetForm.controls.noteForBillableHours.touched)"
         class="warning">Field required</p>
@@ -44,7 +44,7 @@
 
     <ion-card>
       <ion-item>
-        <ion-input placeholder="Non Billable Hours" formControlName="nonBillableHours"></ion-input>
+        <ion-input placeholder="Non Billable Hours" formControlName="nonBillableHours" [ngModel]="nBillHrs"></ion-input>
         <ion-icon name="clock" item-right></ion-icon>
       </ion-item>
       <p *ngIf="!dailyTimesheetForm.controls.nonBillableHours.valid && (dailyTimesheetForm.controls.nonBillableHours.dirty || dailyTimesheetForm.controls.nonBillableHours.touched)"
@@ -52,7 +52,7 @@
 
       <ion-item>
         <ion-label floating>Note</ion-label>
-        <ion-textarea formControlName="noteForNonBillableHours"></ion-textarea>
+        <ion-textarea formControlName="noteForNonBillableHours" [ngModel]="nBillDesc"></ion-textarea>
       </ion-item>
       <p *ngIf="!dailyTimesheetForm.controls.noteForNonBillableHours.valid && (dailyTimesheetForm.controls.noteForNonBillableHours.dirty || dailyTimesheetForm.controls.noteForNonBillableHours.touched)"
         class="warning">Field required</p>

@@ -145,6 +145,7 @@ export class MyApp {
           this.toggleCorporateMenu();
           this.toggleProjectsMenu();
           this.loadUserDetails();
+          this.getPendingApprovalCount();
         } else {
           this.isAuthenticated = false;
           this.rootPage = LoginPage;
@@ -373,7 +374,6 @@ export class MyApp {
 
   /** Get Pending approval counts */
   getPendingApprovalCount() {
-    
     this.pendingCount = 0;
     this.pendingCount = parseInt(localStorage.getItem('PendingLeavesApprovalCount')) + parseInt(localStorage.getItem('PendingTimesheetApprovalCount'));
     this.myTimesheetCount = parseInt(localStorage.getItem('myTimesheetPending'));;
