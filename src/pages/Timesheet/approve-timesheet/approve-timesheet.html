@@ -13,12 +13,12 @@
 
 
     <ion-buttons start>
-      <button *ngIf="(pendingtimesheetsArray)?.length > 0" (click)="onFilter()" ion-button icon-only> 
+      <button (click)="onFilter()" ion-button icon-only> 
         <ion-icon name="ios-funnel"></ion-icon>
       </button>
     </ion-buttons>
     <ion-buttons start>
-      <button *ngIf="(pendingtimesheetsArray)?.length > 0" (click)="onSort()" ion-button icon-only>
+      <button (click)="onSort()" ion-button icon-only>
         <ion-icon name="md-repeat"></ion-icon>
       </button>
 
@@ -61,10 +61,19 @@
       </ion-item>
 
   </ion-list>-->
+  
+  <!--Pull to refresh Start-->
+    <ion-refresher (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content
+      pullingIcon="arrow-dropdown"
+      pullingText="Pull to refresh"
+      refreshingSpinner="circles"
+      refreshingText="Refreshing...">
+    </ion-refresher-content>
+  </ion-refresher>
+  <!--Pull to refresh Ends-->
 
   <!--Pending Timesheet List -->
-
-
   <ion-list>
     <ion-item [ngStyle]="{'background-color': entry.selectionColor}" *ngFor="let entry of pendingtimesheetsArray" ion-item (click)="itemTapped(entry)"
       (press)="longPressedItem(entry)" [attr.submittedstatus]="entry.SubmittedStatus | lowercase">

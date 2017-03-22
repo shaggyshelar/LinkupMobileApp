@@ -57,7 +57,7 @@ export class MyTimesheetFilterPage {
       filterArray.push({'value':'Not Submitted',model:true,modelValue:'notSubmitted'});
     }
     else{
-      filterArray.push({'value':'Submitted',model:false,modelValue:'submitted'});
+      filterArray.push({'value':'Not Submitted',model:false,modelValue:'notSubmitted'});
     }
     if(this.pending === true){
       filterArray.push({'value':'Pending',model:true,modelValue:'pending'});

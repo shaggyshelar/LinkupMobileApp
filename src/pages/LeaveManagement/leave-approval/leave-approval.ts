@@ -40,6 +40,7 @@ export class LeaveApprovalPage {
   public isDescending: boolean = true;
   public editMode: boolean;
   public isDataretrived: boolean = false;
+  public isPullToRefresh: boolean = false;
   public isSelectall: boolean = false;
   public isshowApproveRejectItems = false;
   public isAuthorized: boolean;
@@ -118,13 +119,15 @@ export class LeaveApprovalPage {
   /* Get Pending Leaves */
 
   getPendingLeavesToApprove() {
+    this.isPullToRefresh = false;
     this.isDataretrived = false;
     this.spinnerService.createSpinner('Please wait..');
-    this.leaveService.getLeaveByStatus('Pending')
+    this.leaveService.getLeaveByStatus('Pending',this.isPullToRefresh)
       .subscribe(
       (res: any) => {
         this.spinnerService.stopSpinner();
         this.leavesArray = [];
+        this.leavesReplicate = [];
         this.selectedEmployees = [];
         this.leavesArray = res.reverse();
         this.leavesReplicate = res;
@@ -140,8 +143,30 @@ export class LeaveApprovalPage {
         this.toastPresent('Failed to get Pending Leaves.');
       });
   }
-
-
+  /**Pull To Refresh */
+  doRefresh(refresher) {
+    this.isPullToRefresh = true;
+    this.leaveService.getLeaveByStatus('Pending',this.isPullToRefresh)
+      .subscribe(
+      (res: any) => {
+        refresher.complete();
+        this.leavesArray = [];
+        this.leavesReplicate = [];
+        this.selectedEmployees = [];
+        this.leavesArray = res.reverse();
+        this.leavesReplicate = res;
+        this.leavesArray.forEach(leave => {
+          this.selectLeave(leave, false);
+        });
+        this.editMode = true;
+        this.isDataretrived = true;
+      },
+      error => {
+        this.isDataretrived = true;
+        refresher.complete();
+        this.toastPresent('Failed to get Pending Leaves.');
+      });
+  }
 
   /* Show Leave Deatails */
 
@@ -539,6 +564,10 @@ export class LeaveApprovalPage {
               if(data[index].modelValue === 'rejected')
                 this.filterValues.push({rejected:false});
             }
+          }
+          if(this.filterValues[0].pending === false && this.filterValues[1].approved === false && this.filterValues[2].rejected === false){
+            this.leavesArray = [];
+            this.leavesArray = this.leavesArray.concat(this.leavesReplicate);
           }
         }
       }

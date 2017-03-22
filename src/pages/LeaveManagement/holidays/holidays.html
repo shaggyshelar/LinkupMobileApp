@@ -11,12 +11,12 @@
       <ion-icon name="menu"></ion-icon>
     </button>
     <ion-buttons start>
-      <button *ngIf="(pendingHoliday)?.length > 0" (click)="onFilter()" ion-button icon-only> 
+      <button (click)="onFilter()" ion-button icon-only> 
         <ion-icon name="ios-funnel"></ion-icon>
       </button>
     </ion-buttons>
     <ion-buttons start>
-      <button *ngIf="(pendingHoliday)?.length > 0" (click)="onSort()" ion-button icon-only>
+      <button (click)="onSort()" ion-button icon-only>
         <ion-icon name="md-repeat"></ion-icon>
       </button>
     </ion-buttons>

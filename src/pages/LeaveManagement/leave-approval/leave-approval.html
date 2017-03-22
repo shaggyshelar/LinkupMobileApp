@@ -13,12 +13,12 @@
      
     <!--<ion-title>Approve Leaves</ion-title>-->
     <ion-buttons start>
-      <button *ngIf ="(leavesArray)?.length > 0" (click)="onFilter()" ion-button icon-only> 
+      <button (click)="onFilter()" ion-button icon-only> 
         <ion-icon name="ios-funnel"></ion-icon>
       </button>
     </ion-buttons>
     <ion-buttons start>
-      <button *ngIf ="(leavesArray)?.length > 0" (click)="onSort()" ion-button icon-only>
+      <button (click)="onSort()" ion-button icon-only>
         <ion-icon name="md-repeat"></ion-icon>
       </button>
     </ion-buttons> 
@@ -54,7 +54,16 @@
 </ion-header>
 
 <ion-content padding>
-
+  <!--Pull to refresh Start-->
+    <ion-refresher (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content
+      pullingIcon="arrow-dropdown"
+      pullingText="Pull to refresh"
+      refreshingSpinner="circles"
+      refreshingText="Refreshing...">
+    </ion-refresher-content>
+  </ion-refresher>
+  <!--Pull to refresh Ends-->
   <!--All Leave list -->
   <ion-list *ngIf="editMode == false">
     <ion-item *ngFor="let leave of leaveList"  ion-item (click)="itemTapped(leave)" [attr.status]="leave.Status | lowercase">

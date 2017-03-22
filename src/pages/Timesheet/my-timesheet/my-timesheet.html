@@ -5,12 +5,12 @@
       <ion-icon name="menu"></ion-icon>
     </button>
      <ion-buttons start>
-      <button *ngIf="(myTimeSheets)?.length > 0" (click)="onFilter()" ion-button icon-only> 
+      <button (click)="onFilter()" ion-button icon-only> 
         <ion-icon name="ios-funnel"></ion-icon>
       </button>
     </ion-buttons>
     <ion-buttons start>
-      <button *ngIf="(myTimeSheets)?.length > 0" (click)="onSort()" ion-button icon-only>
+      <button (click)="onSort()" ion-button icon-only>
         <ion-icon name="md-repeat"></ion-icon>
       </button>
     </ion-buttons>
@@ -24,6 +24,16 @@
   <!--<ion-fab right bottom>
     <button ion-fab mini (click)="addFabClicked()"><ion-icon name="add"></ion-icon></button>
   </ion-fab>-->
+  <!--Pull to refresh Start-->
+    <ion-refresher (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content
+      pullingIcon="arrow-dropdown"
+      pullingText="Pull to refresh"
+      refreshingSpinner="circles"
+      refreshingText="Refreshing...">
+    </ion-refresher-content>
+  </ion-refresher>
+  <!--Pull to refresh Ends-->
   <ion-list>
     <ion-item-sliding #slidingItem *ngFor="let entry of myTimeSheets" [attr.submittedstatus]="entry.SubmittedStatus | kebabCase">
       <button ion-item (click)="itemClicked(entry)">

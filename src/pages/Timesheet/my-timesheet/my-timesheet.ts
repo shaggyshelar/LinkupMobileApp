@@ -22,6 +22,7 @@ export class MyTimesheetPage {
   loader: any;
   isDataReceived: Boolean = false;
   filterValues = [];
+  public isPullToRefresh: boolean = false;
   public isDescending: boolean = true;
   constructor(public navCtrl: NavController, public navParams: NavParams,
     private employeeTimesheetService: EmployeeTimesheetService,
@@ -43,8 +44,10 @@ export class MyTimesheetPage {
   ionViewDidLoad() {
     this.loader.present();
     this.myTimeSheets = [];
-    this.employeeTimesheetService.getMyTimesheets().subscribe((res: any) => {
+    this.isPullToRefresh = false;
+    this.employeeTimesheetService.getMyTimesheets(this.isPullToRefresh).subscribe((res: any) => {
       this.myTimeSheets = [];
+      this.replicateTimesheet = [];
       this.myTimeSheets = res.reverse();
       this.replicateTimesheet = res;
       this.isDataReceived = true;
@@ -52,6 +55,22 @@ export class MyTimesheetPage {
     }, err => {
       this.isDataReceived = true;
       this.loader.dismiss();
+    });
+  }
+
+  /**Pull To Refresh */
+  doRefresh(refresher) {
+    this.isPullToRefresh = true;
+    this.employeeTimesheetService.getMyTimesheets(this.isPullToRefresh).subscribe((res: any) => {
+      refresher.complete();
+      this.myTimeSheets = [];
+      this.replicateTimesheet = [];
+      this.myTimeSheets = res.reverse();
+      this.replicateTimesheet = res;
+      this.isDataReceived = true;
+    }, err => {
+      this.isDataReceived = true;
+      refresher.complete();
     });
   }
 
@@ -110,6 +129,11 @@ export class MyTimesheetPage {
               if(data[index].modelValue === 'rejected')
                 this.filterValues.push({rejected:false});
             }
+          }
+          if(this.filterValues[0].submitted === false && this.filterValues[1].approved === false && this.filterValues[2].partiallyApproved === false
+          && this.filterValues[3].notSubmitted === false && this.filterValues[4].pending === false && this.filterValues[5].rejected === false){
+            this.myTimeSheets = [];
+            this.myTimeSheets = this.myTimeSheets.concat(this.replicateTimesheet);
           }
         }
       }

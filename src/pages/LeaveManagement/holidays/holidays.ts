@@ -154,6 +154,10 @@ export class HolidaysPage {
                 this.filterValues.push({ fixed: false });
             }
           }
+          if(this.filterValues[0].floating === false && this.filterValues[1].fixed === false){
+            this.pendingHoliday = [];
+            this.pendingHoliday = this.pendingHoliday.concat(this.leavesReplicate);
+          }
         }
       }
     })

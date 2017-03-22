@@ -44,6 +44,7 @@ export class ApproveTimesheetPage {
   public selectedLeaveID: string;
   public approveEmployee: Observable<EmployeeTimesheetService>;
   public noResponseMsg: String;
+  public isPullToRefresh: boolean = false;
   filterValues = [];
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
@@ -108,9 +109,9 @@ export class ApproveTimesheetPage {
     var loader = this.loadingCtrl.create({
       content: 'Please wait...'
     });
-
+    this.isPullToRefresh = false;
     loader.present().then(() => {
-      this.employeeTimesheetService.getMyTimesheets().subscribe((res: any) => {
+      this.employeeTimesheetService.getMyTimesheets(this.isPullToRefresh).subscribe((res: any) => {
         if (res.length > 0) {
           this.approveEmployee = res.reverse();
         } else {
@@ -357,13 +358,15 @@ export class ApproveTimesheetPage {
   /* Get Pending Leaves */
 
   getPendingTimesheetsToApprove() {
+    this.isPullToRefresh = false;
     this.resetAllFlags();
     this.spinnerService.createSpinner('Please wait..');
-    this.employeeTimesheetService.getApproverPendingTimesheets()
+    this.employeeTimesheetService.getApproverPendingTimesheets(this.isPullToRefresh)
       .subscribe(
       (res: any) => {
         this.spinnerService.stopSpinner();
         this.pendingtimesheetsArray = [];
+        this.replicateTimesheet = [];
         this.selectedEmployees = [];
         this.pendingtimesheetsArray = res.reverse();
         this.replicateTimesheet = res;
@@ -381,6 +384,32 @@ export class ApproveTimesheetPage {
       });
   }
 
+  /**Pull To Refresh */
+  doRefresh(refresher) {
+    this.isPullToRefresh = true;
+    this.resetAllFlags();
+    this.employeeTimesheetService.getApproverPendingTimesheets(this.isPullToRefresh)
+      .subscribe(
+      (res: any) => {
+        refresher.complete();
+        this.pendingtimesheetsArray = [];
+        this.replicateTimesheet = [];
+        this.selectedEmployees = [];
+        this.pendingtimesheetsArray = res.reverse();
+        this.replicateTimesheet = res;
+        this.pendingtimesheetsArray.forEach(entry => {
+          this.selectTimesheet(entry, false);
+        });
+        this.editMode = true;
+        this.isDataretrived = true;
+      },
+      error => {
+        this.isDataretrived = true;
+        refresher.complete();
+        this.toastPresent('Failed request');
+        //this.showToast('Failed to get Pending Leaves.');
+      });
+  }
   /* Show Leave Deatails */
 
   itemTapped(entry: any) {
@@ -437,6 +466,11 @@ export class ApproveTimesheetPage {
               if (data[index].modelValue === 'rejected')
                 this.filterValues.push({ rejected: false });
             }
+          }
+          if(this.filterValues[0].submitted === false && this.filterValues[1].approved === false && this.filterValues[2].partiallyApproved === false
+          && this.filterValues[3].notSubmitted === false && this.filterValues[4].pending === false && this.filterValues[5].rejected === false){
+            this.pendingtimesheetsArray = [];
+            this.pendingtimesheetsArray = this.pendingtimesheetsArray.concat(this.replicateTimesheet);
           }
         }
       }
