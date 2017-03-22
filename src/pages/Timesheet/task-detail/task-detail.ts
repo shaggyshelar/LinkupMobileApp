@@ -4,6 +4,8 @@ import { CacheService } from 'ng2-cache/ng2-cache';
 
 import { DailyTimesheetDetailPage } from '../daily-timesheet-detail/daily-timesheet-detail';
 
+import { Timesheet } from '../models/timesheet.model';
+
 /*
   Generated class for the TaskDetail page.
 
@@ -22,56 +24,54 @@ export class TaskDetailPage {
   isSubmitted: boolean;
 
   timesheetParams: any;
+  cacheKey: string;
 
   constructor(public navCtrl: NavController, public navParams: NavParams
     , public _cacheService: CacheService) {
     this.task = {};
-    this.taskDetail = {};
+    this.taskDetail = new Timesheet(null, null, '', '', '', '', '', '', '', '',
+      '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', 0);
     this.project = {};
     this.timesheetParams = {};
     this.isSubmitted = true;
   }
 
   ionViewDidLoad() {
-    // this.navParams.data.isEnterTimesheet ? this.timesheetParams = this.navParams.data.timesheetData : this.viewTimesheet(this.navParams.data.payload);
-    // this.getDataFromCache();
   }
 
   ionViewDidEnter() {
-    this.navParams.data.isEnterTimesheet ? this.enterTimesheet(this.navParams.data.timesheetData) : this.viewTimesheet(this.navParams.data.payload);
-    
+    this.navParams.data.isEnterTimesheet ? this.enterTimesheet(this.navParams.data.timesheetData) : this.viewTimesheet(this.navParams.data.timesheetData);
+    console.log('TaskDetailPage cacheKey=>', this.navParams.data.timesheetData.cacheKey);
   }
 
-  viewTimesheet(payload) {
-    this.taskDetail = payload.data;
-    this.project = payload.data.Project;
-    this.task = payload.data.Task;
-    this.isSubmitted = payload.isSubmitted;
-
-    console.log('TaskDetailPage payload => ', JSON.stringify(payload));
+  viewTimesheet(params) {
+    this.timesheetParams = params.data;
+    this.isSubmitted = params.isSubmitted;
+    this.cacheKey = params.cacheKey;
+    this.getDataFromCache();
   }
 
   enterTimesheet(params) {
-    this.timesheetParams = params;
-    console.log('timesheetData params received => ', this.timesheetParams.timesheetData);
-    // if (this._cacheService.exists(this.timesheetParams.timesheetData.cacheKey)) {
-    //   console.log(this._cacheService.get(this.timesheetParams.timesheetData.cacheKey));
-    //   this.taskDetail = this._cacheService.get(this.timesheetParams.timesheetData.cacheKey)[this.timesheetParams.timesheetData.timesheetIndex]
-    //   console.log(this.taskDetail);
-    // }
+    console.log('enterTimesheet => ', params.timesheetIndex);
+    this.timesheetParams = params.data;
+    this.isSubmitted = params.isSubmitted;
+    this.cacheKey = params.cacheKey;
     this.getDataFromCache();
   }
 
   getDataFromCache() {
     if (this._cacheService.exists(this.navParams.data.timesheetData.cacheKey)) {
-      console.log(this._cacheService.get(this.navParams.data.timesheetData.cacheKey));
-      this.taskDetail = this._cacheService.get(this.navParams.data.timesheetData.cacheKey)[this.navParams.data.timesheetData.timesheetIndex]
-      console.log(this.taskDetail);
+      this.taskDetail = this._cacheService.get(this.navParams.data.timesheetData.cacheKey).Timesheets[this.navParams.data.timesheetData.timesheetIndex];
     }
   }
 
-  addRecord() {
-    this.navCtrl.push(DailyTimesheetDetailPage, { readOnly: false, timesheetIndex: this.navParams.data.timesheetData.timesheetIndex, cacheKey: this.timesheetParams.cacheKey });
+  addRecord(dayOfWeek) {
+    console.log('timesheetIndex', this.navParams.data.timesheetData.timesheetIndex, 'dayOfWeek', dayOfWeek);
+    if (this.navParams.data.timesheetData.isSubmitted) {
+      this.navCtrl.push(DailyTimesheetDetailPage, { isSubmitted: true, timesheetIndex: this.navParams.data.timesheetData.timesheetIndex, cacheKey: this.cacheKey, dayOfWeek: dayOfWeek });
+    } else {
+      this.navCtrl.push(DailyTimesheetDetailPage, { isSubmitted: false, timesheetIndex: this.navParams.data.timesheetData.timesheetIndex, cacheKey: this.cacheKey, dayOfWeek: dayOfWeek });
+    }
   }
 
   submit() {

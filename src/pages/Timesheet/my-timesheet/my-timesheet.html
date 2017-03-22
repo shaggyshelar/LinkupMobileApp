@@ -11,9 +11,9 @@
 
 
 <ion-content padding>
-  <!--<ion-fab right bottom>
+  <ion-fab right bottom>
     <button ion-fab mini (click)="addFabClicked()"><ion-icon name="add"></ion-icon></button>
-  </ion-fab>-->
+  </ion-fab>
   <ion-list>
     <ion-item-sliding #slidingItem *ngFor="let entry of myTimeSheets" [attr.submittedstatus]="entry.SubmittedStatus | kebabCase">
       <button ion-item (click)="itemClicked(entry)">
