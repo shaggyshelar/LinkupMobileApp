@@ -11,6 +11,7 @@ import { HomePage } from '../pages/home/home';
 
 // Corporate
 import { LogATicketPage } from '../pages/Corporate/log-a-ticket/log-a-ticket';
+import { LogNewTicketPage } from '../pages/Corporate/log-new-ticket/log-new-ticket';
 import { ConferenceBookingPage } from '../pages/Corporate/conference-booking/conference-booking';
 
 // Timesheet
@@ -99,6 +100,7 @@ import { CacheService, CacheStorageAbstract, CacheLocalStorage } from 'ng2-cache
     HomePage,
     LoginPage,
     LogATicketPage,
+    LogNewTicketPage,
     ConferenceBookingPage,
     MyTimesheetPage,
     EnterTimesheetPage,
@@ -158,6 +160,7 @@ import { CacheService, CacheStorageAbstract, CacheLocalStorage } from 'ng2-cache
     HomePage,
     LoginPage,
     LogATicketPage,
+    LogNewTicketPage,
     ConferenceBookingPage,
     MyTimesheetPage,
     EnterTimesheetPage,
