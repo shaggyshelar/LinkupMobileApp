@@ -25,6 +25,7 @@ import { TimesheetDetailsPage } from '../pages/Timesheet/timesheet-details/times
 import { DailyTimesheetDetailPage } from '../pages/Timesheet/daily-timesheet-detail/daily-timesheet-detail';
 import { ApproveTimesheetFilterPage } from '../pages/Timesheet/approve-timesheet-filter/approve-timesheet-filter';
 import { TaskDetailPage } from '../pages/Timesheet/task-detail/task-detail';
+import { MyTimesheetFilterPage } from  '../pages/Timesheet/my-timesheet-filter/my-timesheet-filter';
 
 // Leave Management
 import { ApplyForLeavePage } from '../pages/LeaveManagement/apply-for-leave/apply-for-leave';
@@ -113,6 +114,7 @@ import { CacheService, CacheStorageAbstract, CacheLocalStorage } from 'ng2-cache
     DailyTimesheetDetailPage,
     ApproveTimesheetFilterPage,
     TaskDetailPage,
+    MyTimesheetFilterPage,
     ApplyForLeavePage,
     HolidaysPage,
     MyCalendarPage,
@@ -174,6 +176,7 @@ import { CacheService, CacheStorageAbstract, CacheLocalStorage } from 'ng2-cache
     DailyTimesheetDetailPage,
     ApproveTimesheetFilterPage,
     TaskDetailPage,
+    MyTimesheetFilterPage,
     ApplyForLeavePage,
     HolidaysPage,
     MyCalendarPage,
