@@ -1,10 +1,13 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 import { LoadingController } from 'ionic-angular';
+import { CacheService } from 'ng2-cache/ng2-cache';
+import * as moment from 'moment';
 
 import { TimesheetService } from '../index';
 
 import { TaskDetailPage } from '../task-detail/task-detail';
+import { DailyTimesheetDetailPage } from '../daily-timesheet-detail/daily-timesheet-detail';
 
 @Component({
   selector: 'page-timesheet-details',
@@ -14,7 +17,9 @@ export class TimesheetDetailsPage {
   timesheetID: Number = 0;
   employeeTimesheet: any;
   timesheets: any;
+  isSubmitted: boolean = true;
 
+  cacheKey :string;
   dayRec: any = {
     start: null,
     end: null,
@@ -23,7 +28,9 @@ export class TimesheetDetailsPage {
 
   constructor(public navCtrl: NavController, public navParams: NavParams
     , private timesheetService: TimesheetService
+    , public _cacheService: CacheService
     , public loadingCtrl: LoadingController) {
+      this.cacheKey = '';
   }
 
   ionViewDidLoad() {
@@ -43,14 +50,11 @@ export class TimesheetDetailsPage {
         this.enterTimesheet();
         break;
     }
-
-
-
   }
 
   enterTimesheet() {
-    this.getMyTimesheetDetails(1);  //getting stub data
-    // this.navCtrl.push(DailyTimesheetDetailPage, { readOnly: false });
+    // this.getMyTimesheetDetails(1);  //getting stub data
+    this.navCtrl.push(DailyTimesheetDetailPage, { readOnly: false });
   }
 
   getMyTimesheetDetails(id) {
@@ -64,6 +68,9 @@ export class TimesheetDetailsPage {
       this.timesheetService.getMyTimesheet(id).subscribe((res: any) => {
         this.employeeTimesheet = res;
         this.timesheets = res.Timesheets;
+        console.log('this.timesheets => ', this.timesheets);
+        this.cacheStore(this.assembleCacheKey(), res);
+        res.SubmittedStatus === 'Not Submitted' ? this.isSubmitted = false : this.isSubmitted = true;
         loader.dismiss();
       }, (err) => {
         loader.dismiss();
@@ -72,30 +79,26 @@ export class TimesheetDetailsPage {
 
   }
 
-  itemClicked(rec) {
-    this.navCtrl.push(TaskDetailPage, rec);
+  itemClicked(rec, index) {
+    this.navCtrl.push(TaskDetailPage, { caller: 'timesheet-details', isEnterTimesheet: false, timesheetData: { timesheetIndex: index, isSubmitted: this.isSubmitted, cacheKey: this.cacheKey} });
   }
 
-  // arrangeDays() {
-  //   console.log(this.employeeTimesheet.StartDate);
-  //   this.dayRec = {
-  //     start: moment(this.employeeTimesheet.StartDate),
-  //     end: moment(this.employeeTimesheet.EndDate)
-  //   };
-  //   var dayData = [];
-  //   for (var i = 0; i < 7; i++) {
+  assembleCacheKey() {
+    this.cacheKey = 'myTimesheet-' + moment(this.employeeTimesheet.StartDate).format('D/M') + '-' + moment(this.employeeTimesheet.EndDate).format('D/M');
+    return this.cacheKey;
+  }
 
-  //      dayData.push({
-  //         day: moment(this.employeeTimesheet.StartDate).add(i,'days'),
-  //       });
+  cacheStore(name, data) {
+    if (this._cacheService.exists(name)) {
+      this._cacheService.remove(name);
+      this._cacheService.set(name, data, { maxAge: 60 * 60 });
+    } else {
+      this._cacheService.set(name, data, { maxAge: 60 * 60 });
+    }
+  }
 
-  //   }
-
-  //   this.dayRec.days = dayData;
-  //   console.log(this.dayRec.start);
-  //   console.log(this.dayRec.end);
-
-
-  // }
+  addDailyTask() {
+    this.navCtrl.push(DailyTimesheetDetailPage);
+  }
 
 }

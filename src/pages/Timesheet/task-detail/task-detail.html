@@ -1,5 +1,5 @@
 <!--
-  Generated template for the navParams.data page.
+  Generated template for the taskDetail page.
 
   See http://ionicframework.com/docs/v2/components/#navigation for more info on
   Ionic pages and navigation.
@@ -8,6 +8,16 @@
 
   <ion-navbar>
     <ion-title>Task Details</ion-title>
+    <!--<ion-buttons end *ngIf="navParams.data.isEnterTimesheet || !isSubmitted">
+      <button clear ion-button (click)="addRecord()">
+        <ion-icon name="add"></ion-icon>
+      </button>
+    </ion-buttons>-->
+    <ion-buttons end *ngIf="navParams.data.isEnterTimesheet || !isSubmitted">
+      <button ion-button end (click)="submit()">
+          <ion-icon name="checkmark"></ion-icon>
+      </button>
+    </ion-buttons>
   </ion-navbar>
 
 </ion-header>
@@ -15,70 +25,103 @@
 
 <ion-content padding>
   <ion-list>
-    <ion-item-divider color="light">
-      <h3>Billable Hours</h3>
-    </ion-item-divider>
-    <ion-item>
-      <ion-item *ngIf="navParams.data.Mondayhrs">
-        <p>Monday <span class="right">{{navParams.data.Mondayhrs}} Hours</span></p>
-        <p>Desc: {{navParams.data.Mondaydesc}}</p>
-      </ion-item>
-      <ion-item *ngIf="navParams.data.Tuesdayhrs">
-        <p>Tuesday <span class="right">{{navParams.data.Tuesdayhrs}} Hours</span></p>
-        <p>Desc: {{navParams.data.Tuesdaydesc}}</p>
-      </ion-item>
-      <ion-item *ngIf="navParams.data.Wednesdayhrs">
-        <p>Wednesday <span class="right">{{navParams.data.Wednesdayhrs}} Hours</span></p>
-        <p>Desc: {{navParams.data.Wednesdaydesc}}</p>
-      </ion-item>
-      <ion-item *ngIf="navParams.data.Thursdayhrs">
-        <p>Thursday <span class="right">{{navParams.data.Thursdayhrs}} Hours</span></p>
-        <p *ngIf="navParams.data.Thursdaydesc">Desc: {{navParams.data.Thursdaydesc}}</p>
-      </ion-item>
-      <ion-item *ngIf="navParams.data.Fridayhrs">
-        <p>Friday <span class="right">{{navParams.data.Fridayhrs}} Hours</span></p>
-        <p>Desc: {{navParams.data.Fridaydesc}}</p>
-      </ion-item>
-      <ion-item *ngIf="navParams.data.Saturdayhrs">
-        <p>Saturday <span class="right">{{navParams.data.Saturdayhrs}} Hours</span></p>
-        <p>Desc: {{navParams.data.Saturdaydesc}}</p>
-      </ion-item>
-      <ion-item *ngIf="navParams.data.Sundayhrs">
-        <p>Sunday <span class="right">{{navParams.data.Sundayhrs}} Hours</span></p>
-        <p>Desc: {{navParams.data.Sundaydesc}}</p>
-      </ion-item>
-    </ion-item>
+    <ion-item (click)="addRecord(0)">
+      <p>Monday
+      </p>
+      <div *ngIf="taskDetail.Mondaydesc">
+        <p>Billable <span class="right">{{taskDetail.Mondayhrs}} Hours</span></p>
 
-    <ion-item-divider color="light">
-      <h3>Non Billable hours</h3>
-    </ion-item-divider>
-    <ion-item *ngIf="navParams.data.Mondaynbhrs">
-      <p>Monday <span class="right">{{navParams.data.Mondaynbhrs}} Hours</span></p>
-      <p>Desc: {{navParams.data.Mondaydescnb}}</p>
+        <p>{{taskDetail.Mondaydesc}}</p>
+      </div>
+      <div *ngIf="taskDetail.Mondaydescnb">
+        <p>Non Billable <span class="right">{{taskDetail.Mondaynbhrs}} Hours</span></p>
+
+        <p>{{taskDetail.Mondaydescnb}}</p>
+      </div>
     </ion-item>
-    <ion-item *ngIf="navParams.data.Tuesdaynbhrs">
-      <p>Tuesday <span class="right">{{navParams.data.Tuesdaynbhrs}} Hours</span></p>
-      <p>Desc: {{navParams.data.Tuesdaydescnb}}</p>
+    <ion-item (click)="addRecord(1)">
+      <p>Tuesday
+      </p>
+      <div *ngIf="taskDetail.Tuesdaydesc">
+        <p>Billable <span class="right">{{taskDetail.Tuesdayhrs}} Hours</span></p>
+
+        <p>{{taskDetail.Tuesdaydesc}}</p>
+      </div>
+      <div *ngIf="taskDetail.Tuedaydescnb">
+        <p>Non Billable <span class="right">{{taskDetail.Tuesdaynbhrs}} Hours</span></p>
+
+        <p>{{taskDetail.Tuesdaydescnb}}</p>
+      </div>
     </ion-item>
-    <ion-item *ngIf="navParams.data.Wednesdaynbhrs">
-      <p>Wednesday <span class="right">{{navParams.data.Wednesdaynbhrs}} Hours</span></p>
-      <p>Desc: {{navParams.data.Wednesdaydescnb}}</p>
+    <ion-item (click)="addRecord(2)">
+      <p>Wednesday
+      </p>
+      <div *ngIf="taskDetail.Wednesdaydesc">
+        <p>Billable <span class="right">{{taskDetail.Wednesdayhrs}} Hours</span></p>
+
+        <p>{{taskDetail.Wednesdaydesc}}</p>
+      </div>
+      <div *ngIf="taskDetail.Wednesdaydescnb">
+        <p>Non Billable <span class="right">{{taskDetail.Wednesdaynbhrs}} Hours</span></p>
+
+        <p>{{taskDetail.Wednesdaydescnb}}</p>
+      </div>
     </ion-item>
-    <ion-item *ngIf="navParams.data.Thursdaynbhrs">
-      <p>Thursday <span class="right">{{navParams.data.Thursdaynbhrs}} Hours</span></p>
-      <p *ngIf="navParams.data.Thursdaydescnb">Desc: {{navParams.data.Thursdaydescnb}}</p>
+    <ion-item (click)="addRecord(3)">
+      <p>Thursday
+      </p>
+      <div *ngIf="taskDetail.Thursdaydesc">
+        <p>Billable <span class="right">{{taskDetail.Thursdayhrs}} Hours</span></p>
+
+        <p>{{taskDetail.Thursdaydesc}}</p>
+      </div>
+      <div *ngIf="taskDetail.Thursdaydescnb">
+        <p>Non Billable <span class="right">{{taskDetail.Thursdaynbhrs}} Hours</span></p>
+
+        <p>{{taskDetail.Thursdaydescnb}}</p>
+      </div>
     </ion-item>
-    <ion-item *ngIf="navParams.data.Fridaynbhrs">
-      <p>Friday <span class="right">{{navParams.data.Fridaynbhrs}} Hours</span></p>
-      <p>Desc: {{navParams.data.Fridaydescnb}}</p>
+    <ion-item (click)="addRecord(4)">
+      <p>Friday
+      </p>
+      <div *ngIf="taskDetail.Fridaydesc">
+        <p>Billable <span class="right">{{taskDetail.Fridayhrs}} Hours</span></p>
+
+        <p>{{taskDetail.Fridaydesc}}</p>
+      </div>
+      <div *ngIf="taskDetail.Fridaydescnb">
+        <p>Non Billable <span class="right">{{taskDetail.Fridaynbhrs}} Hours</span></p>
+
+        <p>{{taskDetail.Fridaydescnb}}</p>
+      </div>
     </ion-item>
-    <ion-item *ngIf="navParams.data.Saturdaynbhrs">
-      <p>Saturday <span class="right">{{navParams.data.Saturdaynbhrs}} Hours</span></p>
-      <p>Desc: {{navParams.data.Saturdaydescnb}}</p>
+    <ion-item (click)="addRecord(5)">
+      <p>Saturday
+      </p>
+      <div *ngIf="taskDetail.Saturdaydesc">
+        <p>Billable <span class="right">{{taskDetail.Saturdayhrs}} Hours</span></p>
+
+        <p>{{taskDetail.Saturdaydesc}}</p>
+      </div>
+      <div *ngIf="taskDetail.Saturdaydescnb">
+        <p>Non Billable <span class="right">{{taskDetail.Saturdaynbhrs}} Hours</span></p>
+
+        <p>{{taskDetail.Saturdaydescnb}}</p>
+      </div>
     </ion-item>
-    <ion-item *ngIf="navParams.data.Sundaynbhrs">
-      <p>Sunday <span class="right">{{navParams.data.Sundaynbhrs}} Hours</span></p>
-      <p>Desc: {{navParams.data.Sundaydescnb}}</p>
+    <ion-item (click)="addRecord(6)">
+      <p>Sunday
+      </p>
+      <div *ngIf="taskDetail.Sundaydesc">
+        <p>Billable <span class="right">{{taskDetail.Sundayhrs}} Hours</span></p>
+
+        <p>{{taskDetail.Sundaydesc}}</p>
+      </div>
+      <div *ngIf="taskDetail.Sundaydescnb">
+        <p>Non Billable <span class="right">{{taskDetail.Sundaynbhrs}} Hours</span></p>
+
+        <p>{{taskDetail.Sundaydescnb}}</p>
+      </div>
     </ion-item>
   </ion-list>
 
