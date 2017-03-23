@@ -145,6 +145,7 @@ export class MyApp {
           this.toggleCorporateMenu();
           this.toggleProjectsMenu();
           this.loadUserDetails();
+          this.getPendingApprovalCount();
         } else {
           this.isAuthenticated = false;
           this.rootPage = LoginPage;
@@ -182,10 +183,12 @@ export class MyApp {
     }
 
     this.pages.push({ title: 'Timesheets', component: MyTimesheetPage, icon: 'md-clock' });
+
     this.pages.push({ title: 'Manage My Projects', component: ManageMyProjectsPage, icon: 'calendar'},
         { title: 'Employee Project Management', component: EmployeeProjectManagementPage, icon: 'contacts'});
     this.pages.push({title:'Resigned Employee Leaves',component:ManageResignedEmployeeLeavesPage,icon:'contacts'},
-        { title:'Employee Leave Balance',component:ManageEmployeeLeaveBalancePage,icon:'contacts'})
+        { title:'Employee Leave Balance',component:ManageEmployeeLeaveBalancePage,icon:'contacts'});
+
 
   }
 
@@ -371,7 +374,6 @@ export class MyApp {
 
   /** Get Pending approval counts */
   getPendingApprovalCount() {
-    
     this.pendingCount = 0;
     this.pendingCount = parseInt(localStorage.getItem('PendingLeavesApprovalCount')) + parseInt(localStorage.getItem('PendingTimesheetApprovalCount'));
     this.myTimesheetCount = parseInt(localStorage.getItem('myTimesheetPending'));;

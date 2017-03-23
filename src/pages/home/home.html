@@ -33,7 +33,7 @@
       <ion-icon name="calendar"></ion-icon>
     </ion-avatar>
     <h2>My Leaves</h2>
-    <p> Balance - {{myLeaveBalance}}, Taken - {{myLeaveTaken}} </p>
+    <p> Balance - {{myLeaveBalance | number:'1.0-3' }}, Taken - {{myLeaveTaken}} </p>
   </ion-item>
   <ion-item (click)="gotoMyTimesheet()">
     <ion-avatar item-left class="homeIcons">

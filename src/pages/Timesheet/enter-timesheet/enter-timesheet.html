@@ -19,17 +19,18 @@
 
   <ion-row>
     <ion-col width-10>
-      <button ion-button clear class="left-align"><ion-icon name="arrow-dropleft" class="left-align"></ion-icon></button>
+      <button ion-button clear class="left-align" (click)="lastWeekClick()"><ion-icon name="arrow-dropleft" class="left-align"></ion-icon></button>
     </ion-col>
     <ion-col width-80>
-      <ion-label class="center-align"> {{weekStartDate | date:'d/M'}} - {{weekEndDate | date:'d/M'}}</ion-label>
+      <ion-label class="center-align">{{showWeekStart | date:'d/M'}} - {{showWeekEnd | date:'d/M'}}</ion-label>
     </ion-col>
     <ion-col width-10>
-      <button ion-button clear class="right-align"><ion-icon name="arrow-dropright" class="right-align"></ion-icon></button>
+      <button ion-button clear class="right-align" (click)="nextWeekClick()"><ion-icon name="arrow-dropright" class="right-align"></ion-icon></button>
     </ion-col>
   </ion-row>
 
   <ion-card *ngFor="let timesheet of timesheetList; let i = index" (click)="cardClick(i)">
+
     <ion-row>
       <ion-col width-90></ion-col>
       <ion-col width-10>
@@ -39,24 +40,16 @@
 
     <ion-item>
       <ion-label>Project</ion-label>
-      <ion-select [(ngModel)]="timesheet.Project" (ngModelChange)="projectChanged(timesheet.Project, i)">
+      <ion-select [(ngModel)]="timesheet.Project" (ionChange)="projectChanged(timesheet.Project, i)">
         <ion-option *ngFor="let proj of projectList" [value]="proj">{{proj.label}}</ion-option>
       </ion-select>
     </ion-item>
 
     <ion-item>
       <ion-label>Task</ion-label>
-      <ion-select [(ngModel)]="timesheet.Task" (ngModelChange)="phaseChanged(timesheet.Task, i)">
+      <ion-select [(ngModel)]="timesheet.Task" (ionChange)="phaseChanged(timesheet.Task, i)">
         <ion-option *ngFor="let phse of tasksList[i]" [value]="phse">{{phse.label}}</ion-option>
       </ion-select>
-    </ion-item>
-    <ion-item>
-      <h3>Total Hours : 40:00</h3>
-    </ion-item>
-
-    <ion-item>
-      <p>Billable Hours : 22:00</p>
-      <p>Non Billable Hours : 18:00</p>
     </ion-item>
 
   </ion-card>
