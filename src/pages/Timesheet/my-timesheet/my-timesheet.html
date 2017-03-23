@@ -21,9 +21,11 @@
 
 
 <ion-content padding>
-  <ion-fab right bottom>
+    <ion-fab right bottom>
     <button ion-fab mini (click)="addFabClicked()"><ion-icon name="add"></ion-icon></button>
   </ion-fab>
+
+
   <!--Pull to refresh Start-->
     <ion-refresher (ionRefresh)="doRefresh($event)">
     <ion-refresher-content
