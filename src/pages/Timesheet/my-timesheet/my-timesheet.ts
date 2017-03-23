@@ -46,7 +46,8 @@ export class MyTimesheetPage {
   }
 
   itemClicked(entry) {
-    this.navCtrl.push(TimesheetDetailsPage, { payload: entry, caller: 'my-timesheet' });
+    //this.navCtrl.push(TimesheetDetailsPage, { payload: entry, caller: 'my-timesheet' });
+     this.navCtrl.push(EnterTimesheetPage, { timesheetID: entry.ID });
   }
 
   addFabClicked() {

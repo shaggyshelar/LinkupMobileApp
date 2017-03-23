@@ -10,6 +10,14 @@
       <ion-icon name="menu"></ion-icon>
     </button>
     <ion-title>Enter Timesheet</ion-title>
+     <ion-buttons start>
+      <button  ion-button (click)="saveClicked()">
+        Save
+      </button>
+      <button  ion-button (click)="submitClicked()">
+        Submit
+      </button>
+    </ion-buttons>
   </ion-navbar>
 
 </ion-header>
@@ -19,17 +27,99 @@
 
   <ion-row>
     <ion-col width-10>
-      <button ion-button clear class="left-align" (click)="lastWeekClick()"><ion-icon name="arrow-dropleft" class="left-align"></ion-icon></button>
+      <button ion-button clear class="left-align" (click)="lastWeekClick()"><ion-icon name="arrow-back" class="left-align"></ion-icon></button>
     </ion-col>
     <ion-col width-80>
-      <ion-label class="center-align">{{showWeekStart | date:'d/M'}} - {{showWeekEnd | date:'d/M'}}</ion-label>
+      <ion-label class="center-align">{{showWeekStart | date:'d MMM y'}} - {{showWeekEnd | date:'d MMM y'}}</ion-label>
     </ion-col>
     <ion-col width-10>
-      <button ion-button clear class="right-align" (click)="nextWeekClick()"><ion-icon name="arrow-dropright" class="right-align"></ion-icon></button>
+      <button ion-button clear class="right-align" (click)="nextWeekClick()"><ion-icon name="arrow-forward" class="right-align"></ion-icon></button>
     </ion-col>
   </ion-row>
 
-  <ion-card *ngFor="let timesheet of timesheetList; let i = index" (click)="cardClick(i)">
+
+  <ion-list *ngIf="timesheetStatus == 'New'">
+    <ion-item *ngFor="let timesheet of timesheetList">
+      <p>{{timesheet.date| date:'d'}}<span class="hours">{{timesheet.hours}}</span></p>
+      <p>{{timesheet.date| date:'MMM'}}</p>
+      <div class="empty"></div>
+    </ion-item>
+  </ion-list>
+
+  <ion-list *ngIf="timesheetStatus != 'New'">
+     <ion-item>
+       <ion-row>
+         <ion-col *ngFor="let timesheet of weekProjects.MondayArray">
+           {{timesheet.Project.Value}}
+           <div class="empty"></div>
+         </ion-col>
+       </ion-row>
+     </ion-item>
+    
+      <ion-item>
+         <ion-row>
+         <ion-col *ngFor="let timesheet of weekProjects.TuesdayArray">
+           {{timesheet.Project.Value}}
+           <div class="empty"></div>
+         </ion-col>
+       </ion-row>
+     </ion-item>
+
+      <ion-item>
+       <ion-row>
+         <ion-col *ngFor="let timesheet of weekProjects.WednesdayArray">
+           {{timesheet.Project.Value}}
+           <div class="empty"></div>
+         </ion-col>
+       </ion-row>
+     </ion-item>
+
+     <ion-item>
+      <ion-row>
+         <ion-col *ngFor="let timesheet of weekProjects.ThursdayArray">
+           {{timesheet.Project.Value}}
+           <div class="empty"></div>
+         </ion-col>
+       </ion-row>
+     </ion-item>
+
+      <ion-item>
+        <ion-row>
+         <ion-col *ngFor="let timesheet of weekProjects.FridayArray">
+           {{timesheet.Project.Value}}
+           <div class="empty"></div>
+         </ion-col>
+       </ion-row>
+     </ion-item>
+
+      <ion-item>
+        <ion-row>
+         <ion-col *ngFor="let timesheet of weekProjects.SaturdayArray">
+           {{timesheet.Project.Value}}
+           <div class="empty"></div>
+         </ion-col>
+       </ion-row>
+     </ion-item>
+
+      <ion-item>
+        <ion-row>
+         <ion-col *ngFor="let timesheet of weekProjects.SundayArray">
+           {{timesheet.Project.Value}}
+           <div class="empty"></div>
+         </ion-col>
+       </ion-row>
+     </ion-item>
+
+  </ion-list>
+
+<ion-row>
+  <ion-label class="center-align">Total: {{totalhours.TotalhrsTimesheet}}</ion-label>
+</ion-row>
+
+
+  
+
+  <!--<ion-card *ngFor="let timesheet of timesheetList; let i = index" (click)="cardClick(i)">
 
     <ion-row>
       <ion-col width-90></ion-col>
@@ -65,6 +155,6 @@
         <button full ion-button (click)="submitTimesheetClicked()">Submit Timesheet</button>
       </ion-col>
     </ion-row>
-  </ion-item>
+  </ion-item>-->
 
 </ion-content>
