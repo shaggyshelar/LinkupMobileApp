@@ -56,3 +56,151 @@ class User {
     Name: string;
     ID: number;
 }
+
+export class emptyTimesheetModel {
+    date:any;
+    hours:string;
+}
+export class weekArray{
+    constructor(){}
+         MondayArray:Array<monday> = [];
+         TuesdayArray:Array<tuesday> = [];
+         WednesdayArray:Array<wednesday> = [];
+         ThursdayArray:Array<thursday> = [];
+         FridayArray:Array<friday> = [];
+         SaturdayArray:Array<saturday> = [];
+         SundayArray:Array<sunday> = [];
+}
+
+export class monday{
+    constructor(
+    ){}
+
+      ApproverUser: Array<User>;
+        Project: Project;
+        Task: string;
+        Mondayhrs: string;
+        Mondaydesc: string;
+        Mondaynbhrs: string;
+        Mondaydescnb: string;
+        ApproverComment: string;
+        ProjectTimesheetStatus: string;
+        Billable: string;
+        TimesheetID: string;
+        UpdationFlag: string;
+        ID: number;
+        TotalhrsMonday:string;
+
+}
+export class tuesday{
+     constructor(
+    ){}
+     ApproverUser: Array<User>;
+        Project: Project;
+        Task: string;
+        Tuesdayhrs: string;
+        Tuesdaydesc: string;
+        Tuesdaynbhrs: string;
+        Tuesdaydescnb: string;
+        ApproverComment: string;
+        ProjectTimesheetStatus: string;
+        Billable: string;
+        TimesheetID: string;
+        UpdationFlag: string;
+        ID: number;
+        TotalhrsTuesday:string;
+}
+export class wednesday{
+     constructor()
+    {}
+      ApproverUser: Array<User>;
+        Project: Project;
+        Task: string;
+        Wednesdayhrs: string;
+        Wednesdaydesc: string;
+        Wednesdaynbhrs: string;
+        Wednesdaydescnb: string;
+        ApproverComment: string;
+        ProjectTimesheetStatus: string;
+        Billable: string;
+        TimesheetID: string;
+        UpdationFlag: string;
+        ID: number;
+        TotalhrsWednesday:string;
+}
+export class thursday{
+     constructor()
+    {}
+     ApproverUser: Array<User>;
+        Project: Project;
+        Task: string;
+        Thursdayhrs: string;
+        Thursdaydesc: string;
+        Thursdaynbhrs: string;
+        Thursdaydescnb: string;
+        ApproverComment: string;
+        ProjectTimesheetStatus: string;
+        Billable: string;
+        TimesheetID: string;
+        UpdationFlag: string;
+        ID: number;
+        TotalhrsThursday:string;
+    
+}
+export class friday{
+    constructor()
+    {}
+      ApproverUser: Array<User>;
+        Project: Project;
+        Task: string;
+        Fridayhrs: string;
+        Fridaydesc: string;
+        Fridaynbhrs: string;
+        Fridaydescnb: string;
+        ApproverComment: string;
+        ProjectTimesheetStatus: string;
+        Billable: string;
+        TimesheetID: string;
+        UpdationFlag: string;
+        ID: number;
+        TotalhrsFriday:string;
+    
+}
+export class saturday{
+     constructor()
+    {}
+    ApproverUser: Array<User>;
+        Project: Project;
+        Task: string;
+        Saturdayhrs: string;
+        Saturdaydesc: string;
+        Saturdaynbhrs: string;
+        Saturdaydescnb: string;
+        ApproverComment: string;
+        ProjectTimesheetStatus: string;
+        Billable: string;
+        TimesheetID: string;
+        UpdationFlag: string;
+        ID: number;
+        TotalhrsSaturday:string;
+    
+}
+export class sunday{
+    constructor()
+    {}
+     ApproverUser: Array<User>;
+        Project: Project;
+        Task: string;
+        Sundayhrs: string;
+        Sundaydesc: string;
+        Sundaynbhrs: string;
+        Sundaydescnb: string;
+        ApproverComment: string;
+        ProjectTimesheetStatus: string;
+        Billable: string;
+        TimesheetID: string;
+        UpdationFlag: string;
+        ID: number;
+        TotalhrsSunday:string;
+    
+}

@@ -14,5 +14,16 @@ page-enter-timesheet {
         text-align: center;
         // display: inline-block;
     }
+    .hours{
+        float:right;
+        font-size: larger;
+    }
+    .empty
+    {
+        background-color: dodgerblue;
+        height: 2px;
+        padding-left: 30px;
+        padding-right: 30px;
+    }
 
 }
