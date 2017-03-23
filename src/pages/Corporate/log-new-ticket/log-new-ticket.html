@@ -21,7 +21,7 @@
       <ion-item>
         <ion-label>Department</ion-label>
         <ion-select formControlName="department" [(ngModel)]="ticketEntry.Department" (ionChange)="departmentChanged(ticketEntry.Department)">
-          <ion-option *ngFor="let item of department" [value]="item.Value"> {{item.Name}} </ion-option>
+          <ion-option *ngFor="let item of department" [value]="item"> {{item.Name}} </ion-option>
         </ion-select>
         <p class="error" *ngIf="!validateTicket.controls.department.valid ">Field required</p>
       </ion-item>
@@ -29,7 +29,7 @@
       <ion-item>
         <ion-label>Priority</ion-label>
         <ion-select formControlName="priority" [(ngModel)]="ticketEntry.Priority" (ionChange)="priorityChanged(ticketEntry.Priority)">
-          <ion-option *ngFor="let item of priority" [value]="item.Value"> {{item.Name}} </ion-option>
+          <ion-option *ngFor="let item of priority" [value]="item"> {{item.Name}} </ion-option>
         </ion-select>
         <p class="error" *ngIf="!validateTicket.controls.priority.valid">Field required</p>
       </ion-item>
@@ -37,12 +37,12 @@
       <ion-item>
         <ion-label>Concern</ion-label>
         <ion-select formControlName="concern" [(ngModel)]="ticketEntry.Concern" (ionChange)="concernChanged(ticketEntry.Concern)">
-          <ion-option *ngFor="let item of concern" [value]="item.Value"> {{item.Name}} </ion-option>
+          <ion-option *ngFor="let item of concern" [value]="item"> {{item.Name}} </ion-option>
         </ion-select>
         <p class="error" *ngIf="!validateTicket.controls.concern.valid">Field required</p>
       </ion-item>
 
-      <ion-item>
+      <ion-item color="light">
         <p>Description</p>
       </ion-item>
       <ion-item>
