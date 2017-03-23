@@ -20,23 +20,30 @@ import { HolidayDetailsPage } from '../holiday-details/holiday-details';
 @Component({
   selector: 'page-holidays',
   templateUrl: 'holidays.html',
-  providers:[HolidayService,SpinnerService]
+  providers: [HolidayService, SpinnerService]
 })
 export class HolidaysPage {
   events: any[];
-  calenderoption : any;
+  calenderoption: any;
   holidaysObs: Holiday[];
   holidayList: any;
   pendingHoliday: any;
-  public isDescending: boolean=true;
+  modifiedList: any[];
+  public leavesReplicate: any[];
+  public isDescending: boolean = true;
+  public filterValues: any[];
   // eventDay: MyEvent;
-  constructor(public navCtrl: NavController, 
-  public navParams: NavParams,
-  private holidayService: HolidayService,
-  public spinnerService:SpinnerService,
-  public alertCtrl: AlertController,
-  public actionSheetCtrl: ActionSheetController,
-  public modalCtrl: ModalController) {
+  constructor(public navCtrl: NavController,
+    public navParams: NavParams,
+    private holidayService: HolidayService,
+    public spinnerService: SpinnerService,
+    public alertCtrl: AlertController,
+    public actionSheetCtrl: ActionSheetController,
+    public modalCtrl: ModalController) {
+    this.leavesReplicate = [];
+    this.filterValues = [];
+    this.filterValues.push({ floating: true });
+    this.filterValues.push({ fixed: true });
     // this.events = [
     //    {
     //     "title": "17 Grapes Daily call",
@@ -58,7 +65,7 @@ export class HolidaysPage {
     //   },
 
     // ];
-  
+
   }
 
   ionViewDidLoad() {
@@ -66,63 +73,94 @@ export class HolidaysPage {
   }
 
   /*Get Holiday List */
-  getHolidays()
-  {
+  getHolidays() {
     this.holidayList = [];
     this.pendingHoliday = [];
     this.events = [];
     this.spinnerService.createSpinner('Please wait..');
-     this.holidayService.getHolidays().subscribe((res:any) => {
-       this.spinnerService.stopSpinner();
-        this.holidaysObs = res;
-        this.holidaysObs.reverse();
-          for (let i = 0; i < res.length; i++) {
-          res[i].start = moment(res[i].HolidayDate);
-         if ((moment(res[i].start).diff(moment(), 'days')) > -1) {
+    this.holidayService.getHolidays().subscribe((res: any) => {
+      this.spinnerService.stopSpinner();
+      this.holidaysObs = res;
+      this.holidaysObs.reverse();
+      for (let i = 0; i < res.length; i++) {
+        res[i].start = moment(res[i].HolidayDate);
+        if ((moment(res[i].start).diff(moment(), 'days')) > -1) {
           this.pendingHoliday.push(res[i]);
+          this.leavesReplicate.push(res[i]);
         }
       }
       this.holidayService.setPendingHolidaysCount(this.pendingHoliday.length.toString());
       this.getCalandarEvents();
     },
-    error =>{
-      this.spinnerService.stopSpinner();
-    });
+      error => {
+        this.spinnerService.stopSpinner();
+      });
   }
 
   /*Create events to show on calendar */
-  getCalandarEvents()
-  {
-     for (let i = 0; i < this.holidaysObs.length; i++) {
-       var event:MyEvent = new MyEvent();
-       var holidaytype:any = this.holidaysObs[i].HolidayType;
-         event.start  = moment(this.holidaysObs[i].HolidayDate).format('YYYY-MM-DD');
-         event.end = moment(this.holidaysObs[i].HolidayDate).format('YYYY-MM-DD');;
-         event.title = this.holidaysObs[i].Title;
-         event.HolidayType = this.holidaysObs[i].HolidayType;
-         event.WeekDay = this.holidaysObs[i].WeekDay;
-         event.HolidayDescription = this.holidaysObs[i].HolidayDescription;
-         if(holidaytype.Value == 'Floating')
-         event.color = 'orange';
-         else
-         event.color = 'red';
-         event.allDay = true;
-         this.events.push(event);
-        }
+  getCalandarEvents() {
+    for (let i = 0; i < this.holidaysObs.length; i++) {
+      var event: MyEvent = new MyEvent();
+      var holidaytype: any = this.holidaysObs[i].HolidayType;
+      event.start = moment(this.holidaysObs[i].HolidayDate).format('YYYY-MM-DD');
+      event.end = moment(this.holidaysObs[i].HolidayDate).format('YYYY-MM-DD');;
+      event.title = this.holidaysObs[i].Title;
+      event.HolidayType = this.holidaysObs[i].HolidayType;
+      event.WeekDay = this.holidaysObs[i].WeekDay;
+      event.HolidayDescription = this.holidaysObs[i].HolidayDescription;
+      if (holidaytype.Value == 'Floating')
+        event.color = 'orange';
+      else
+        event.color = 'red';
+      event.allDay = true;
+      this.events.push(event);
+    }
   }
 
-  handleEventClick(event:any){
-     let alert = this.alertCtrl.create({
+  handleEventClick(event: any) {
+    let alert = this.alertCtrl.create({
       title: 'Holiday',
-      subTitle: '<b>Title: </b>' + event.calEvent.title + '<br/>'+'<b>Holiday Description: </b>'+ event.calEvent.HolidayDescription +
-                '<br/>'+ '<b>Holiday Type: </b>' + event.calEvent.HolidayType.Value + '<br/>' + '<b>Week Day: </b>' + event.calEvent.WeekDay,
+      subTitle: '<b>Title: </b>' + event.calEvent.title + '<br/>' + '<b>Holiday Description: </b>' + event.calEvent.HolidayDescription +
+      '<br/>' + '<b>Holiday Type: </b>' + event.calEvent.HolidayType.Value + '<br/>' + '<b>Week Day: </b>' + event.calEvent.WeekDay,
       buttons: ['OK']
     });
     alert.present();
   }
   onFilter() {
-    let modal = this.modalCtrl.create(HolidaysFilterPage);
+    let modal = this.modalCtrl.create(HolidaysFilterPage, { filtervalue: this.filterValues });
     modal.present();
+    modal.onDidDismiss(data => {
+      if (data !== undefined) {
+        if (data.length > 0) {
+          this.pendingHoliday = [];
+          this.modifiedList = [];
+          this.filterValues = [];
+          for (let index = 0; index < data.length; index++) {
+            if (data[index].model === true) {
+              this.modifiedList = this.leavesReplicate.filter((holiday) => {
+                return holiday.HolidayType.Value == data[index].value;
+              })
+              this.pendingHoliday = this.pendingHoliday.concat(this.modifiedList);
+              this.modifiedList = [];
+              if (data[index].modelValue === 'floating')
+                this.filterValues.push({ floating: true });
+              if (data[index].modelValue === 'fixed')
+                this.filterValues.push({ fixed: true });
+            }
+            else {
+              if (data[index].modelValue === 'floating')
+                this.filterValues.push({ floating: false });
+              if (data[index].modelValue === 'fixed')
+                this.filterValues.push({ fixed: false });
+            }
+          }
+          if(this.filterValues[0].floating === false && this.filterValues[1].fixed === false){
+            this.pendingHoliday = [];
+            this.pendingHoliday = this.pendingHoliday.concat(this.leavesReplicate);
+          }
+        }
+      }
+    })
   }
   onSort() {
     let actionSheet = this.actionSheetCtrl.create({
@@ -132,32 +170,32 @@ export class HolidaysPage {
           text: 'Date Ascending',
           role: 'date ascending',
           handler: () => {
-            if(this.isDescending === false) {
+            if (this.isDescending === false) {
               this.pendingHoliday.reverse();
               this.isDescending = true;
             }
           }
-        },{
+        }, {
           text: 'Date Descending',
           role: 'date descending',
           handler: () => {
-            if(this.isDescending) {
+            if (this.isDescending) {
               this.pendingHoliday.reverse();
               this.isDescending = false;
             }
           }
-        },{
+        }, {
           text: 'Cancel',
           role: 'cancel',
           handler: () => {
-            
+
           }
         }
       ]
     });
     actionSheet.present();
   }
-  onHolidayDetails(holidayData :any) {
-    this.navCtrl.push(HolidayDetailsPage,{holiday: holidayData });
+  onHolidayDetails(holidayData: any) {
+    this.navCtrl.push(HolidayDetailsPage, { holiday: holidayData });
   }
 }

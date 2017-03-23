@@ -1,17 +1,24 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams, ViewController } from 'ionic-angular';
 
+/*
+  Generated class for the MyTimesheetFilter page.
+
+  See http://ionicframework.com/docs/v2/components/#navigation for more info on
+  Ionic pages and navigation.
+*/
 @Component({
-  selector: 'page-approve-timesheet-filter',
-  templateUrl: 'approve-timesheet-filter.html'
+  selector: 'page-my-timesheet-filter',
+  templateUrl: 'my-timesheet-filter.html'
 })
-export class ApproveTimesheetFilterPage {
+export class MyTimesheetFilterPage {
   submitted: any;
   approved: any;
   partiallyApproved: any;
   notSubmitted: any;
   pending: any;
   rejected: any;
+
   constructor(public navCtrl: NavController, public navParams: NavParams, public viewCtrl: ViewController) { }
 
   ionViewDidLoad() {

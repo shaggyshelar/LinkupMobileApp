@@ -21,33 +21,17 @@
 <ion-content padding>
   <ion-list>
     <ion-item>
-      <ion-label>Cancel Status</ion-label>
-      <ion-checkbox checked="true"></ion-checkbox>
+      <ion-label>Pending</ion-label>
+      <ion-checkbox checked="pending" [(ngModel)]="pending"></ion-checkbox>
     </ion-item>
     <ion-item>
-      <ion-label>Approved Status</ion-label>
-      <ion-checkbox checked="true"></ion-checkbox>
+      <ion-label>Approved</ion-label>
+      <ion-checkbox checked="approved" [(ngModel)]="approved"></ion-checkbox>
     </ion-item> 
     <ion-item>
-      <ion-label>Rejected Status</ion-label>
-      <ion-checkbox checked="true"></ion-checkbox>
-    </ion-item> 
-    <ion-item>
-      <ion-label>Leave</ion-label>
-      <ion-checkbox checked="true"></ion-checkbox>
-    </ion-item> 
-    <ion-item>
-      <ion-label>Leave (LWP)</ion-label>
-      <ion-checkbox checked="true"></ion-checkbox>
-    </ion-item> 
-    <ion-item>
-      <ion-label>Abscent</ion-label>
-      <ion-checkbox checked="true"></ion-checkbox>
-    </ion-item> 
-    <ion-item>
-      <ion-label>Half Day Leave</ion-label>
-      <ion-checkbox checked="true"></ion-checkbox>
-    </ion-item> 
+      <ion-label>Rejected</ion-label>
+      <ion-checkbox checked="rejected" [(ngModel)]="rejected"></ion-checkbox>
+    </ion-item>
   </ion-list>
 </ion-content>
 <ion-footer>

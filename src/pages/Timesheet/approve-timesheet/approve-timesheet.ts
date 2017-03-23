@@ -24,6 +24,8 @@ export class ApproveTimesheetPage {
   public timesheetID: string;
   public timesheetObs: Observable<EmployeeTimeSheet[]>;
   public pendingtimesheetsArray: EmployeeTimeSheet[];
+  public replicateTimesheet: EmployeeTimeSheet[];
+  public modifiedList: any[];
   public timesheetList: EmployeeTimeSheet[];
   public userPermissions: any[];
   public selectedTimesheetID: string;
@@ -42,6 +44,8 @@ export class ApproveTimesheetPage {
   public selectedLeaveID: string;
   public approveEmployee: Observable<EmployeeTimesheetService>;
   public noResponseMsg: String;
+  public isPullToRefresh: boolean = false;
+  filterValues = [];
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
     private employeeTimesheetService: EmployeeTimesheetService,
@@ -53,6 +57,13 @@ export class ApproveTimesheetPage {
     public alertCtrl: AlertController,
     public modalCtrl: ModalController,
     public toastCtrl: ToastController) {
+    this.filterValues = [];
+    this.filterValues.push({ submitted: true });
+    this.filterValues.push({ approved: true });
+    this.filterValues.push({ partiallyApproved: true });
+    this.filterValues.push({ notSubmitted: true });
+    this.filterValues.push({ pending: true });
+    this.filterValues.push({ rejected: true });
     this.isAuthorized = this.auth.checkPermission('TIMESHEET.APPROVETIMESHEETS.MANAGE');
     this.isBulkApprovePermission = this.auth.checkPermission('TIMESHEET.BULK_APPROVAL.MANAGE');
     this.timesheetChangedEvent.subscribe('Timesheet Rejected', () => {
@@ -98,9 +109,9 @@ export class ApproveTimesheetPage {
     var loader = this.loadingCtrl.create({
       content: 'Please wait...'
     });
-
+    this.isPullToRefresh = false;
     loader.present().then(() => {
-      this.employeeTimesheetService.getMyTimesheets().subscribe((res: any) => {
+      this.employeeTimesheetService.getMyTimesheets(this.isPullToRefresh).subscribe((res: any) => {
         if (res.length > 0) {
           this.approveEmployee = res.reverse();
         } else {
@@ -347,15 +358,18 @@ export class ApproveTimesheetPage {
   /* Get Pending Leaves */
 
   getPendingTimesheetsToApprove() {
+    this.isPullToRefresh = false;
     this.resetAllFlags();
     this.spinnerService.createSpinner('Please wait..');
-    this.employeeTimesheetService.getApproverPendingTimesheets()
+    this.employeeTimesheetService.getApproverPendingTimesheets(this.isPullToRefresh)
       .subscribe(
       (res: any) => {
         this.spinnerService.stopSpinner();
         this.pendingtimesheetsArray = [];
+        this.replicateTimesheet = [];
         this.selectedEmployees = [];
         this.pendingtimesheetsArray = res.reverse();
+        this.replicateTimesheet = res;
         this.pendingtimesheetsArray.forEach(entry => {
           this.selectTimesheet(entry, false);
         });
@@ -370,6 +384,32 @@ export class ApproveTimesheetPage {
       });
   }
 
+  /**Pull To Refresh */
+  doRefresh(refresher) {
+    this.isPullToRefresh = true;
+    this.resetAllFlags();
+    this.employeeTimesheetService.getApproverPendingTimesheets(this.isPullToRefresh)
+      .subscribe(
+      (res: any) => {
+        refresher.complete();
+        this.pendingtimesheetsArray = [];
+        this.replicateTimesheet = [];
+        this.selectedEmployees = [];
+        this.pendingtimesheetsArray = res.reverse();
+        this.replicateTimesheet = res;
+        this.pendingtimesheetsArray.forEach(entry => {
+          this.selectTimesheet(entry, false);
+        });
+        this.editMode = true;
+        this.isDataretrived = true;
+      },
+      error => {
+        this.isDataretrived = true;
+        refresher.complete();
+        this.toastPresent('Failed request');
+        //this.showToast('Failed to get Pending Leaves.');
+      });
+  }
   /* Show Leave Deatails */
 
   itemTapped(entry: any) {
@@ -384,8 +424,57 @@ export class ApproveTimesheetPage {
   }
 
   onFilter() {
-    let modal = this.modalCtrl.create(ApproveTimesheetFilterPage);
+    let modal = this.modalCtrl.create(ApproveTimesheetFilterPage, { filtervalue: this.filterValues });
     modal.present();
+    modal.onDidDismiss(data => {
+      if (data !== undefined) {
+        if (data.length > 0) {
+          this.pendingtimesheetsArray = [];
+          this.modifiedList = [];
+          this.filterValues = [];
+          for (let index = 0; index < data.length; index++) {
+            if (data[index].model === true) {
+              this.modifiedList = this.replicateTimesheet.filter((entry) => {
+                return entry.SubmittedStatus == data[index].value;
+              })
+              this.pendingtimesheetsArray = this.pendingtimesheetsArray.concat(this.modifiedList);
+              this.modifiedList = [];
+              if (data[index].modelValue === 'submitted')
+                this.filterValues.push({ submitted: true });
+              if (data[index].modelValue === 'approved')
+                this.filterValues.push({ approved: true });
+              if (data[index].modelValue === 'partiallyApproved')
+                this.filterValues.push({ partiallyApproved: true });
+              if (data[index].modelValue === 'notSubmitted')
+                this.filterValues.push({ notSubmitted: true });
+              if (data[index].modelValue === 'pending')
+                this.filterValues.push({ pending: true });
+              if (data[index].modelValue === 'rejected')
+                this.filterValues.push({ rejected: true });
+            }
+            else {
+              if (data[index].modelValue === 'submitted')
+                this.filterValues.push({ submitted: false });
+              if (data[index].modelValue === 'approved')
+                this.filterValues.push({ approved: false });
+              if (data[index].modelValue === 'partiallyApproved')
+                this.filterValues.push({ partiallyApproved: false });
+              if (data[index].modelValue === 'notSubmitted')
+                this.filterValues.push({ notSubmitted: false });
+              if (data[index].modelValue === 'pending')
+                this.filterValues.push({ pending: false });
+              if (data[index].modelValue === 'rejected')
+                this.filterValues.push({ rejected: false });
+            }
+          }
+          if(this.filterValues[0].submitted === false && this.filterValues[1].approved === false && this.filterValues[2].partiallyApproved === false
+          && this.filterValues[3].notSubmitted === false && this.filterValues[4].pending === false && this.filterValues[5].rejected === false){
+            this.pendingtimesheetsArray = [];
+            this.pendingtimesheetsArray = this.pendingtimesheetsArray.concat(this.replicateTimesheet);
+          }
+        }
+      }
+    })
   }
   onSort() {
     let actionSheet = this.actionSheetCtrl.create({
@@ -396,6 +485,7 @@ export class ApproveTimesheetPage {
           role: 'date ascending',
           handler: () => {
             if (this.isDescending === false) {
+              this.pendingtimesheetsArray.reverse();
               // this.approveEmployee.ApproverUser.reverse();
               this.isDescending = true;
             }
@@ -405,6 +495,7 @@ export class ApproveTimesheetPage {
           role: 'date descending',
           handler: () => {
             if (this.isDescending) {
+              this.pendingtimesheetsArray.reverse();
               // this.approveEmployee.reverse();
               this.isDescending = false;
             }
