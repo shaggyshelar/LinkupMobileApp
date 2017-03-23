@@ -45,7 +45,7 @@
     </ion-item-divider>
   </ion-list>-->
 
-  <ion-list *ngFor="let rec of timesheets" (click)="itemClicked(rec)">
+  <ion-list *ngFor="let rec of timesheets; let i = index" (click)="itemClicked(rec, i)">
     <ion-item-divider color="light">
       {{rec.Project.Value}} - {{rec.Task}}
     </ion-item-divider>

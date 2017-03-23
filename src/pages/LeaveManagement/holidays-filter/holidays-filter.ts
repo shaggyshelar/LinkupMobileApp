@@ -13,17 +13,34 @@ import { NavController, NavParams, ViewController } from 'ionic-angular';
 })
 export class HolidaysFilterPage {
   public holidayFilterModel: any;
+  public floating: any;
+  public fixed: any;
   constructor(public navCtrl: NavController, public navParams: NavParams, public viewCtrl: ViewController) {
     this.holidayFilterModel = { cancelled: true, approved: true, rejected: true, lwp: true, absent: true, halfDay: true }
   }
 
   ionViewDidLoad() {
-    //TO DO:Implementation
+    let filterInput = this.navParams.get('filtervalue');
+    this.floating = filterInput[0].floating;
+    this.fixed = filterInput[1].fixed;
   }
   dismiss(data) {
     this.viewCtrl.dismiss(data);
   }
   applyFilter() {
-    this.dismiss(this.holidayFilterModel);
+    let filterArray = [];
+    if(this.floating === true){
+      filterArray.push({'value':'Floating',model:true,modelValue:'floating'});
+    }
+    else{
+      filterArray.push({'value':'floating',model:false,modelValue:'floating'});
+    }
+    if(this.fixed === true){
+      filterArray.push({'value':'Fixed',model:true,modelValue:'fixed'});
+    }
+    else{
+      filterArray.push({'value':'Fixed',model:false,modelValue:'fixed'});
+    }
+    this.dismiss(filterArray);
   }
 }

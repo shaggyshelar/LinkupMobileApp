@@ -1,6 +1,6 @@
 /** Angular Dependencies */
 import { Injectable } from '@angular/core';
-import { Http } from '@angular/http';
+import { Http, Headers, RequestOptions } from '@angular/http';
 
 /** Third Party Dependencies */
 import { CacheService } from 'ng2-cache/ng2-cache';
@@ -35,5 +35,60 @@ export class TimesheetService extends BaseService {
             return this.handleError(err);
         });
         // }
+    }
+
+    saveTimesheet(payload: any) {
+        let headers = new Headers();
+        let body = JSON.stringify(payload);
+        headers.append('Authorization', 'Bearer ' + localStorage.getItem('accessToken'));
+        headers.append('Content-Type', 'application/json');
+        // let windowRef = this._window();
+        // windowRef['App'].blockUI();
+        let options = new RequestOptions({ headers: headers });
+        return this.http.post(this.baseUrl + '/Timesheet/Save', body, options)
+            .map(res => {
+                // windowRef['App'].unblockUI();
+                return res.json();
+            })
+            .catch(err => {
+                // windowRef['App'].unblockUI();
+                return this.handleError(err);
+            });
+    }
+    submitTimesheet(payload: any) {
+        let headers = new Headers();
+        let body = JSON.stringify(payload);
+        headers.append('Authorization', 'Bearer ' + localStorage.getItem('accessToken'));
+        headers.append('Content-Type', 'application/json');
+        // let windowRef = this._window();
+        // windowRef['App'].blockUI();
+        let options = new RequestOptions({ headers: headers });
+        return this.http.post(this.baseUrl + '/Timesheet/Submit', body, options)
+            .map(res => {
+                // windowRef['App'].unblockUI();
+                return res.json();
+            })
+            .catch(err => {
+                // windowRef['App'].unblockUI();
+                return this.handleError(err);
+            });
+    }
+    getCurrentEmpTimesheetByDate(payload: any) {
+        let headers = new Headers();
+        let body = JSON.stringify(payload);
+        headers.append('Authorization', 'Bearer ' + localStorage.getItem('accessToken'));
+        headers.append('Content-Type', 'application/json');
+        // let windowRef = this._window();
+        // windowRef['App'].blockUI();
+        let options = new RequestOptions({ headers: headers });
+        return this.http.post(this.baseUrl + '/EmployeeTimesheet/GetCurrentEmpTimesheetByDate', body, options)
+            .map(res => {
+                // windowRef['App'].unblockUI();
+                return res.json();
+            })
+            .catch(err => {
+                // windowRef['App'].unblockUI();
+                return this.handleError(err);
+            });
     }
 }

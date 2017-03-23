@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, ActionSheetController, ModalController,ToastController } from 'ionic-angular';
+import { NavController, NavParams, ActionSheetController, ModalController, ToastController } from 'ionic-angular';
 import { LeaveService } from '../index';
 import { Observable } from 'rxjs/Rx';
 import { Leave } from '../models/leave';
@@ -23,6 +23,8 @@ import { MyLeavesFilterPage } from '../my-leaves-filter/my-leaves-filter';
 export class MyLeavesPage {
 
   public leaveObs: Leave[];
+  public leavesReplicate: Leave[];
+  public modifiedList: Leave[];
   public leaveDetObs: Observable<LeaveDetail>;
   public leaveDetail: LeaveDetail;
   public selectedLeave: any;
@@ -30,6 +32,8 @@ export class MyLeavesPage {
   public isDescending: boolean = true;
   public isFirstTimeLoad: boolean = true;
   public isAllDataLoaded: boolean = false;
+  public count: number = 0;
+  public filterValues:any[];
   events: any[];
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
@@ -39,8 +43,11 @@ export class MyLeavesPage {
     public actionSheetCtrl: ActionSheetController,
     public modalCtrl: ModalController,
     public leaveChangeEvent: Events,
-    public toastCtrl:ToastController) {
-
+    public toastCtrl: ToastController) {
+    this.filterValues = [];
+    this.filterValues.push({rejectedStatus:true});
+    this.filterValues.push({cancelledStatus:true});
+    this.filterValues.push({approvedStatus:true});
     this.leaveChangeEvent.subscribe('Delected Leave', () => {
       this.getMyLeaves();
     });
@@ -81,6 +88,7 @@ export class MyLeavesPage {
       (res: any) => {
         this.spinnerService.stopSpinner();
         this.leaveObs = res;
+        this.leavesReplicate = res;
         this.leaveObs.reverse();
         this.leaveObs.forEach(element => {
           var sdate = moment(element.StartDate).format('YYYY-MM-DD');
@@ -124,16 +132,16 @@ export class MyLeavesPage {
       Status: 'Cancelled',
       LeaveRequestMasterId: this.selectedLeave.LeaveRequestMasterId,
       ID: this.selectedLeave.ID,
-      startdate:this.selectedLeave.StartDate,
-      enddate:this.selectedLeave.EndDate,
-      LeaveTotal:this.selectedLeave.LeaveTotal,
-      FloatingHolidayTotal:this.selectedLeave.FloatingHolidayTotal,
-      HalfdayLeaveTotal:this.selectedLeave.HalfdayLeaveTotal,
-      AbsentTotal:this.selectedLeave.AbsentTotal,
-      HalfdayAbsentTotal:this.selectedLeave.HalfdayAbsentTotal,
-      MaternityLeaveTotal:this.selectedLeave.MaternityLeaveTotal,
-      PaternityLeaveTotal:this.selectedLeave.PaternityLeaveTotal,
-      MarriageLeaveTotal:this.selectedLeave.MarriageLeaveTotal,
+      startdate: this.selectedLeave.StartDate,
+      enddate: this.selectedLeave.EndDate,
+      LeaveTotal: this.selectedLeave.LeaveTotal,
+      FloatingHolidayTotal: this.selectedLeave.FloatingHolidayTotal,
+      HalfdayLeaveTotal: this.selectedLeave.HalfdayLeaveTotal,
+      AbsentTotal: this.selectedLeave.AbsentTotal,
+      HalfdayAbsentTotal: this.selectedLeave.HalfdayAbsentTotal,
+      MaternityLeaveTotal: this.selectedLeave.MaternityLeaveTotal,
+      PaternityLeaveTotal: this.selectedLeave.PaternityLeaveTotal,
+      MarriageLeaveTotal: this.selectedLeave.MarriageLeaveTotal,
     };
     this.leaveService.deleteLeaveRecord(leaveTobeCancelled).subscribe(res => {
       if (res) {
@@ -157,12 +165,10 @@ export class MyLeavesPage {
   }
 
   handleDayClick(event: any) {
-    // alert(' Show Apply Leave Page');
     this.navCtrl.push(ApplyForLeavePage, { date: event.date._d });
   }
 
   handleEventClick(event: any) {
-    // 
     var selectedleave: any;
     this.leaveObs.forEach(element => {
       if (event.calEvent.ID == element.LeaveRequestMasterId) {
@@ -193,8 +199,40 @@ export class MyLeavesPage {
     confirm.present();
   }
   onFilter() {
-    let modal = this.modalCtrl.create(MyLeavesFilterPage);
+    let modal = this.modalCtrl.create(MyLeavesFilterPage, { filtervalue: this.filterValues });
     modal.present();
+    modal.onDidDismiss(data => {
+      if (data !== undefined) {
+        if (data.length > 0) {
+          this.leaveObs = [];
+          this.modifiedList = [];
+          this.filterValues = [];
+          for (let index = 0; index < data.length; index++) {
+            if (data[index].model === true) {
+              this.modifiedList = this.leavesReplicate.filter((leave) => {
+                return leave.Status == data[index].value;
+              })
+              this.leaveObs = this.leaveObs.concat(this.modifiedList);
+              this.modifiedList = [];
+              if(data[index].modelValue === 'rejectedStatus')
+                this.filterValues.push({rejectedStatus:true});
+              if(data[index].modelValue === 'cancelledStatus')
+                this.filterValues.push({cancelledStatus:true});
+              if(data[index].modelValue === 'approvedStatus')
+                this.filterValues.push({approvedStatus:true});
+            }
+            else{
+              if(data[index].modelValue === 'rejectedStatus')
+                this.filterValues.push({rejectedStatus:false});
+              if(data[index].modelValue === 'cancelledStatus')
+                this.filterValues.push({cancelledStatus:false});
+              if(data[index].modelValue === 'approvedStatus')
+                this.filterValues.push({approvedStatus:false});
+            }
+          }
+        }
+      }
+    })
   }
   onSort() {
     let actionSheet = this.actionSheetCtrl.create({
@@ -230,13 +268,13 @@ export class MyLeavesPage {
     actionSheet.present();
   }
 
- toastPresent(message: string) {
-        let toast = this.toastCtrl.create({
-            message: message,
-            duration: 5000
-        });
-        toast.present();
-    }
+  toastPresent(message: string) {
+    let toast = this.toastCtrl.create({
+      message: message,
+      duration: 5000
+    });
+    toast.present();
+  }
   showToast(message: string) {
     Toast.show(message, '5000', 'center').subscribe(
       toast => {

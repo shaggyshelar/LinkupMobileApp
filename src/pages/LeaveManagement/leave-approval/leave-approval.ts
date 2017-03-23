@@ -43,6 +43,9 @@ export class LeaveApprovalPage {
   public isSelectall: boolean = false;
   public isshowApproveRejectItems = false;
   public isAuthorized: boolean;
+  public filterValues:any[];
+  public modifiedList :any[];
+  public leavesReplicate :any[];
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
     public leaveService: LeaveService,
@@ -53,6 +56,10 @@ export class LeaveApprovalPage {
     public leaveStatusChangedEvent: Events,
     public modalCtrl: ModalController,
     public toastCtrl:ToastController) {
+    this.filterValues = [];
+    this.filterValues.push({pending:true});
+    this.filterValues.push({approved:true});
+    this.filterValues.push({rejected:true});
     this.userPermissions = JSON.parse(localStorage.getItem("loggedInUserPermission"));
     this.isAuthorized = this.auth.checkPermission('LEAVE.APPROVAL.MANAGE');
     this.isBulkApprovePermission = this.checkBulkApprovePermission('LEAVE.BULK_APPROVAL.MANAGE');
@@ -120,6 +127,7 @@ export class LeaveApprovalPage {
         this.leavesArray = [];
         this.selectedEmployees = [];
         this.leavesArray = res.reverse();
+        this.leavesReplicate = res;
         this.leavesArray.forEach(leave => {
           this.selectLeave(leave, false);
         });
@@ -500,8 +508,41 @@ export class LeaveApprovalPage {
     }
 
   onFilter() {
-    let modal = this.modalCtrl.create(LeaveApprovalFilterPage);
+    let modal = this.modalCtrl.create(LeaveApprovalFilterPage, { filtervalue: this.filterValues });
     modal.present();
+     modal.onDidDismiss(data => {
+       console.log(data);
+      if (data !== undefined) {
+        if (data.length > 0) {
+          this.leavesArray = [];
+          this.modifiedList = [];
+          this.filterValues = [];
+          for (let index = 0; index < data.length; index++) {
+            if (data[index].model === true) {
+              this.modifiedList = this.leavesReplicate.filter((leave) => {
+                return leave.Status == data[index].value;
+              })
+              this.leavesArray = this.leavesArray.concat(this.modifiedList);
+              this.modifiedList = [];
+              if(data[index].modelValue === 'pending')
+                this.filterValues.push({pending:true});
+              if(data[index].modelValue === 'approved')
+                this.filterValues.push({approved:true});
+              if(data[index].modelValue === 'rejected')
+                this.filterValues.push({rejected:true});
+            }
+            else{
+              if(data[index].modelValue === 'pending')
+                this.filterValues.push({pending:false});
+              if(data[index].modelValue === 'approved')
+                this.filterValues.push({approved:false});
+              if(data[index].modelValue === 'rejected')
+                this.filterValues.push({rejected:false});
+            }
+          }
+        }
+      }
+     })
   }
   onSort() {
     let actionSheet = this.actionSheetCtrl.create({
@@ -512,7 +553,7 @@ export class LeaveApprovalPage {
           role: 'date ascending',
           handler: () => {
             if (this.isDescending === false) {
-              this.leaveList.reverse();
+              this.leavesArray.reverse();
               this.isDescending = true;
             }
           }
@@ -521,7 +562,7 @@ export class LeaveApprovalPage {
           role: 'date descending',
           handler: () => {
             if (this.isDescending) {
-              this.leaveList.reverse();
+              this.leavesArray.reverse();
               this.isDescending = false;
             }
           }

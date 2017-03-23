@@ -12,17 +12,17 @@
     </button>
 
 
-    <!--<ion-buttons start>
-      <button (click)="onFilter()" ion-button icon-only> 
+    <ion-buttons start>
+      <button *ngIf="(pendingtimesheetsArray)?.length > 0" (click)="onFilter()" ion-button icon-only> 
         <ion-icon name="ios-funnel"></ion-icon>
       </button>
     </ion-buttons>
     <ion-buttons start>
-      <button (click)="onSort()" ion-button icon-only>
+      <button *ngIf="(pendingtimesheetsArray)?.length > 0" (click)="onSort()" ion-button icon-only>
         <ion-icon name="md-repeat"></ion-icon>
       </button>
 
-    </ion-buttons> -->
+    </ion-buttons> 
     <!--<ion-toolbar>-->
     <ion-buttons start>
       <button ion-button *ngIf="isshowApproveRejectItems == true">
