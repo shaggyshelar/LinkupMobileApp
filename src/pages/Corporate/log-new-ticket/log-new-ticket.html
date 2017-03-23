@@ -1,0 +1,56 @@
+<!--
+  Generated template for the LogNewTicket page.
+
+  See http://ionicframework.com/docs/v2/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>Log New Ticket</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+
+  <form [formGroup]="validateTicket">
+    <ion-list>
+
+      <ion-item>
+        <ion-label>Department</ion-label>
+        <ion-select formControlName="department" [(ngModel)]="ticketEntry.Department" (ionChange)="departmentChanged(ticketEntry.Department)">
+          <ion-option *ngFor="let item of department" [value]="item.Value"> {{item.Name}} </ion-option>
+        </ion-select>
+        <p class="error" *ngIf="!validateTicket.controls.department.valid ">Field required</p>
+      </ion-item>
+
+      <ion-item>
+        <ion-label>Priority</ion-label>
+        <ion-select formControlName="priority" [(ngModel)]="ticketEntry.Priority" (ionChange)="priorityChanged(ticketEntry.Priority)">
+          <ion-option *ngFor="let item of priority" [value]="item.Value"> {{item.Name}} </ion-option>
+        </ion-select>
+        <p class="error" *ngIf="!validateTicket.controls.priority.valid">Field required</p>
+      </ion-item>
+
+      <ion-item>
+        <ion-label>Concern</ion-label>
+        <ion-select formControlName="concern" [(ngModel)]="ticketEntry.Concern" (ionChange)="concernChanged(ticketEntry.Concern)">
+          <ion-option *ngFor="let item of concern" [value]="item.Value"> {{item.Name}} </ion-option>
+        </ion-select>
+        <p class="error" *ngIf="!validateTicket.controls.concern.valid">Field required</p>
+      </ion-item>
+
+      <ion-item>
+        <p>Description</p>
+      </ion-item>
+      <ion-item>
+        <ion-input [(ngModel)]="ticketEntry.Description" formControlName="description" type="text"></ion-input>
+      </ion-item>
+      <p class="error" *ngIf="!validateTicket.controls.priority.valid && (validateTicket.controls.priority.dirty || validateTicket.controls.description.touched)">Field required</p>
+    </ion-list>
+  </form>
+
+  <button ion-button full (click)="submit(validateTicket.value,validateTicket.valid)" [disabled]="!validateTicket.valid">Submit</button>
+</ion-content>

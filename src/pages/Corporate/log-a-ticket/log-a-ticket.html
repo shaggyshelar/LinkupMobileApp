@@ -16,5 +16,32 @@
 
 
 <ion-content padding>
+  <ion-fab right bottom>
+    <button ion-fab mini (click)="addFabClicked()"><ion-icon name="add"></ion-icon></button>
+  </ion-fab>
+  <ion-list>
+    <ion-item *ngFor="let rec of ticketData; let i = index" [attr.priority]="rec.Priority | lowercase" (click)="onTicketClick(rec)">
+      <ion-row>
+        <ion-col width-75>
+          <ion-row>
+            <h3 class="left"> {{rec.CreatedDate}} </h3>
+          </ion-row>
+          <p> {{rec.AgeDays}} Day<span *ngIf="rec.AgeDays > 1">s</span></p>
+          <p> {{rec.Concern}} </p>
+          <p> {{rec.Description}} </p>
+        </ion-col>
+        <ion-col width-25>
+          <button class="right" ion-button clear end (click)="onOptionsClick(rec)">
+            <ion-icon name="more"></ion-icon>
+          </button>
+          <p class="right"> {{rec.Status}} </p>
+        </ion-col>
+      </ion-row>
+    </ion-item>
+  </ion-list>
+
+  <ion-list-header [hidden]="(ticketData)?.length > 0">
+    No Records Found
+  </ion-list-header>
 
 </ion-content>

@@ -1,3 +1,33 @@
+$categories: (
+ ionic: color($colors, primary),
+ high: #FE4C52,
+ medium: #FED035,
+ low: #69BB7B
+);
+
+@function auxiliary-categories() {
+  @return map-remove($categories);
+}
+
 page-log-a-ticket {
+@each $priority, $value in auxiliary-categories() {
+ion-item[priority=#{$priority}] ion-label {
+     border-left: 2px solid $value;
+     padding-left: 10px;
+   }
+  }
+
+  .right{
+      float: right;
+      padding-right: 0px !important;
+  }
+  .left{
+      float: left;
+  }
+
+  .full-width {
+    width: 100%;
+    display: block;
+  }
 
 }

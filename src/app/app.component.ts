@@ -186,10 +186,10 @@ export class MyApp {
 
     this.pages.push({ title: 'Manage My Projects', component: ManageMyProjectsPage, icon: 'calendar'},
         { title: 'Employee Project Management', component: EmployeeProjectManagementPage, icon: 'contacts'});
+    this.pages.push({title:'Log a Ticket',component:LogATicketPage,icon:'contacts'});
+    this.pages.push({title:'Conference Booking',component:ConferenceBookingPage,icon:'contacts'});
     this.pages.push({title:'Resigned Employee Leaves',component:ManageResignedEmployeeLeavesPage,icon:'contacts'},
         { title:'Employee Leave Balance',component:ManageEmployeeLeaveBalancePage,icon:'contacts'});
-
-
   }
 
   initializeApp() {
