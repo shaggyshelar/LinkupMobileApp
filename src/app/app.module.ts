@@ -13,6 +13,8 @@ import { HomePage } from '../pages/home/home';
 import { LogATicketPage } from '../pages/Corporate/log-a-ticket/log-a-ticket';
 import { LogNewTicketPage } from '../pages/Corporate/log-new-ticket/log-new-ticket';
 import { ConferenceBookingPage } from '../pages/Corporate/conference-booking/conference-booking';
+import { AddEditConferenceBookingPage } from '../pages/Corporate/add-edit-conference-booking/add-edit-conference-booking';
+import { RecurrenceModalPage } from '../pages/Corporate/recurrence-modal/recurrence-modal';
 
 // Timesheet
 import { MyTimesheetPage } from '../pages/Timesheet/my-timesheet/my-timesheet';
@@ -82,6 +84,8 @@ import { ProjectCategoryService } from '../providers/shared/master/projectCatego
 import { DeliveryUnitService} from '../providers/shared/master/deliveryUnit.service';
 import { DeliveryModelService } from '../providers/shared/master/deliveryModel.service';
 import { PriceTypeService } from '../providers/shared/master/priceType.service';
+import { LogATicketMasterService } from '../providers/shared/master/logATicketMaster.service';
+import { LogATicketService } from '../pages/Corporate/index';
 
 // Direrctives
 import { LimitToDirective } from '../providers/shared/directives/limit-to';
@@ -105,6 +109,8 @@ import { CacheService, CacheStorageAbstract, CacheLocalStorage } from 'ng2-cache
     LogATicketPage,
     LogNewTicketPage,
     ConferenceBookingPage,
+    AddEditConferenceBookingPage,
+    RecurrenceModalPage,
     MyTimesheetPage,
     EnterTimesheetPage,
     ApproveTimesheetPage,
@@ -168,6 +174,8 @@ import { CacheService, CacheStorageAbstract, CacheLocalStorage } from 'ng2-cache
     LogATicketPage,
     LogNewTicketPage,
     ConferenceBookingPage,
+    AddEditConferenceBookingPage,
+    RecurrenceModalPage,
     MyTimesheetPage,
     EnterTimesheetPage,
     ApproveTimesheetPage,
@@ -216,7 +224,7 @@ import { CacheService, CacheStorageAbstract, CacheLocalStorage } from 'ng2-cache
       useClass: IonicErrorHandler
     }, 
     Auth, AuthService, LeaveService, HolidayService, UserService, MessageService, CommonService, LimitToDirective, KebabCasePipe,
-    CacheService, EmployeeTimesheetService, ClientService, ProjectTypeService, PriceTypeService, ProjectCategoryService, DeliveryUnitService, DeliveryModelService, PhasesService, ProjectService, TimesheetService,
+    CacheService, EmployeeTimesheetService, ClientService, ProjectTypeService, PriceTypeService, LogATicketMasterService, ProjectCategoryService, DeliveryUnitService, DeliveryModelService, PhasesService, ProjectService, TimesheetService, LogATicketService,
     { provide: CacheStorageAbstract, useClass: CacheLocalStorage }]
 })
 export class AppModule { }
