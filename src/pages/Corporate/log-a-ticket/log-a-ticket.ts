@@ -15,9 +15,11 @@ import { LogNewTicketPage } from '../log-new-ticket/log-new-ticket';
 })
 export class LogATicketPage {
   ticketData: any[];
+  isItemClick: boolean
   constructor(public navCtrl: NavController, public navParams: NavParams
     , public actionSheetController: ActionSheetController
   ) {
+    this.isItemClick = false;
     this.ticketData = [
       {
         "Id": 1,
@@ -70,10 +72,14 @@ export class LogATicketPage {
 
   onTicketClick(ticketEntry) {
     /** TODO : View Tickets  */
+    if (this.isItemClick === true)
+    return;
+
     this.navCtrl.push(LogNewTicketPage, ticketEntry);
   }
 
   onOptionsClick(ticketEntry) {
+    this.isItemClick = true;
     let actionSheet = this.actionSheetController.create({
       title: 'Options',
       buttons: [
@@ -82,6 +88,7 @@ export class LogATicketPage {
           icon: 'close',
           handler: () => {
             console.log('Close Ticket');
+            this.isItemClick = false;
           }
         },
         {
@@ -89,6 +96,7 @@ export class LogATicketPage {
           icon: 'open',
           handler: () => {
             console.log('Reopen Ticket');
+            this.isItemClick = false;
           }
         },
         {
@@ -96,11 +104,13 @@ export class LogATicketPage {
           role: 'cancel',
           handler: () => {
             console.log('Cancel');
+            this.isItemClick = false;
           }
         },
       ]
     });
     actionSheet.present();
+  
   }
 
   addFabClicked() {

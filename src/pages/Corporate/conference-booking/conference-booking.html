@@ -18,7 +18,7 @@
 
 <ion-content padding>
   <ion-content padding class="customCalendar">
-    <p-schedule [slotEventOverlap]="false" [contentHeight]="auto" [events]="conferenceBookings" [defaultView]="'agendaDay'" (onDayClick)="handleDayClick($event)"
+    <p-schedule [slotEventOverlap]="false" [contentHeight]="auto" [header]="header" [events]="conferenceBookings" [defaultView]="'agendaDay'" (onDayClick)="handleDayClick($event)"
       (onEventClick)="handleEventClick($event)"></p-schedule>
     <ion-list>
 
