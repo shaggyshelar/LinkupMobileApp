@@ -229,6 +229,25 @@ export class LeaveService extends BaseService {
         }
     }
 
+    getLeaveByPendingStatus(status: any,isPullToRefresh:boolean): Observable<Leave[]> {
+          if (this._cacheService.exists('hrpendingApproverList') && isPullToRefresh === false) {
+            return new Observable<any>((observer: any) => {
+                observer.next(this._cacheService.get('hrpendingApproverList'));
+            });
+        } else {
+            return this.getChildList$('ByStatus/' + status, 0, 0, true).map(res => {
+                this._cacheService.set('hrpendingApproverList', res.json(), { maxAge: 60 * 60 });
+                // this._cacheService.set('PendingLeavesApprovalCount', res.json().length, { maxAge: 60 * 60 });
+                //localStorage.setItem('PendingLeavesApprovalCount', '' + res.json().length);
+                return res.json();
+            }).catch(err => {
+                return this.handleError(err);
+            });
+        }
+    }
+
+
+
     singleLeaveApprove(payload: any) {
         let headers = new Headers();
         let body = JSON.stringify(payload);

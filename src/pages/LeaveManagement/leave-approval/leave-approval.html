@@ -13,12 +13,12 @@
      
     <!--<ion-title>Approve Leaves</ion-title>-->
     <ion-buttons start>
-      <button (click)="onFilter()" ion-button icon-only> 
+      <button (click)="onFilter()" ion-button icon-only *ngIf="editMode == false"> 
         <ion-icon name="ios-funnel"></ion-icon>
       </button>
     </ion-buttons>
     <ion-buttons start>
-      <button (click)="onSort()" ion-button icon-only>
+      <button (click)="onSort()" ion-button icon-only *ngIf="editMode == false">
         <ion-icon name="md-repeat"></ion-icon>
       </button>
     </ion-buttons> 
@@ -34,9 +34,12 @@
     </ion-title>
     
      <ion-buttons end >
-      <!--<button ion-button *ngIf= "editMode == false" (click)="editleaves()">
-        <ion-icon name="logo-buffer"></ion-icon>
-      </button>-->
+      <button ion-button *ngIf= "editMode == false && isBulkApprovePermission == true" (click)="editleaves()">
+       Bulk
+      </button>
+      <button ion-button *ngIf= "editMode == true" (click)="editleaves()">
+       Done
+      </button>
         <button *ngIf="isshowApproveRejectItems == true" ion-button (click)="selectAllLeaves()">
         All
       </button>

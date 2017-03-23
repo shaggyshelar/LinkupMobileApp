@@ -109,6 +109,9 @@ export class LeaveApprovalPage {
     // if (res.length > 0) {
     //  this.leaveList = res.reverse();
     this.getPendingLeavesToApprove();
+    if(this.isBulkApprovePermission)
+    this.getBulkApprovalLeaves();
+
     //}
     //  },
     // error => {
@@ -118,6 +121,32 @@ export class LeaveApprovalPage {
 
   /* Get Pending Leaves */
 
+  getBulkApprovalLeaves(){
+     this.isPullToRefresh = false;
+    this.isDataretrived = false;
+    this.spinnerService.createSpinner('Please wait..');
+    this.leaveService.getLeaveByPendingStatus('Pending',this.isPullToRefresh)
+     .subscribe(
+      (res: any) => {
+        this.spinnerService.stopSpinner();
+        this.leavesArray = [];
+        //this.leavesReplicate = [];
+        this.selectedEmployees = [];
+        this.leavesArray = res.reverse();
+        //this.leavesReplicate = res;
+        this.leavesArray.forEach(leave => {
+          this.selectLeave(leave, false);
+        });
+        //this.editMode = true;
+        this.isDataretrived = true;
+      },
+      error => {
+        this.isDataretrived = true;
+        this.spinnerService.stopSpinner();
+        this.toastPresent('Failed to get Pending Leaves.');
+      });
+  }
+
   getPendingLeavesToApprove() {
     this.isPullToRefresh = false;
     this.isDataretrived = false;
@@ -126,15 +155,17 @@ export class LeaveApprovalPage {
       .subscribe(
       (res: any) => {
         this.spinnerService.stopSpinner();
-        this.leavesArray = [];
+        //this.leavesArray = [];
         this.leavesReplicate = [];
-        this.selectedEmployees = [];
-        this.leavesArray = res.reverse();
+        //this.selectedEmployees = [];
+        if (res.length > 0)
+        this.leaveList = res.reverse();
+        //this.leavesArray = res.reverse();
         this.leavesReplicate = res;
-        this.leavesArray.forEach(leave => {
-          this.selectLeave(leave, false);
-        });
-        this.editMode = true;
+        // this.leavesArray.forEach(leave => {
+        //   this.selectLeave(leave, false);
+        // });
+        // this.editMode = true;
         this.isDataretrived = true;
       },
       error => {

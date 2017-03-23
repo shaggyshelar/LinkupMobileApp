@@ -60,6 +60,7 @@ export class EnterTimesheetPage {
     , public authService: AuthService
     , public employeeTimesheetService: EmployeeTimesheetService
   ) {
+    
     this.weekStartDate = moment().add(0, 'weeks').isoWeekday(1);
     this.weekEndDate = moment().add(1, 'weeks').isoWeekday(0);
     this.showWeekEnd = new Date(this.weekEndDate);
@@ -103,6 +104,7 @@ export class EnterTimesheetPage {
   }
   getEmptyTimesheet()
   {
+    this.timesheetStatus = 'New';
     for (var index = 0; index < 7; index++) {
       var empty:emptyTimesheetModel = new emptyTimesheetModel();
       empty.date = moment(this.weekStartDate).add(index, 'days');
@@ -129,7 +131,8 @@ export class EnterTimesheetPage {
           this.employeeTimesheetService.getCurrentEmpTimesheetByDate({ Date: new Date() }).subscribe((res: any) => {
             if (res !== null) {
               this.timesheetModel = res;
-
+              this.timesheetID = res.ID;
+              this.getTimesheetForEdit();
             }
             else{
               this.getEmptyTimesheet();
@@ -152,6 +155,8 @@ export class EnterTimesheetPage {
       this.timesheetList = res.Timesheets;
       this.weekStartDate = res.StartDate;
       this.weekEndDate = res.EndDate;
+      this.showWeekEnd = new Date(this.weekEndDate);
+      this.showWeekStart = new Date(this.weekStartDate);
       this.timesheetStatus = res.SubmittedStatus;
       this.setTotal(res);
       if (this.timesheetStatus !== 'Approved' && this.timesheetStatus !== 'Submitted') {
@@ -389,8 +394,11 @@ export class EnterTimesheetPage {
   }
 
   lastWeekClick() {
-    this.weekStartDate = this.weekStartDate.subtract(1, 'w');
-    this.weekEndDate = this.weekEndDate.subtract(1, 'w');
+    this.timesheetList = [];
+    this.timesheetModel = null;
+    this.initTotalHour();
+    this.weekStartDate = moment(this.weekStartDate).subtract(1, 'weeks');
+    this.weekEndDate = moment(this.weekEndDate).subtract(1, 'weeks');
     this.showWeekEnd = new Date(this.weekEndDate);
     this.showWeekStart = new Date(this.weekStartDate);
     this.timesheetList = [];
@@ -405,7 +413,8 @@ export class EnterTimesheetPage {
         this.timesheetModel = res;
          if(this.timesheetModel)
         {
-
+          this.timesheetID = res.ID;
+          this.getTimesheetForEdit();
         }
         else{
           this.getEmptyTimesheet();
@@ -418,8 +427,11 @@ export class EnterTimesheetPage {
   }
 
   nextWeekClick() {
-    this.weekStartDate = this.weekStartDate.add(1, 'w');
-    this.weekEndDate = this.weekEndDate.add(1, 'w');
+    this.timesheetList = [];
+    this.timesheetModel = null;
+    this.initTotalHour();
+    this.weekStartDate = moment(this.weekStartDate).add(1, 'weeks');
+    this.weekEndDate = moment(this.weekEndDate).add(1, 'weeks');
     this.showWeekEnd = new Date(this.weekEndDate);
     this.showWeekStart = new Date(this.weekStartDate);
     this.timesheetList = [];
@@ -434,7 +446,8 @@ export class EnterTimesheetPage {
         this.timesheetModel = res;
         if(this.timesheetModel)
         {
-
+           this.timesheetID = res.ID;
+          this.getTimesheetForEdit();
         }
         else{
           this.getEmptyTimesheet();
@@ -471,7 +484,7 @@ export class EnterTimesheetPage {
     this.weekStartDate = moment(this.selectedDate);
   }
   getDate(day: number) {
-    return moment(this.weekStartDate).isoWeekday(day);
+    return moment(this.weekStartDate).add(day, 'days');
   }
   saveClicked()
   {
@@ -499,7 +512,7 @@ createTimesheetList()
       var monproj:any = this.createMondayProject(project);
       this.weekProjects.MondayArray.push(monproj);
     }
-    if(project.Tuesdayhrs ||project.Tuesdaynbhrs )
+    if(project.Tuesdayhrs ||project.Tuesdaynbhrs)
     {
       this.weekProjects.TuesdayArray.push(this.createTuesdayProject(project));
     }
@@ -542,6 +555,8 @@ createMondayProject(project:any)
   mondayProject.Task = project.Task;
   mondayProject.TimesheetID = project.TimesheetID;
   mondayProject.TotalhrsMonday = this.totalhours.TotalhrsMonday;
+  //mondayProject.date = moment(this.weekStartDate).add(0, 'days');
+  
   return mondayProject;
 }
 
@@ -561,6 +576,7 @@ createTuesdayProject(project:any)
   tuesdayProject.Task = project.Task;
   tuesdayProject.TimesheetID = project.TimesheetID;
   tuesdayProject.TotalhrsTuesday = this.totalhours.TotalhrsTuesday;
+  //tuesdayProject.date = moment(this.weekStartDate).add(1, 'days');
   return tuesdayProject;
 }
 
@@ -580,6 +596,7 @@ createWednesdayProject(project:any)
   wednesdayProject.Task = project.Task;
   wednesdayProject.TimesheetID = project.TimesheetID;
   wednesdayProject.TotalhrsWednesday = this.totalhours.TotalhrsWednesday;
+  //wednesdayProject.date = moment(this.weekStartDate).add(2, 'days');
   return wednesdayProject;
 }
 
@@ -599,6 +616,7 @@ createThursdayProject(project:any)
   thursdayProject.Task = project.Task;
   thursdayProject.TimesheetID = project.TimesheetID;
   thursdayProject.TotalhrsThursday = this.totalhours.TotalhrsThursday;
+  //thursdayProject.date = moment(this.weekStartDate).add(3, 'days');
   return thursdayProject;
 }
 
@@ -618,6 +636,7 @@ createFridayProject(project:any)
   fridayProject.Task = project.Task;
   fridayProject.TimesheetID = project.TimesheetID;
   fridayProject.TotalhrsFriday = this.totalhours.TotalhrsFriday;
+  //fridayProject.date = moment(this.weekStartDate).add(4, 'days');
   return fridayProject;
 }
 createSaturdayProject(project:any)
@@ -636,6 +655,7 @@ createSaturdayProject(project:any)
   saturdayProject.Task = project.Task;
   saturdayProject.TimesheetID = project.TimesheetID;
   saturdayProject.TotalhrsSaturday = this.totalhours.TotalhrsSaturday;
+  //saturdayProject.date = moment(this.weekStartDate).add(5, 'days');
   return saturdayProject;
 }
 createSundayProject(project:any)
@@ -654,6 +674,7 @@ createSundayProject(project:any)
   sundayProject.Task = project.Task;
   sundayProject.TimesheetID = project.TimesheetID;
   sundayProject.TotalhrsSunday = this.totalhours.TotalhrsSunday;
+  //sundayProject.date = moment(this.weekStartDate).add(6, 'days');
   return sundayProject;
 }
 

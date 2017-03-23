@@ -14,7 +14,7 @@
       <button  ion-button (click)="saveClicked()">
         Save
       </button>
-      <button  ion-button (click)="submitClicked()">
+      <button  ion-button (click)="submitClicked()" [disabled]="totalhours.TotalhrsTimesheet<40">
         Submit
       </button>
     </ion-buttons>
@@ -49,63 +49,190 @@
   <ion-list *ngIf="timesheetStatus != 'New'">
      <ion-item>
        <ion-row>
+         <ion-col width-10>
+         <p>{{weekStartDate | date:'d'}}</p>
+         <p>{{weekStartDate | date:'MMM'}}</p>
+         </ion-col>
+         <ion-col *ngIf="weekProjects.MondayArray.length==0" width-80>
+            <br>
+            <br>
+            <div class="empty"></div>
+         </ion-col>
+         <ion-col width-80 *ngIf="weekProjects.MondayArray.length>0">
+         <ion-row class="project-div">
          <ion-col *ngFor="let timesheet of weekProjects.MondayArray">
-           {{timesheet.Project.Value}}
-           <div class="empty"></div>
+           <h3 class="project-text">{{timesheet.Project.Value}}</h3>
+           <p>B:{{timesheet.Mondayhrs}} &nbsp;<span>NB:{{timesheet.Mondaynbhrs}}</span></p>
+           <div class="billable" *ngIf="timesheet.Mondayhrs"></div>
+           <div class="nonbillable" *ngIf="timesheet.Mondaynbhrs"></div>
+         </ion-col>
+         </ion-row>
+         </ion-col>
+         <ion-col width-10>
+           {{totalhours.TotalhrsMonday}}
          </ion-col>
        </ion-row>
      </ion-item>
     
       <ion-item>
+        
          <ion-row>
+         <ion-col width-10>
+         <p>{{getDate(1) | date:'d'}}</p>
+         <p>{{getDate(1) | date:'MMM'}}</p>
+         </ion-col>
+          <ion-col *ngIf="weekProjects.TuesdayArray.length==0" width-80>
+             <br>
+              <br>
+            <div class="empty"></div>
+         </ion-col>
+         <ion-col width-80 *ngIf="weekProjects.TuesdayArray.length>0">
+         <ion-row class="project-div">
          <ion-col *ngFor="let timesheet of weekProjects.TuesdayArray">
-           {{timesheet.Project.Value}}
-           <div class="empty"></div>
+           <h3 class="project-text">{{timesheet.Project.Value}}</h3>
+           <p>B:{{timesheet.Tuesdayhrs}} &nbsp;<span>NB:{{timesheet.Tuesdaynbhrs}}</span></p>
+           <div class="billable" *ngIf="timesheet.Tuesdayhrs"></div>
+           <div class="nonbillable" *ngIf="timesheet.Tuesdaynbhrs"></div>
+         </ion-col>
+         </ion-row>
+         </ion-col>
+         <ion-col width-10>
+           {{totalhours.TotalhrsTuesday}}
          </ion-col>
        </ion-row>
      </ion-item>
 
       <ion-item>
        <ion-row>
+        <ion-col width-10>
+        <p>{{getDate(2) | date:'d'}}</p>
+        <p>{{getDate(2) | date:'MMM'}}</p>
+        </ion-col>
+        <ion-col *ngIf="weekProjects.WednesdayArray.length==0" width-80>
+              <br>
+              <br>
+            <div class="empty"></div>
+         </ion-col>
+        <ion-col width-80 *ngIf="weekProjects.WednesdayArray.length>0">
+         <ion-row class="project-div">
          <ion-col *ngFor="let timesheet of weekProjects.WednesdayArray">
-           {{timesheet.Project.Value}}
-           <div class="empty"></div>
+           <h3 class="project-text">{{timesheet.Project.Value}}</h3>
+           <p>B:{{timesheet.Wednesdayhrs}} &nbsp;<span>NB:{{timesheet.Wednesdaynbhrs}}</span></p>
+            <div class="billable" *ngIf="timesheet.Wednesdayhrs"></div>
+           <div class="nonbillable" *ngIf="timesheet.Wednesdaynbhrs"></div>
+         </ion-col>
+         </ion-row>
+        </ion-col>
+          <ion-col width-10>
+           {{totalhours.TotalhrsWednesday}}
          </ion-col>
        </ion-row>
      </ion-item>
 
      <ion-item>
       <ion-row>
+        <ion-col width-10>
+        <p>{{getDate(3) | date:'d'}}</p>
+         <p>{{getDate(3) | date:'MMM'}}</p>
+        </ion-col>
+        <ion-col *ngIf="weekProjects.ThursdayArray.length==0" width-80>
+              <br>
+              <br>
+            <div class="empty"></div>
+         </ion-col>
+         <ion-col width-80 *ngIf="weekProjects.ThursdayArray.length>0">
+         <ion-row class="project-div">
          <ion-col *ngFor="let timesheet of weekProjects.ThursdayArray">
-           {{timesheet.Project.Value}}
-           <div class="empty"></div>
+           <h3 class="project-text">{{timesheet.Project.Value}}</h3>
+           <p>B:{{timesheet.Thursdayhrs}} &nbsp;<span>NB:{{timesheet.Thursdaynbhrs}}</span></p>
+            <div class="billable" *ngIf="timesheet.Thursdayhrs"></div>
+           <div class="nonbillable" *ngIf="timesheet.Thursdaynbhrs"></div>
+         </ion-col>
+         </ion-row>
+         </ion-col>
+         <ion-col width-10>
+           {{totalhours.TotalhrsThursday}}
          </ion-col>
        </ion-row>
      </ion-item>
 
       <ion-item>
         <ion-row>
+          <ion-col width-10>
+          <p>{{getDate(4) | date:'d'}}</p>
+          <p>{{getDate(4) | date:'MMM'}}</p>
+          </ion-col>
+           <ion-col *ngIf="weekProjects.FridayArray.length==0" width-80>
+             <br>
+              <br>
+            <div class="empty"></div>
+         </ion-col>
+        <ion-col width-80 *ngIf="weekProjects.FridayArray.length>0">
+         <ion-row class="project-div">
          <ion-col *ngFor="let timesheet of weekProjects.FridayArray">
-           {{timesheet.Project.Value}}
-           <div class="empty"></div>
+            <h3 class="project-text">{{timesheet.Project.Value}}</h3>
+           <p>B:{{timesheet.Fridayhrs}} &nbsp;<span>NB:{{timesheet.Fridaynbhrs}}</span></p>
+            <div class="billable" *ngIf="timesheet.Fridayhrs"></div>
+           <div class="nonbillable" *ngIf="timesheet.Fridaynbhrs"></div>
+         </ion-col>
+         </ion-row>
+        </ion-col>
+          <ion-col width-10>
+           {{totalhours.TotalhrsFriday}}
          </ion-col>
        </ion-row>
      </ion-item>
 
       <ion-item>
         <ion-row>
+          <ion-col width-10>
+         <p>{{getDate(5) | date:'d'}}</p>
+         <p>{{getDate(5) | date:'MMM'}}</p>
+          </ion-col>
+            <ion-col *ngIf="weekProjects.SaturdayArray.length==0" width-80>
+              <br>
+              <br>
+            <div class="empty"></div>
+         </ion-col>
+         <ion-col width-80 *ngIf="weekProjects.SaturdayArray.length>0">
+         <ion-row class="project-div">
          <ion-col *ngFor="let timesheet of weekProjects.SaturdayArray">
-           {{timesheet.Project.Value}}
-           <div class="empty"></div>
+           <h3 class="project-text">{{timesheet.Project.Value}}</h3>
+           <p>B:{{timesheet.Saturdayhrs}} &nbsp;<span>NB:{{timesheet.Saturdaynbhrs}}</span></p>
+           <div class="billable" *ngIf="timesheet.Saturdayhrs"></div>
+           <div class="nonbillable" *ngIf="timesheet.Saturdaynbhrs"></div>
+         </ion-col>
+         </ion-row>
+         </ion-col>
+          <ion-col width-10>
+           {{totalhours.TotalhrsSaturday}}
          </ion-col>
        </ion-row>
      </ion-item>
 
       <ion-item>
         <ion-row>
+          <ion-col width-10>
+         <p>{{weekEndDate | date:'d'}}</p>
+         <p>{{weekEndDate | date:'MMM'}}</p>
+          </ion-col>
+            <ion-col *ngIf="weekProjects.SundayArray.length==0" width-80>
+              <br>
+              <br>
+            <div class="empty"></div>
+         </ion-col>
+         <ion-col width-80 *ngIf="weekProjects.SundayArray.length>0">
+         <ion-row class="project-div">
          <ion-col *ngFor="let timesheet of weekProjects.SundayArray">
-           {{timesheet.Project.Value}}
-           <div class="empty"></div>
+           <h3 class="project-text">{{timesheet.Project.Value}}</h3>
+           <p>B:{{timesheet.Sundayhrs}} &nbsp; <span>   NB:{{timesheet.Sundaynbhrs}}</span></p>
+            <div class="billable" *ngIf="timesheet.Sundayhrs"></div>
+           <div class="nonbillable" *ngIf="timesheet.Sundaynbhrs"></div>
+         </ion-col>
+         </ion-row>
+         </ion-col>
+         <ion-col width-10>
+           {{totalhours.TotalhrsSunday}}
          </ion-col>
        </ion-row>
      </ion-item>

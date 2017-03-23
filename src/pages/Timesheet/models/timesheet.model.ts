@@ -90,6 +90,7 @@ export class monday{
         UpdationFlag: string;
         ID: number;
         TotalhrsMonday:string;
+        date:any;
 
 }
 export class tuesday{
@@ -109,6 +110,7 @@ export class tuesday{
         UpdationFlag: string;
         ID: number;
         TotalhrsTuesday:string;
+        date:any;
 }
 export class wednesday{
      constructor()
@@ -127,6 +129,7 @@ export class wednesday{
         UpdationFlag: string;
         ID: number;
         TotalhrsWednesday:string;
+        date:any;
 }
 export class thursday{
      constructor()
@@ -145,6 +148,7 @@ export class thursday{
         UpdationFlag: string;
         ID: number;
         TotalhrsThursday:string;
+        date:any;
     
 }
 export class friday{
@@ -164,6 +168,7 @@ export class friday{
         UpdationFlag: string;
         ID: number;
         TotalhrsFriday:string;
+        date:any;
     
 }
 export class saturday{
@@ -183,6 +188,7 @@ export class saturday{
         UpdationFlag: string;
         ID: number;
         TotalhrsSaturday:string;
+        date:any;
     
 }
 export class sunday{
@@ -202,5 +208,6 @@ export class sunday{
         UpdationFlag: string;
         ID: number;
         TotalhrsSunday:string;
+        date:any;
     
 }

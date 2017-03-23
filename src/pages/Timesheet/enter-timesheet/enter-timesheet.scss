@@ -21,9 +21,32 @@ page-enter-timesheet {
     .empty
     {
         background-color: dodgerblue;
-        height: 2px;
+        height: 1px;
         padding-left: 30px;
         padding-right: 30px;
     }
+    .billable
+    {
+        background-color:green;
+        height: 1px;
+        padding-left: 30px;
+        padding-right: 30px;
+    }
+     .nonbillable
+    {
+        background-color:red;
+        height: 1px;
+        padding-left: 30px;
+        padding-right: 30px;
+    }
+    .project-text
+    {
+        white-space: normal;
+    }
+    .project-div {
+    width: 100%;
+    height: 100%;
+    overflow: scroll;
+}
 
 }
