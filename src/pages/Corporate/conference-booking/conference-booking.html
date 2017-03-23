@@ -17,5 +17,31 @@
 
 
 <ion-content padding>
+  <ion-content padding class="customCalendar">
+    <p-schedule [slotEventOverlap]="false" [contentHeight]="auto" [events]="conferenceBookings" [defaultView]="'agendaDay'" (onDayClick)="handleDayClick($event)"
+      (onEventClick)="handleEventClick($event)"></p-schedule>
+    <ion-list>
 
-</ion-content>
+      <ion-item-sliding *ngFor="let booking of conferenceBookings " [attr.room]="booking.Room.Name | kebabCase">
+
+        <ion-item ion-item (click)="goToLeaveDetail(leave)">
+          <h3>{{booking.title}}</h3>
+          <p>
+            {{booking.start | date:"MM/dd/yy HH:mm"}} &mdash; {{booking.end | date:"MM/dd/yy HH:mm"}}
+          </p>
+
+          <p>
+            {{booking.Room.Name}}
+          </p>
+        </ion-item>
+
+      </ion-item-sliding>
+
+    </ion-list>
+
+    <ion-list-header *ngIf="(conferenceBookings)?.length == 0">
+      No Records Found
+    </ion-list-header>
+
+
+  </ion-content>

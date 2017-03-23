@@ -188,6 +188,7 @@ export class MyApp {
     this.pages.push({title:'Resigned Employee Leaves',component:ResignedEmployeeLeavesPage,icon:'contacts'},
         { title:'Employee Leave Balance',component:EmployeeLeaveBalancePage,icon:'contacts'});
     this.pages.push({title:'Log a Ticket',component:LogATicketPage,icon:'contacts'});
+    this.pages.push({title:'Conference Booking',component:ConferenceBookingPage,icon:'contacts'});
 
   }
 

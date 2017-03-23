@@ -1,3 +1,23 @@
+$categories: (
+ ionic: color($colors, primary),
+ caribbean: #8877A9,
+ dubai: #3FABA4,
+ hong-kong: #69BB7B,
+ bahamas: #E7C5F5,
+ barcelona: #D05454,
+ training-room: #DFBA49
+);
+
+@function auxiliary-categories() {
+  @return map-remove($categories);
+}
+
 page-conference-booking {
+@each $room, $value in auxiliary-categories() {
+ion-item[room=#{$room}] ion-label {
+     border-left: 2px solid $value;
+     padding-left: 10px;
+   }
+  }
 
 }
