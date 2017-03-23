@@ -1,0 +1,109 @@
+<!--
+  Generated template for the AddEditConferenceBooking page.
+
+  See http://ionicframework.com/docs/v2/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>AddEditConferenceBooking</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+  <ion-list>
+
+    <ion-item>
+      <ion-label>Title</ion-label>
+      <ion-input type="text"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>From</ion-label>
+      <ion-datetime displayFormat="MM/DD/YYYY"></ion-datetime>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>To</ion-label>
+      <ion-datetime displayFormat="MM/DD/YYYY"></ion-datetime>
+    </ion-item>
+
+    <ion-row>
+      <ion-col width-80>
+        <ion-label>Attendees</ion-label>
+        <ion-input type="text"></ion-input>
+      </ion-col>
+      <ion-col width-20>
+        <button ion-button (click)="addAttendees()">Add</button>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col width-20><strong>Sr. No.</strong></ion-col>
+      <ion-col width-60><strong>Attendee</strong></ion-col>
+      <ion-col width-20></ion-col>
+    </ion-row>
+    <ion-row *ngFor="let rec of attendeeList; let i = index">
+      <ion-col width-20>
+        <p>{{i+1}}</p>
+      </ion-col>
+      <ion-col width-60>
+        <p>{{rec}}</p>
+      </ion-col>
+      <ion-col width-20>
+        <ion-icon name="close" (click)="deleteAttendee(i)"></ion-icon>
+      </ion-col>
+    </ion-row>
+
+    <ion-item>
+      <ion-label>Conference Room</ion-label>
+      <ion-select>
+        <ion-option *ngFor="let rec of roomList" [value]="rec">{{rec}}</ion-option>
+      </ion-select>
+    </ion-item>
+
+    <ion-item color="light">
+      <p>Description</p>
+    </ion-item>
+
+    <ion-item>
+      <ion-label floating>Other Notes</ion-label>
+      <ion-input type="text"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>All Day Event</ion-label>
+      <ion-toggle></ion-toggle>
+    </ion-item>
+
+    <ion-item color="light" (click)="recurrenceClicked()">
+      <ion-label>Recurrence<ion-icon name="arrow-dropright" class="right"></ion-icon></ion-label>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>Special Treatment</ion-label>
+      <ion-select multiple="true">
+        <ion-option *ngFor="let rec of items" [value]="rec">{{rec}}</ion-option>
+      </ion-select>
+    </ion-item>
+
+    <ion-item>
+      <ion-label floating>Special Comments</ion-label>
+      <ion-input type="text"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>Number of Guests</ion-label>
+      <ion-input type="number"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>Is Deleted</ion-label>
+      <ion-toggle></ion-toggle>
+    </ion-item>
+
+  </ion-list>
+
+</ion-content>
