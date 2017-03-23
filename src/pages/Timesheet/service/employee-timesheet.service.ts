@@ -56,14 +56,14 @@ export class EmployeeTimesheetService extends BaseService {
     };
 
     constructor(public http: Http, messageService: MessageService, public _cacheService: CacheService
-    , public timesheetChangedEvent: Events
+        , public timesheetChangedEvent: Events
     ) {
         super(http, CONTEXT);
     }
 
-    getMyTimesheets(): Observable<any> {
+    getMyTimesheets(isPullToRefresh: boolean): Observable<any> {
         /** TODO: API not ready, needs updation*/
-        if (this._cacheService.exists('myTimesheets')) {
+        if (this._cacheService.exists('myTimesheets') && isPullToRefresh === false) {
             return new Observable<any>((observer: any) => {
                 observer.next(this._cacheService.get('myTimesheets'));
             });
@@ -79,8 +79,8 @@ export class EmployeeTimesheetService extends BaseService {
         //     observer.next(this.MytimesheetsStub);
         // });
     }
-    getApproverPendingTimesheets(): Observable<EmployeeTimeSheet> {
-        if (this._cacheService.exists('approverPendingTimesheets')) {
+    getApproverPendingTimesheets(isPullToRefresh: boolean): Observable<EmployeeTimeSheet> {
+        if (this._cacheService.exists('approverPendingTimesheets') && isPullToRefresh === false) {
             return new Observable<any>((observer: any) => {
                 observer.next(this._cacheService.get('approverPendingTimesheets'));
             });

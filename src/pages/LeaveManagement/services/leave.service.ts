@@ -42,9 +42,9 @@ export class LeaveService extends BaseService {
     getLeaves(): Observable<Leave> {
         return this.getList$(0, 0, true).map(res => res.json());
     }
-    getMyLeaves(): Observable<Leave> {
+    getMyLeaves(isPullToRefresh:boolean): Observable<Leave> {
         //return this.getChildList$('myleaves', 0, 0, true).map(res => res.json());
-        if (this._cacheService.exists('myLeaveList')) {
+        if (this._cacheService.exists('myLeaveList') && isPullToRefresh === false) {
             return new Observable<any>((observer: any) => {
                 observer.next(this._cacheService.get('myLeaveList'));
             });
@@ -202,7 +202,7 @@ export class LeaveService extends BaseService {
     }
 
 
-    getLeaveByStatus(status: any): Observable<Leave[]> {
+    getLeaveByStatus(status: any,isPullToRefresh:boolean): Observable<Leave[]> {
 
         // return this.getChildList$('ByStatus/' + status, 0, 0, true).map(res => {
 
@@ -213,7 +213,7 @@ export class LeaveService extends BaseService {
         //         return this.handleError(err);
         //     });
 
-        if (this._cacheService.exists('pendingApproverList')) {
+        if (this._cacheService.exists('pendingApproverList') && isPullToRefresh === false) {
             return new Observable<any>((observer: any) => {
                 observer.next(this._cacheService.get('pendingApproverList'));
             });

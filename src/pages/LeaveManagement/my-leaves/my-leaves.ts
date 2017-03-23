@@ -34,6 +34,7 @@ export class MyLeavesPage {
   public isAllDataLoaded: boolean = false;
   public count: number = 0;
   public filterValues:any[];
+  public isPullToRefresh: boolean = false;
   events: any[];
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
@@ -79,14 +80,43 @@ export class MyLeavesPage {
   /* Get My Leaves */
 
   getMyLeaves() {
+    this.isPullToRefresh = false;
     this.isAllDataLoaded = false;
     this.leaveObs = [];
+    this.leavesReplicate = [];
     this.events = [];
     this.approvedLeaveCount = 0;
     this.spinnerService.createSpinner('Please wait');
-    this.leaveService.getMyLeaves().subscribe(
+    this.leaveService.getMyLeaves(this.isPullToRefresh).subscribe(
       (res: any) => {
         this.spinnerService.stopSpinner();
+        this.leaveObs = res;
+        this.leavesReplicate = res;
+        this.leaveObs.reverse();
+        this.leaveObs.forEach(element => {
+          var sdate = moment(element.StartDate).format('YYYY-MM-DD');
+          var edate = moment(element.EndDate).format('YYYY-MM-DD');
+          element.StartDate = moment(sdate).toDate();
+          element.EndDate = moment(edate).toDate();
+          if (element.Status == 'Approved')
+            this.approvedLeaveCount++;
+        });
+        this.leaveService.setApprovedLeavesCount(this.approvedLeaveCount.toString());
+        this.getCalandarEvents();
+      });
+  }
+
+  /**Pull To Refresh */
+  doRefresh(refresher) {
+    this.isPullToRefresh = true;
+    this.isAllDataLoaded = false;
+    this.leaveObs = [];
+    this.leavesReplicate = [];
+    this.events = [];
+    this.approvedLeaveCount = 0;
+    this.leaveService.getMyLeaves(this.isPullToRefresh).subscribe(
+      (res: any) => {
+        refresher.complete();
         this.leaveObs = res;
         this.leavesReplicate = res;
         this.leaveObs.reverse();
@@ -230,6 +260,10 @@ export class MyLeavesPage {
                 this.filterValues.push({approvedStatus:false});
             }
           }
+          if(this.filterValues[0].rejectedStatus === false && this.filterValues[1].cancelledStatus === false && this.filterValues[2].approvedStatus === false){
+            this.leaveObs = [];
+            this.leaveObs = this.leaveObs.concat(this.leavesReplicate);
+          }
         }
       }
     })
@@ -285,8 +319,9 @@ export class MyLeavesPage {
 
   // Lazy Loading Functionality. TO DO:need to get only limited data from back end
   doInfinite(infiniteScroll) {
+    this.isPullToRefresh = false;
     setTimeout(() => {
-      this.leaveService.getMyLeaves().subscribe(
+      this.leaveService.getMyLeaves(this.isPullToRefresh).subscribe(
         (res: any) => {
           for (let i = 0; i < res.length; i++) {
             this.leaveObs.push(res[i]);
