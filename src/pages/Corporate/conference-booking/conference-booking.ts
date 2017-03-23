@@ -2,12 +2,8 @@ import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 import * as moment from 'moment';
 
-/*
-  Generated class for the ConferenceBooking page.
+import { AddEditConferenceBookingPage } from '../add-edit-conference-booking/add-edit-conference-booking';
 
-  See http://ionicframework.com/docs/v2/components/#navigation for more info on
-  Ionic pages and navigation.
-*/
 @Component({
     selector: 'page-conference-booking',
     templateUrl: 'conference-booking.html'
@@ -130,6 +126,7 @@ export class ConferenceBookingPage {
 
     handleDayClick(event) {
         console.log('Day Click', event);
+        this.navCtrl.push(AddEditConferenceBookingPage, event);
     }
 
     handleScrollCalender(event) {
