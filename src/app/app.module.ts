@@ -85,7 +85,7 @@ import { DeliveryUnitService} from '../providers/shared/master/deliveryUnit.serv
 import { DeliveryModelService } from '../providers/shared/master/deliveryModel.service';
 import { PriceTypeService } from '../providers/shared/master/priceType.service';
 import { LogATicketMasterService } from '../providers/shared/master/logATicketMaster.service';
-import { LogATicketService } from '../pages/Corporate/index';
+import { LogATicketService, ConferenceBookingService } from '../pages/Corporate/index';
 
 // Direrctives
 import { LimitToDirective } from '../providers/shared/directives/limit-to';
@@ -224,7 +224,7 @@ import { CacheService, CacheStorageAbstract, CacheLocalStorage } from 'ng2-cache
       useClass: IonicErrorHandler
     }, 
     Auth, AuthService, LeaveService, HolidayService, UserService, MessageService, CommonService, LimitToDirective, KebabCasePipe,
-    CacheService, EmployeeTimesheetService, ClientService, ProjectTypeService, PriceTypeService, LogATicketMasterService, ProjectCategoryService, DeliveryUnitService, DeliveryModelService, PhasesService, ProjectService, TimesheetService, LogATicketService,
+    CacheService, EmployeeTimesheetService, ClientService, ProjectTypeService, PriceTypeService, LogATicketMasterService, ProjectCategoryService, DeliveryUnitService, DeliveryModelService, PhasesService, ProjectService, TimesheetService, LogATicketService, ConferenceBookingService,
     { provide: CacheStorageAbstract, useClass: CacheLocalStorage }]
 })
 export class AppModule { }
