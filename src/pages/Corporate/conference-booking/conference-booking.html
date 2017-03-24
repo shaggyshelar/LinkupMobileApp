@@ -18,11 +18,11 @@
 
 <ion-content padding>
   <ion-content padding class="customCalendar">
-    <p-schedule [slotEventOverlap]="false" [contentHeight]="auto" [header]="header" [events]="conferenceBookings" [defaultView]="'agendaDay'" (onDayClick)="handleDayClick($event)"
-      (onEventClick)="handleEventClick($event)"></p-schedule>
+    <p-schedule [slotEventOverlap]="false" [contentHeight]="auto" [header]="header" [events]="conferenceBookings" [defaultView]="'agendaDay'"
+      (onDayClick)="handleDayClick($event)" (onEventClick)="handleEventClick($event)"></p-schedule>
     <ion-list>
 
-      <ion-item-sliding *ngFor="let booking of conferenceBookings " [attr.room]="booking.Room.Name | kebabCase">
+      <ion-item-sliding *ngFor="let booking of conferenceBookings " [attr.conference]="booking.Room.Name | kebabCase">
 
         <ion-item ion-item (click)="goToLeaveDetail(leave)">
           <h3>{{booking.title}}</h3>
