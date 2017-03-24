@@ -7,7 +7,7 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title>RecurranceModal</ion-title>
+    <ion-title>Recurrance Pattern</ion-title>
     <ion-buttons start>
       <button ion-button (click)="dismiss()">
         <span ion-text color="primary" showWhen="ios">Cancel</span>
@@ -21,26 +21,209 @@
 
 <ion-content padding>
 
-  <ion-list radio-group>
-    <ion-list-header>Pattern</ion-list-header>
+  <ion-item>
+    <ion-label>Make this repeating event</ion-label>
+    <ion-toggle [(ngModel)]="isRepeating" (ionChanged)="eventRepeatingChanged()"></ion-toggle>
+  </ion-item>
 
-    <ion-item *ngFor="let option of pattern">
-      <ion-label>{{option}}</ion-label>
-      <ion-radio [value]="option"></ion-radio>
-    </ion-item>
-  </ion-list>
+  <div *ngIf="isRepeating">
 
-  <!--<ion-list radio-group>
-    <ion-list-header>Every</ion-list-header>
-    <ion-item>
-      <ion-radio value="allWeekdays"></ion-radio>
-    </ion-item>
+    <ion-list>
+      <ion-item>
+        <ion-label>Start Date</ion-label>
+        <ion-datetime [(ngModel)]="eventStrtDt"></ion-datetime>
+      </ion-item>
+      <ion-item>
+        <ion-label>No End Date</ion-label>
+        <ion-toggle [(ngModel)]="isEventEnding" (ionChange)="endChanged()"></ion-toggle>
+      </ion-item>
+      <ion-item *ngIf="!isEventEnding">
+        <ion-label>
+          End after
+          <span *ngIf="isEndAfterOccurences"> Number of Occurences</span>
+          <span *ngIf="!isEndAfterOccurences"> Date </span>
+        </ion-label>
+        <ion-toggle [(ngModel)]="isEndAfterOccurences" (ionChange)="endValuesChanged()"></ion-toggle>
+      </ion-item>
 
-    <ion-item>
-      <ion-radio>
-        <ion-input type="number" placeholder="all things"></ion-input>
-      </ion-radio>
-    </ion-item>
-  </ion-list>-->
+      <ion-item *ngIf="!isEventEnding && isEndAfterOccurences">
+        <ion-label>Occurences</ion-label>
+        <ion-input [(ngModel)]="eventOccurences" type="number"></ion-input>
+      </ion-item>
+      <ion-item *ngIf="!isEventEnding && !isEndAfterOccurences">
+        <ion-label>End Date</ion-label>
+        <ion-datetime [(ngModel)]="eventEndDt"></ion-datetime>
+      </ion-item>
+    </ion-list>
+
+    <ion-list radio-group [(ngModel)]="repeatDay">
+      <ion-list-header>Set the event repeat pattern</ion-list-header>
+
+      <ion-item *ngFor="let option of pattern">
+        <ion-label>{{option}}</ion-label>
+        <ion-radio [value]="option"></ion-radio>
+      </ion-item>
+    </ion-list>
+
+    <ion-list *ngIf="repeatDay === 'Daily'">
+      <ion-item>
+        <ion-label>All Weekdays</ion-label>
+        <ion-toggle [(ngModel)]="allWeekdays" (ionChanged)="dailyRepeatingChanged()"></ion-toggle>
+      </ion-item>
+
+      <ion-item [hidden]="allWeekdays">
+        <ion-label>Every</ion-label>
+        <ion-input type="number" [(ngModel)]="recurCount"></ion-input> &nbsp; days(s)
+        <!--<ion-label>day(s)</ion-label>-->
+      </ion-item>
+    </ion-list>
+
+    <ion-list *ngIf="repeatDay === 'Weekly'">
+      <ion-item>
+        <ion-label>Recur every</ion-label>
+        <ion-input type="number" [(ngModel)]="recurCount"></ion-input> &nbsp; weeks(s)
+      </ion-item>
+      <ion-item>
+        <ion-label>On days</ion-label>
+        <ion-select multiple="true" [(ngModel)]="repeatingDays">
+          <ion-option *ngFor="let rec of days" [value]="rec">{{rec}}</ion-option>
+        </ion-select>
+      </ion-item>
+    </ion-list>
+
+    <ion-list *ngIf="repeatDay === 'Monthly'">
+      <ion-item>
+        <ion-label>
+          Repeat with
+          <span *ngIf="isRepeatWithDay"> day of month</span>
+          <span *ngIf="!isRepeatWithDay"> week of month</span>
+        </ion-label>
+        <ion-toggle [(ngModel)]="isRepeatWithDay" (ionChanged)="monthlyRepeatingChanged()"></ion-toggle>
+      </ion-item>
+      <div *ngIf="isRepeatWithDay">
+        <ion-row>
+          <ion-col width-50>
+            <ion-input type="number" placeholder="Day of " [(ngModel)]="dayOfMonth"></ion-input>
+          </ion-col>
+          <ion-col width-50>
+            <ion-input type="number" placeholder="every month(s)" [(ngModel)]="recurAfterMonth"></ion-input>
+          </ion-col>
+        </ion-row>
+      </div>
+
+      <div *ngIf="!isRepeatWithDay">
+        <ion-row>
+          <ion-col width-20>
+            <ion-label>The</ion-label>
+          </ion-col>
+
+          <ion-col width-30>
+            <ion-item>
+              <ion-label>for every</ion-label>
+              <ion-select [(ngModel)]="weekNum">
+                <ion-option *ngFor="let rec of weekCount">{{rec}}</ion-option>
+              </ion-select>
+            </ion-item>
+          </ion-col>
+
+          <ion-col width-50>
+            <ion-item>
+              <ion-label>Days</ion-label>
+              <ion-select [(ngModel)]="dayP2">
+                <ion-option *ngFor="let day of days" [value]="day">{{day}}</ion-option>
+              </ion-select>
+            </ion-item>
+          </ion-col>
+        </ion-row>
+
+        <ion-row>
+          <ion-col width-20>
+            <ion-label>of every</ion-label>
+          </ion-col>
+
+          <ion-col width-60>
+            <ion-input placeholder="1" type="number" [(ngModel)]="recurCount"></ion-input>
+          </ion-col>
+
+          <ion-col width-20>
+            <ion-label>month(s)</ion-label>
+          </ion-col>
+        </ion-row>
+      </div>
+    </ion-list>
+
+    <ion-list *ngIf="repeatDay === 'Yearly'">
+      <ion-item>
+        <ion-label>
+          Repeat with
+          <span *ngIf="isRepeatWithDay"> day of month</span>
+          <span *ngIf="!isRepeatWithDay"> week of month</span>
+        </ion-label>
+        <ion-toggle [(ngModel)]="isRepeatWithDay" (ionChanged)="yearlyRepeatingChanged()"></ion-toggle>
+      </ion-item>
+
+      <div *ngIf="isRepeatWithDay">
+        <ion-row>
+          <ion-col width-20>
+            <ion-label>Every</ion-label>
+          </ion-col>
+          <ion-col width-40>
+            <ion-item>
+              <ion-label>Month</ion-label>
+              <ion-select [(ngModel)]="yearlyMonthRecur">
+                <ion-option *ngFor="let month of months" [value]="month">{{month}}</ion-option>
+              </ion-select>
+            </ion-item>
+          </ion-col>
+          <ion-col width-20>
+            <ion-input type="number" placeholder="Date" [(ngModel)]="yearlyDayDateRecur"></ion-input>
+          </ion-col>
+        </ion-row>
+      </div>
+
+      <div *ngIf="!isRepeatWithDay">
+        <ion-row>
+          <ion-col width-20>
+            <ion-label>The</ion-label>
+          </ion-col>
+
+          <ion-col width-40>
+            <ion-item>
+              <ion-label>Week</ion-label>
+              <ion-select ngModel="yearlyWeekRecur">
+                <ion-option *ngFor="let week of weekCount" [value]="week">{{week}}</ion-option>
+              </ion-select>
+            </ion-item>
+          </ion-col>
+
+          <ion-col width-40>
+            <ion-item>
+              <ion-label>Day</ion-label>
+              <ion-select [(ngModel)]="yearlyDayRecur">
+                <ion-option *ngFor="let day of days" [value]="day">{{day}}</ion-option>
+              </ion-select>
+            </ion-item>
+          </ion-col>
+        </ion-row>
+
+        <ion-row>
+          <ion-col width-20>
+            <ion-label>of </ion-label>
+          </ion-col>
+
+          <ion-col width-80>
+            <ion-item>
+              <ion-label>Month</ion-label>
+              <ion-select [(ngModel)]="yearlyMonthRecur">
+                <ion-option *ngFor="let month of months" [value]="month">{{month}}</ion-option>
+              </ion-select>
+            </ion-item>
+          </ion-col>
+        </ion-row>
+      </div>
+    </ion-list>
+
+
+  </div>
 
 </ion-content>
