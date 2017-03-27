@@ -47,15 +47,15 @@ export class AddEditConferenceBookingPage {
     this.isAllDay = this.isDeleted = false;
     this.attendeeList = [];
     this.bookConfForm = this.formBuilder.group({
-      title: ['',[Validators.required]],
-      from:['',[Validators.required]],
-      to:['',[Validators.required]],
-      conferenceRoom:['',[Validators.required]],
-      otherNotes:['',[Validators.required]],
-      allDayEvent:[false,[Validators.required]],
-      specialTreatmentItems:[],
-      specialComments: ['',[Validators.required]],
-      numberOfGuests: ['',Validators.pattern('[0-9]+')],
+      title: ['', [Validators.required, Validators.minLength(3)]],
+      from: ['', [Validators.required]],
+      to: ['', [Validators.required]],
+      conferenceRoom: ['', [Validators.required]],
+      otherNotes: ['', [Validators.required, Validators.minLength(3)]],
+      allDayEvent: [false, [Validators.required]],
+      specialTreatmentItems: [],
+      specialComments: ['', [Validators.required]],
+      numberOfGuests: ['', Validators.pattern('[0-9]+')],
       isDeleted: [false]
     });
   }
@@ -104,6 +104,9 @@ export class AddEditConferenceBookingPage {
 
   submit() {
     this.navCtrl.pop();
+  }
+
+  textChanged(changeEvent) {
   }
 
 }

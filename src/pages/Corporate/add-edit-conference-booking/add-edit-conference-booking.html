@@ -8,7 +8,7 @@
   <ion-navbar>
     <ion-title>Conference Booking &ndash; {{ start | date:'MMMM d'}}</ion-title>
     <ion-buttons start>
-      <button ion-button clear (click)="submit(bookConfForm.value)"><ion-icon name="checkmark" ></ion-icon></button>
+      <button [disabled]="!bookConfForm.valid" ion-button clear (click)="submit(bookConfForm.value)"><ion-icon name="checkmark" ></ion-icon></button>
     </ion-buttons>
   </ion-navbar>
 </ion-header>
@@ -18,7 +18,7 @@
     <form [formGroup]="bookConfForm">
       <ion-item>
         <ion-label>Title</ion-label>
-        <ion-input formControlName="title" type="text"></ion-input>
+        <ion-input formControlName="title" type="text" (input)="textChanged($event)"></ion-input>
       </ion-item>
       <p *ngIf="bookConfForm.get('title').hasError('required') && bookConfForm.get('title').touched">
         Please enter Title
@@ -26,7 +26,7 @@
 
       <ion-item>
         <ion-label>From &nbsp; {{ start | date:'yMMMd'}}</ion-label>
-        <ion-datetime formControlName="from" displayFormat="hh:mm A"></ion-datetime>
+        <ion-datetime [(ngModel)]="start" formControlName="from" displayFormat="hh:mm A"></ion-datetime>
       </ion-item>
       <p *ngIf="bookConfForm.get('from').hasError('required') && bookConfForm.get('from').touched">
         Please enter From
@@ -34,7 +34,7 @@
 
       <ion-item>
         <ion-label>To &nbsp; {{ end | date:'yMMMd'}}</ion-label>
-        <ion-datetime formControlName="to" displayFormat="hh:mm A"></ion-datetime>
+        <ion-datetime [(ngModel)]="end" formControlName="to" displayFormat="hh:mm A"></ion-datetime>
       </ion-item>
       <p *ngIf="bookConfForm.get('to').hasError('required') && bookConfForm.get('to').touched">
         Plase enter To
