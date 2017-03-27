@@ -87,8 +87,11 @@
     </ion-item>
   </ion-list>-->
 
-  <ion-list-header *ngIf="(myTimeSheets)?.length == 0">
+  <ion-list-header *ngIf ="(myTimeSheets)?.length == 0 && isDataretrived ==true">
     No Records Found
+  </ion-list-header>
+  <ion-list-header [hidden]="isAuthorized == true">
+    You are not Authorized
   </ion-list-header>
 
 </ion-content>
