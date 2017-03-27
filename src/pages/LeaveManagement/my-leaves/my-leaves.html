@@ -104,6 +104,9 @@
   <ion-list-header *ngIf ="(leaveObs)?.length == 0 && isAllDataLoaded == true">
     No Records Found
   </ion-list-header>
+  <ion-list-header [hidden]="isAuthorized">
+    You are not Authorized
+  </ion-list-header>
 
 
 </ion-content>
