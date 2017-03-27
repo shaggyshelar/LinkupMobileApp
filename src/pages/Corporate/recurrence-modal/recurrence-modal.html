@@ -52,7 +52,7 @@
       </ion-item>
       <ion-item *ngIf="!isEventEnding && !isEndAfterOccurences">
         <ion-label>End Date</ion-label>
-        <ion-datetime [(ngModel)]="eventEndDt"></ion-datetime>
+        <ion-datetime [(ngModel)]="eventEndDt" ></ion-datetime>
       </ion-item>
     </ion-list>
 
@@ -222,6 +222,8 @@
         </ion-row>
       </div>
     </ion-list>
+
+    <button ion-button full (click)="okClick()">Ok</button>
 
 
   </div>
