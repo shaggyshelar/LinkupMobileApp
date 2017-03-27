@@ -8,111 +8,125 @@
   <ion-navbar>
     <ion-title>Conference Booking &ndash; {{ start | date:'MMMM d'}}</ion-title>
     <ion-buttons start>
-      <button ion-button clear (click)="submit()"><ion-icon name="checkmark" ></ion-icon></button>
+      <button ion-button clear (click)="submit(bookConfForm.value)"><ion-icon name="checkmark" ></ion-icon></button>
     </ion-buttons>
   </ion-navbar>
 </ion-header>
 
 <ion-content padding>
   <ion-list>
+    <form [formGroup]="bookConfForm">
+      <ion-item>
+        <ion-label>Title</ion-label>
+        <ion-input formControlName="title" type="text"></ion-input>
+      </ion-item>
+      <p *ngIf="bookConfForm.get('title').hasError('required') && bookConfForm.get('title').touched">
+        Please enter Title
+      </p>
 
-    <ion-item>
-      <ion-label>Title</ion-label>
-      <ion-input [(ngModel)]="title" type="text"></ion-input>
-    </ion-item>
+      <ion-item>
+        <ion-label>From &nbsp; {{ start | date:'yMMMd'}}</ion-label>
+        <ion-datetime formControlName="from" displayFormat="hh:mm A"></ion-datetime>
+      </ion-item>
+      <p *ngIf="bookConfForm.get('from').hasError('required') && bookConfForm.get('from').touched">
+        Please enter From
+      </p>
 
-    <ion-item>
-      <ion-label>From &nbsp; {{ start | date:'yMMMd'}}</ion-label>
-      <ion-datetime [(ngModel)]="start" displayFormat="hh:mm A"></ion-datetime>
-    </ion-item>
+      <ion-item>
+        <ion-label>To &nbsp; {{ end | date:'yMMMd'}}</ion-label>
+        <ion-datetime formControlName="to" displayFormat="hh:mm A"></ion-datetime>
+      </ion-item>
+      <p *ngIf="bookConfForm.get('to').hasError('required') && bookConfForm.get('to').touched">
+        Plase enter To
+      </p>
 
-    <ion-item>
-      <ion-label>To &nbsp; {{ end | date:'yMMMd'}}</ion-label>
-      <ion-datetime [(ngModel)]="end" displayFormat="hh:mm A"></ion-datetime>
-    </ion-item>
-
-    <ion-row>
-      <ion-col width-85>
-        <ion-input placeholder="Attendees" type="text" [(ngModel)]="attendeeName"></ion-input>
-      </ion-col>
-      <ion-col width-15>
-        <button ion-button clear end color="primary">
+      <ion-row>
+        <ion-col width-85>
+          <ion-input placeholder="Attendees" type="text"></ion-input>
+        </ion-col>
+        <ion-col width-15>
+          <button ion-button clear end color="primary">
           <ion-icon name="add" (click)="addAttendees(attendeeName)"></ion-icon>
         </button>
-      </ion-col>
-    </ion-row>
-    <ion-row>
-      <ion-col width-20><strong>Sr. No.</strong></ion-col>
-      <ion-col width-60><strong>Attendee</strong></ion-col>
-      <ion-col width-20></ion-col>
-    </ion-row>
-    <div *ngIf="attendeeList.length > 0">
-      <ion-row *ngFor="let rec of attendeeList; let i = index">
-        <ion-col width-20>
-          <p>{{i+1}}</p>
-        </ion-col>
-        <ion-col width-70>
-          <p>{{rec}}</p>
-        </ion-col>
-        <ion-col width-10>
-          <ion-icon name="close" (click)="deleteAttendee(i)" color="primary"></ion-icon>
         </ion-col>
       </ion-row>
-    </div>
-    <div *ngIf="attendeeList.length == 0">
-      <ion-item>No Attendees</ion-item>
-    </div>
+      <ion-row>
+        <ion-col width-20><strong>Sr. No.</strong></ion-col>
+        <ion-col width-60><strong>Attendee</strong></ion-col>
+        <ion-col width-20></ion-col>
+      </ion-row>
+      <div *ngIf="attendeeList.length > 0">
+        <ion-row *ngFor="let rec of attendeeList; let i = index">
+          <ion-col width-20>
+            <p>{{i+1}}</p>
+          </ion-col>
+          <ion-col width-70>
+            <p>{{rec}}</p>
+          </ion-col>
+          <ion-col width-10>
+            <ion-icon name="close" (click)="deleteAttendee(i)" color="primary"></ion-icon>
+          </ion-col>
+        </ion-row>
+      </div>
+      <div *ngIf="attendeeList.length == 0">
+        <ion-item>No Attendees</ion-item>
+      </div>
 
 
-    <ion-item>
-      <ion-label>Conference Room</ion-label>
-      <ion-select [(ngModel)]="conferenceRoom">
-        <ion-option *ngFor="let rec of roomList" [value]="rec.Name">{{rec.Name}}</ion-option>
-      </ion-select>
-    </ion-item>
+      <ion-item>
+        <ion-label>Conference Room</ion-label>
+        <ion-select formControlName="conferenceRoom">
+          <ion-option *ngFor="let rec of roomList" [value]="rec.Name">{{rec.Name}}</ion-option>
+        </ion-select>
+      </ion-item>
+      <p *ngIf="bookConfForm.get('conferenceRoom').hasError('required') && bookConfForm.get('conferenceRoom').touched">
+        Please enter Conference Room
+      </p>
 
-    <ion-item color="light">
-      <p>Description</p>
-    </ion-item>
+      <ion-item color="light">
+        <p>Description</p>
+      </ion-item>
 
-    <ion-item>
-      <ion-label floating>Other Notes</ion-label>
-      <ion-input [(ngModel)]="otherNotes" type="text"></ion-input>
-    </ion-item>
+      <ion-item>
+        <ion-label floating>Other Notes</ion-label>
+        <ion-input formControlName="otherNotes" type="text"></ion-input>
+      </ion-item>
+      
 
-    <ion-item>
-      <ion-label>All Day Event</ion-label>
-      <ion-toggle [ngModel]="isAllDay"></ion-toggle>
-    </ion-item>
 
-    <ion-item color="light" (click)="recurrenceClicked()">
-      <ion-label>Recurrence
-        <ion-icon name="arrow-dropright" class="right"></ion-icon>
-      </ion-label>
-    </ion-item>
+      <ion-item>
+        <ion-label>All Day Event</ion-label>
+        <ion-toggle formControlName="allDayEvent"></ion-toggle>
+      </ion-item>
 
-    <ion-item>
-      <ion-label>Special Treatment</ion-label>
-      <ion-select [(ngModel)]="specialTreatment" multiple="true" (ionChange)="specialTreatmentChanged(specialTreatment)">
-        <ion-option *ngFor="let rec of splTreatmentItems" [value]="rec">{{rec}}</ion-option>
-      </ion-select>
-    </ion-item>
+      <ion-item color="light" (click)="recurrenceClicked()">
+        <ion-label>Recurrence
+          <ion-icon name="arrow-dropright" class="right"></ion-icon>
+        </ion-label>
+      </ion-item>
 
-    <ion-item>
-      <ion-label floating>Special Comments</ion-label>
-      <ion-input type="text" [(ngModel)]="specialComments"></ion-input>
-    </ion-item>
+      <ion-item>
+        <ion-label>Special Treatment</ion-label>
+        <ion-select multiple="true" (ionChange)="specialTreatmentChanged(specialTreatment)">
+          <ion-option *ngFor="let rec of splTreatmentItems" [value]="rec">{{rec}}</ion-option>
+        </ion-select>
+      </ion-item>
 
-    <ion-item>
-      <ion-label>Number of Guests</ion-label>
-      <ion-input type="number" [(ngModel)]="guestCount"></ion-input>
-    </ion-item>
+      <ion-item>
+        <ion-label floating>Special Comments</ion-label>
+        <ion-input formControlName="specialComments" type="text"></ion-input>
+      </ion-item>
 
-    <ion-item>
-      <ion-label>Is Deleted</ion-label>
-      <ion-toggle [(ngModel)]="isDeleted"></ion-toggle>
-    </ion-item>
+      <ion-item>
+        <ion-label>Number of Guests</ion-label>
+        <ion-input formControlName="numberOfGuests" type="number"></ion-input>
+      </ion-item>
 
+      <ion-item>
+        <ion-label>Is Deleted</ion-label>
+        <ion-toggle></ion-toggle>
+      </ion-item>
+    </form>
   </ion-list>
 
 </ion-content>

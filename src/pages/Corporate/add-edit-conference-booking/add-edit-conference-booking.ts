@@ -1,7 +1,9 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, ModalController } from 'ionic-angular';
+import { NavController, NavParams, ModalController, LoadingController } from 'ionic-angular';
+import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 
 import { RecurrenceModalPage } from '../recurrence-modal/recurrence-modal';
+import { ConferenceBookingMasterService } from '../../../providers/shared/master/conferenceBooking.service';
 
 import * as moment from 'moment';
 
@@ -21,6 +23,8 @@ export class AddEditConferenceBookingPage {
   roomList: any[];
   splTreatmentItems: any[];
 
+  bookConfForm: FormGroup
+
   attendeeName: string;
   conferenceTitle: string;
   start: any;
@@ -35,58 +39,48 @@ export class AddEditConferenceBookingPage {
   otherNotes: string;
   constructor(public navCtrl: NavController, public navParams: NavParams
     , public modalCtrl: ModalController
+    , public confMasterService: ConferenceBookingMasterService
+    , public loadingCtrl: LoadingController
+    , public formBuilder: FormBuilder
   ) {
     this.attendeeName = this.conferenceTitle = '';
     this.isAllDay = this.isDeleted = false;
     this.attendeeList = [];
-    this.roomList = [
-      {
-        ID: 1,
-        Name: 'Bahamas',
-        Color: '#E7C5F5'
-      }, {
-        ID: 2,
-        Name: 'Dubai',
-        Color: '#3FABA4'
-      }, {
-        ID: 3,
-        Name: 'Cape Town',
-        Color: '#35AA47'
-      }, {
-        ID: 4,
-        Name: 'Hong Kong',
-        Color: '#FF9655'
-      }, {
-        ID: 5,
-        Name: 'Caribbean',
-        Color: '#8877A9'
-      }, {
-        ID: 6,
-        Name: 'Houston	',
-        Color: '#428BCA'
-      }, {
-        ID: 7,
-        Name: 'Barcelona',
-        Color: '#D05454'
-      }, {
-        ID: 8,
-        Name: 'Trainning Room',
-        Color: '#DFBA49'
-      }];
-    this.splTreatmentItems = [
-      'Water',
-      'Tea',
-      'Coffee',
-      'Juice',
-      'Snacks',
-      'Breakfast',
-    ];
+    this.bookConfForm = this.formBuilder.group({
+      title: ['',[Validators.required]],
+      from:['',[Validators.required]],
+      to:['',[Validators.required]],
+      conferenceRoom:['',[Validators.required]],
+      otherNotes:['',[Validators.required]],
+      allDayEvent:[false,[Validators.required]],
+      specialTreatmentItems:[],
+      specialComments: ['',[Validators.required]],
+      numberOfGuests: ['',Validators.pattern('[0-9]+')],
+      isDeleted: [false]
+    });
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad AddEditConferenceBookingPage');
     this.start = this.end = moment(this.navParams.data.date._d).toISOString();
     console.log(this.navParams.data.date._d);
+    var loader = this.loadingCtrl.create({
+      content: 'Please wait...'
+    });
+    loader.present().then(() => {
+      this.confMasterService.getRoomsList().subscribe(res => {
+        this.roomList = res;
+      }, err => {
+        console.log(err);
+        loader.dismiss();
+      });
+      this.confMasterService.getSpecialTreatmentList().subscribe(res => {
+        this.splTreatmentItems = res;
+        loader.dismiss();
+      }, err => {
+        loader.dismiss();
+      });
+    });
   }
 
   deleteAttendee(i) {
@@ -98,7 +92,7 @@ export class AddEditConferenceBookingPage {
   }
 
   recurrenceClicked() {
-    let modal = this.modalCtrl.create(RecurrenceModalPage, { params: null });
+    let modal = this.modalCtrl.create(RecurrenceModalPage, { params: { start: this.start } });
     modal.onDidDismiss(data => {
       console.log(data);
     });
@@ -109,8 +103,7 @@ export class AddEditConferenceBookingPage {
   }
 
   submit() {
-    // this.navCtrl.pop();
-    console.log('start',this.start,'end', this.end, 'title',this.title, 'attendee count', this.attendeeList.length, 'conferenceRoom', this.conferenceRoom,'other notes', this.otherNotes,'isAllDay',this.isAllDay,'specialTreatment', this.specialTreatment, 'specialComments', this.specialComments, 'guestCount', this.guestCount, 'isDeleted', this.isDeleted);
+    this.navCtrl.pop();
   }
 
 }
