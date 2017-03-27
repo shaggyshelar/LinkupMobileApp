@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { NavController, NavParams, AlertController, ActionSheetController, ModalController } from 'ionic-angular';
 /** Module Level Dependencies */
 import { HolidayService } from '../services/holiday.service';
+import { AuthService } from '../../../providers/index';
 import { Holiday } from '../models/holiday';
 import { MyEvent } from '../models/holiday';
 import { SpinnerService } from '../../../providers/index'
@@ -32,6 +33,8 @@ export class HolidaysPage {
   public leavesReplicate: any[];
   public isDescending: boolean = true;
   public filterValues: any[];
+  public isDataretrived: boolean = false;
+  public isAuthorized: boolean;
   // eventDay: MyEvent;
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
@@ -39,7 +42,9 @@ export class HolidaysPage {
     public spinnerService: SpinnerService,
     public alertCtrl: AlertController,
     public actionSheetCtrl: ActionSheetController,
+    public auth: AuthService,
     public modalCtrl: ModalController) {
+    this.isAuthorized = this.auth.checkPermission('LEAVE.HOLIDAY.READ');
     this.leavesReplicate = [];
     this.filterValues = [];
     this.filterValues.push({ floating: true });
@@ -81,6 +86,7 @@ export class HolidaysPage {
     this.holidayService.getHolidays().subscribe((res: any) => {
       this.spinnerService.stopSpinner();
       this.holidaysObs = res;
+      this.isDataretrived = true;
       // this.holidaysObs.reverse();
       for (let i = 0; i < res.length; i++) {
         res[i].start = moment(res[i].HolidayDate);
@@ -154,7 +160,7 @@ export class HolidaysPage {
                 this.filterValues.push({ fixed: false });
             }
           }
-          if(this.filterValues[0].floating === false && this.filterValues[1].fixed === false){
+          if (this.filterValues[0].floating === false && this.filterValues[1].fixed === false) {
             this.pendingHoliday = [];
             this.pendingHoliday = this.pendingHoliday.concat(this.leavesReplicate);
           }
