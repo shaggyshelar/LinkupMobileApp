@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams, ViewController } from 'ionic-angular';
 
+import * as moment from 'moment';
+
 /*
   Generated class for the RecurranceModal page.
 
@@ -19,6 +21,9 @@ export class RecurrenceModalPage {
   daysP2: any[];
   weekCount: any[];
 
+  months: any[];
+
+  maxEndDt: any;
   repeatDay: any;
   allWeekdays: boolean;
   isRepeatWithDay: boolean = true;
@@ -30,7 +35,6 @@ export class RecurrenceModalPage {
   eventStrtDt: any;
   eventEndDt: any;
   eventOccurences: number;
-  months:any[];
   repeatingDays: any[];
   dayOfMonth: any;
   recurAfterMonth: any;
@@ -40,7 +44,7 @@ export class RecurrenceModalPage {
   yearlyWeekRecue: any;
   yearlyDayRecur: any;
   constructor(public navCtrl: NavController, public navParams: NavParams
-  , public viewCtrl: ViewController
+    , public viewCtrl: ViewController
   ) {
     this.pattern = [
       'Daily',
@@ -71,7 +75,7 @@ export class RecurrenceModalPage {
       'November',
       'December',
     ];
-    this.weekCount= [
+    this.weekCount = [
       'First',
       'Second',
       'Third',
@@ -79,14 +83,16 @@ export class RecurrenceModalPage {
       'Last',
     ];
     this.allWeekdays = true;
+    this.maxEndDt = moment(moment().add(5, 'year'), 'YYYY-MM-DD');
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad RecurranceModalPage');
+    this.eventStrtDt = this.navParams.data.params.start;
   }
 
   dismiss() {
-    this.viewCtrl.dismiss({data : null});
+    this.viewCtrl.dismiss({ data: null });
   }
 
   radioChnage(repeat) {
@@ -104,4 +110,32 @@ export class RecurrenceModalPage {
   endChanged() { }
 
   endValuesChanged() { }
+
+  okClick() {
+    this.viewCtrl.dismiss({ data: this.objAssemble() });
+  }
+
+  objAssemble() {
+    return {
+      repeatDay: this.repeatDay,
+      allWeekdays: this.allWeekdays,
+      isRepeatWithDay: this.isRepeatWithDay,
+      dayP2: this.dayP2,
+      isEventEnding: this.isEventEnding,
+      isRepeating: this.isRepeating,
+      isEndAfterOccurences: this.isEndAfterOccurences,
+      occurences: this.occurences,
+      eventStrtDt: this.eventStrtDt,
+      eventEndDt: this.eventEndDt,
+      eventOccurences: this.eventOccurences,
+      repeatingDays: this.repeatingDays,
+      dayOfMonth: this.dayOfMonth,
+      recurAfterMonth: this.recurAfterMonth,
+      weekNum: this.weekNum,
+      yearlyMonthRecur: this.yearlyMonthRecur,
+      yearlyDayDateRecur: this.yearlyDayDateRecur,
+      yearlyWeekRecue: this.yearlyWeekRecue,
+      yearlyDayRecur: this.yearlyDayRecur
+    }
+  }
 }
