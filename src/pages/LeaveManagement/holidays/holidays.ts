@@ -81,7 +81,7 @@ export class HolidaysPage {
     this.holidayService.getHolidays().subscribe((res: any) => {
       this.spinnerService.stopSpinner();
       this.holidaysObs = res;
-      this.holidaysObs.reverse();
+      // this.holidaysObs.reverse();
       for (let i = 0; i < res.length; i++) {
         res[i].start = moment(res[i].HolidayDate);
         if ((moment(res[i].start).diff(moment(), 'days')) > -1) {
