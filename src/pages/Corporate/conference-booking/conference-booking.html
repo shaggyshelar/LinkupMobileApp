@@ -22,7 +22,7 @@
       (onDayClick)="handleDayClick($event)" (onEventClick)="handleEventClick($event)"></p-schedule>
     <ion-list>
 
-      <ion-item-sliding *ngFor="let booking of conferenceBookings " [attr.conference]="booking.Room.Name | kebabCase">
+      <ion-item-sliding class="no-padding" *ngFor="let booking of conferenceBookings " [attr.conference]="booking.Room.Name | kebabCase">
 
         <ion-item ion-item (click)="goToLeaveDetail(leave)">
           <h3>{{booking.title}}</h3>

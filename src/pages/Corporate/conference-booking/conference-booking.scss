@@ -20,4 +20,8 @@ ion-item[conference=#{$conference}] ion-label {
    }
   }
 
+  .no-padding {
+    padding-left: 0px !important;
+  }
+
 }
