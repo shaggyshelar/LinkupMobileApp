@@ -72,7 +72,7 @@
 
     <ion-item-sliding *ngFor="let leave of leaveObs " #slidingItem [attr.status]="leave.Status | lowercase">
 
-      <ion-item ion-item (click)="goToLeaveDetail(leave)">
+      <ion-item ion-item class="no-padding" (click)="goToLeaveDetail(leave)">
           <h3>{{leave.Employee.Name}}</h3>
           <p>
             {{leave.StartDate | date:"MM/dd/yyyy"}} &mdash;
