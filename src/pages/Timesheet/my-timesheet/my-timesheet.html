@@ -38,7 +38,7 @@
   <!--Pull to refresh Ends-->
   <ion-list>
     <ion-item-sliding #slidingItem *ngFor="let entry of myTimeSheets" [attr.submittedstatus]="entry.SubmittedStatus | kebabCase">
-      <button ion-item (click)="itemClicked(entry)">
+      <button class="no-padding" ion-item (click)="itemClicked(entry)">
         <h3>
           <span *ngFor="let approver of entry.ApproverUser"> {{approver.Name}} </span>
         </h3>
