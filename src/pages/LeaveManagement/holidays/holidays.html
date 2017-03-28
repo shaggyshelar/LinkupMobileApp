@@ -29,7 +29,7 @@
 <ion-content padding class="customCalendar">
   <p-schedule [events]="events" (onEventClick)="handleEventClick($event)"></p-schedule>
   <ion-list #scheduleList [hidden]="(pendingHoliday )?.length === 0">
-    <ion-item *ngFor="let holiday of pendingHoliday" [attr.holidaytype]="holiday.HolidayType.Value | lowercase" (click)="onHolidayDetails(holiday)">
+    <ion-item class="no-padding" *ngFor="let holiday of pendingHoliday" [attr.holidaytype]="holiday.HolidayType.Value | lowercase" (click)="onHolidayDetails(holiday)">
       <h3>{{holiday.Title}}</h3>
       <p>
         {{holiday.HolidayDate | date:'dd/MM/y'}}
