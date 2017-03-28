@@ -144,10 +144,12 @@ export class MyLeavesPage {
       var event: MyEvent = new MyEvent();
       var leaveStatus: any = this.leaveObs[i].Status;
       event.start = moment(this.leaveObs[i].StartDate).format('YYYY-MM-DD');
-      event.end = moment(this.leaveObs[i].EndDate).format('YYYY-MM-DD');
+      if (this.leaveObs[i].StartDate === this.leaveObs[i].EndDate)
+        event.end = moment(this.leaveObs[i].EndDate).format('YYYY-MM-DD');
+      else if (this.leaveObs[i].StartDate !== this.leaveObs[i].EndDate)
+        event.end = moment(this.leaveObs[i].EndDate).add(1, 'day').format('YYYY-MM-DD');
       event.title = 'Leave';
       event.ID = this.leaveObs[i].LeaveRequestMasterId;
-
       if (leaveStatus == 'Pending')
         event.color = '#FED035';
       else if (leaveStatus == 'Cancelled')
