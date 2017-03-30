@@ -53,7 +53,7 @@ class Project {
 }
 
 class User {
-    Name: string;
+    Value: string;
     ID: number;
 }
 
@@ -76,7 +76,7 @@ export class monday{
     constructor(
     ){}
 
-      ApproverUser: Array<User>;
+      ApproverUser: User;
         Project: Project;
         Task: string;
         Mondayhrs: string;
@@ -96,7 +96,7 @@ export class monday{
 export class tuesday{
      constructor(
     ){}
-     ApproverUser: Array<User>;
+     ApproverUser: User;
         Project: Project;
         Task: string;
         Tuesdayhrs: string;
@@ -115,7 +115,7 @@ export class tuesday{
 export class wednesday{
      constructor()
     {}
-      ApproverUser: Array<User>;
+      ApproverUser: User;
         Project: Project;
         Task: string;
         Wednesdayhrs: string;
@@ -134,7 +134,7 @@ export class wednesday{
 export class thursday{
      constructor()
     {}
-     ApproverUser: Array<User>;
+     ApproverUser: User;
         Project: Project;
         Task: string;
         Thursdayhrs: string;
@@ -154,7 +154,7 @@ export class thursday{
 export class friday{
     constructor()
     {}
-      ApproverUser: Array<User>;
+      ApproverUser: User;
         Project: Project;
         Task: string;
         Fridayhrs: string;
@@ -174,7 +174,7 @@ export class friday{
 export class saturday{
      constructor()
     {}
-    ApproverUser: Array<User>;
+    ApproverUser: User;
         Project: Project;
         Task: string;
         Saturdayhrs: string;
@@ -194,7 +194,7 @@ export class saturday{
 export class sunday{
     constructor()
     {}
-     ApproverUser: Array<User>;
+     ApproverUser: User;
         Project: Project;
         Task: string;
         Sundayhrs: string;

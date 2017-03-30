@@ -8,6 +8,7 @@ import { Page1 } from '../pages/page1/page1';
 import { Page2 } from '../pages/page2/page2';
 import { LoginPage } from '../pages/login/login';
 import { HomePage } from '../pages/home/home';
+import { MultiPickerModule } from 'ion-multi-picker';
 
 // Corporate
 import { LogATicketPage } from '../pages/Corporate/log-a-ticket/log-a-ticket';
@@ -17,6 +18,7 @@ import { ConferenceBookingPage } from '../pages/Corporate/conference-booking/con
 // Timesheet
 import { MyTimesheetPage } from '../pages/Timesheet/my-timesheet/my-timesheet';
 import { EnterTimesheetPage } from '../pages/Timesheet/enter-timesheet/enter-timesheet';
+import { EnterTimesheetDetailsPage } from '../pages/Timesheet/enter-timesheet-details/enter-timesheet-details';
 import { ApproveTimesheetPage } from '../pages/Timesheet/approve-timesheet/approve-timesheet';
 import { ApprovedTimesheetPage } from '../pages/Timesheet/approved-timesheet/approved-timesheet';
 import { TimesheetReportPage } from '../pages/Timesheet/timesheet-report/timesheet-report';
@@ -107,6 +109,7 @@ import { CacheService, CacheStorageAbstract, CacheLocalStorage } from 'ng2-cache
     ConferenceBookingPage,
     MyTimesheetPage,
     EnterTimesheetPage,
+    EnterTimesheetDetailsPage,
     ApproveTimesheetPage,
     ApprovedTimesheetPage,
     TimesheetReportPage,
@@ -156,7 +159,8 @@ import { CacheService, CacheStorageAbstract, CacheLocalStorage } from 'ng2-cache
   ],
   imports: [
     IonicModule.forRoot(MyApp),
-    ScheduleModule
+    ScheduleModule,
+    MultiPickerModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -170,6 +174,7 @@ import { CacheService, CacheStorageAbstract, CacheLocalStorage } from 'ng2-cache
     ConferenceBookingPage,
     MyTimesheetPage,
     EnterTimesheetPage,
+    EnterTimesheetDetailsPage,
     ApproveTimesheetPage,
     ApprovedTimesheetPage,
     TimesheetReportPage,
