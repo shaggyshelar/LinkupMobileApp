@@ -62,7 +62,19 @@ export class AddEditConferenceBookingPage {
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad AddEditConferenceBookingPage');
-    this.start = this.end = moment(this.navParams.data.date._d).toISOString();
+    // this.start = this.end = moment(this.navParams.data.date._d).toISOString();
+    this.bookConfForm.setValue({
+      title: ''
+      , from: moment(this.navParams.data.date._d).toISOString()
+      , to: moment(this.navParams.data.date._d).toISOString()
+      , conferenceRoom: ''
+      , otherNotes: ''
+      , allDayEvent: false
+      , specialTreatmentItems: []
+      , specialComments: ''
+      , numberOfGuests: ''
+      , isDeleted: false
+    });
     console.log(this.navParams.data.date._d);
     var loader = this.loadingCtrl.create({
       content: 'Please wait...'

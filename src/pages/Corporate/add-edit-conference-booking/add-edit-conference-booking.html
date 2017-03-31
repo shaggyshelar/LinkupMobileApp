@@ -42,20 +42,21 @@
 
       <ion-row>
         <ion-col width-85>
-          <ion-input placeholder="Attendees" type="text"></ion-input>
+          <ion-input class="full-wide" [(ngModel)]="attendeeName" placeholder="Attendees" type="text" [ngModelOptions]="{standalone: true}"></ion-input>
         </ion-col>
         <ion-col width-15>
-          <button ion-button clear end color="primary">
+          <button ion-button clear end class="right">
           <ion-icon name="add" (click)="addAttendees(attendeeName)"></ion-icon>
         </button>
         </ion-col>
       </ion-row>
-      <ion-row>
-        <ion-col width-20><strong>Sr. No.</strong></ion-col>
-        <ion-col width-60><strong>Attendee</strong></ion-col>
-        <ion-col width-20></ion-col>
-      </ion-row>
       <div *ngIf="attendeeList.length > 0">
+        <ion-row>
+          <ion-col width-20><strong>Sr. No.</strong></ion-col>
+          <ion-col width-60><strong>Attendee</strong></ion-col>
+          <ion-col width-20></ion-col>
+        </ion-row>
+
         <ion-row *ngFor="let rec of attendeeList; let i = index">
           <ion-col width-20>
             <p>{{i+1}}</p>
@@ -68,9 +69,9 @@
           </ion-col>
         </ion-row>
       </div>
-      <div *ngIf="attendeeList.length == 0">
+      <!--<div *ngIf="attendeeList.length == 0">
         <ion-item>No Attendees</ion-item>
-      </div>
+      </div>-->
 
 
       <ion-item>
@@ -91,7 +92,7 @@
         <ion-label floating>Other Notes</ion-label>
         <ion-input formControlName="otherNotes" type="text"></ion-input>
       </ion-item>
-      
+
 
 
       <ion-item>
