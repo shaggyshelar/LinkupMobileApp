@@ -45,13 +45,15 @@
       <div class="empty"></div>
     </ion-item>
   </ion-list>-->
-
+  <ion-row *ngIf="isDataretrived == true">
+    <ion-label class="center-align">Total: {{totalhours.TotalhrsTimesheet}}</ion-label>
+  </ion-row>
   <ion-list *ngIf="isDataretrived == true">
     <ion-item (click)="timesheetClicked(0)">
       <ion-row>
         <ion-col width-10>
-          <p>{{weekStartDate | date:'d'}}</p>
-          <p>{{weekStartDate | date:'MMM'}}</p>
+          <p class="text-mid">{{weekStartDate | date:'d'}}</p>
+          <p class="text-mid">{{weekStartDate | date:'EEE'}}</p>
         </ion-col>
         <ion-col *ngIf="weekProjects.MondayArray.length==0" width-80>
           <br>
@@ -78,8 +80,8 @@
 
       <ion-row>
         <ion-col width-10>
-          <p>{{getDate(1) | date:'d'}}</p>
-          <p>{{getDate(1) | date:'MMM'}}</p>
+          <p class="text-mid">{{getDate(1) | date:'d'}}</p>
+          <p class="text-mid">{{getDate(1) | date:'EEE'}}</p>
         </ion-col>
         <ion-col *ngIf="weekProjects.TuesdayArray.length==0" width-80>
           <br>
@@ -105,8 +107,8 @@
     <ion-item (click)="timesheetClicked(2)">
       <ion-row>
         <ion-col width-10>
-          <p>{{getDate(2) | date:'d'}}</p>
-          <p>{{getDate(2) | date:'MMM'}}</p>
+          <p class="text-mid">{{getDate(2) | date:'d'}}</p>
+          <p class="text-mid">{{getDate(2) | date:'EEE'}}</p>
         </ion-col>
         <ion-col *ngIf="weekProjects.WednesdayArray.length==0" width-80>
           <br>
@@ -132,8 +134,8 @@
     <ion-item (click)="timesheetClicked(3)">
       <ion-row>
         <ion-col width-10>
-          <p>{{getDate(3) | date:'d'}}</p>
-          <p>{{getDate(3) | date:'MMM'}}</p>
+          <p class="text-mid">{{getDate(3) | date:'d'}}</p>
+          <p class="text-mid">{{getDate(3) | date:'EEE'}}</p>
         </ion-col>
         <ion-col *ngIf="weekProjects.ThursdayArray.length==0" width-80>
           <br>
@@ -159,8 +161,8 @@
     <ion-item (click)="timesheetClicked(4)">
       <ion-row>
         <ion-col width-10>
-          <p>{{getDate(4) | date:'d'}}</p>
-          <p>{{getDate(4) | date:'MMM'}}</p>
+          <p class="text-mid">{{getDate(4) | date:'d'}}</p>
+          <p class="text-mid">{{getDate(4) | date:'EEE'}}</p>
         </ion-col>
         <ion-col *ngIf="weekProjects.FridayArray.length==0" width-80>
           <br>
@@ -186,8 +188,8 @@
     <ion-item (click)="timesheetClicked(5)">
       <ion-row>
         <ion-col width-10>
-          <p>{{getDate(5) | date:'d'}}</p>
-          <p>{{getDate(5) | date:'MMM'}}</p>
+          <p class="text-mid">{{getDate(5) | date:'d'}}</p>
+          <p class="text-mid">{{getDate(5) | date:'EEE'}}</p>
         </ion-col>
         <ion-col *ngIf="weekProjects.SaturdayArray.length==0" width-80>
           <br>
@@ -213,8 +215,8 @@
     <ion-item (click)="timesheetClicked(6)">
       <ion-row>
         <ion-col width-10>
-          <p>{{weekEndDate | date:'d'}}</p>
-          <p>{{weekEndDate | date:'MMM'}}</p>
+          <p class="text-mid">{{weekEndDate | date:'d'}}</p>
+          <p class="text-mid">{{weekEndDate | date:'EEE'}}</p>
         </ion-col>
         <ion-col *ngIf="weekProjects.SundayArray.length==0" width-76>
           <br>
@@ -239,9 +241,7 @@
 
   </ion-list>
 
-  <ion-row *ngIf="isDataretrived == true">
-    <ion-label class="center-align">Total: {{totalhours.TotalhrsTimesheet}}</ion-label>
-  </ion-row>
+
 
 
 
