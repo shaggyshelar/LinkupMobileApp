@@ -30,4 +30,8 @@ ion-item[priority=#{$priority}] ion-label {
     display: block;
   }
 
+  .no-padding {
+    padding-left: 0px !important;
+  }
+
 }

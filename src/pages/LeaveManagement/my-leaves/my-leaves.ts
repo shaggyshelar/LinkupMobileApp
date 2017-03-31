@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams, ActionSheetController, ModalController, ToastController } from 'ionic-angular';
 import { LeaveService } from '../index';
+import { AuthService } from '../../../providers/index';
 import { Observable } from 'rxjs/Rx';
 import { Leave } from '../models/leave';
 import { LeaveDetail } from '../models/leaveDetail';
@@ -33,22 +34,25 @@ export class MyLeavesPage {
   public isFirstTimeLoad: boolean = true;
   public isAllDataLoaded: boolean = false;
   public count: number = 0;
-  public filterValues:any[];
+  public filterValues: any[];
   public isPullToRefresh: boolean = false;
+  public isAuthorized: boolean;
   events: any[];
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
     public leaveService: LeaveService,
+    public auth: AuthService,
     public spinnerService: SpinnerService,
     public alertCtrl: AlertController,
     public actionSheetCtrl: ActionSheetController,
     public modalCtrl: ModalController,
     public leaveChangeEvent: Events,
     public toastCtrl: ToastController) {
+    this.isAuthorized = this.auth.checkPermission('LEAVE.MY_LEAVE.MANAGE');
     this.filterValues = [];
-    this.filterValues.push({rejectedStatus:true});
-    this.filterValues.push({cancelledStatus:true});
-    this.filterValues.push({approvedStatus:true});
+    this.filterValues.push({ rejectedStatus: true });
+    this.filterValues.push({ cancelledStatus: true });
+    this.filterValues.push({ approvedStatus: true });
     this.leaveChangeEvent.subscribe('Delected Leave', () => {
       this.getMyLeaves();
     });
@@ -103,6 +107,7 @@ export class MyLeavesPage {
         });
         this.leaveService.setApprovedLeavesCount(this.approvedLeaveCount.toString());
         this.getCalandarEvents();
+        this.isAllDataLoaded = true;
       });
   }
 
@@ -139,10 +144,12 @@ export class MyLeavesPage {
       var event: MyEvent = new MyEvent();
       var leaveStatus: any = this.leaveObs[i].Status;
       event.start = moment(this.leaveObs[i].StartDate).format('YYYY-MM-DD');
-      event.end = moment(this.leaveObs[i].EndDate).format('YYYY-MM-DD');
+      if (this.leaveObs[i].StartDate === this.leaveObs[i].EndDate)
+        event.end = moment(this.leaveObs[i].EndDate).format('YYYY-MM-DD');
+      else if (this.leaveObs[i].StartDate !== this.leaveObs[i].EndDate)
+        event.end = moment(this.leaveObs[i].EndDate).add(1, 'day').format('YYYY-MM-DD');
       event.title = 'Leave';
       event.ID = this.leaveObs[i].LeaveRequestMasterId;
-
       if (leaveStatus == 'Pending')
         event.color = '#FED035';
       else if (leaveStatus == 'Cancelled')
@@ -244,23 +251,23 @@ export class MyLeavesPage {
               })
               this.leaveObs = this.leaveObs.concat(this.modifiedList);
               this.modifiedList = [];
-              if(data[index].modelValue === 'rejectedStatus')
-                this.filterValues.push({rejectedStatus:true});
-              if(data[index].modelValue === 'cancelledStatus')
-                this.filterValues.push({cancelledStatus:true});
-              if(data[index].modelValue === 'approvedStatus')
-                this.filterValues.push({approvedStatus:true});
+              if (data[index].modelValue === 'rejectedStatus')
+                this.filterValues.push({ rejectedStatus: true });
+              if (data[index].modelValue === 'cancelledStatus')
+                this.filterValues.push({ cancelledStatus: true });
+              if (data[index].modelValue === 'approvedStatus')
+                this.filterValues.push({ approvedStatus: true });
             }
-            else{
-              if(data[index].modelValue === 'rejectedStatus')
-                this.filterValues.push({rejectedStatus:false});
-              if(data[index].modelValue === 'cancelledStatus')
-                this.filterValues.push({cancelledStatus:false});
-              if(data[index].modelValue === 'approvedStatus')
-                this.filterValues.push({approvedStatus:false});
+            else {
+              if (data[index].modelValue === 'rejectedStatus')
+                this.filterValues.push({ rejectedStatus: false });
+              if (data[index].modelValue === 'cancelledStatus')
+                this.filterValues.push({ cancelledStatus: false });
+              if (data[index].modelValue === 'approvedStatus')
+                this.filterValues.push({ approvedStatus: false });
             }
           }
-          if(this.filterValues[0].rejectedStatus === false && this.filterValues[1].cancelledStatus === false && this.filterValues[2].approvedStatus === false){
+          if (this.filterValues[0].rejectedStatus === false && this.filterValues[1].cancelledStatus === false && this.filterValues[2].approvedStatus === false) {
             this.leaveObs = [];
             this.leaveObs = this.leaveObs.concat(this.leavesReplicate);
           }

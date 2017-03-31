@@ -13,11 +13,15 @@ $categories: (
 }
 
 page-conference-booking {
-@each $room, $value in auxiliary-categories() {
-ion-item[room=#{$room}] ion-label {
+@each $conference, $value in auxiliary-categories() {
+ion-item[conference=#{$conference}] ion-label {
      border-left: 2px solid $value;
      padding-left: 10px;
    }
+  }
+
+  .no-padding {
+    padding-left: 0px !important;
   }
 
 }

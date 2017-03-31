@@ -91,7 +91,7 @@
   <!--Lazy loading end-->
   <!--Pending Leaves List-->
   <ion-list *ngIf="editMode == true">
-    <ion-item [ngStyle]="{'background-color': leave.selectionColor}" *ngFor="let leave of leavesArray" ion-item (click)="itemTapped(leave)" (press)="longPressedItem(leave)"[attr.status]="leave.Status | lowercase">
+    <ion-item class="no-padding" [ngStyle]="{'background-color': leave.selectionColor}" *ngFor="let leave of leavesArray" ion-item (click)="itemTapped(leave)" (press)="longPressedItem(leave)"[attr.status]="leave.Status | lowercase">
       <h3>{{leave.Employee.Name}}</h3>
       <h3>
         {{leave.StartDate | date:"MM/dd/yyyy" }} &mdash; {{leave.EndDate | date:"MM/dd/yyyy" }}

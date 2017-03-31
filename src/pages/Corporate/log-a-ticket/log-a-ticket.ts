@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, ActionSheetController } from 'ionic-angular';
+import { NavController, NavParams, ActionSheetController, LoadingController } from 'ionic-angular';
 
 import { LogNewTicketPage } from '../log-new-ticket/log-new-ticket';
+import { LogATicketService } from '../index';
 
 /*
   Generated class for the LogATicket page.
@@ -18,64 +19,35 @@ export class LogATicketPage {
   isItemClick: boolean
   constructor(public navCtrl: NavController, public navParams: NavParams
     , public actionSheetController: ActionSheetController
+    , public logTicketService: LogATicketService
+    , public loadingCtrl: LoadingController
   ) {
     this.isItemClick = false;
-    this.ticketData = [
-      {
-        "Id": 1,
-        "ticket": "Installation NodeJS",
-        "Department": "IT",
-        "Concern": "Abc",
-        "Description": "Abc",
-        "Status": "Resolved",
-        "Priority": "High",
-        "UpdatedBy": "Shril",
-        "ResolvedBy": "Shril",
-        "CreatedDate": "20-03-2017",
-        "UpdatedDate": "22-03-2017",
-        "AgeDays": 1
-      },
-      {
-        "Id": 3,
-        "ticket": "Installation NodeJS",
-        "Department": "IT",
-        "Concern": "Abc",
-        "Description": "Abc",
-        "Status": "Resolved",
-        "Priority": "Medium",
-        "UpdatedBy": "Shril",
-        "ResolvedBy": "Shril",
-        "CreatedDate": "20-03-2017",
-        "UpdatedDate": "22-03-2017",
-        "AgeDays": 10
-      },
-      {
-        "Id": 2,
-        "ticket": "Installation NodeJS",
-        "Department": "IT",
-        "Concern": "Abc",
-        "Description": "Abc",
-        "Status": "Resolved",
-        "Priority": "Low",
-        "UpdatedBy": "Shril",
-        "ResolvedBy": "Shril",
-        "CreatedDate": "20-03-2017",
-        "UpdatedDate": "22-03-2017",
-        "AgeDays": 12
-      },
-    ]
+    this.ticketData = [];
   }
 
   ionViewDidLoad() {
-    /** TODO : Tickets API call  */
+    var loader = this.loadingCtrl.create({
+      content: 'Please wait...'
+    });
+
+    loader.present().then(() => {
+      this.logTicketService.getMyTickets().subscribe(res => {
+        this.ticketData = res;
+        loader.dismiss();
+      }, err => {
+        console.log(err);
+        loader.dismiss();
+      });
+    });
   }
 
   onTicketClick(ticketEntry) {
     /** TODO : View Tickets  */
     if (this.isItemClick === true)
-    return;
-
-    this.navCtrl.push(LogNewTicketPage, ticketEntry);
+      return;
+    var readOnly = ticketEntry.Status == 'Resolved' ? true : false;
+    this.navCtrl.push(LogNewTicketPage, { readOnly: readOnly, Id: ticketEntry.Id });
   }
 
   onOptionsClick(ticketEntry) {
@@ -89,6 +61,7 @@ export class LogATicketPage {
           handler: () => {
             console.log('Close Ticket');
             this.isItemClick = false;
+            /** API call */
           }
         },
         {
@@ -97,6 +70,7 @@ export class LogATicketPage {
           handler: () => {
             console.log('Reopen Ticket');
             this.isItemClick = false;
+            /** API call */
           }
         },
         {
@@ -110,12 +84,11 @@ export class LogATicketPage {
       ]
     });
     actionSheet.present();
-  
   }
 
   addFabClicked() {
     /** TODO : New Ticket  */
-    this.navCtrl.push(LogNewTicketPage);
+    this.navCtrl.push(LogNewTicketPage, { readOnly: false });
   }
 
 }

@@ -27,18 +27,22 @@
 
 
 <ion-content padding class="customCalendar">
-  <p-schedule [events]="events" (onEventClick)="handleEventClick($event)" ></p-schedule>
+  <p-schedule [events]="events" (onEventClick)="handleEventClick($event)"></p-schedule>
   <ion-list #scheduleList [hidden]="(pendingHoliday )?.length === 0">
-    <ion-item *ngFor="let holiday of pendingHoliday"  [attr.holidaytype]="holiday.HolidayType.Value | lowercase" (click)="onHolidayDetails(holiday)">
-        <h3>{{holiday.Title}}</h3>
-        <p>
-          {{holiday.HolidayDate | date:'dd/MM/y'}}
-        </p>
+    <ion-item class="no-padding" *ngFor="let holiday of pendingHoliday" [attr.holidaytype]="holiday.HolidayType.Value | lowercase" (click)="onHolidayDetails(holiday)">
+      <h3>{{holiday.Title}}</h3>
+      <p>
+        {{holiday.HolidayDate | date:'dd/MM/y'}}
+      </p>
       <ion-badge item-right>{{holiday.WeekDay}}</ion-badge>
     </ion-item>
   </ion-list>
 
-  <ion-list-header [hidden]="(pendingHoliday)?.length > 0">
+  <ion-list-header *ngIf="(pendingHoliday)?.length == 0 && isDataretrived == true">
     No Records Found
+  </ion-list-header>
+
+  <ion-list-header [hidden]="isAuthorized == true">
+    You are not Authorized
   </ion-list-header>
 </ion-content>

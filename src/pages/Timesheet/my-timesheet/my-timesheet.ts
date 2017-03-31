@@ -3,6 +3,7 @@ import { NavController, NavParams, ActionSheetController, ModalController } from
 import { LoadingController } from 'ionic-angular';
 
 import { EmployeeTimesheetService } from '../index';
+import { AuthService } from '../../../providers/index';
 
 import { TimesheetDetailsPage } from '../timesheet-details/timesheet-details';
 import { EnterTimesheetPage } from '../enter-timesheet/enter-timesheet';
@@ -22,20 +23,23 @@ export class MyTimesheetPage {
   loader: any;
   isDataReceived: Boolean = false;
   filterValues = [];
+  public isAuthorized: boolean;
   public isPullToRefresh: boolean = false;
   public isDescending: boolean = true;
   constructor(public navCtrl: NavController, public navParams: NavParams,
     private employeeTimesheetService: EmployeeTimesheetService,
     public loadingCtrl: LoadingController,
     public actionSheetCtrl: ActionSheetController,
+    public auth: AuthService,
     public modalCtrl: ModalController) {
+    this.isAuthorized = this.auth.checkPermission('TIMESHEET.MYTIMESHEET.MANAGE');
     this.filterValues = [];
-    this.filterValues.push({submitted:true});
-    this.filterValues.push({approved:true});
-    this.filterValues.push({partiallyApproved:true});
-    this.filterValues.push({notSubmitted:true});
-    this.filterValues.push({pending:true});
-    this.filterValues.push({rejected:true});
+    this.filterValues.push({ submitted: true });
+    this.filterValues.push({ approved: true });
+    this.filterValues.push({ partiallyApproved: true });
+    this.filterValues.push({ notSubmitted: true });
+    this.filterValues.push({ pending: true });
+    this.filterValues.push({ rejected: true });
     this.loader = this.loadingCtrl.create({
       content: 'Please wait...'
     });
@@ -80,17 +84,17 @@ export class MyTimesheetPage {
 
   itemClicked(entry) {
     //this.navCtrl.push(TimesheetDetailsPage, { payload: entry, caller: 'my-timesheet' });
-     this.navCtrl.push(EnterTimesheetPage, { timesheetID: entry.ID });
+    this.navCtrl.push(EnterTimesheetPage, { timesheetID: entry.ID });
   }
 
   addFabClicked() {
     this.navCtrl.push(EnterTimesheetPage, { caller: 'my-timesheet' });
   }
 
-   onFilter() {
+  onFilter() {
     let modal = this.modalCtrl.create(MyTimesheetFilterPage, { filtervalue: this.filterValues });
     modal.present();
-     modal.onDidDismiss(data => {
+    modal.onDidDismiss(data => {
       if (data !== undefined) {
         if (data.length > 0) {
           this.myTimeSheets = [];
@@ -103,42 +107,42 @@ export class MyTimesheetPage {
               })
               this.myTimeSheets = this.myTimeSheets.concat(this.modifiedList);
               this.modifiedList = [];
-              if(data[index].modelValue === 'submitted')
-                this.filterValues.push({submitted:true});
-              if(data[index].modelValue === 'approved')
-                this.filterValues.push({approved:true});
-              if(data[index].modelValue === 'partiallyApproved')
-                this.filterValues.push({partiallyApproved:true});
-              if(data[index].modelValue === 'notSubmitted')
-                this.filterValues.push({notSubmitted:true});
-              if(data[index].modelValue === 'pending')
-                this.filterValues.push({pending:true});
-              if(data[index].modelValue === 'rejected')
-                this.filterValues.push({rejected:true});
+              if (data[index].modelValue === 'submitted')
+                this.filterValues.push({ submitted: true });
+              if (data[index].modelValue === 'approved')
+                this.filterValues.push({ approved: true });
+              if (data[index].modelValue === 'partiallyApproved')
+                this.filterValues.push({ partiallyApproved: true });
+              if (data[index].modelValue === 'notSubmitted')
+                this.filterValues.push({ notSubmitted: true });
+              if (data[index].modelValue === 'pending')
+                this.filterValues.push({ pending: true });
+              if (data[index].modelValue === 'rejected')
+                this.filterValues.push({ rejected: true });
             }
-            else{
-              if(data[index].modelValue === 'submitted')
-                this.filterValues.push({submitted:false});
-              if(data[index].modelValue === 'approved')
-                this.filterValues.push({approved:false});
-              if(data[index].modelValue === 'partiallyApproved')
-                this.filterValues.push({partiallyApproved:false});
-              if(data[index].modelValue === 'notSubmitted')
-                this.filterValues.push({notSubmitted:false});
-              if(data[index].modelValue === 'pending')
-                this.filterValues.push({pending:false});
-              if(data[index].modelValue === 'rejected')
-                this.filterValues.push({rejected:false});
+            else {
+              if (data[index].modelValue === 'submitted')
+                this.filterValues.push({ submitted: false });
+              if (data[index].modelValue === 'approved')
+                this.filterValues.push({ approved: false });
+              if (data[index].modelValue === 'partiallyApproved')
+                this.filterValues.push({ partiallyApproved: false });
+              if (data[index].modelValue === 'notSubmitted')
+                this.filterValues.push({ notSubmitted: false });
+              if (data[index].modelValue === 'pending')
+                this.filterValues.push({ pending: false });
+              if (data[index].modelValue === 'rejected')
+                this.filterValues.push({ rejected: false });
             }
           }
-          if(this.filterValues[0].submitted === false && this.filterValues[1].approved === false && this.filterValues[2].partiallyApproved === false
-          && this.filterValues[3].notSubmitted === false && this.filterValues[4].pending === false && this.filterValues[5].rejected === false){
+          if (this.filterValues[0].submitted === false && this.filterValues[1].approved === false && this.filterValues[2].partiallyApproved === false
+            && this.filterValues[3].notSubmitted === false && this.filterValues[4].pending === false && this.filterValues[5].rejected === false) {
             this.myTimeSheets = [];
             this.myTimeSheets = this.myTimeSheets.concat(this.replicateTimesheet);
           }
         }
       }
-     })
+    })
   }
   onSort() {
     let actionSheet = this.actionSheetCtrl.create({

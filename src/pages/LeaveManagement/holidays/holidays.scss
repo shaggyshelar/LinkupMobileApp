@@ -25,4 +25,8 @@ ion-item[holidaytype=#{$holidaytype}] ion-label {
    }
   }
 
+  .no-padding {
+    padding-left: 0px !important;
+  }
+
 }

@@ -75,7 +75,7 @@
 
   <!--Pending Timesheet List -->
   <ion-list>
-    <ion-item [ngStyle]="{'background-color': entry.selectionColor}" *ngFor="let entry of pendingtimesheetsArray" ion-item (click)="itemTapped(entry)"
+    <ion-item class="no-padding" [ngStyle]="{'background-color': entry.selectionColor}" *ngFor="let entry of pendingtimesheetsArray" ion-item (click)="itemTapped(entry)"
       (press)="longPressedItem(entry)" [attr.submittedstatus]="entry.SubmittedStatus | lowercase">
       <h3><span *ngFor="let approver of entry.ApproverUser">{{entry.Employee.Name}}</span></h3>
       <h3>
@@ -92,7 +92,7 @@
     </ion-item>
   </ion-list>
 
-  <ion-list-header *ngIf="(pendingtimesheetsArray)?.length == 0 && isDataretrived ==true">
+  <ion-list-header *ngIf ="(pendingtimesheetsArray)?.length == 0 && isDataretrived ==true">
     No Records Found
   </ion-list-header>
 

@@ -20,7 +20,7 @@
     <button ion-fab mini (click)="addFabClicked()"><ion-icon name="add"></ion-icon></button>
   </ion-fab>
   <ion-list>
-    <ion-item *ngFor="let rec of ticketData; let i = index" [attr.priority]="rec.Priority | lowercase" (click)="onTicketClick(rec)">
+    <ion-item class="no-padding" *ngFor="let rec of ticketData; let i = index" [attr.priority]="rec.Priority | lowercase" (click)="onTicketClick(rec)">
       <ion-row>
         <h3 class="left"> {{rec.CreatedDate}} </h3>
       </ion-row>

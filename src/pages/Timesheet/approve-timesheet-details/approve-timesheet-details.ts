@@ -69,7 +69,7 @@ export class ApproveTimesheetDetailsPage {
         this.employeeTimesheetService.approveTimesheet(this.payload).subscribe(res => {
           this.clearCache();
           loader.dismiss();
-          this.toastPresent('Approved Timesheet successfully');
+          this.toastPresent('Timesheet Approved');
           this.navCtrl.pop();
         }, (err) => {
           loader.dismiss();
