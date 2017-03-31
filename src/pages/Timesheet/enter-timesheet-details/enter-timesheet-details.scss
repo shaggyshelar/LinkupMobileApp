@@ -1,0 +1,28 @@
+page-enter-timesheet-details {
+
+     .required{
+        color:red;
+    }
+
+      .empty
+    {
+        background-color: dodgerblue;
+        height: 1px;
+        padding-left: 30px;
+        padding-right: 30px;
+    }
+
+    .project-div {
+    //width: 100%;
+   // height: 100%;
+   // overflow-y: auto;
+}
+.verticle-scrollable{
+   
+    overflow-y: auto;
+}
+.slides-height{
+    height: auto;
+}
+
+}

@@ -179,10 +179,10 @@ export class MyApp {
       { title: 'My Calendar', component: MyCalendarPage, icon: 'md-calendar' },
     ];
     if (this.auth.checkPermission('TIMESHEET.APPROVETIMESHEETS.MANAGE') == true || this.auth.checkPermission('LEAVE.APPROVAL.MANAGE') == true) {
-      this.pages.push({ title: 'Approvals', component: ApprovalsPage, icon: 'md-checkbox-outline' });
+      this.pages.push({ title: 'Leave/Timesheet Approvals', component: ApprovalsPage, icon: 'md-checkbox-outline' });
     }
 
-    this.pages.push({ title: 'Timesheets', component: MyTimesheetPage, icon: 'md-clock' });
+    this.pages.push({ title: 'My Timesheets', component: MyTimesheetPage, icon: 'md-clock' });
 
     this.pages.push({ title: 'Manage My Projects', component: ManageMyProjectsPage, icon: 'calendar'},
         { title: 'Employee Project Management', component: EmployeeProjectManagementPage, icon: 'contacts'});

@@ -53,7 +53,7 @@ class Project {
 }
 
 class User {
-    Name: string;
+    Value: string;
     ID: number;
 }
 
@@ -76,7 +76,7 @@ export class monday{
     constructor(
     ){}
 
-      ApproverUser: Array<User>;
+      ApproverUser: User;
         Project: Project;
         Task: string;
         Mondayhrs: string;
@@ -90,12 +90,13 @@ export class monday{
         UpdationFlag: string;
         ID: number;
         TotalhrsMonday:string;
+        date:any;
 
 }
 export class tuesday{
      constructor(
     ){}
-     ApproverUser: Array<User>;
+     ApproverUser: User;
         Project: Project;
         Task: string;
         Tuesdayhrs: string;
@@ -109,11 +110,12 @@ export class tuesday{
         UpdationFlag: string;
         ID: number;
         TotalhrsTuesday:string;
+        date:any;
 }
 export class wednesday{
      constructor()
     {}
-      ApproverUser: Array<User>;
+      ApproverUser: User;
         Project: Project;
         Task: string;
         Wednesdayhrs: string;
@@ -127,11 +129,12 @@ export class wednesday{
         UpdationFlag: string;
         ID: number;
         TotalhrsWednesday:string;
+        date:any;
 }
 export class thursday{
      constructor()
     {}
-     ApproverUser: Array<User>;
+     ApproverUser: User;
         Project: Project;
         Task: string;
         Thursdayhrs: string;
@@ -145,12 +148,13 @@ export class thursday{
         UpdationFlag: string;
         ID: number;
         TotalhrsThursday:string;
+        date:any;
     
 }
 export class friday{
     constructor()
     {}
-      ApproverUser: Array<User>;
+      ApproverUser: User;
         Project: Project;
         Task: string;
         Fridayhrs: string;
@@ -164,12 +168,13 @@ export class friday{
         UpdationFlag: string;
         ID: number;
         TotalhrsFriday:string;
+        date:any;
     
 }
 export class saturday{
      constructor()
     {}
-    ApproverUser: Array<User>;
+    ApproverUser: User;
         Project: Project;
         Task: string;
         Saturdayhrs: string;
@@ -183,12 +188,13 @@ export class saturday{
         UpdationFlag: string;
         ID: number;
         TotalhrsSaturday:string;
+        date:any;
     
 }
 export class sunday{
     constructor()
     {}
-     ApproverUser: Array<User>;
+     ApproverUser: User;
         Project: Project;
         Task: string;
         Sundayhrs: string;
@@ -202,5 +208,6 @@ export class sunday{
         UpdationFlag: string;
         ID: number;
         TotalhrsSunday:string;
+        date:any;
     
 }
