@@ -1,7 +1,9 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
+import { NavController, NavParams, LoadingController } from 'ionic-angular';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
+import { LogATicketMasterService } from '../../../providers/shared/master/logATicketMaster.service';
+import { LogATicketService } from '../index';
 import { SelectValidator } from './select-Validator'
 /*
   Generated class for the LogNewTicket page.
@@ -24,91 +26,79 @@ export class LogNewTicketPage {
 
   constructor(public navCtrl: NavController, public navParams: NavParams
     , public formBuilder: FormBuilder
+    , public logTicketService: LogATicketService
+    , public loadingCtrl: LoadingController
+    , public masterService: LogATicketMasterService
   ) {
     this.ticketEntry = {};
     this.validateTicket = formBuilder.group({
-      department: [{ value:'', disabled: this.navParams.data ? false : false }, Validators.compose([Validators.required])],
-      priority: [{ value:'', disabled: this.navParams.data ? false : false }, Validators.compose([Validators.required])],
-      concern: [{ value:'', disabled: this.navParams.data ? false : false }, Validators.compose([Validators.required])],
-      description: [{ value:'', disabled: this.navParams.data ? false : false }, Validators.compose([Validators.minLength(3),Validators.required,Validators.pattern('[a-zA-Z0-9 ]*')])]
+      department: [{ value: '', disabled: this.navParams.data.readOnly }, Validators.compose([Validators.required])],
+      priority: [{ value: '', disabled: this.navParams.data.readOnly }, Validators.compose([Validators.required])],
+      concern: [{ value: '', disabled: this.navParams.data.readOnly }, Validators.compose([Validators.required])],
+      description: [{ value: '', disabled: this.navParams.data.readOnly }, Validators.compose([Validators.minLength(3), Validators.required, Validators.pattern('[a-zA-Z0-9 ]*')])]
     });
-
-    /** Temporary data */
-    this.department = [
-      {
-        Name: 'Select',
-        Value: null
-      },
-      {
-        Name: 'Admin',
-        Value: { Name: 'Admin', ID: 1 }
-      },
-      {
-        Name: 'IT',
-        Value: { Name: 'IT', ID: 2 }
-      },
-      {
-        Name: 'Finance',
-        Value: { Name: 'Finance', ID: 3 }
-      },
-      {
-        Name: 'HR',
-        Value: { Name: 'HR', ID: 4 }
-      },
-      {
-        Name: 'Linkup Support',
-        Value: { Name: 'Linkup Support', ID: 5 }
-      },
-    ];
-    this.priority = [
-      {
-        Name: 'Select',
-        Value: null
-      },
-      {
-        Name: 'Low',
-        Value: { Name: 'Low', ID: 1 }
-      },
-      {
-        Name: 'Normal',
-        Value: { Name: 'Normal', ID: 2 }
-      },
-      {
-        Name: 'High',
-        Value: { Name: 'High', ID: 3 }
-      }
-    ];
-    this.concern = [
-      {
-        Name: 'Select',
-        Value: null
-      },
-      {
-        Name: 'Cleaning',
-        Value: { Name: 'Cleaning', ID: 1 }
-      },
-      {
-        Name: 'Desk Change',
-        Value: { Name: 'Desk Change', ID: 2 }
-      },
-      {
-        Name: 'AC',
-        Value: { Name: 'AC', ID: 3 }
-      }
-    ];
+    this.getMasterData();
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad LogNewTicketPage');
-    /** TODO:
-     *  New Ticket : Get Department, Priority from master
-     *  Edit Ticket : Get data from navParams, assign to this.ticketEntry
-     */
+    this.navParams.data.readOnly ? this.getDataForView(this.navParams.data.Id) : null;
+  }
+
+  getDataForView(id) {
+    var loader = this.loadingCtrl.create({
+      content: 'Please wait...'
+    });
+
+    loader.present().then(() => {
+      this.logTicketService.getMyTicket(id).subscribe(res => {
+        this.ticketEntry = res;
+        console.log(this.ticketEntry);
+        loader.dismiss();
+      }, err => {
+        console.log(err);
+        loader.dismiss();
+      });
+    });
+  }
+
+  getMasterData() {
+    var loader = this.loadingCtrl.create({
+      content: 'Please wait...'
+    });
+    loader.present().then(() => {
+
+      this.masterService.getDepartmentTypes().subscribe(res => {
+        this.department = res;
+      }, err => {
+        console.log(err);
+        loader.dismiss();
+      });
+
+      this.masterService.getPriorityTypes().subscribe(res => {
+        this.priority = res;
+        loader.dismiss();
+      }, err => {
+        console.log(err);
+        loader.dismiss();
+      });
+    });
   }
 
   departmentChanged(value) {
     console.log(value);
-    /** TODO: API to get Concern from Master */
+    var loader = this.loadingCtrl.create({
+      content: 'Please wait...'
+    });
+    loader.present().then(() => {
+      this.masterService.getConcernTypes().subscribe(res => {
+        this.concern = res;
+        loader.dismiss();
+      }, err => {
+        console.log(err);
+        loader.dismiss();
+      });
+    });
   }
 
   priorityChanged(value) {
@@ -120,8 +110,21 @@ export class LogNewTicketPage {
   }
 
   submit(value, isValid) {
-    console.log(value, isValid);
-    /** Assemble object for API call */
+    if (isValid && this.navParams.data.Id) {
+      var payload = {};
+      // Assemble payload object
+      // UPDATE API
+      this.logTicketService.updateMyTicket(this.navParams.data.Id, payload).subscribe(res => {
+        this.navCtrl.pop();
+      });
+    } else if (isValid) {
+      // ADD API
+      this.logTicketService.addTicket(payload).subscribe(res => {
+        this.navCtrl.pop();
+      });
+    }
+    console.log(this.ticketEntry, value, isValid);
+    /** Assemble object, API call */
   }
 
   /** TODO:

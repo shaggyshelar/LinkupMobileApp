@@ -18,7 +18,7 @@
 
 <ion-content padding>
   <ion-list *ngIf="employeeLeaveList.length > 0">
-    <ion-item *ngFor="let empLeaves of employeeLeaveList" ion-item [attr.activeinactive]="empLeaves.Status.Value | lowercase" (click)="goToEmpLeaveDetail(empLeaves)">
+    <ion-item class="no-padding" *ngFor="let empLeaves of employeeLeaveList" ion-item [attr.activeinactive]="empLeaves.Status.Value | lowercase" (click)="goToEmpLeaveDetail(empLeaves)">
       <h3>{{empLeaves.Employee.Name ? empLeaves.Employee.Name : ''}}</h3>
       <ion-badge item-right>{{empLeaves.ActualBalance | number : '1.1-3'}}</ion-badge>
     </ion-item>

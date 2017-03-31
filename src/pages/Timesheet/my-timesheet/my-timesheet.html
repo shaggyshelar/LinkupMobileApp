@@ -38,7 +38,7 @@
   <!--Pull to refresh Ends-->
   <ion-list>
     <ion-item-sliding #slidingItem *ngFor="let entry of myTimeSheets" [attr.submittedstatus]="entry.SubmittedStatus | kebabCase">
-      <button ion-item (click)="itemClicked(entry)">
+      <button class="no-padding" ion-item (click)="itemClicked(entry)">
         <h3>
           <span *ngFor="let approver of entry.ApproverUser"> {{approver.Name}} </span>
         </h3>
@@ -87,8 +87,11 @@
     </ion-item>
   </ion-list>-->
 
-  <ion-list-header *ngIf="(myTimeSheets)?.length == 0">
+  <ion-list-header *ngIf ="(myTimeSheets)?.length == 0 && isDataretrived ==true">
     No Records Found
+  </ion-list-header>
+  <ion-list-header [hidden]="isAuthorized == true">
+    You are not Authorized
   </ion-list-header>
 
 </ion-content>

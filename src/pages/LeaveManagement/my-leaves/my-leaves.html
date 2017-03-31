@@ -72,7 +72,7 @@
 
     <ion-item-sliding *ngFor="let leave of leaveObs " #slidingItem [attr.status]="leave.Status | lowercase">
 
-      <ion-item ion-item (click)="goToLeaveDetail(leave)">
+      <ion-item ion-item class="no-padding" (click)="goToLeaveDetail(leave)">
           <h3>{{leave.Employee.Name}}</h3>
           <p>
             {{leave.StartDate | date:"MM/dd/yyyy"}} &mdash;
@@ -103,6 +103,9 @@
   
   <ion-list-header *ngIf ="(leaveObs)?.length == 0 && isAllDataLoaded == true">
     No Records Found
+  </ion-list-header>
+  <ion-list-header [hidden]="isAuthorized">
+    You are not Authorized
   </ion-list-header>
 
 

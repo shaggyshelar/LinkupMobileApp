@@ -20,4 +20,8 @@ page-my-timesheet {
   .right {
       float: right;
   }
+
+  .no-padding {
+    padding-left: 0px !important;
+  }
 }

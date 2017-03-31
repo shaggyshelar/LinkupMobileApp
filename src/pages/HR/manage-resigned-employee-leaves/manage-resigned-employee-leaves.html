@@ -18,7 +18,7 @@
 
 <ion-content padding>
   <ion-list *ngIf="resignedEmpList.length > 0">
-    <ion-item *ngFor="let resignedEmp of resignedEmpList" ion-item [attr.status]="resignedEmp.Status.Value | lowercase" (click)="goToResignedEmpDetail(resignedEmp)">
+    <ion-item class="no-padding" *ngFor="let resignedEmp of resignedEmpList" ion-item [attr.status]="resignedEmp.Status.Value | lowercase" (click)="goToResignedEmpDetail(resignedEmp)">
       <h3>{{resignedEmp.Employee.Name ? resignedEmp.Employee.Name : ''}}</h3>
       <p>
         {{resignedEmp.ResignationDate | date:"MM/dd/yyyy" }}
