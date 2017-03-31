@@ -27,6 +27,9 @@
     <ion-slide class = "verticle-scrollable">
       <div class="project-div" >
         <div *ngFor="let timesheet of weekProjects.MondayArray  let i = index;">
+          <!--<ion-row>-->
+            <ion-icon name="close" (click)="closeClick(i)" color="primary" class="right"></ion-icon>
+          <!--</ion-row>-->
           <ion-list *ngIf="timesheet.Project.Value == 'Holiday' || timesheet.Project.Value == 'Leave' && timesheet.Mondaynbhrs">
             <ion-item>
               <h3>{{timesheet.Project.Value}}</h3>
