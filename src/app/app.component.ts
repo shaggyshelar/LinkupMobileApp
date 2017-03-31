@@ -184,12 +184,22 @@ export class MyApp {
 
     this.pages.push({ title: 'My Timesheets', component: MyTimesheetPage, icon: 'md-clock' });
 
-    this.pages.push({ title: 'Manage My Projects', component: ManageMyProjectsPage, icon: 'calendar'},
-        { title: 'Employee Project Management', component: EmployeeProjectManagementPage, icon: 'contacts'});
-    this.pages.push({title:'Log a Ticket',component:LogATicketPage,icon:'contacts'});
-    this.pages.push({title:'Conference Booking',component:ConferenceBookingPage,icon:'contacts'});
-    this.pages.push({title:'Resigned Employee Leaves',component:ManageResignedEmployeeLeavesPage,icon:'contacts'},
-        { title:'Employee Leave Balance',component:ManageEmployeeLeaveBalancePage,icon:'contacts'});
+    if (this.auth.checkPermission('PROJECTS.MANAGEMYPROJECTS.MANAGE') == true) {
+      this.pages.push({ title: 'Manage My Projects', component: ManageMyProjectsPage, icon: 'calendar' });
+    }
+    if (this.auth.checkPermission('PROJECTS.EMPLOYEEPROJECTMANAGEMENT.MANAGE') == true) {
+      this.pages.push({ title: 'Employee Project Management', component: EmployeeProjectManagementPage, icon: 'contacts' });
+    }
+
+    this.pages.push({ title: 'Log a Ticket', component: LogATicketPage, icon: 'contacts' });
+    this.pages.push({ title: 'Conference Booking', component: ConferenceBookingPage, icon: 'contacts' });
+
+    if (this.auth.checkPermission('HR.RESIGNEDEMPLOYEELEAVE.MANAGE') == true) {
+      this.pages.push({ title: 'Resigned Employee Leaves', component: ManageResignedEmployeeLeavesPage, icon: 'contacts' });
+    }
+    if (this.auth.checkPermission('HR.EMPLOYEELEAVEBALANCE.MANAGE') == true) {
+      this.pages.push({ title: 'Employee Leave Balance', component: ManageEmployeeLeaveBalancePage, icon: 'contacts' });
+    }
   }
 
   initializeApp() {
