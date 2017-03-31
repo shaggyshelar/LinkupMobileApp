@@ -8,7 +8,7 @@ import { Page1 } from '../pages/page1/page1';
 import { Page2 } from '../pages/page2/page2';
 import { LoginPage } from '../pages/login/login';
 import { HomePage } from '../pages/home/home';
-import { MultiPickerModule } from 'ion-multi-picker';
+// import { MultiPickerModule } from 'ion-multi-picker';
 
 // Corporate
 import { LogATicketPage } from '../pages/Corporate/log-a-ticket/log-a-ticket';
@@ -167,7 +167,7 @@ import { CacheService, CacheStorageAbstract, CacheLocalStorage } from 'ng2-cache
   imports: [
     IonicModule.forRoot(MyApp),
     ScheduleModule,
-    MultiPickerModule
+    // MultiPickerModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [
