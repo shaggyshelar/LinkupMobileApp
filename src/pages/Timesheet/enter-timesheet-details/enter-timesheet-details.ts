@@ -38,9 +38,11 @@ export class EnterTimesheetDetailsPage {
     public fb: FormBuilder,
     public phasesService: PhasesService) {
     this.weekProjects = this.navParams.get('data');
+    console.log('EnterTimesheetDetailsPage = weekProjects =>', this.navParams.get('data'));
     this.selectedIndex = this.navParams.get('index');
     this.weekStartDate = this.navParams.get('weekstart');
     this.projectList = this.navParams.get('myProjects');
+    console.log('EnterTimesheetDetailsPage = projectList =>', this.projectList);
     //this.cleanseProjectList();
 
     this.timesheetStatus = this.navParams.get('tStatus');
@@ -53,7 +55,9 @@ export class EnterTimesheetDetailsPage {
     this.tasksList = [];
 
     this.dateTitle = this.getDate(0);
-    this.getTask();
+    if (!(this.timesheetStatus == 'Approved' || this.timesheetStatus == 'Submitted' || this.timesheetStatus == 'Rejected')) { 
+      this.getTask();
+    }
     this.Day1Form = fb.group({
       'clientname': [null, Validators.required],
     });
@@ -413,7 +417,6 @@ export class EnterTimesheetDetailsPage {
     var totalh: number = 0;
     var totalm: number = 0;
     var tMin: number = 0;
-    console.log('before Total ', this.totalhours.TotalhrsTimesheet);
     for (let i = 0; i < this.timesheetList.length; i++) {
       if (this.timesheetList[i].Mondaynbhrs && this.timesheetList[i].Mondaynbhrs !== null && this.timesheetList[i].Mondaynbhrs.length > 0) {
 
