@@ -142,7 +142,6 @@ export class EnterTimesheetPage {
               //this.getEmptyTimesheet();
               this.createTimesheetList();
             }
-            console.log(res);
           });
         }
         loader.dismiss();
@@ -258,7 +257,6 @@ export class EnterTimesheetPage {
   }
 
   phaseChanged(event, index) {
-    console.log('phaseChanged => ', event);
     if (this.isDropDownValid(event)) {
       this.isError = false;
       this.addedTask[index] = event;
@@ -277,14 +275,10 @@ export class EnterTimesheetPage {
 
   handleNew() {
     this.cacheData.Timesheet[this.cacheData.Timesheet.length] = this.timesheetList[this.timesheetList.length];
-    console.log('phase changed cacheData', this.cacheData);
-    console.log('phase changed timesheetList', this.timesheetList);
   }
 
   cardClick(index) {
-    console.log(this.timesheetList);
     this.cacheKey = this.assembleCacheKey();
-    console.log('name => ', this.cacheKey);
 
     if (this._cacheService.exists(this.cacheKey)) {
       this._cacheService.remove(this.cacheKey);
@@ -430,7 +424,6 @@ export class EnterTimesheetPage {
           this.createTimesheetList();
         }
         // this.timesheetList = this.cacheData.Timesheets;
-        console.log(res);
         loader.dismiss();
       });
     });
@@ -463,7 +456,6 @@ export class EnterTimesheetPage {
           this.createTimesheetList();
         }
         // this.timesheetList = this.cacheData.Timesheets;
-        console.log(res);
         loader.dismiss();
       });
     });
@@ -552,7 +544,6 @@ export class EnterTimesheetPage {
       this.weekProjects.SaturdayArray.push(this.createSaturdayProject(null));
     if (this.weekProjects.SundayArray.length == 0)
       this.weekProjects.SundayArray.push(this.createSundayProject(null));
-    console.log('Week Data ===' + this.weekProjects);
 
    
 
@@ -787,7 +778,6 @@ export class EnterTimesheetPage {
 
       let payload = this.getPayload(false);
     this.timesheetService.submitTimesheet(payload).subscribe((res: any) => {
-      console.log(res);
     });
     // this.timesheetService.submitTimesheet().subscribe((res: any) => {
     //   console.log(res);
