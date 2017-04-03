@@ -38,11 +38,9 @@ export class EnterTimesheetDetailsPage {
     public fb: FormBuilder,
     public phasesService: PhasesService) {
     this.weekProjects = this.navParams.get('data');
-    console.log('EnterTimesheetDetailsPage = weekProjects =>', this.navParams.get('data'));
     this.selectedIndex = this.navParams.get('index');
     this.weekStartDate = this.navParams.get('weekstart');
     this.projectList = this.navParams.get('myProjects');
-    console.log('EnterTimesheetDetailsPage = projectList =>', this.projectList);
     //this.cleanseProjectList();
 
     this.timesheetStatus = this.navParams.get('tStatus');
@@ -79,7 +77,6 @@ export class EnterTimesheetDetailsPage {
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad EnterTimesheetDetailsPage');
 
     //this.goToSlide();
   }
@@ -94,7 +91,6 @@ export class EnterTimesheetDetailsPage {
     if (this.timesheetStatus != 'Approved' && this.timesheetStatus != 'Submitted' && this.timesheetStatus != 'Rejected')
       this.SaveData();
 
-    //console.log('Timesheet List ====' + this.timesheetList);
   }
 
   saveClicked() {
@@ -521,10 +517,7 @@ export class EnterTimesheetDetailsPage {
 
     totalh = totalh + parseInt((totalm / 60).toString());
     totalm = totalm % 60;
-    // console.log('Total hours' + totalh);
-    // console.log('Total min' + totalm);
     this.totalhours.TotalhrsTimesheet = (totalh < 10 ? '0' + totalh : totalh) + ':' + (totalm < 10 ? '0' + totalm : totalm);
-    // console.log('Total ', this.totalhours.TotalhrsTimesheet);
 
 
   }
