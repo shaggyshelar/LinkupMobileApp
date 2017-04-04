@@ -8,7 +8,7 @@
 
   <ion-navbar>
     <ion-title>{{dateTitle}}
-      <span class="right" *ngIf="(timesheetStatus == 'Approved' || timesheetStatus == 'Submitted' || timesheetStatus == 'Rejected')">{{dailyTotalhours[selectedIndex]}} Hrs Total </span>
+      <span class="right" *ngIf="(timesheetStatus == 'Approved' || timesheetStatus == 'Submitted' || timesheetStatus == 'Rejected')">{{dailyTotalhours[selectedIndex]}} Hrs </span>
     </ion-title>
     <ion-buttons start>
       <button *ngIf="timesheetStatus !='Approved'&& timesheetStatus !='Submitted' && timesheetStatus !='Rejected'" ion-button (click)="addClicked()">
