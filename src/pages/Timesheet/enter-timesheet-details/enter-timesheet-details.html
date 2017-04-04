@@ -7,7 +7,9 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title>{{dateTitle}}</ion-title>
+    <ion-title>{{dateTitle}}
+      <span class="right" *ngIf="(timesheetStatus == 'Approved' || timesheetStatus == 'Submitted' || timesheetStatus == 'Rejected')">{{dailyTotalhours[selectedIndex]}} Hrs Total </span>
+    </ion-title>
     <ion-buttons start>
       <button *ngIf="timesheetStatus !='Approved'&& timesheetStatus !='Submitted' && timesheetStatus !='Rejected'" ion-button (click)="addClicked()">
         Add
@@ -23,9 +25,9 @@
 
 <ion-content padding>
   <!--Timesheet for Edit-->
-  <ion-slides pager #mySlider (ionSlideDidChange)="slideChanged()"  class="slides-height" >
-    <ion-slide class = "verticle-scrollable">
-      <div class="project-div" >
+  <ion-slides pager #mySlider (ionSlideDidChange)="slideChanged()" class="slides-height">
+    <ion-slide class="verticle-scrollable">
+      <div class="project-div">
         <div *ngFor="let timesheet of weekProjects.MondayArray  let i = index;">
           <ion-list *ngIf="timesheet.Project.Value == 'Holiday' || timesheet.Project.Value == 'Leave' && timesheet.Mondaynbhrs">
             <ion-item>
@@ -38,9 +40,10 @@
             <ion-item *ngIf="!(timesheetStatus =='Approved'|| timesheetStatus =='Submitted' || timesheetStatus =='Rejected')">
               <ion-label floating>Project <span class="required">*</span></ion-label>
               <!--<ion-input [(ngModel)]="timesheet.Project.Value" [disabled]="timesheetStatus =='Approved'|| timesheetStatus =='Submitted' || timesheetStatus =='Rejected'"></ion-input>-->
-            <ion-select [(ngModel)]="timesheet.Project.Value" (ionChange) = "onProjectChange(timesheet.Project.Value,i,'Monday')"name="selectProject" [disabled]="timesheetStatus =='Approved'|| timesheetStatus =='Submitted' || timesheetStatus =='Rejected'">
-            <ion-option *ngFor="let project of projectList">{{project.value.Title}}</ion-option>
-            </ion-select>
+              <ion-select [(ngModel)]="timesheet.Project.Value" (ionChange)="onProjectChange(timesheet.Project.Value,i,'Monday')" name="selectProject"
+                [disabled]="timesheetStatus =='Approved'|| timesheetStatus =='Submitted' || timesheetStatus =='Rejected'">
+                <ion-option *ngFor="let project of projectList">{{project.value.Title}}</ion-option>
+              </ion-select>
             </ion-item>
             <ion-item *ngIf="(timesheetStatus =='Approved'|| timesheetStatus =='Submitted' || timesheetStatus =='Rejected')">
               <ion-label floating>Project <span class="required">*</span></ion-label>
@@ -48,8 +51,8 @@
             </ion-item>
             <ion-item *ngIf="!(timesheetStatus =='Approved'|| timesheetStatus =='Submitted' || timesheetStatus =='Rejected')">
               <ion-label floating>Task <span class="required">*</span></ion-label>
-              <ion-select name="selectTask" [(ngModel)]="timesheet.Task" (ionChange) = "onTaskChange(timesheet.Task,i,'Monday')" [disabled]="timesheetStatus =='Approved'|| timesheetStatus =='Submitted' || timesheetStatus =='Rejected' || timesheet.Project.Value.length == 0">
-              <ion-option *ngFor="let phase of tasksList[i]">{{phase.label}}</ion-option>
+              <ion-select name="selectTask" [(ngModel)]="timesheet.Task" (ionChange)="onTaskChange(timesheet.Task,i,'Monday')" [disabled]="timesheetStatus =='Approved'|| timesheetStatus =='Submitted' || timesheetStatus =='Rejected' || timesheet.Project.Value.length == 0">
+                <ion-option *ngFor="let phase of tasksList[i]">{{phase.label}}</ion-option>
               </ion-select>
             </ion-item>
             <ion-item *ngIf="(timesheetStatus =='Approved'|| timesheetStatus =='Submitted' || timesheetStatus =='Rejected')">
@@ -59,7 +62,7 @@
             <ion-item>
               <ion-label floating>Billable</ion-label>
               <!--<ion-input [(ngModel)]="timesheet.Mondayhrs"></ion-input>-->
-              <ion-datetime name ="billable" [(ngModel)]="timesheet.Mondayhrs"  displayFormat="HH:mm" [disabled]="timesheetStatus =='Approved'|| timesheetStatus =='Submitted' || timesheetStatus =='Rejected' || timesheet.Task.length == 0 || !checkSelectedProjectBillable(timesheet.Project.Value)" ></ion-datetime>
+              <ion-datetime name="billable" [(ngModel)]="timesheet.Mondayhrs" displayFormat="HH:mm" [disabled]="timesheetStatus =='Approved'|| timesheetStatus =='Submitted' || timesheetStatus =='Rejected' || timesheet.Task.length == 0 || !checkSelectedProjectBillable(timesheet.Project.Value)"></ion-datetime>
             </ion-item>
             <ion-item>
               <ion-label floating>Details</ion-label>
@@ -68,7 +71,7 @@
             <ion-item>
               <ion-label floating>Non Billable</ion-label>
               <!--<ion-input [(ngModel)]="timesheet.Mondaynbhrs"></ion-input>-->
-              <ion-datetime name ="nonbillable" [(ngModel)]="timesheet.Mondaynbhrs"  displayFormat="HH:mm" [disabled]="timesheetStatus =='Approved'|| timesheetStatus =='Submitted' || timesheetStatus =='Rejected' || timesheet.Task.length == 0"></ion-datetime>
+              <ion-datetime name="nonbillable" [(ngModel)]="timesheet.Mondaynbhrs" displayFormat="HH:mm" [disabled]="timesheetStatus =='Approved'|| timesheetStatus =='Submitted' || timesheetStatus =='Rejected' || timesheet.Task.length == 0"></ion-datetime>
             </ion-item>
             <ion-item>
               <ion-label floating>Details</ion-label>
@@ -83,10 +86,10 @@
         </div>
       </div>
     </ion-slide>
-    <ion-slide class = "verticle-scrollable">
-      <div class="project-div" >
+    <ion-slide class="verticle-scrollable">
+      <div class="project-div">
         <div *ngFor="let timesheet of weekProjects.TuesdayArray let i = index;">
-            <ion-list *ngIf="(timesheet.Project.Value == 'Holiday' || timesheet.Project.Value == 'Leave') && timesheet.Tuesdaynbhrs">
+          <ion-list *ngIf="(timesheet.Project.Value == 'Holiday' || timesheet.Project.Value == 'Leave') && timesheet.Tuesdaynbhrs">
             <ion-item>
               <h3>{{timesheet.Project.Value}}</h3>
               <p>Desc: {{timesheet.Tuesdaydescnb}}</p>
@@ -97,9 +100,10 @@
             <ion-item *ngIf="!(timesheetStatus =='Approved'|| timesheetStatus =='Submitted' || timesheetStatus =='Rejected')">
               <ion-label floating>Project <span class="required">*</span></ion-label>
               <!--<ion-input [(ngModel)]="timesheet.Project.Value" [disabled]="timesheetStatus =='Approved'|| timesheetStatus =='Submitted' || timesheetStatus =='Rejected'"></ion-input>-->
-           <ion-select [(ngModel)]="timesheet.Project.Value" (ionChange) = "onProjectChange(timesheet.Project.Value,i,'Tuesday')"name="selectProject" [disabled]="timesheetStatus =='Approved'|| timesheetStatus =='Submitted' || timesheetStatus =='Rejected'">
-            <ion-option *ngFor="let project of projectList">{{project.value.Title}}</ion-option>
-            </ion-select>
+              <ion-select [(ngModel)]="timesheet.Project.Value" (ionChange)="onProjectChange(timesheet.Project.Value,i,'Tuesday')" name="selectProject"
+                [disabled]="timesheetStatus =='Approved'|| timesheetStatus =='Submitted' || timesheetStatus =='Rejected'">
+                <ion-option *ngFor="let project of projectList">{{project.value.Title}}</ion-option>
+              </ion-select>
             </ion-item>
             <ion-item *ngIf="(timesheetStatus =='Approved'|| timesheetStatus =='Submitted' || timesheetStatus =='Rejected')">
               <ion-label floating>Project <span class="required">*</span></ion-label>
@@ -107,8 +111,8 @@
             </ion-item>
             <ion-item *ngIf="!(timesheetStatus =='Approved'|| timesheetStatus =='Submitted' || timesheetStatus =='Rejected')">
               <ion-label floating>Task <span class="required">*</span></ion-label>
-             <ion-select name="selectTask" [(ngModel)]="timesheet.Task" (ionChange) = "onTaskChange(timesheet.Task,i,'Tuesday')" [disabled]="timesheetStatus =='Approved'|| timesheetStatus =='Submitted' || timesheetStatus =='Rejected' || timesheet.Project.Value.length == 0">
-              <ion-option *ngFor="let phase of tasksList[i]">{{phase.label}}</ion-option>
+              <ion-select name="selectTask" [(ngModel)]="timesheet.Task" (ionChange)="onTaskChange(timesheet.Task,i,'Tuesday')" [disabled]="timesheetStatus =='Approved'|| timesheetStatus =='Submitted' || timesheetStatus =='Rejected' || timesheet.Project.Value.length == 0">
+                <ion-option *ngFor="let phase of tasksList[i]">{{phase.label}}</ion-option>
               </ion-select>
             </ion-item>
             <ion-item *ngIf="(timesheetStatus =='Approved'|| timesheetStatus =='Submitted' || timesheetStatus =='Rejected')">
@@ -118,7 +122,7 @@
             <ion-item>
               <ion-label floating>Billable</ion-label>
               <!--<ion-input [(ngModel)]="timesheet.Tuesdayhrs"></ion-input>-->
-            <ion-datetime name ="billable" [(ngModel)]="timesheet.Tuesdayhrs"  displayFormat="HH:mm" [disabled]="timesheetStatus =='Approved'|| timesheetStatus =='Submitted' || timesheetStatus =='Rejected' || timesheet.Task.length == 0 || !checkSelectedProjectBillable(timesheet.Project.Value)"></ion-datetime>
+              <ion-datetime name="billable" [(ngModel)]="timesheet.Tuesdayhrs" displayFormat="HH:mm" [disabled]="timesheetStatus =='Approved'|| timesheetStatus =='Submitted' || timesheetStatus =='Rejected' || timesheet.Task.length == 0 || !checkSelectedProjectBillable(timesheet.Project.Value)"></ion-datetime>
             </ion-item>
             <ion-item>
               <ion-label floating>Details</ion-label>
@@ -127,7 +131,7 @@
             <ion-item>
               <ion-label floating>Non Billable</ion-label>
               <!--<ion-input [(ngModel)]="timesheet.Tuesdaynbhrs"></ion-input>-->
-              <ion-datetime name ="nonbillable" [(ngModel)]="timesheet.Tuesdaynbhrs"  displayFormat="HH:mm" [disabled]="timesheetStatus =='Approved'|| timesheetStatus =='Submitted' || timesheetStatus =='Rejected' || timesheet.Task.length == 0"></ion-datetime>
+              <ion-datetime name="nonbillable" [(ngModel)]="timesheet.Tuesdaynbhrs" displayFormat="HH:mm" [disabled]="timesheetStatus =='Approved'|| timesheetStatus =='Submitted' || timesheetStatus =='Rejected' || timesheet.Task.length == 0"></ion-datetime>
             </ion-item>
             <ion-item>
               <ion-label floating>Details</ion-label>
@@ -144,8 +148,8 @@
     </ion-slide>
 
 
-    <ion-slide class = "verticle-scrollable">
-      <div class="project-div" >
+    <ion-slide class="verticle-scrollable">
+      <div class="project-div">
         <div *ngFor="let timesheet of weekProjects.WednesdayArray let i = index;">
           <ion-list *ngIf="(timesheet.Project.Value == 'Holiday' || timesheet.Project.Value == 'Leave') && timesheet.Wednesdaynbhrs">
             <ion-item>
@@ -156,12 +160,13 @@
           </ion-list>
           <ion-list *ngIf="timesheet.Project.Value != 'Holiday' &&  timesheet.Project.Value !='Leave' ">
             <ion-item *ngIf="!(timesheetStatus =='Approved'|| timesheetStatus =='Submitted' || timesheetStatus =='Rejected')">
-              
+
               <ion-label floating>Project <span class="required">*</span></ion-label>
               <!--<ion-input [(ngModel)]="timesheet.Project.Value" [disabled]="timesheetStatus =='Approved'|| timesheetStatus =='Submitted' || timesheetStatus =='Rejected'"></ion-input>-->
-            <ion-select [(ngModel)]="timesheet.Project.Value" (ionChange) = "onProjectChange(timesheet.Project.Value,i,'Wednesday')"name="selectProject" [disabled]="timesheetStatus =='Approved'|| timesheetStatus =='Submitted' || timesheetStatus =='Rejected'">
-            <ion-option *ngFor="let project of projectList">{{project.value.Title}}</ion-option>
-            </ion-select>
+              <ion-select [(ngModel)]="timesheet.Project.Value" (ionChange)="onProjectChange(timesheet.Project.Value,i,'Wednesday')" name="selectProject"
+                [disabled]="timesheetStatus =='Approved'|| timesheetStatus =='Submitted' || timesheetStatus =='Rejected'">
+                <ion-option *ngFor="let project of projectList">{{project.value.Title}}</ion-option>
+              </ion-select>
             </ion-item>
             <ion-item *ngIf="(timesheetStatus =='Approved'|| timesheetStatus =='Submitted' || timesheetStatus =='Rejected')">
               <ion-label floating>Project <span class="required">*</span></ion-label>
@@ -169,8 +174,8 @@
             </ion-item>
             <ion-item *ngIf="!(timesheetStatus =='Approved'|| timesheetStatus =='Submitted' || timesheetStatus =='Rejected')">
               <ion-label floating>Task <span class="required">*</span></ion-label>
-             <ion-select name="selectTask" [(ngModel)]="timesheet.Task" (ionChange) = "onTaskChange(timesheet.Task,i,'Wednesday')" [disabled]="timesheetStatus =='Approved'|| timesheetStatus =='Submitted' || timesheetStatus =='Rejected' || timesheet.Project.Value.length == 0">
-              <ion-option *ngFor="let phase of tasksList[i]">{{phase.label}}</ion-option>
+              <ion-select name="selectTask" [(ngModel)]="timesheet.Task" (ionChange)="onTaskChange(timesheet.Task,i,'Wednesday')" [disabled]="timesheetStatus =='Approved'|| timesheetStatus =='Submitted' || timesheetStatus =='Rejected' || timesheet.Project.Value.length == 0">
+                <ion-option *ngFor="let phase of tasksList[i]">{{phase.label}}</ion-option>
               </ion-select>
             </ion-item>
             <ion-item *ngIf="(timesheetStatus =='Approved'|| timesheetStatus =='Submitted' || timesheetStatus =='Rejected')">
@@ -180,7 +185,7 @@
             <ion-item>
               <ion-label floating>Billable</ion-label>
               <!--<ion-input [(ngModel)]="timesheet.Wednesdayhrs"></ion-input>-->
-              <ion-datetime name ="billable" [(ngModel)]="timesheet.Wednesdayhrs"  displayFormat="HH:mm" [disabled]="timesheetStatus =='Approved'|| timesheetStatus =='Submitted' || timesheetStatus =='Rejected' || timesheet.Task.length == 0 || !checkSelectedProjectBillable(timesheet.Project.Value)"></ion-datetime>
+              <ion-datetime name="billable" [(ngModel)]="timesheet.Wednesdayhrs" displayFormat="HH:mm" [disabled]="timesheetStatus =='Approved'|| timesheetStatus =='Submitted' || timesheetStatus =='Rejected' || timesheet.Task.length == 0 || !checkSelectedProjectBillable(timesheet.Project.Value)"></ion-datetime>
             </ion-item>
             <ion-item>
               <ion-label floating>Details</ion-label>
@@ -189,7 +194,7 @@
             <ion-item>
               <ion-label floating>Non Billable</ion-label>
               <!--<ion-input [(ngModel)]="timesheet.Wednesdaynbhrs"></ion-input>-->
-              <ion-datetime name ="nonbillable" [(ngModel)]="timesheet.Wednesdaynbhrs"  displayFormat="HH:mm" [disabled]="timesheetStatus =='Approved'|| timesheetStatus =='Submitted' || timesheetStatus =='Rejected' || timesheet.Task.length == 0"></ion-datetime>
+              <ion-datetime name="nonbillable" [(ngModel)]="timesheet.Wednesdaynbhrs" displayFormat="HH:mm" [disabled]="timesheetStatus =='Approved'|| timesheetStatus =='Submitted' || timesheetStatus =='Rejected' || timesheet.Task.length == 0"></ion-datetime>
             </ion-item>
             <ion-item>
               <ion-label floating>Details</ion-label>
@@ -204,10 +209,10 @@
         </div>
       </div>
     </ion-slide>
-    <ion-slide class = "verticle-scrollable">
-      <div class="project-div" >
+    <ion-slide class="verticle-scrollable">
+      <div class="project-div">
         <div *ngFor="let timesheet of weekProjects.ThursdayArray let i = index;">
-            <ion-list *ngIf=" (timesheet.Project.Value == 'Holiday' || timesheet.Project.Value == 'Leave') && timesheet.Thursdaynbhrs">
+          <ion-list *ngIf=" (timesheet.Project.Value == 'Holiday' || timesheet.Project.Value == 'Leave') && timesheet.Thursdaynbhrs">
             <ion-item>
               <h3>{{timesheet.Project.Value}}</h3>
               <p>Desc: {{timesheet.Thursdaydescnb}}</p>
@@ -218,9 +223,10 @@
             <ion-item *ngIf="!(timesheetStatus =='Approved'|| timesheetStatus =='Submitted' || timesheetStatus =='Rejected')">
               <ion-label floating>Project <span class="required">*</span></ion-label>
               <!--<ion-input [(ngModel)]="timesheet.Project.Value" [disabled]="timesheetStatus =='Approved'|| timesheetStatus =='Submitted' || timesheetStatus =='Rejected'"></ion-input>-->
-            <ion-select [(ngModel)]="timesheet.Project.Value" (ionChange) = "onProjectChange(timesheet.Project.Value,i,'Thursday')"name="selectProject" [disabled]="timesheetStatus =='Approved'|| timesheetStatus =='Submitted' || timesheetStatus =='Rejected'">
-            <ion-option *ngFor="let project of projectList">{{project.value.Title}}</ion-option>
-            </ion-select>
+              <ion-select [(ngModel)]="timesheet.Project.Value" (ionChange)="onProjectChange(timesheet.Project.Value,i,'Thursday')" name="selectProject"
+                [disabled]="timesheetStatus =='Approved'|| timesheetStatus =='Submitted' || timesheetStatus =='Rejected'">
+                <ion-option *ngFor="let project of projectList">{{project.value.Title}}</ion-option>
+              </ion-select>
             </ion-item>
             <ion-item *ngIf="(timesheetStatus =='Approved'|| timesheetStatus =='Submitted' || timesheetStatus =='Rejected')">
               <ion-label floating>Project <span class="required">*</span></ion-label>
@@ -228,8 +234,8 @@
             </ion-item>
             <ion-item *ngIf="!(timesheetStatus =='Approved'|| timesheetStatus =='Submitted' || timesheetStatus =='Rejected')">
               <ion-label floating>Task <span class="required">*</span></ion-label>
-              <ion-select name="selectTask" [(ngModel)]="timesheet.Task"  (ionChange) = "onTaskChange(timesheet.Task,i,'Thursday')" [disabled]="timesheetStatus =='Approved'|| timesheetStatus =='Submitted' || timesheetStatus =='Rejected'|| timesheet.Project.Value.length == 0">
-              <ion-option *ngFor="let phase of tasksList[i]">{{phase.label}}</ion-option>
+              <ion-select name="selectTask" [(ngModel)]="timesheet.Task" (ionChange)="onTaskChange(timesheet.Task,i,'Thursday')" [disabled]="timesheetStatus =='Approved'|| timesheetStatus =='Submitted' || timesheetStatus =='Rejected'|| timesheet.Project.Value.length == 0">
+                <ion-option *ngFor="let phase of tasksList[i]">{{phase.label}}</ion-option>
               </ion-select>
             </ion-item>
             <ion-item *ngIf="(timesheetStatus =='Approved'|| timesheetStatus =='Submitted' || timesheetStatus =='Rejected')">
@@ -239,7 +245,7 @@
             <ion-item>
               <ion-label floating>Billable</ion-label>
               <!--<ion-input [(ngModel)]="timesheet.Thursdayhrs"></ion-input>-->
-              <ion-datetime name ="billable" [(ngModel)]="timesheet.Thursdayhrs"  displayFormat="HH:mm" [disabled]="timesheetStatus =='Approved'|| timesheetStatus =='Submitted' || timesheetStatus =='Rejected' || timesheet.Task.length == 0 || !checkSelectedProjectBillable(timesheet.Project.Value)"></ion-datetime>
+              <ion-datetime name="billable" [(ngModel)]="timesheet.Thursdayhrs" displayFormat="HH:mm" [disabled]="timesheetStatus =='Approved'|| timesheetStatus =='Submitted' || timesheetStatus =='Rejected' || timesheet.Task.length == 0 || !checkSelectedProjectBillable(timesheet.Project.Value)"></ion-datetime>
             </ion-item>
             <ion-item>
               <ion-label floating>Details</ion-label>
@@ -248,7 +254,7 @@
             <ion-item>
               <ion-label floating>Non Billable</ion-label>
               <!--<ion-input [(ngModel)]="timesheet.Thursdaynbhrs"></ion-input>-->
-              <ion-datetime name ="nonbillable" [(ngModel)]="timesheet.Thursdaynbhrs"  displayFormat="HH:mm" [disabled]="timesheetStatus =='Approved'|| timesheetStatus =='Submitted' || timesheetStatus =='Rejected' || timesheet.Task.length == 0"></ion-datetime>
+              <ion-datetime name="nonbillable" [(ngModel)]="timesheet.Thursdaynbhrs" displayFormat="HH:mm" [disabled]="timesheetStatus =='Approved'|| timesheetStatus =='Submitted' || timesheetStatus =='Rejected' || timesheet.Task.length == 0"></ion-datetime>
             </ion-item>
             <ion-item>
               <ion-label floating>Details</ion-label>
@@ -263,10 +269,10 @@
         </div>
       </div>
     </ion-slide>
-    <ion-slide class = "verticle-scrollable">
-      <div class="project-div" >
+    <ion-slide class="verticle-scrollable">
+      <div class="project-div">
         <div *ngFor="let timesheet of weekProjects.FridayArray let i = index;">
-           <ion-list *ngIf=" (timesheet.Project.Value == 'Holiday' || timesheet.Project.Value == 'Leave') && timesheet.Fridaynbhrs">
+          <ion-list *ngIf=" (timesheet.Project.Value == 'Holiday' || timesheet.Project.Value == 'Leave') && timesheet.Fridaynbhrs">
             <ion-item>
               <h3>{{timesheet.Project.Value}}</h3>
               <p>Desc: {{timesheet.Fridaydescnb}}</p>
@@ -277,9 +283,10 @@
             <ion-item *ngIf="!(timesheetStatus =='Approved'|| timesheetStatus =='Submitted' || timesheetStatus =='Rejected')">
               <ion-label floating>Project <span class="required">*</span></ion-label>
               <!--<ion-input [(ngModel)]="timesheet.Project.Value"[disabled]="timesheetStatus =='Approved'|| timesheetStatus =='Submitted' || timesheetStatus =='Rejected'"></ion-input>-->
-            <ion-select [(ngModel)]="timesheet.Project.Value" (ionChange) = "onProjectChange(timesheet.Project.Value,i,'Friday')"name="selectProject" [disabled]="timesheetStatus =='Approved'|| timesheetStatus =='Submitted' || timesheetStatus =='Rejected'">
-            <ion-option *ngFor="let project of projectList">{{project.value.Title}}</ion-option>
-            </ion-select>
+              <ion-select [(ngModel)]="timesheet.Project.Value" (ionChange)="onProjectChange(timesheet.Project.Value,i,'Friday')" name="selectProject"
+                [disabled]="timesheetStatus =='Approved'|| timesheetStatus =='Submitted' || timesheetStatus =='Rejected'">
+                <ion-option *ngFor="let project of projectList">{{project.value.Title}}</ion-option>
+              </ion-select>
             </ion-item>
             <ion-item *ngIf="(timesheetStatus =='Approved'|| timesheetStatus =='Submitted' || timesheetStatus =='Rejected')">
               <ion-label floating>Project <span class="required">*</span></ion-label>
@@ -287,8 +294,8 @@
             </ion-item>
             <ion-item *ngIf="!(timesheetStatus =='Approved'|| timesheetStatus =='Submitted' || timesheetStatus =='Rejected')">
               <ion-label floating>Task <span class="required">*</span></ion-label>
-             <ion-select name="selectTask" [(ngModel)]="timesheet.Task" (ionChange) = "onTaskChange(timesheet.Task,i,'Friday')" [disabled]="timesheetStatus =='Approved'|| timesheetStatus =='Submitted' || timesheetStatus =='Rejected' || timesheet.Project.Value.length == 0">
-              <ion-option *ngFor="let phase of tasksList[i]">{{phase.label}}</ion-option>
+              <ion-select name="selectTask" [(ngModel)]="timesheet.Task" (ionChange)="onTaskChange(timesheet.Task,i,'Friday')" [disabled]="timesheetStatus =='Approved'|| timesheetStatus =='Submitted' || timesheetStatus =='Rejected' || timesheet.Project.Value.length == 0">
+                <ion-option *ngFor="let phase of tasksList[i]">{{phase.label}}</ion-option>
               </ion-select>
             </ion-item>
             <ion-item *ngIf="(timesheetStatus =='Approved'|| timesheetStatus =='Submitted' || timesheetStatus =='Rejected')">
@@ -298,7 +305,7 @@
             <ion-item>
               <ion-label floating>Billable</ion-label>
               <!--<ion-input [(ngModel)]="timesheet.Fridayhrs"></ion-input>-->
-              <ion-datetime name ="billable" [(ngModel)]="timesheet.Fridayhrs"  displayFormat="HH:mm" [disabled]="timesheetStatus =='Approved'|| timesheetStatus =='Submitted' || timesheetStatus =='Rejected' || timesheet.Task.length == 0 || !checkSelectedProjectBillable(timesheet.Project.Value)"></ion-datetime>
+              <ion-datetime name="billable" [(ngModel)]="timesheet.Fridayhrs" displayFormat="HH:mm" [disabled]="timesheetStatus =='Approved'|| timesheetStatus =='Submitted' || timesheetStatus =='Rejected' || timesheet.Task.length == 0 || !checkSelectedProjectBillable(timesheet.Project.Value)"></ion-datetime>
             </ion-item>
             <ion-item>
               <ion-label floating>Details</ion-label>
@@ -307,7 +314,7 @@
             <ion-item>
               <ion-label floating>Non Billable</ion-label>
               <!--<ion-input [(ngModel)]="timesheet.Fridaynbhrs"></ion-input>-->
-              <ion-datetime name ="nonbillable" [(ngModel)]="timesheet.Fridaynbhrs"  displayFormat="HH:mm" [disabled]="timesheetStatus =='Approved'|| timesheetStatus =='Submitted' || timesheetStatus =='Rejected' || timesheet.Task.length == 0"></ion-datetime>
+              <ion-datetime name="nonbillable" [(ngModel)]="timesheet.Fridaynbhrs" displayFormat="HH:mm" [disabled]="timesheetStatus =='Approved'|| timesheetStatus =='Submitted' || timesheetStatus =='Rejected' || timesheet.Task.length == 0"></ion-datetime>
             </ion-item>
             <ion-item>
               <ion-label floating>Details</ion-label>
@@ -322,8 +329,8 @@
         </div>
       </div>
     </ion-slide>
-    <ion-slide class = "verticle-scrollable">
-      <div class="project-div" >
+    <ion-slide class="verticle-scrollable">
+      <div class="project-div">
         <div *ngFor="let timesheet of weekProjects.SaturdayArray let i = index;">
           <ion-list *ngIf=" (timesheet.Project.Value == 'Holiday' || timesheet.Project.Value == 'Leave') && timesheet.Saturdaynbhrs">
             <ion-item>
@@ -336,9 +343,10 @@
             <ion-item *ngIf="!(timesheetStatus =='Approved'|| timesheetStatus =='Submitted' || timesheetStatus =='Rejected')">
               <ion-label floating>Project <span class="required">*</span></ion-label>
               <!--<ion-input [(ngModel)]="timesheet.Project.Value" [disabled]="timesheetStatus =='Approved'|| timesheetStatus =='Submitted' || timesheetStatus =='Rejected'"></ion-input>-->
-           <ion-select [(ngModel)]="timesheet.Project.Value" (ionChange) = "onProjectChange(timesheet.Project.Value,i,'Saturday')"name="selectProject" [disabled]="timesheetStatus =='Approved'|| timesheetStatus =='Submitted' || timesheetStatus =='Rejected'">
-            <ion-option *ngFor="let project of projectList">{{project.value.Title}}</ion-option>
-            </ion-select>
+              <ion-select [(ngModel)]="timesheet.Project.Value" (ionChange)="onProjectChange(timesheet.Project.Value,i,'Saturday')" name="selectProject"
+                [disabled]="timesheetStatus =='Approved'|| timesheetStatus =='Submitted' || timesheetStatus =='Rejected'">
+                <ion-option *ngFor="let project of projectList">{{project.value.Title}}</ion-option>
+              </ion-select>
             </ion-item>
             <ion-item *ngIf="(timesheetStatus =='Approved'|| timesheetStatus =='Submitted' || timesheetStatus =='Rejected')">
               <ion-label floating>Project <span class="required">*</span></ion-label>
@@ -346,8 +354,8 @@
             </ion-item>
             <ion-item *ngIf="!(timesheetStatus =='Approved'|| timesheetStatus =='Submitted' || timesheetStatus =='Rejected')">
               <ion-label floating>Task <span class="required">*</span></ion-label>
-             <ion-select name="selectTask" [(ngModel)]="timesheet.Task" (ionChange) = "onTaskChange(timesheet.Task,i,'Saturday')" [disabled]="timesheetStatus =='Approved'|| timesheetStatus =='Submitted' || timesheetStatus =='Rejected' || timesheet.Project.Value.length == 0">
-              <ion-option *ngFor="let phase of tasksList[i]">{{phase.label}}</ion-option>
+              <ion-select name="selectTask" [(ngModel)]="timesheet.Task" (ionChange)="onTaskChange(timesheet.Task,i,'Saturday')" [disabled]="timesheetStatus =='Approved'|| timesheetStatus =='Submitted' || timesheetStatus =='Rejected' || timesheet.Project.Value.length == 0">
+                <ion-option *ngFor="let phase of tasksList[i]">{{phase.label}}</ion-option>
               </ion-select>
             </ion-item>
             <ion-item *ngIf="(timesheetStatus =='Approved'|| timesheetStatus =='Submitted' || timesheetStatus =='Rejected')">
@@ -357,7 +365,7 @@
             <ion-item>
               <ion-label floating>Billable</ion-label>
               <!--<ion-input [(ngModel)]="timesheet.Saturdayhrs"></ion-input>-->
-              <ion-datetime name ="billable" [(ngModel)]="timesheet.Saturdayhrs"  displayFormat="HH:mm" [disabled]="timesheetStatus =='Approved'|| timesheetStatus =='Submitted' || timesheetStatus =='Rejected' || timesheet.Task.length == 0 || !checkSelectedProjectBillable(timesheet.Project.Value)"></ion-datetime>
+              <ion-datetime name="billable" [(ngModel)]="timesheet.Saturdayhrs" displayFormat="HH:mm" [disabled]="timesheetStatus =='Approved'|| timesheetStatus =='Submitted' || timesheetStatus =='Rejected' || timesheet.Task.length == 0 || !checkSelectedProjectBillable(timesheet.Project.Value)"></ion-datetime>
             </ion-item>
             <ion-item>
               <ion-label floating>Details</ion-label>
@@ -366,7 +374,7 @@
             <ion-item>
               <ion-label floating>Non Billable</ion-label>
               <!--<ion-input [(ngModel)]="timesheet.Saturdaynbhrs"></ion-input>-->
-              <ion-datetime name ="nonbillable" [(ngModel)]="timesheet.Saturdaynbhrs"  displayFormat="HH:mm" [disabled]="timesheetStatus =='Approved'|| timesheetStatus =='Submitted' || timesheetStatus =='Rejected' || timesheet.Task.length == 0"></ion-datetime>
+              <ion-datetime name="nonbillable" [(ngModel)]="timesheet.Saturdaynbhrs" displayFormat="HH:mm" [disabled]="timesheetStatus =='Approved'|| timesheetStatus =='Submitted' || timesheetStatus =='Rejected' || timesheet.Task.length == 0"></ion-datetime>
             </ion-item>
             <ion-item>
               <ion-label floating>Details</ion-label>
@@ -381,8 +389,8 @@
         </div>
       </div>
     </ion-slide>
-    <ion-slide class = "verticle-scrollable">
-      <div class="project-div" >
+    <ion-slide class="verticle-scrollable">
+      <div class="project-div">
         <div *ngFor="let timesheet of weekProjects.SundayArray let i = index;">
           <ion-list *ngIf=" (timesheet.Project.Value == 'Holiday' || timesheet.Project.Value == 'Leave') && timesheet.Sundaynbhrs">
             <ion-item>
@@ -395,9 +403,10 @@
             <ion-item *ngIf="!(timesheetStatus =='Approved'|| timesheetStatus =='Submitted' || timesheetStatus =='Rejected')">
               <ion-label floating>Project <span class="required">*</span></ion-label>
               <!--<ion-input [(ngModel)]="timesheet.Project.Value" [disabled]="timesheetStatus =='Approved'|| timesheetStatus =='Submitted' || timesheetStatus =='Rejected'"></ion-input>-->
-            <ion-select [(ngModel)]="timesheet.Project.Value" (ionChange) = "onProjectChange(timesheet.Project.Value,i,'Sunday')"name="selectProject" [disabled]="timesheetStatus =='Approved'|| timesheetStatus =='Submitted' || timesheetStatus =='Rejected'">
-            <ion-option *ngFor="let project of projectList">{{project.value.Title}}</ion-option>
-            </ion-select>
+              <ion-select [(ngModel)]="timesheet.Project.Value" (ionChange)="onProjectChange(timesheet.Project.Value,i,'Sunday')" name="selectProject"
+                [disabled]="timesheetStatus =='Approved'|| timesheetStatus =='Submitted' || timesheetStatus =='Rejected'">
+                <ion-option *ngFor="let project of projectList">{{project.value.Title}}</ion-option>
+              </ion-select>
             </ion-item>
             <ion-item *ngIf="(timesheetStatus =='Approved'|| timesheetStatus =='Submitted' || timesheetStatus =='Rejected')">
               <ion-label floating>Project <span class="required">*</span></ion-label>
@@ -405,8 +414,8 @@
             </ion-item>
             <ion-item *ngIf="!(timesheetStatus =='Approved'|| timesheetStatus =='Submitted' || timesheetStatus =='Rejected')">
               <ion-label floating>Task <span class="required">*</span></ion-label>
-             <ion-select name="selectTask" [(ngModel)]="timesheet.Task" (ionChange) = "onTaskChange(timesheet.Task,i,'Sunday')" [disabled]="timesheetStatus =='Approved'|| timesheetStatus =='Submitted' || timesheetStatus =='Rejected' || timesheet.Project.Value.length == 0">
-              <ion-option *ngFor="let phase of tasksList[i]">{{phase.label}}</ion-option>
+              <ion-select name="selectTask" [(ngModel)]="timesheet.Task" (ionChange)="onTaskChange(timesheet.Task,i,'Sunday')" [disabled]="timesheetStatus =='Approved'|| timesheetStatus =='Submitted' || timesheetStatus =='Rejected' || timesheet.Project.Value.length == 0">
+                <ion-option *ngFor="let phase of tasksList[i]">{{phase.label}}</ion-option>
               </ion-select>
             </ion-item>
             <ion-item *ngIf="(timesheetStatus =='Approved'|| timesheetStatus =='Submitted' || timesheetStatus =='Rejected')">
@@ -416,7 +425,7 @@
             <ion-item>
               <ion-label floating>Billable</ion-label>
               <!--<ion-input [(ngModel)]="timesheet.Sundayhrs"></ion-input>-->
-              <ion-datetime name ="billable" [(ngModel)]="timesheet.Sundayhrs"  displayFormat="HH:mm" [disabled]="timesheetStatus =='Approved'|| timesheetStatus =='Submitted' || timesheetStatus =='Rejected' || timesheet.Task.length == 0 || !checkSelectedProjectBillable(timesheet.Project.Value)"></ion-datetime>
+              <ion-datetime name="billable" [(ngModel)]="timesheet.Sundayhrs" displayFormat="HH:mm" [disabled]="timesheetStatus =='Approved'|| timesheetStatus =='Submitted' || timesheetStatus =='Rejected' || timesheet.Task.length == 0 || !checkSelectedProjectBillable(timesheet.Project.Value)"></ion-datetime>
             </ion-item>
             <ion-item>
               <ion-label floating>Details</ion-label>
@@ -425,7 +434,7 @@
             <ion-item>
               <ion-label floating>Non Billable</ion-label>
               <!--<ion-input [(ngModel)]="timesheet.Sundaynbhrs"></ion-input>-->
-              <ion-datetime name ="nonbillable" [(ngModel)]="timesheet.Sundaynbhrs"  displayFormat="HH:mm" [disabled]="timesheetStatus =='Approved'|| timesheetStatus =='Submitted' || timesheetStatus =='Rejected' || timesheet.Task.length == 0 "></ion-datetime>
+              <ion-datetime name="nonbillable" [(ngModel)]="timesheet.Sundaynbhrs" displayFormat="HH:mm" [disabled]="timesheetStatus =='Approved'|| timesheetStatus =='Submitted' || timesheetStatus =='Rejected' || timesheet.Task.length == 0 "></ion-datetime>
             </ion-item>
             <ion-item>
               <ion-label floating>Details</ion-label>
