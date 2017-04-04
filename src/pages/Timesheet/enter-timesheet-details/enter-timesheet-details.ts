@@ -704,7 +704,6 @@ export class EnterTimesheetDetailsPage {
     this.dailyTotalhours[4] = this.totalhours.TotalhrsFriday;
     this.dailyTotalhours[5] = this.totalhours.TotalhrsSaturday;
     this.dailyTotalhours[6] = this.totalhours.TotalhrsSunday;
-    console.log('dailyTotalhours : ', this.dailyTotalhours);
   }
 
 }
