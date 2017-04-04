@@ -32,6 +32,7 @@ export class EnterTimesheetDetailsPage {
   timesheetDetails: any;
   timesheetList: any[];
   totalhours: any;
+  dailyTotalhours: any[] = [];
 
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
@@ -47,13 +48,14 @@ export class EnterTimesheetDetailsPage {
     this.timesheetDetails = this.navParams.get('timesheetData');
     this.timesheetList = this.navParams.get('timesheetList');
     this.totalhours = this.navParams.get('totalhours');
+    this.calcDailyHours();
     if (this.timesheetList.length == 0)
       this.pushTimeSheet();
 
     this.tasksList = [];
 
     this.dateTitle = this.getDate(0);
-    if (!(this.timesheetStatus == 'Approved' || this.timesheetStatus == 'Submitted' || this.timesheetStatus == 'Rejected')) { 
+    if (!(this.timesheetStatus == 'Approved' || this.timesheetStatus == 'Submitted' || this.timesheetStatus == 'Rejected')) {
       this.getTask();
     }
     this.Day1Form = fb.group({
@@ -76,9 +78,9 @@ export class EnterTimesheetDetailsPage {
     }
   }
 
-  ionViewDidLoad() {
+  ionViewDidEnter() {
 
-    //this.goToSlide();
+    this.goToSlide();
   }
 
   pushTimeSheet() {
@@ -102,7 +104,7 @@ export class EnterTimesheetDetailsPage {
     this.dateTitle = this.getDate(this.selectedIndex);
   }
   goToSlide() {
-    this.slides.slideTo(this.selectedIndex, 0);
+    this.slides.slideTo(this.selectedIndex, 300);
     this.dateTitle = this.getDate(this.selectedIndex);
   }
 
@@ -692,6 +694,17 @@ export class EnterTimesheetDetailsPage {
       this.weekProjects.SundayArray.push(this.createSundayProject(null));
       this.pushTimeSheet();
     }
+  }
+
+  calcDailyHours() {
+    this.dailyTotalhours[0] = this.totalhours.TotalhrsMonday;
+    this.dailyTotalhours[1] = this.totalhours.TotalhrsTuesday;
+    this.dailyTotalhours[2] = this.totalhours.TotalhrsWednesday;
+    this.dailyTotalhours[3] = this.totalhours.TotalhrsThursday;
+    this.dailyTotalhours[4] = this.totalhours.TotalhrsFriday;
+    this.dailyTotalhours[5] = this.totalhours.TotalhrsSaturday;
+    this.dailyTotalhours[6] = this.totalhours.TotalhrsSunday;
+    console.log('dailyTotalhours : ', this.dailyTotalhours);
   }
 
 }
