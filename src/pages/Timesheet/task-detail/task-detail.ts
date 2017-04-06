@@ -29,8 +29,7 @@ export class TaskDetailPage {
   constructor(public navCtrl: NavController, public navParams: NavParams
     , public _cacheService: CacheService) {
     this.task = {};
-    this.taskDetail = new Timesheet(null, null, '', '', '', '', '', '', '', '',
-      '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', 0);
+    this.taskDetail = new Timesheet();
     this.project = {};
     this.timesheetParams = {};
     this.isSubmitted = true;
