@@ -1,50 +1,50 @@
 /** Timesheet Model Definition */
 export class Timesheet {
-    constructor(
-        ApproverUser: Array<User>,
-        Project: Project,
-        Task: string,
-        Mondayhrs: string,
-        Mondaydesc: string,
-        Tuesdayhrs: string,
-        Tuesdaydesc: string,
-        Wednesdayhrs: string,
-        Wednesdaydesc: string,
-        Thursdayhrs: string,
-        Thursdaydesc: string,
-        Fridayhrs: string,
-        Fridaydesc: string,
-        Saturdayhrs: string,
-        Saturdaydesc: string,
-        Sundayhrs: string,
-        Sundaydesc: string,
-        Billable: string,
-        TimesheetStartDate: string,
-        TimesheetEndDate: string,
-        TimesheetID: string,
-        Mondaynbhrs: string,
-        Tuesdaynbhrs: string,
-        Wednesdaynbhrs: string,
-        Thursdaynbhrs: string,
-        Fridaynbhrs: string,
-        Saturdaynbhrs: string,
-        Sundaynbhrs: string,
-        WeekNumber: string,
-        ProjectTimesheetStatus: string,
-        StartDate: string,
-        EndDate: string,
-        Mondaydescnb: string,
-        Tuesdaydescnb: string,
-        Wednesdaydescnb: string,
-        Thursdaydescnb: string,
-        Fridaydescnb: string,
-        Saturdaydescnb: string,
-        Sundaydescnb: string,
-        ApproverComment: string,
-        TimesheetStatus: string,
-        UpdationFlag: string,
-        ID: number
-    ) {}
+    constructor() {}
+        ApproverUser: Array<User> = [{ ID: 0, Value: null }];
+        Project: Project = { ID: 0, Value: null };
+        Task: string = null;
+        Mondayhrs: string = null;
+        Mondaydesc: string = null;
+        Tuesdayhrs: string = null;
+        Tuesdaydesc: string = null;
+        Wednesdayhrs: string = null;
+        Wednesdaydesc: string = null;
+        Thursdayhrs: string = null;
+        Thursdaydesc: string = null;
+        Fridayhrs: string = null;
+        Fridaydesc: string = null;
+        Saturdayhrs: string = null;
+        Saturdaydesc: string = null;
+        Sundayhrs: string = null;
+        Sundaydesc: string = null;
+        Billable: string = null;
+        TimesheetStartDate: string = null;
+        TimesheetEndDate: string = null;
+        TimesheetID: string = null;
+        Mondaynbhrs: string = null;
+        Tuesdaynbhrs: string = null;
+        Wednesdaynbhrs: string = null;
+        Thursdaynbhrs: string = null;
+        Fridaynbhrs: string = null;
+        Saturdaynbhrs: string = null;
+        Sundaynbhrs: string = null;
+        WeekNumber: string = null;
+        ProjectTimesheetStatus: string = null;
+        StartDate: string = null;
+        EndDate: string = null;
+        Mondaydescnb: string = null;
+        Tuesdaydescnb: string = null;
+        Wednesdaydescnb: string = null;
+        Thursdaydescnb: string = null;
+        Fridaydescnb: string = null;
+        Saturdaydescnb: string = null;
+        Sundaydescnb: string = null;
+        ApproverComment: string = null;
+        TimesheetStatus: string = null;
+        UpdationFlag: string = null;
+        ID: number = 0;
+    
 }
 
 class Project {
