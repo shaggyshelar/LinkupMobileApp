@@ -84,8 +84,7 @@ export class EnterTimesheetDetailsPage {
   }
 
   pushTimeSheet() {
-    let time = new Timesheet([{ ID: 0, Value: '' }], { ID: 0, Value: '' }, '', '', '', '', '', '', '', '',
-      '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', 0);
+    let time = new Timesheet();
     this.timesheetList.push(time);
   }
 
@@ -264,7 +263,7 @@ export class EnterTimesheetDetailsPage {
       this.timesheetList[index].TimesheetID = this.weekProjects.MondayArray[index].TimesheetID;
       this.timesheetList[index].UpdationFlag = this.weekProjects.MondayArray[index].UpdationFlag;
       this.timesheetList[index].ID = this.weekProjects.MondayArray[index].ID;
-      this.timesheetList[index].TotalhrsMonday = this.weekProjects.MondayArray[index].TotalhrsMonday;
+      // this.timesheetList[index].TotalhrsMonday = this.weekProjects.MondayArray[index].TotalhrsMonday;
     }
 
     for (var index = 0; index < this.weekProjects.TuesdayArray.length; index++) {
@@ -282,7 +281,7 @@ export class EnterTimesheetDetailsPage {
       this.timesheetList[index].TimesheetID = this.weekProjects.TuesdayArray[index].TimesheetID;
       this.timesheetList[index].UpdationFlag = this.weekProjects.TuesdayArray[index].UpdationFlag;
       this.timesheetList[index].ID = this.weekProjects.TuesdayArray[index].ID;
-      this.timesheetList[index].TotalhrsMonday = this.weekProjects.TuesdayArray[index].TotalhrsTuesday;
+      // this.timesheetList[index].TotalhrsMonday = this.weekProjects.TuesdayArray[index].TotalhrsTuesday;
     }
 
     for (var index = 0; index < this.weekProjects.TuesdayArray.length; index++) {
@@ -300,7 +299,7 @@ export class EnterTimesheetDetailsPage {
       this.timesheetList[index].TimesheetID = this.weekProjects.TuesdayArray[index].TimesheetID;
       this.timesheetList[index].UpdationFlag = this.weekProjects.TuesdayArray[index].UpdationFlag;
       this.timesheetList[index].ID = this.weekProjects.TuesdayArray[index].ID;
-      this.timesheetList[index].TotalhrsTuesday = this.weekProjects.TuesdayArray[index].TotalhrsTuesday;
+      // this.timesheetList[index].TotalhrsTuesday = this.weekProjects.TuesdayArray[index].TotalhrsTuesday;
     }
 
     for (var index = 0; index < this.weekProjects.WednesdayArray.length; index++) {
@@ -318,7 +317,7 @@ export class EnterTimesheetDetailsPage {
       this.timesheetList[index].TimesheetID = this.weekProjects.WednesdayArray[index].TimesheetID;
       this.timesheetList[index].UpdationFlag = this.weekProjects.WednesdayArray[index].UpdationFlag;
       this.timesheetList[index].ID = this.weekProjects.WednesdayArray[index].ID;
-      this.timesheetList[index].TotalhrsWednesday = this.weekProjects.WednesdayArray[index].TotalhrsWednesday;
+      // this.timesheetList[index].TotalhrsWednesday = this.weekProjects.WednesdayArray[index].TotalhrsWednesday;
     }
 
     for (var index = 0; index < this.weekProjects.ThursdayArray.length; index++) {
@@ -336,7 +335,7 @@ export class EnterTimesheetDetailsPage {
       this.timesheetList[index].TimesheetID = this.weekProjects.ThursdayArray[index].TimesheetID;
       this.timesheetList[index].UpdationFlag = this.weekProjects.ThursdayArray[index].UpdationFlag;
       this.timesheetList[index].ID = this.weekProjects.ThursdayArray[index].ID;
-      this.timesheetList[index].TotalhrsThursday = this.weekProjects.ThursdayArray[index].TotalhrsThursday;
+      // this.timesheetList[index].TotalhrsThursday = this.weekProjects.ThursdayArray[index].TotalhrsThursday;
     }
 
     for (var index = 0; index < this.weekProjects.FridayArray.length; index++) {
@@ -354,7 +353,7 @@ export class EnterTimesheetDetailsPage {
       this.timesheetList[index].TimesheetID = this.weekProjects.FridayArray[index].TimesheetID;
       this.timesheetList[index].UpdationFlag = this.weekProjects.FridayArray[index].UpdationFlag;
       this.timesheetList[index].ID = this.weekProjects.FridayArray[index].ID;
-      this.timesheetList[index].TotalhrsFriday = this.weekProjects.FridayArray[index].TotalhrsFriday;
+      // this.timesheetList[index].TotalhrsFriday = this.weekProjects.FridayArray[index].TotalhrsFriday;
     }
 
     for (var index = 0; index < this.weekProjects.SaturdayArray.length; index++) {
@@ -372,7 +371,7 @@ export class EnterTimesheetDetailsPage {
       this.timesheetList[index].TimesheetID = this.weekProjects.SaturdayArray[index].TimesheetID;
       this.timesheetList[index].UpdationFlag = this.weekProjects.SaturdayArray[index].UpdationFlag;
       this.timesheetList[index].ID = this.weekProjects.SaturdayArray[index].ID;
-      this.timesheetList[index].TotalhrsSaturday = this.weekProjects.SaturdayArray[index].TotalhrsSaturday;
+      // this.timesheetList[index].TotalhrsSaturday = this.weekProjects.SaturdayArray[index].TotalhrsSaturday;
     }
 
     for (var index = 0; index < this.weekProjects.SundayArray.length; index++) {
@@ -390,7 +389,7 @@ export class EnterTimesheetDetailsPage {
       this.timesheetList[index].TimesheetID = this.weekProjects.SundayArray[index].TimesheetID;
       this.timesheetList[index].UpdationFlag = this.weekProjects.SundayArray[index].UpdationFlag;
       this.timesheetList[index].ID = this.weekProjects.SundayArray[index].ID;
-      this.timesheetList[index].TotalhrsSunday = this.weekProjects.SundayArray[index].TotalhrsSunday;
+      // this.timesheetList[index].TotalhrsSunday = this.weekProjects.SundayArray[index].TotalhrsSunday;
     }
 
     this.calculateTotalHrs();
@@ -520,7 +519,7 @@ export class EnterTimesheetDetailsPage {
     totalh = totalh + parseInt((totalm / 60).toString());
     totalm = totalm % 60;
     this.totalhours.TotalhrsTimesheet = (totalh < 10 ? '0' + totalh : totalh) + ':' + (totalm < 10 ? '0' + totalm : totalm);
-
+    console.log('total hrs', this.totalhours.TotalhrsTimesheet);
 
   }
 
