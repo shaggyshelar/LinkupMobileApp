@@ -44,8 +44,7 @@ export class DailyTimesheetDetailPage {
     this.weekStartDate = moment().add(0, 'weeks').isoWeekday(1).toISOString();
     this.weekEndDate = moment().add(1, 'weeks').isoWeekday(0).toISOString();
     this.dateSelected = moment().toISOString();
-    this.timesheet = new Timesheet(null, null, '', '', '', '', '', '', '', '',
-      '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', 0);
+    this.timesheet = new Timesheet();
     this.timesheetIndex = 999;
     this.billHrs = this.billDesc = this.nBillHrs = this.nBillDesc = '';
   }
