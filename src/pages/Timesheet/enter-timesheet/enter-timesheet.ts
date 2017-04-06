@@ -9,6 +9,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import * as moment from 'moment'
 import * as _ from 'lodash/index';
 
+import { ToastService } from '../../../providers/shared/services/toast.service';
 import { PhasesService, ProjectService, TimesheetService, EmployeeTimesheetService } from '../index';
 import { AuthService } from '../../../providers/index';
 import { Timesheet, emptyTimesheetModel, weekArray, monday, tuesday, wednesday, thursday, friday, saturday, sunday } from '../models/timesheet.model';
@@ -19,7 +20,7 @@ import { EnterTimesheetDetailsPage } from '../enter-timesheet-details/enter-time
 @Component({
   selector: 'page-enter-timesheet',
   templateUrl: 'enter-timesheet.html',
-  providers: [PhasesService, ProjectService, TimesheetService, AuthService, EmployeeTimesheetService]
+  providers: [PhasesService, ProjectService, TimesheetService, AuthService, EmployeeTimesheetService, ToastService]
 })
 export class EnterTimesheetPage {
 
@@ -49,7 +50,7 @@ export class EnterTimesheetPage {
   emptyTimesheet: emptyTimesheetModel;
   timesheetStatus: string = 'New';
   weekProjects: weekArray;
-  isDataretrived : boolean = false;
+  isDataretrived: boolean = false;
 
 
   constructor(public navCtrl: NavController, public navParams: NavParams
@@ -62,6 +63,7 @@ export class EnterTimesheetPage {
     , public formBuilder: FormBuilder
     , public authService: AuthService
     , public employeeTimesheetService: EmployeeTimesheetService
+    , public toastService: ToastService
   ) {
 
     this.weekStartDate = moment().add(0, 'weeks').isoWeekday(1);
@@ -103,9 +105,10 @@ export class EnterTimesheetPage {
   }
 
   pushTimeSheet() {
-    let time = new Timesheet([{ID:0,Value:''}], {ID:0,Value:''}, '', '', '', '', '', '', '', '',
-      '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', 0);
+    let time = new Timesheet();
+    time.ID = 0;
     this.timesheetList.push(time);
+    console.log('in pushTimeSheet => ', this.timesheetList);
   }
   getEmptyTimesheet() {
     this.timesheetStatus = 'New';
@@ -156,12 +159,21 @@ export class EnterTimesheetPage {
   getTimesheetForEdit() {
     this.timesheetService.getTimesheetByID(this.timesheetID).subscribe((res: any) => {
       this.timesheetModel = res;
+      // console.log('timesheet => ', this.timesheetModel);
       this.timesheetList = res.Timesheets;
+      if (res.Timesheets.length < 1) {
+        this.pushTimeSheet
+      }
       this.weekStartDate = res.StartDate;
       this.weekEndDate = res.EndDate;
       this.showWeekEnd = new Date(this.weekEndDate);
       this.showWeekStart = new Date(this.weekStartDate);
       this.timesheetStatus = res.SubmittedStatus;
+      // for (var i = 0; i < this.timesheetList.length; i++) {
+      //   if (typeof this.timesheetList[i].ID === 'undefined')
+      //     this.timesheetList[i].ID = 0;
+      // }
+      // console.log('timesheetList => ', this.timesheetList);
       this.setTotal(res);
       // if (this.timesheetStatus !== 'Approved' && this.timesheetStatus !== 'Submitted') {
       //   for (let i = 0; i < this.timesheetList.length; i++) {
@@ -266,7 +278,6 @@ export class EnterTimesheetPage {
       // this.cacheData = { Timesheets: this.timesheetList };
 
       this.revisiting ? this.handleNew() : this.objectAssembly();
-      console.log('cacheData => ', this.cacheData);
     } else {
       this.isError = true;
     }
@@ -290,8 +301,12 @@ export class EnterTimesheetPage {
   }
 
   timesheetClicked(index) {
-    this.navCtrl.push(EnterTimesheetDetailsPage, { data: this.weekProjects, index: index, weekstart: this.weekStartDate, myProjects: this.projectList, tStatus: this.timesheetStatus, timesheetData: this.timesheetModel, timesheetList:this.timesheetList
-    ,totalhours:this.totalhours });
+    console.log('weekProjects => ', this.weekProjects);
+    console.log('timesheetList => ', this.timesheetList);
+    this.navCtrl.push(EnterTimesheetDetailsPage, {
+      data: this.weekProjects, index: index, weekstart: this.weekStartDate, myProjects: this.projectList, tStatus: this.timesheetStatus, timesheetData: this.timesheetModel, timesheetList: this.timesheetList
+      , totalhours: this.totalhours
+    });
   }
 
   assembleCacheKey() {
@@ -315,7 +330,7 @@ export class EnterTimesheetPage {
     //   console.log('save clicked, errror response => ', err);
     // });
 
-    console.log(this.cacheData);
+    // console.log(this.cacheData);
   }
 
   objectAssembly() {
@@ -506,27 +521,27 @@ export class EnterTimesheetPage {
     for (var index = 0; index < this.timesheetList.length; index++) {
       var project = this.timesheetList[index];
       //if (project.Mondayhrs || project.Mondaynbhrs) {
-        var monproj: any = this.createMondayProject(project);
-        this.weekProjects.MondayArray.push(monproj);
-     // }
+      var monproj: any = this.createMondayProject(project);
+      this.weekProjects.MondayArray.push(monproj);
+      // }
       //if (project.Tuesdayhrs || project.Tuesdaynbhrs) {
-        this.weekProjects.TuesdayArray.push(this.createTuesdayProject(project));
-     // }
-    //  if (project.Wednesdayhrs || project.Wednesdaynbhrs) {
-        this.weekProjects.WednesdayArray.push(this.createWednesdayProject(project));
-    //  }
-     // if (project.Thursdayhrs || project.Thursdaynbhrs) {
-        this.weekProjects.ThursdayArray.push(this.createThursdayProject(project));
-     // }
-    //  if (project.Fridayhrs || project.Fridaynbhrs) {
-        this.weekProjects.FridayArray.push(this.createFridayProject(project));
-    //  }
-    //  if (project.Saturdayhrs || project.Saturdaynbhrs) {
-        this.weekProjects.SaturdayArray.push(this.createSaturdayProject(project));
-    //  }
-     // if (project.Sundayhrs || project.Sundaynbhrs) {
-        this.weekProjects.SundayArray.push(this.createSundayProject(project));
-    //  }
+      this.weekProjects.TuesdayArray.push(this.createTuesdayProject(project));
+      // }
+      //  if (project.Wednesdayhrs || project.Wednesdaynbhrs) {
+      this.weekProjects.WednesdayArray.push(this.createWednesdayProject(project));
+      //  }
+      // if (project.Thursdayhrs || project.Thursdaynbhrs) {
+      this.weekProjects.ThursdayArray.push(this.createThursdayProject(project));
+      // }
+      //  if (project.Fridayhrs || project.Fridaynbhrs) {
+      this.weekProjects.FridayArray.push(this.createFridayProject(project));
+      //  }
+      //  if (project.Saturdayhrs || project.Saturdaynbhrs) {
+      this.weekProjects.SaturdayArray.push(this.createSaturdayProject(project));
+      //  }
+      // if (project.Sundayhrs || project.Sundaynbhrs) {
+      this.weekProjects.SundayArray.push(this.createSundayProject(project));
+      //  }
 
     }
 
@@ -545,7 +560,7 @@ export class EnterTimesheetPage {
     if (this.weekProjects.SundayArray.length == 0)
       this.weekProjects.SundayArray.push(this.createSundayProject(null));
 
-   
+
 
 
 
@@ -553,7 +568,7 @@ export class EnterTimesheetPage {
   }
   createMondayProject(project: any) {
     var mondayProject: monday = new monday();
-    mondayProject.ApproverUser = project ? project.ApproverUser : {ID: 0 , Value : ''};
+    mondayProject.ApproverUser = project ? project.ApproverUser : { ID: 0, Value: '' };
     mondayProject.ApproverComment = project ? project.ApproverComment : '';
     mondayProject.Billable = project ? project.Billable : '';
     mondayProject.ID = project ? project.ID : '';
@@ -561,7 +576,7 @@ export class EnterTimesheetPage {
     mondayProject.Mondaydescnb = project ? project.Mondaydescnb : '';
     mondayProject.Mondayhrs = project ? project.Mondayhrs : '';
     mondayProject.Mondaynbhrs = project ? project.Mondaynbhrs : '';
-    mondayProject.Project = project ? project.Project : {ID: 0 , Value : ''};
+    mondayProject.Project = project ? project.Project : { ID: 0, Value: '' };
     mondayProject.ProjectTimesheetStatus = project ? project.ProjectTimesheetStatus : '';
     mondayProject.Task = project ? project.Task : '';
     mondayProject.TimesheetID = project ? project.TimesheetID : '';
@@ -575,7 +590,7 @@ export class EnterTimesheetPage {
 
   createTuesdayProject(project: any) {
     var tuesdayProject: tuesday = new tuesday();
-    tuesdayProject.ApproverUser = project ? project.ApproverUser : {ID: 0 , Value : ''};
+    tuesdayProject.ApproverUser = project ? project.ApproverUser : { ID: 0, Value: '' };
     tuesdayProject.ApproverComment = project ? project.ApproverComment : '';
     tuesdayProject.Billable = project ? project.Billable : '';
     tuesdayProject.ID = project ? project.ID : '';
@@ -583,7 +598,7 @@ export class EnterTimesheetPage {
     tuesdayProject.Tuesdaydescnb = project ? project.Tuesdaydescnb : '';
     tuesdayProject.Tuesdayhrs = project ? project.Tuesdayhrs : '';
     tuesdayProject.Tuesdaynbhrs = project ? project.Tuesdaynbhrs : '';
-    tuesdayProject.Project = project ? project.Project : {ID: 0 , Value : ''};
+    tuesdayProject.Project = project ? project.Project : { ID: 0, Value: '' };
     tuesdayProject.ProjectTimesheetStatus = project ? project.ProjectTimesheetStatus : '';
     tuesdayProject.Task = project ? project.Task : '';
     tuesdayProject.TimesheetID = project ? project.TimesheetID : '';
@@ -594,7 +609,7 @@ export class EnterTimesheetPage {
 
   createWednesdayProject(project: any) {
     var wednesdayProject: wednesday = new wednesday();
-    wednesdayProject.ApproverUser = project ? project.ApproverUser : {ID: 0 , Value : ''};
+    wednesdayProject.ApproverUser = project ? project.ApproverUser : { ID: 0, Value: '' };
     wednesdayProject.ApproverComment = project ? project.ApproverComment : '';
     wednesdayProject.Billable = project ? project.Billable : '';
     wednesdayProject.ID = project ? project.ID : '';
@@ -602,7 +617,7 @@ export class EnterTimesheetPage {
     wednesdayProject.Wednesdaydescnb = project ? project.Wednesdaydescnb : '';
     wednesdayProject.Wednesdayhrs = project ? project.Wednesdayhrs : '';
     wednesdayProject.Wednesdaynbhrs = project ? project.Wednesdaynbhrs : '';
-    wednesdayProject.Project = project ? project.Project : {ID: 0 , Value : ''};
+    wednesdayProject.Project = project ? project.Project : { ID: 0, Value: '' };
     wednesdayProject.ProjectTimesheetStatus = project ? project.ProjectTimesheetStatus : '';
     wednesdayProject.Task = project ? project.Task : '';
     wednesdayProject.TimesheetID = project ? project.TimesheetID : '';
@@ -613,7 +628,7 @@ export class EnterTimesheetPage {
 
   createThursdayProject(project: any) {
     var thursdayProject: thursday = new thursday();
-    thursdayProject.ApproverUser = project ? project.ApproverUser : {ID: 0 , Value : ''};
+    thursdayProject.ApproverUser = project ? project.ApproverUser : { ID: 0, Value: '' };
     thursdayProject.ApproverComment = project ? project.ApproverComment : '';
     thursdayProject.Billable = project ? project.Billable : '';
     thursdayProject.ID = project ? project.ID : '';
@@ -621,7 +636,7 @@ export class EnterTimesheetPage {
     thursdayProject.Thursdaydescnb = project ? project.Thursdaydescnb : '';
     thursdayProject.Thursdayhrs = project ? project.Thursdayhrs : '';
     thursdayProject.Thursdaynbhrs = project ? project.Thursdaynbhrs : '';
-    thursdayProject.Project = project ? project.Project : {ID: 0 , Value : ''};
+    thursdayProject.Project = project ? project.Project : { ID: 0, Value: '' };
     thursdayProject.ProjectTimesheetStatus = project ? project.ProjectTimesheetStatus : '';
     thursdayProject.Task = project ? project.Task : '';
     thursdayProject.TimesheetID = project ? project.TimesheetID : '';
@@ -632,7 +647,7 @@ export class EnterTimesheetPage {
 
   createFridayProject(project: any) {
     var fridayProject: friday = new friday();
-    fridayProject.ApproverUser = project ? project.ApproverUser : {ID: 0 , Value : ''};
+    fridayProject.ApproverUser = project ? project.ApproverUser : { ID: 0, Value: '' };
     fridayProject.ApproverComment = project ? project.ApproverComment : '';
     fridayProject.Billable = project ? project.Billable : '';
     fridayProject.ID = project ? project.ID : '';
@@ -640,7 +655,7 @@ export class EnterTimesheetPage {
     fridayProject.Fridaydescnb = project ? project.Fridaydescnb : '';
     fridayProject.Fridayhrs = project ? project.Fridayhrs : '';
     fridayProject.Fridaynbhrs = project ? project.Fridaynbhrs : '';
-    fridayProject.Project = project ? project.Project : {ID: 0 , Value : ''};
+    fridayProject.Project = project ? project.Project : { ID: 0, Value: '' };
     fridayProject.ProjectTimesheetStatus = project ? project.ProjectTimesheetStatus : '';
     fridayProject.Task = project ? project.Task : '';
     fridayProject.TimesheetID = project ? project.TimesheetID : '';
@@ -650,7 +665,7 @@ export class EnterTimesheetPage {
   }
   createSaturdayProject(project: any) {
     var saturdayProject: saturday = new saturday();
-    saturdayProject.ApproverUser = project ? project.ApproverUser : {ID: 0 , Value : ''};
+    saturdayProject.ApproverUser = project ? project.ApproverUser : { ID: 0, Value: '' };
     saturdayProject.ApproverComment = project ? project.ApproverComment : '';
     saturdayProject.Billable = project ? project.Billable : '';
     saturdayProject.ID = project ? project.ID : '';
@@ -658,7 +673,7 @@ export class EnterTimesheetPage {
     saturdayProject.Saturdaydescnb = project ? project.Saturdaydescnb : '';
     saturdayProject.Saturdayhrs = project ? project.Saturdayhrs : '';
     saturdayProject.Saturdaynbhrs = project ? project.Saturdaynbhrs : '';
-    saturdayProject.Project = project ? project.Project : {ID: 0 , Value : ''};
+    saturdayProject.Project = project ? project.Project : { ID: 0, Value: '' };
     saturdayProject.ProjectTimesheetStatus = project ? project.ProjectTimesheetStatus : '';
     saturdayProject.Task = project ? project.Task : '';
     saturdayProject.TimesheetID = project ? project.TimesheetID : '';
@@ -668,7 +683,7 @@ export class EnterTimesheetPage {
   }
   createSundayProject(project: any) {
     var sundayProject: sunday = new sunday();
-    sundayProject.ApproverUser = project ? project.ApproverUser : {ID: 0 , Value : ''};
+    sundayProject.ApproverUser = project ? project.ApproverUser : { ID: 0, Value: '' };
     sundayProject.ApproverComment = project ? project.ApproverComment : '';
     sundayProject.Billable = project ? project.Billable : '';
     sundayProject.ID = project ? project.ID : '';
@@ -676,7 +691,7 @@ export class EnterTimesheetPage {
     sundayProject.Sundaydescnb = project ? project.Sundaydescnb : '';
     sundayProject.Sundayhrs = project ? project.Sundayhrs : '';
     sundayProject.Sundaynbhrs = project ? project.Sundaynbhrs : '';
-    sundayProject.Project = project ? project.Project : {ID: 0 , Value : ''};
+    sundayProject.Project = project ? project.Project : { ID: 0, Value: '' };
     sundayProject.ProjectTimesheetStatus = project ? project.ProjectTimesheetStatus : '';
     sundayProject.Task = project ? project.Task : '';
     sundayProject.TimesheetID = project ? project.TimesheetID : '';
@@ -750,42 +765,63 @@ export class EnterTimesheetPage {
   // }
 
   saveTimsheet() {
-    this.isError = false;
-    if (!this.checkProjectAndTask()) {
-      return;
-    }
-    let payload = this.getPayload(true);
-    this.timesheetService.saveTimesheet(payload).subscribe((res: any) => {
-      //this.onCancel();
-      this.navCtrl.pop();
+    var loader = this.loadingCtrl.create({
+      content: 'Please wait...'
+    });
+
+    loader.present().then(() => {
+      this.isError = false;
+      if (!this.checkProjectAndTask()) {
+        return;
+      }
+      let payload = this.getPayload(true);
+      console.log('saving timesheet => ', payload);
+      this.timesheetService.saveTimesheet(payload).subscribe((res: any) => {
+        //this.onCancel();
+        if (res.StatusCode == 1) { this.navCtrl.pop(); loader.dismiss(); this.toastService.createToast("Timesheet Saved");}
+        else { this.toastService.createToast(res.Message); loader.dismiss(); }
+      }, err => {
+        loader.dismiss();
+      });
     });
   }
 
   onSendForApproval() {
-    if (!this.checkProjectAndTask()) {
-      return;
-    }
-    if (!this.checkTotalHours()) {
-      this.isError = true;
-     // this.errorMessage = 'Please make total hours of all days atleast 8 to submit timesheet';
-      return;
-    }
-    if (!this.checkDescription()) {
-      this.isError = true;
-      //this.errorMessage = 'You cannot add empty Description!';
-      return;
-    }
+    var loader = this.loadingCtrl.create({
+      content: 'Please wait...'
+    });
+
+    loader.present().then(() => {
+      if (!this.checkProjectAndTask()) {
+        return;
+      }
+      if (!this.checkTotalHours()) {
+        this.isError = true;
+        // this.errorMessage = 'Please make total hours of all days atleast 8 to submit timesheet';
+        return;
+      }
+      // if (!this.checkDescription()) {
+      //   this.isError = true;
+      //   //this.errorMessage = 'You cannot add empty Description!';
+      //   return;
+      // }
 
       let payload = this.getPayload(false);
-    this.timesheetService.submitTimesheet(payload).subscribe((res: any) => {
+      this.timesheetService.submitTimesheet(payload).subscribe((res: any) => {
+        if (res.StatusCode == 1) { this.navCtrl.pop(); loader.dismiss(); this.toastService.createToast("Timesheet Submitted")}
+        else { this.toastService.createToast(res.Message); loader.dismiss(); }
+      }, err => {
+        loader.dismiss();
+      });
+      // this.timesheetService.submitTimesheet().subscribe((res: any) => {
+      //   console.log(res);
+      // });
     });
-    // this.timesheetService.submitTimesheet().subscribe((res: any) => {
-    //   console.log(res);
-    // });
 
   }
 
-   getPayload(isSave: boolean) {
+  getPayload(isSave: boolean) {
+
     let payload: any = {};
     for (var key in this.totalhours) {
       payload[key] = this.totalhours[key];
@@ -804,6 +840,7 @@ export class EnterTimesheetPage {
       this.timesheetList[i].TimesheetStatus = 'Active';
       this.timesheetList[i].TimesheetID = this.timesheetID;
     }
+    payload.Title = this.currentUserDetail.EmpID;
     payload.Timesheets = this.timesheetList;
     payload.Employee = this.currentUserDetail.Employee;
     payload.EmployeeName = this.currentUserDetail.Employee.Name;
@@ -812,13 +849,63 @@ export class EnterTimesheetPage {
     payload.TimesheetEndDate = this.weekEndDate;
     payload.StartDate = this.weekStartDate;
     payload.EndDate = this.weekEndDate;
-    payload.BillableHours = '0';
-    payload.NonBillableHours = '45';
+    payload.BillableHours = this.totalBillableHrs();
+    payload.NonBillableHours = this.totalNBillableHrs();
     payload.SubmittedStatus = isSave ? 'Not Submitted' : 'Submitted';
     payload.WeekNumber = moment(this.weekStartDate).week();
-    payload.CalendarYear = '2016';
+    payload.CalendarYear = moment(this.weekStartDate).format('YYYY');
     payload.ID = this.timesheetID;
     return payload;
+  }
+
+  totalBillableHrs() {
+    var week = this.weekProjects;
+    var bHrs = 0;
+    var bMins = 0;
+    for (var i = 0; i < week.MondayArray.length; i++) {
+      bHrs += week.MondayArray[i].Mondayhrs ? parseInt(week.MondayArray[i].Mondayhrs.split(':')[0]) : 0;
+      bHrs += week.TuesdayArray[i].Tuesdayhrs ? parseInt(week.TuesdayArray[i].Tuesdayhrs.split(':')[0]) : 0;
+      bHrs += week.WednesdayArray[i].Wednesdayhrs ? parseInt(week.WednesdayArray[i].Wednesdayhrs.split(':')[0]) : 0;
+      bHrs += week.ThursdayArray[i].Thursdayhrs ? parseInt(week.ThursdayArray[i].Thursdayhrs.split(':')[0]) : 0;
+      bHrs += week.FridayArray[i].Fridayhrs ? parseInt(week.FridayArray[i].Fridayhrs.split(':')[0]) : 0;
+      bHrs += week.SaturdayArray[i].Saturdayhrs ? parseInt(week.SaturdayArray[i].Saturdayhrs.split(':')[0]) : 0;
+      bHrs += week.SundayArray[i].Sundayhrs ? parseInt(week.SundayArray[i].Sundayhrs.split(':')[0]) : 0;
+      bMins += week.MondayArray[i].Mondayhrs ? parseInt(week.MondayArray[i].Mondayhrs.split(':')[1]) : 0;
+      bMins += week.TuesdayArray[i].Tuesdayhrs ? parseInt(week.TuesdayArray[i].Tuesdayhrs.split(':')[1]) : 0;
+      bMins += week.WednesdayArray[i].Wednesdayhrs ? parseInt(week.WednesdayArray[i].Wednesdayhrs.split(':')[1]) : 0;
+      bMins += week.ThursdayArray[i].Thursdayhrs ? parseInt(week.ThursdayArray[i].Thursdayhrs.split(':')[1]) : 0;
+      bMins += week.FridayArray[i].Fridayhrs ? parseInt(week.FridayArray[i].Fridayhrs.split(':')[1]) : 0;
+      bMins += week.SaturdayArray[i].Saturdayhrs ? parseInt(week.SaturdayArray[i].Saturdayhrs.split(':')[1]) : 0;
+      bMins += week.SundayArray[i].Sundayhrs ? parseInt(week.SundayArray[i].Sundayhrs.split(':')[1]) : 0;
+    }
+    bHrs += Math.round((bMins / 60));
+    bMins = (bMins % 60);
+    return (bHrs < 10 ? '0' + bHrs : bHrs) + ':' + (bMins < 10 ? '0' + bMins : bMins);
+  }
+
+  totalNBillableHrs() {
+    var week = this.weekProjects;
+    var nbHrs = 0;
+    var nbMins = 0;
+    for (var i = 0; i < week.MondayArray.length; i++) {
+      nbHrs += week.MondayArray[i].Mondaynbhrs ? parseInt(week.MondayArray[i].Mondaynbhrs.split(':')[0]) : 0;
+      nbHrs += week.TuesdayArray[i].Tuesdaynbhrs ? parseInt(week.TuesdayArray[i].Tuesdaynbhrs.split(':')[0]) : 0;
+      nbHrs += week.WednesdayArray[i].Wednesdaynbhrs ? parseInt(week.WednesdayArray[i].Wednesdaynbhrs.split(':')[0]) : 0;
+      nbHrs += week.ThursdayArray[i].Thursdaynbhrs ? parseInt(week.ThursdayArray[i].Thursdaynbhrs.split(':')[0]) : 0;
+      nbHrs += week.FridayArray[i].Fridaynbhrs ? parseInt(week.FridayArray[i].Fridaynbhrs.split(':')[0]) : 0;
+      nbHrs += week.SaturdayArray[i].Saturdaynbhrs ? parseInt(week.SaturdayArray[i].Saturdaynbhrs.split(':')[0]) : 0;
+      nbHrs += week.SundayArray[i].Sundaynbhrs ? parseInt(week.SundayArray[i].Sundaynbhrs.split(':')[0]) : 0;
+      nbMins += week.MondayArray[i].Mondaynbhrs ? parseInt(week.MondayArray[i].Mondaynbhrs.split(':')[1]) : 0;
+      nbMins += week.TuesdayArray[i].Tuesdaynbhrs ? parseInt(week.TuesdayArray[i].Tuesdaynbhrs.split(':')[1]) : 0;
+      nbMins += week.WednesdayArray[i].Wednesdaynbhrs ? parseInt(week.WednesdayArray[i].Wednesdaynbhrs.split(':')[1]) : 0;
+      nbMins += week.ThursdayArray[i].Thursdaynbhrs ? parseInt(week.ThursdayArray[i].Thursdaynbhrs.split(':')[1]) : 0;
+      nbMins += week.FridayArray[i].Fridaynbhrs ? parseInt(week.FridayArray[i].Fridaynbhrs.split(':')[1]) : 0;
+      nbMins += week.SaturdayArray[i].Saturdaynbhrs ? parseInt(week.SaturdayArray[i].Saturdaynbhrs.split(':')[1]) : 0;
+      nbMins += week.SundayArray[i].Sundaynbhrs ? parseInt(week.SundayArray[i].Sundaynbhrs.split(':')[1]) : 0;
+    }
+    nbHrs += Math.round((nbMins / 60));
+    nbMins = (nbMins % 60);
+    return (nbHrs < 10 ? '0' + nbHrs : nbHrs) + ':' + (nbMins < 10 ? '0' + nbMins : nbMins);
   }
 
 }
