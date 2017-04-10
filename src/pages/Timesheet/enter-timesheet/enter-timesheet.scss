@@ -10,6 +10,12 @@ page-enter-timesheet {
     .left-align {
         float: left;
     }
+    .right-padding {
+        padding-right: 15px;
+    }
+    .left-padding {
+        padding-left: 15px;
+    }
     .center-align {
         text-align: center;
         // display: inline-block;
@@ -46,7 +52,7 @@ page-enter-timesheet {
     .project-div {
     width: 100%;
     height: 100%;
-    overflow: scroll;
+    overflow-x: scroll;
 }
     .text-mid {
         text-align: center !important;
