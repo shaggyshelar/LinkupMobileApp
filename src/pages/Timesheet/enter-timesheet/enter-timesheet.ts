@@ -51,6 +51,8 @@ export class EnterTimesheetPage {
   timesheetStatus: string = 'New';
   weekProjects: weekArray;
   isDataretrived: boolean = false;
+  currentWkStrt: any = {};
+  isDailyHoursComplete: boolean = false;
 
 
   constructor(public navCtrl: NavController, public navParams: NavParams
@@ -65,7 +67,7 @@ export class EnterTimesheetPage {
     , public employeeTimesheetService: EmployeeTimesheetService
     , public toastService: ToastService
   ) {
-
+    this.currentWkStrt = moment().add(0, 'weeks').isoWeekday(1);
     this.weekStartDate = moment().add(0, 'weeks').isoWeekday(1);
     this.weekEndDate = moment().add(1, 'weeks').isoWeekday(0);
     this.showWeekEnd = new Date(this.weekEndDate);
@@ -82,21 +84,18 @@ export class EnterTimesheetPage {
     this.revisiting = false;
     this.currentUserDetail = JSON.parse(localStorage.getItem('loggedInUserDetails'));
     this.timesheetID = this.navParams.get('timesheetID');
-
+    // this.getProjects();
 
   }
 
   ionViewDidLoad() {
     this.getProjects();
+
     //this.pushTimeSheet();
   }
 
   ionViewDidEnter() {
-    if (this._cacheService.exists(this.cacheKey)) {
-      // this.timesheetList = JSON.parse(this._cacheService.get(this.cacheKey));
-      this.cacheData = this._cacheService.get(this.cacheKey);
-      this.revisiting = true;
-    }
+    console.log('timesheetList => ', this.timesheetList);
   }
 
   addProjectClicked() {
@@ -161,6 +160,17 @@ export class EnterTimesheetPage {
       this.timesheetModel = res;
       // console.log('timesheet => ', this.timesheetModel);
       this.timesheetList = res.Timesheets;
+      
+      //START : handleing 'Inactive' status
+      var bufTimesheet = [];
+      this.timesheetList.forEach((element, index) => {
+        if(element.ProjectTimesheetStatus != 'Inactive')
+          bufTimesheet.push(element);
+      });
+      this.timesheetList = [];
+      this.timesheetList = bufTimesheet;
+      //End : handleing 'Inactive' status
+
       if (res.Timesheets.length < 1) {
         this.pushTimeSheet
       }
@@ -168,6 +178,9 @@ export class EnterTimesheetPage {
       this.weekEndDate = res.EndDate;
       this.showWeekEnd = new Date(this.weekEndDate);
       this.showWeekStart = new Date(this.weekStartDate);
+      // if (moment(moment(this.currentWkStrt).format('mm-DD-YYYY')).isAfter(moment(this.weekStartDate).format('mm-DD-YYYY'), 'day'))
+      //   this.timesheetStatus = 'New';
+      // else
       this.timesheetStatus = res.SubmittedStatus;
       // for (var i = 0; i < this.timesheetList.length; i++) {
       //   if (typeof this.timesheetList[i].ID === 'undefined')
@@ -445,6 +458,7 @@ export class EnterTimesheetPage {
   }
 
   nextWeekClick() {
+    // alert();
     this.timesheetList = [];
     this.timesheetModel = null;
     this.initTotalHour();
@@ -559,7 +573,6 @@ export class EnterTimesheetPage {
       this.weekProjects.SaturdayArray.push(this.createSaturdayProject(null));
     if (this.weekProjects.SundayArray.length == 0)
       this.weekProjects.SundayArray.push(this.createSundayProject(null));
-
 
 
 
@@ -724,20 +737,26 @@ export class EnterTimesheetPage {
   }
   checkTotalHours() {
     if (moment(this.totalhours.TotalhrsMonday, 'HH:mm').diff(moment('8:00', 'HH:mm')) < 0) {
+      this.toastService.createToast('8 hours of work needed on Monday. Timesheet will not be submitted.');
       return false;
     }
     if (moment(this.totalhours.TotalhrsTuesday, 'HH:mm').diff(moment('8:00', 'HH:mm')) < 0) {
+      this.toastService.createToast('8 hours of work needed on Tuesday. Timesheet will not be submitted.');
       return false;
     }
     if (moment(this.totalhours.TotalhrsWednesday, 'HH:mm').diff(moment('8:00', 'HH:mm')) < 0) {
+      this.toastService.createToast('8 hours of work needed on Wednesday. Timesheet will not be submitted.');
       return false;
     }
     if (moment(this.totalhours.TotalhrsThursday, 'HH:mm').diff(moment('8:00', 'HH:mm')) < 0) {
+      this.toastService.createToast('8 hours of work needed on Thursday. Timesheet will not be submitted.');
       return false;
     }
     if (moment(this.totalhours.TotalhrsFriday, 'HH:mm').diff(moment('8:00', 'HH:mm')) < 0) {
+      this.toastService.createToast('8 hours of work needed on Friday. Timesheet will not be submitted.');
       return false;
     }
+    this.isDailyHoursComplete = true;
     return true;
   }
   checkProjectAndTask() {
@@ -768,20 +787,20 @@ export class EnterTimesheetPage {
     var loader = this.loadingCtrl.create({
       content: 'Please wait...'
     });
-
+    this.isError = false;
+    if (!this.checkProjectAndTask()) {
+      return;
+    }
+    let payload = this.getPayload(true);
+    console.log('saving payload=> ', payload);
     loader.present().then(() => {
-      this.isError = false;
-      if (!this.checkProjectAndTask()) {
-        return;
-      }
-      let payload = this.getPayload(true);
-      console.log('saving timesheet => ', payload);
       this.timesheetService.saveTimesheet(payload).subscribe((res: any) => {
         //this.onCancel();
-        if (res.StatusCode == 1) { this.navCtrl.pop(); loader.dismiss(); this.toastService.createToast("Timesheet Saved");}
+        if (res.StatusCode == 1) { this.navCtrl.pop(); loader.dismiss(); this.toastService.createToast("Timesheet Saved"); }
         else { this.toastService.createToast(res.Message); loader.dismiss(); }
       }, err => {
         loader.dismiss();
+        console.log('err', err);
       });
     });
   }
@@ -790,25 +809,25 @@ export class EnterTimesheetPage {
     var loader = this.loadingCtrl.create({
       content: 'Please wait...'
     });
+    if (!this.checkProjectAndTask()) {
+      return;
+    }
+    if (!this.checkTotalHours()) {
+      this.isError = true;
+      // this.errorMessage = 'Please make total hours of all days atleast 8 to submit timesheet';
+      return;
+    }
+    // if (!this.checkDescription()) {
+    //   this.isError = true;
+    //   //this.errorMessage = 'You cannot add empty Description!';
+    //   return;
+    // }
 
     loader.present().then(() => {
-      if (!this.checkProjectAndTask()) {
-        return;
-      }
-      if (!this.checkTotalHours()) {
-        this.isError = true;
-        // this.errorMessage = 'Please make total hours of all days atleast 8 to submit timesheet';
-        return;
-      }
-      // if (!this.checkDescription()) {
-      //   this.isError = true;
-      //   //this.errorMessage = 'You cannot add empty Description!';
-      //   return;
-      // }
 
       let payload = this.getPayload(false);
       this.timesheetService.submitTimesheet(payload).subscribe((res: any) => {
-        if (res.StatusCode == 1) { this.navCtrl.pop(); loader.dismiss(); this.toastService.createToast("Timesheet Submitted")}
+        if (res.StatusCode == 1) { this.navCtrl.pop(); loader.dismiss(); this.toastService.createToast("Timesheet Submitted") }
         else { this.toastService.createToast(res.Message); loader.dismiss(); }
       }, err => {
         loader.dismiss();
@@ -831,6 +850,7 @@ export class EnterTimesheetPage {
       payload.ApproverUser.push(this.timesheetList[i].ApproverUser);
       this.timesheetList[i].WeekNumber = moment(this.weekStartDate).week();
       this.timesheetList[i].Project.Value = this.timesheetList[i].Project.Value;
+      if(this.timesheetList[i].ProjectTimesheetStatus != 'Inactive')
       this.timesheetList[i].ProjectTimesheetStatus = isSave ? 'Not Submitted' : 'Submitted';
       this.timesheetList[i].StartDate = this.weekStartDate;
       this.timesheetList[i].EndDate = this.weekStartDate;
