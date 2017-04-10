@@ -78,8 +78,8 @@ export class MyTimesheetPage {
     });
   }
 
-  editClicked(item) {
-    alert('Takes you to Edit Timesheet Page');
+  editClicked(entry) {
+    this.navCtrl.push(EnterTimesheetPage, { timesheetID: entry.ID });
   }
 
   itemClicked(entry) {
