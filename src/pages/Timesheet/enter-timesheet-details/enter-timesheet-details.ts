@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
+import { NavController, NavParams, Content } from 'ionic-angular';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Timesheet, emptyTimesheetModel, weekArray, monday, tuesday, wednesday, thursday, friday, saturday, sunday } from '../models/timesheet.model';
 import { PhasesService, ProjectService, TimesheetService, EmployeeTimesheetService } from '../index';
@@ -20,6 +20,7 @@ import * as _ from 'lodash/index';
 export class EnterTimesheetDetailsPage {
 
   @ViewChild('mySlider') slides: Slides;
+  @ViewChild(Content) content: Content;
   weekProjects: weekArray;
   selectedIndex: number = 0;
   timesheetStatus: string = 'New';
@@ -33,11 +34,13 @@ export class EnterTimesheetDetailsPage {
   timesheetList: any[];
   totalhours: any;
   dailyTotalhours: any[] = [];
+  deletedTaskIndex: number;
 
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
     public fb: FormBuilder,
     public phasesService: PhasesService) {
+    this.timesheetList = [];
     this.weekProjects = this.navParams.get('data');
     this.selectedIndex = this.navParams.get('index');
     this.weekStartDate = this.navParams.get('weekstart');
@@ -79,7 +82,7 @@ export class EnterTimesheetDetailsPage {
   }
 
   ionViewDidEnter() {
-
+    
     this.goToSlide();
   }
 
@@ -95,6 +98,7 @@ export class EnterTimesheetDetailsPage {
   }
 
   saveClicked() {
+    console.log('popping timesheetList => ', this.timesheetList);
     this.navCtrl.pop();
   }
 
@@ -125,6 +129,15 @@ export class EnterTimesheetDetailsPage {
     this.weekProjects.SaturdayArray.push(this.createSaturdayProject(null));
     this.weekProjects.SundayArray.push(this.createSundayProject(null));
     this.pushTimeSheet();
+
+    /**
+     * scroll to the new task added
+     */
+    setTimeout(() => {
+      var id = this.weekProjects.MondayArray.length - 1;
+      let yOffset = document.getElementById(id.toString()).offsetTop;
+      this.content.scrollTo(0, yOffset, 250);
+    }, 1000);
   }
 
   getTask() {
@@ -249,6 +262,9 @@ export class EnterTimesheetDetailsPage {
 
   SaveData() {
     for (var index = 0; index < this.weekProjects.MondayArray.length; index++) {
+      if (this.deletedTaskIndex == index)
+        continue;
+
       this.timesheetList[index].ApproverUser = this.weekProjects.MondayArray[index].ApproverUser;
       this.timesheetList[index].Project = this.weekProjects.MondayArray[index].Project;
       this.timesheetList[index].Task = this.weekProjects.MondayArray[index].Task;
@@ -263,28 +279,31 @@ export class EnterTimesheetDetailsPage {
       this.timesheetList[index].TimesheetID = this.weekProjects.MondayArray[index].TimesheetID;
       this.timesheetList[index].UpdationFlag = this.weekProjects.MondayArray[index].UpdationFlag;
       this.timesheetList[index].ID = this.weekProjects.MondayArray[index].ID;
+
       // this.timesheetList[index].TotalhrsMonday = this.weekProjects.MondayArray[index].TotalhrsMonday;
     }
 
-    for (var index = 0; index < this.weekProjects.TuesdayArray.length; index++) {
-      this.timesheetList[index].ApproverUser = this.weekProjects.TuesdayArray[index].ApproverUser;
-      this.timesheetList[index].Project = this.weekProjects.TuesdayArray[index].Project;
-      this.timesheetList[index].Task = this.weekProjects.TuesdayArray[index].Task;
-      this.timesheetList[index].Tuesdayhrs = this.weekProjects.TuesdayArray[index].Tuesdayhrs;
-      this.timesheetList[index].Tuesdaydesc = this.weekProjects.TuesdayArray[index].Tuesdaydesc;
-      this.timesheetList[index].Tuesdaydesc = this.weekProjects.TuesdayArray[index].Tuesdaydesc;
-      this.timesheetList[index].Tuesdaynbhrs = this.weekProjects.TuesdayArray[index].Tuesdaynbhrs;
-      this.timesheetList[index].Tuesdaydescnb = this.weekProjects.TuesdayArray[index].Tuesdaydescnb;
-      this.timesheetList[index].ApproverComment = this.weekProjects.TuesdayArray[index].ApproverComment;
-      this.timesheetList[index].ProjectTimesheetStatus = this.weekProjects.TuesdayArray[index].ProjectTimesheetStatus;
-      this.timesheetList[index].Billable = this.weekProjects.TuesdayArray[index].Billable;
-      this.timesheetList[index].TimesheetID = this.weekProjects.TuesdayArray[index].TimesheetID;
-      this.timesheetList[index].UpdationFlag = this.weekProjects.TuesdayArray[index].UpdationFlag;
-      this.timesheetList[index].ID = this.weekProjects.TuesdayArray[index].ID;
-      // this.timesheetList[index].TotalhrsMonday = this.weekProjects.TuesdayArray[index].TotalhrsTuesday;
-    }
+    // for (var index = 0; index < this.weekProjects.TuesdayArray.length; index++) {
+    //   this.timesheetList[index].ApproverUser = this.weekProjects.TuesdayArray[index].ApproverUser;
+    //   this.timesheetList[index].Project = this.weekProjects.TuesdayArray[index].Project;
+    //   this.timesheetList[index].Task = this.weekProjects.TuesdayArray[index].Task;
+    //   this.timesheetList[index].Tuesdayhrs = this.weekProjects.TuesdayArray[index].Tuesdayhrs;
+    //   this.timesheetList[index].Tuesdaydesc = this.weekProjects.TuesdayArray[index].Tuesdaydesc;
+    //   this.timesheetList[index].Tuesdaydesc = this.weekProjects.TuesdayArray[index].Tuesdaydesc;
+    //   this.timesheetList[index].Tuesdaynbhrs = this.weekProjects.TuesdayArray[index].Tuesdaynbhrs;
+    //   this.timesheetList[index].Tuesdaydescnb = this.weekProjects.TuesdayArray[index].Tuesdaydescnb;
+    //   this.timesheetList[index].ApproverComment = this.weekProjects.TuesdayArray[index].ApproverComment;
+    //   this.timesheetList[index].ProjectTimesheetStatus = this.weekProjects.TuesdayArray[index].ProjectTimesheetStatus;
+    //   this.timesheetList[index].Billable = this.weekProjects.TuesdayArray[index].Billable;
+    //   this.timesheetList[index].TimesheetID = this.weekProjects.TuesdayArray[index].TimesheetID;
+    //   this.timesheetList[index].UpdationFlag = this.weekProjects.TuesdayArray[index].UpdationFlag;
+    //   this.timesheetList[index].ID = this.weekProjects.TuesdayArray[index].ID;
+    //   // this.timesheetList[index].TotalhrsMonday = this.weekProjects.TuesdayArray[index].TotalhrsTuesday;
+    // }
 
     for (var index = 0; index < this.weekProjects.TuesdayArray.length; index++) {
+      if (this.deletedTaskIndex == index)
+        continue;
       this.timesheetList[index].ApproverUser = this.weekProjects.TuesdayArray[index].ApproverUser;
       this.timesheetList[index].Project = this.weekProjects.TuesdayArray[index].Project;
       this.timesheetList[index].Task = this.weekProjects.TuesdayArray[index].Task;
@@ -303,6 +322,8 @@ export class EnterTimesheetDetailsPage {
     }
 
     for (var index = 0; index < this.weekProjects.WednesdayArray.length; index++) {
+      if (this.deletedTaskIndex == index)
+        continue;
       this.timesheetList[index].ApproverUser = this.weekProjects.WednesdayArray[index].ApproverUser;
       this.timesheetList[index].Project = this.weekProjects.WednesdayArray[index].Project;
       this.timesheetList[index].Task = this.weekProjects.WednesdayArray[index].Task;
@@ -321,6 +342,8 @@ export class EnterTimesheetDetailsPage {
     }
 
     for (var index = 0; index < this.weekProjects.ThursdayArray.length; index++) {
+      if (this.deletedTaskIndex == index)
+        continue;
       this.timesheetList[index].ApproverUser = this.weekProjects.ThursdayArray[index].ApproverUser;
       this.timesheetList[index].Project = this.weekProjects.ThursdayArray[index].Project;
       this.timesheetList[index].Task = this.weekProjects.ThursdayArray[index].Task;
@@ -339,6 +362,8 @@ export class EnterTimesheetDetailsPage {
     }
 
     for (var index = 0; index < this.weekProjects.FridayArray.length; index++) {
+      if (this.deletedTaskIndex == index)
+        continue;
       this.timesheetList[index].ApproverUser = this.weekProjects.FridayArray[index].ApproverUser;
       this.timesheetList[index].Project = this.weekProjects.FridayArray[index].Project;
       this.timesheetList[index].Task = this.weekProjects.FridayArray[index].Task;
@@ -357,6 +382,8 @@ export class EnterTimesheetDetailsPage {
     }
 
     for (var index = 0; index < this.weekProjects.SaturdayArray.length; index++) {
+      if (this.deletedTaskIndex == index)
+        continue;
       this.timesheetList[index].ApproverUser = this.weekProjects.SaturdayArray[index].ApproverUser;
       this.timesheetList[index].Project = this.weekProjects.SaturdayArray[index].Project;
       this.timesheetList[index].Task = this.weekProjects.SaturdayArray[index].Task;
@@ -375,6 +402,8 @@ export class EnterTimesheetDetailsPage {
     }
 
     for (var index = 0; index < this.weekProjects.SundayArray.length; index++) {
+      if (this.deletedTaskIndex == index)
+        continue;
       this.timesheetList[index].ApproverUser = this.weekProjects.SundayArray[index].ApproverUser;
       this.timesheetList[index].Project = this.weekProjects.SundayArray[index].Project;
       this.timesheetList[index].Task = this.weekProjects.SundayArray[index].Task;
@@ -391,7 +420,8 @@ export class EnterTimesheetDetailsPage {
       this.timesheetList[index].ID = this.weekProjects.SundayArray[index].ID;
       // this.timesheetList[index].TotalhrsSunday = this.weekProjects.SundayArray[index].TotalhrsSunday;
     }
-
+    // console.log(' popping this.timesheetList => ', this.timesheetList);
+    console.log("timesheetlist => ",this.timesheetList[this.deletedTaskIndex]);
     this.calculateTotalHrs();
 
 
@@ -415,103 +445,117 @@ export class EnterTimesheetDetailsPage {
     var totalm: number = 0;
     var tMin: number = 0;
     for (let i = 0; i < this.timesheetList.length; i++) {
-      if (this.timesheetList[i].Mondaynbhrs && this.timesheetList[i].Mondaynbhrs !== null && this.timesheetList[i].Mondaynbhrs.length > 0) {
+      if (this.timesheetList[i].Mondaynbhrs && this.timesheetList[i].Mondaynbhrs !== null && this.timesheetList[i].Mondaynbhrs.length > 0 && this.deletedTaskIndex != i) {
 
         this.totalhours.TotalhrsMonday = moment(moment(this.totalhours.TotalhrsMonday, 'HH:mm').add(moment(this.timesheetList[i].Mondaynbhrs, 'HH:mm').hours() * 60 + moment(this.timesheetList[i].Mondaynbhrs, 'HH:mm').minutes(), 'minutes')).format('HH:mm');
         totalh = totalh + moment(this.timesheetList[i].Mondaynbhrs, 'HH:mm').hours();
         totalm = totalm + moment(this.timesheetList[i].Mondaynbhrs, 'HH:mm').minutes();
         // this.totalhours.TotalhrsTimesheet = moment(moment(this.totalhours.TotalhrsTimesheet, 'HH:mm').add(moment(this.timesheetList[i].Mondaynbhrs, 'HH:mm').hours() * 60 + moment(this.timesheetList[i].Mondaynbhrs, 'HH:mm').minutes(), 'minutes')).format('HH:mm');
+
         this.weekProjects.MondayArray[i].TotalhrsMonday = this.totalhours.TotalhrsMonday;
       }
-      if (this.timesheetList[i].Mondayhrs && this.timesheetList[i].Mondayhrs !== null && this.timesheetList[i].Mondayhrs.length > 0) {
+      if (this.timesheetList[i].Mondayhrs && this.timesheetList[i].Mondayhrs !== null && this.timesheetList[i].Mondayhrs.length > 0 && this.deletedTaskIndex != i) {
         this.totalhours.TotalhrsMonday = moment(moment(this.totalhours.TotalhrsMonday, 'HH:mm').add(moment(this.timesheetList[i].Mondayhrs, 'HH:mm').hours() * 60 + moment(this.timesheetList[i].Mondayhrs, 'HH:mm').minutes(), 'minutes')).format('HH:mm');
         totalh = totalh + moment(this.timesheetList[i].Mondayhrs, 'HH:mm').hours();
         totalm = totalm + moment(this.timesheetList[i].Mondayhrs, 'HH:mm').minutes();
         // this.totalhours.TotalhrsTimesheet = moment(moment(this.totalhours.TotalhrsTimesheet, 'HH:mm').add(moment(this.timesheetList[i].Mondayhrs, 'HH:mm').hours() * 60 + moment(this.timesheetList[i].Mondayhrs, 'HH:mm').minutes(), 'minutes')).format('HH:mm');
+
         this.weekProjects.MondayArray[i].TotalhrsMonday = this.totalhours.TotalhrsMonday;
       }
-      if (this.timesheetList[i].Tuesdayhrs && this.timesheetList[i].Tuesdayhrs !== null && this.timesheetList[i].Tuesdayhrs.length > 0) {
+      if (this.timesheetList[i].Tuesdayhrs && this.timesheetList[i].Tuesdayhrs !== null && this.timesheetList[i].Tuesdayhrs.length > 0 && this.deletedTaskIndex != i) {
         this.totalhours.TotalhrsTuesday = moment(moment(this.totalhours.TotalhrsTuesday, 'HH:mm').add(moment(this.timesheetList[i].Tuesdayhrs, 'HH:mm').hours() * 60 + moment(this.timesheetList[i].Tuesdayhrs, 'HH:mm').minutes(), 'minutes')).format('HH:mm');
         totalh = totalh + moment(this.timesheetList[i].Tuesdayhrs, 'HH:mm').hours();
         totalm = totalm + moment(this.timesheetList[i].Tuesdayhrs, 'HH:mm').minutes();
         // this.totalhours.TotalhrsTimesheet = moment(moment(this.totalhours.TotalhrsTimesheet, 'HH:mm').add(moment(this.timesheetList[i].Tuesdayhrs, 'HH:mm').hours() * 60 + moment(this.timesheetList[i].Tuesdayhrs, 'HH:mm').minutes(), 'minutes')).format('HH:mm');
+
         this.weekProjects.TuesdayArray[i].TotalhrsTuesday = this.totalhours.TotalhrsTuesday;
       }
-      if (this.timesheetList[i].Tuesdaynbhrs && this.timesheetList[i].Tuesdaynbhrs !== null && this.timesheetList[i].Tuesdaynbhrs.length > 0) {
+      if (this.timesheetList[i].Tuesdaynbhrs && this.timesheetList[i].Tuesdaynbhrs !== null && this.timesheetList[i].Tuesdaynbhrs.length > 0 && this.deletedTaskIndex != i) {
         this.totalhours.TotalhrsTuesday = moment(moment(this.totalhours.TotalhrsTuesday, 'HH:mm').add(moment(this.timesheetList[i].Tuesdaynbhrs, 'HH:mm').hours() * 60 + moment(this.timesheetList[i].Tuesdaynbhrs, 'HH:mm').minutes(), 'minutes')).format('HH:mm');
         totalh = totalh + moment(this.timesheetList[i].Tuesdaynbhrs, 'HH:mm').hours();
         totalm = totalm + moment(this.timesheetList[i].Tuesdaynbhrs, 'HH:mm').minutes();
         // this.totalhours.TotalhrsTimesheet = moment(moment(this.totalhours.TotalhrsTimesheet, 'HH:mm').add(moment(this.timesheetList[i].Tuesdaynbhrs, 'HH:mm').hours() * 60 + moment(this.timesheetList[i].Tuesdaynbhrs, 'HH:mm').minutes(), 'minutes')).format('HH:mm');
+
         this.weekProjects.TuesdayArray[i].TotalhrsTuesday = this.totalhours.TotalhrsTuesday;
       }
-      if (this.timesheetList[i].Wednesdaynbhrs && this.timesheetList[i].Wednesdaynbhrs !== null && this.timesheetList[i].Wednesdaynbhrs.length > 0) {
+      if (this.timesheetList[i].Wednesdaynbhrs && this.timesheetList[i].Wednesdaynbhrs !== null && this.timesheetList[i].Wednesdaynbhrs.length > 0 && this.deletedTaskIndex != i) {
         this.totalhours.TotalhrsWednesday = moment(moment(this.totalhours.TotalhrsWednesday, 'HH:mm').add(moment(this.timesheetList[i].Wednesdaynbhrs, 'HH:mm').hours() * 60 + moment(this.timesheetList[i].Wednesdaynbhrs, 'HH:mm').minutes(), 'minutes')).format('HH:mm');
         totalh = totalh + moment(this.timesheetList[i].Wednesdaynbhrs, 'HH:mm').hours();
         totalm = totalm + moment(this.timesheetList[i].Wednesdaynbhrs, 'HH:mm').minutes();
         // this.totalhours.TotalhrsTimesheet = moment(moment(this.totalhours.TotalhrsTimesheet, 'HH:mm').add(moment(this.timesheetList[i].Wednesdaynbhrs, 'HH:mm').hours() * 60 + moment(this.timesheetList[i].Wednesdaynbhrs, 'HH:mm').minutes(), 'minutes')).format('HH:mm');
+
         this.weekProjects.WednesdayArray[i].TotalhrsWednesday = this.totalhours.TotalhrsWednesday;
       }
-      if (this.timesheetList[i].Wednesdayhrs && this.timesheetList[i].Wednesdayhrs !== null && this.timesheetList[i].Wednesdayhrs.length > 0) {
+      if (this.timesheetList[i].Wednesdayhrs && this.timesheetList[i].Wednesdayhrs !== null && this.timesheetList[i].Wednesdayhrs.length > 0 && this.deletedTaskIndex != i) {
         this.totalhours.TotalhrsWednesday = moment(moment(this.totalhours.TotalhrsWednesday, 'HH:mm').add(moment(this.timesheetList[i].Wednesdayhrs, 'HH:mm').hours() * 60 + moment(this.timesheetList[i].Wednesdayhrs, 'HH:mm').minutes(), 'minutes')).format('HH:mm');
         totalh = totalh + moment(this.timesheetList[i].Wednesdayhrs, 'HH:mm').hours();
         totalm = totalm + moment(this.timesheetList[i].Wednesdayhrs, 'HH:mm').minutes();
         // this.totalhours.TotalhrsTimesheet = moment(moment(this.totalhours.TotalhrsTimesheet, 'HH:mm').add(moment(this.timesheetList[i].Wednesdayhrs, 'HH:mm').hours() * 60 + moment(this.timesheetList[i].Wednesdayhrs, 'HH:mm').minutes(), 'minutes')).format('HH:mm');
+
         this.weekProjects.WednesdayArray[i].TotalhrsWednesday = this.totalhours.TotalhrsWednesday;
       }
-      if (this.timesheetList[i].Thursdaynbhrs && this.timesheetList[i].Thursdaynbhrs !== null && this.timesheetList[i].Thursdaynbhrs.length > 0) {
+      if (this.timesheetList[i].Thursdaynbhrs && this.timesheetList[i].Thursdaynbhrs !== null && this.timesheetList[i].Thursdaynbhrs.length > 0 && this.deletedTaskIndex != i) {
         this.totalhours.TotalhrsThursday = moment(moment(this.totalhours.TotalhrsThursday, 'HH:mm').add(moment(this.timesheetList[i].Thursdaynbhrs, 'HH:mm').hours() * 60 + moment(this.timesheetList[i].Thursdaynbhrs, 'HH:mm').minutes(), 'minutes')).format('HH:mm');
         totalh = totalh + moment(this.timesheetList[i].Thursdaynbhrs, 'HH:mm').hours();
         totalm = totalm + moment(this.timesheetList[i].Thursdaynbhrs, 'HH:mm').minutes();
         // this.totalhours.TotalhrsTimesheet = moment(moment(this.totalhours.TotalhrsTimesheet, 'HH:mm').add(moment(this.timesheetList[i].Thursdaynbhrs, 'HH:mm').hours() * 60 + moment(this.timesheetList[i].Thursdaynbhrs, 'HH:mm').minutes(), 'minutes')).format('HH:mm');
+
         this.weekProjects.ThursdayArray[i].TotalhrsThursday = this.totalhours.TotalhrsThursday;
       }
-      if (this.timesheetList[i].Thursdayhrs && this.timesheetList[i].Thursdayhrs !== null && this.timesheetList[i].Thursdayhrs.length > 0) {
+      if (this.timesheetList[i].Thursdayhrs && this.timesheetList[i].Thursdayhrs !== null && this.timesheetList[i].Thursdayhrs.length > 0 && this.deletedTaskIndex != i) {
         this.totalhours.TotalhrsThursday = moment(moment(this.totalhours.TotalhrsThursday, 'HH:mm').add(moment(this.timesheetList[i].Thursdayhrs, 'HH:mm').hours() * 60 + moment(this.timesheetList[i].Thursdayhrs, 'HH:mm').minutes(), 'minutes')).format('HH:mm');
         totalh = totalh + moment(this.timesheetList[i].Thursdayhrs, 'HH:mm').hours();
         totalm = totalm + moment(this.timesheetList[i].Thursdayhrs, 'HH:mm').minutes();
         // this.totalhours.TotalhrsTimesheet = moment(moment(this.totalhours.TotalhrsTimesheet, 'HH:mm').add(moment(this.timesheetList[i].Thursdayhrs, 'HH:mm').hours() * 60 + moment(this.timesheetList[i].Thursdayhrs, 'HH:mm').minutes(), 'minutes')).format('HH:mm');
+
         this.weekProjects.ThursdayArray[i].TotalhrsThursday = this.totalhours.TotalhrsThursday;
       }
-      if (this.timesheetList[i].Fridaynbhrs && this.timesheetList[i].Fridaynbhrs !== null && this.timesheetList[i].Fridaynbhrs.length > 0) {
+      if (this.timesheetList[i].Fridaynbhrs && this.timesheetList[i].Fridaynbhrs !== null && this.timesheetList[i].Fridaynbhrs.length > 0 && this.deletedTaskIndex != i) {
         this.totalhours.TotalhrsFriday = moment(moment(this.totalhours.TotalhrsFriday, 'HH:mm').add(moment(this.timesheetList[i].Fridaynbhrs, 'HH:mm').hours() * 60 + moment(this.timesheetList[i].Fridaynbhrs, 'HH:mm').minutes(), 'minutes')).format('HH:mm');
         totalh = totalh + moment(this.timesheetList[i].Fridaynbhrs, 'HH:mm').hours();
         totalm = totalm + moment(this.timesheetList[i].Fridaynbhrs, 'HH:mm').minutes();
         // this.totalhours.TotalhrsTimesheet = moment(moment(this.totalhours.TotalhrsTimesheet, 'HH:mm').add(moment(this.timesheetList[i].Fridaynbhrs, 'HH:mm').hours() * 60 + moment(this.timesheetList[i].Fridaynbhrs, 'HH:mm').minutes(), 'minutes')).format('HH:mm');
+
         this.weekProjects.FridayArray[i].TotalhrsFriday = this.totalhours.TotalhrsFriday;
       }
-      if (this.timesheetList[i].Fridayhrs && this.timesheetList[i].Fridayhrs !== null && this.timesheetList[i].Fridayhrs.length > 0) {
+      if (this.timesheetList[i].Fridayhrs && this.timesheetList[i].Fridayhrs !== null && this.timesheetList[i].Fridayhrs.length > 0 && this.deletedTaskIndex != i) {
         this.totalhours.TotalhrsFriday = moment(moment(this.totalhours.TotalhrsFriday, 'HH:mm').add(moment(this.timesheetList[i].Fridayhrs, 'HH:mm').hours() * 60 + moment(this.timesheetList[i].Fridayhrs, 'HH:mm').minutes(), 'minutes')).format('HH:mm');
         totalh = totalh + moment(this.timesheetList[i].Fridayhrs, 'HH:mm').hours();
         totalm = totalm + moment(this.timesheetList[i].Fridayhrs, 'HH:mm').minutes();
         // this.totalhours.TotalhrsTimesheet = moment(moment(this.totalhours.TotalhrsTimesheet, 'HH:mm').add(moment(this.timesheetList[i].Fridayhrs, 'HH:mm').hours() * 60 + moment(this.timesheetList[i].Fridayhrs, 'HH:mm').minutes(), 'minutes')).format('HH:mm');
+
         this.weekProjects.FridayArray[i].TotalhrsFriday = this.totalhours.TotalhrsFriday;
       }
-      if (this.timesheetList[i].Saturdaynbhrs && this.timesheetList[i].Saturdaynbhrs !== null && this.timesheetList[i].Saturdaynbhrs.length > 0) {
+      if (this.timesheetList[i].Saturdaynbhrs && this.timesheetList[i].Saturdaynbhrs !== null && this.timesheetList[i].Saturdaynbhrs.length > 0 && this.deletedTaskIndex != i) {
         this.totalhours.TotalhrsSaturday = moment(moment(this.totalhours.TotalhrsSaturday, 'HH:mm').add(moment(this.timesheetList[i].Saturdaynbhrs, 'HH:mm').hours() * 60 + moment(this.timesheetList[i].Saturdaynbhrs, 'HH:mm').minutes(), 'minutes')).format('HH:mm');
         totalh = totalh + moment(this.timesheetList[i].Saturdaynbhrs, 'HH:mm').hours();
         totalm = totalm + moment(this.timesheetList[i].Saturdaynbhrs, 'HH:mm').minutes();
         // this.totalhours.TotalhrsTimesheet = moment(moment(this.totalhours.TotalhrsTimesheet, 'HH:mm').add(moment(this.timesheetList[i].Saturdaynbhrs, 'HH:mm').hours() * 60 + moment(this.timesheetList[i].Saturdaynbhrs, 'HH:mm').minutes(), 'minutes')).format('HH:mm');
+
         this.weekProjects.SaturdayArray[i].TotalhrsSaturday = this.totalhours.TotalhrsSaturday;
       }
-      if (this.timesheetList[i].Saturdayhrs && this.timesheetList[i].Saturdayhrs !== null && this.timesheetList[i].Saturdayhrs.length > 0) {
+      if (this.timesheetList[i].Saturdayhrs && this.timesheetList[i].Saturdayhrs !== null && this.timesheetList[i].Saturdayhrs.length > 0 && this.deletedTaskIndex != i) {
         this.totalhours.TotalhrsSaturday = moment(moment(this.totalhours.TotalhrsSaturday, 'HH:mm').add(moment(this.timesheetList[i].Saturdayhrs, 'HH:mm').hours() * 60 + moment(this.timesheetList[i].Saturdayhrs, 'HH:mm').minutes(), 'minutes')).format('HH:mm');
         totalh = totalh + moment(this.timesheetList[i].Saturdayhrs, 'HH:mm').hours();
         totalm = totalm + moment(this.timesheetList[i].Saturdayhrs, 'HH:mm').minutes();
         // this.totalhours.TotalhrsTimesheet = moment(moment(this.totalhours.TotalhrsTimesheet, 'HH:mm').add(moment(this.timesheetList[i].Saturdayhrs, 'HH:mm').hours() * 60 + moment(this.timesheetList[i].Saturdayhrs, 'HH:mm').minutes(), 'minutes')).format('HH:mm');
+
         this.weekProjects.SaturdayArray[i].TotalhrsSaturday = this.totalhours.TotalhrsSaturday;
       }
-      if (this.timesheetList[i].Sundaynbhrs && this.timesheetList[i].Sundaynbhrs !== null && this.timesheetList[i].Sundaynbhrs.length > 0) {
+      if (this.timesheetList[i].Sundaynbhrs && this.timesheetList[i].Sundaynbhrs !== null && this.timesheetList[i].Sundaynbhrs.length > 0 && this.deletedTaskIndex != i) {
         this.totalhours.TotalhrsSunday = moment(moment(this.totalhours.TotalhrsSunday, 'HH:mm').add(moment(this.timesheetList[i].Sundaynbhrs, 'HH:mm').hours() * 60 + moment(this.timesheetList[i].Sundaynbhrs, 'HH:mm').minutes(), 'minutes')).format('HH:mm');
         totalh = totalh + moment(this.timesheetList[i].Sundaynbhrs, 'HH:mm').hours();
         totalm = totalm + moment(this.timesheetList[i].Sundaynbhrs, 'HH:mm').minutes();
         // this.totalhours.TotalhrsTimesheet = moment(moment(this.totalhours.TotalhrsTimesheet, 'HH:mm').add(moment(this.timesheetList[i].Sundaynbhrs, 'HH:mm').hours() * 60 + moment(this.timesheetList[i].Sundaynbhrs, 'HH:mm').minutes(), 'minutes')).format('HH:mm');
+
         this.weekProjects.SundayArray[i].TotalhrsSunday = this.totalhours.TotalhrsSunday;
       }
-      if (this.timesheetList[i].Sundayhrs && this.timesheetList[i].Sundayhrs !== null && this.timesheetList[i].Sundayhrs.length > 0) {
+      if (this.timesheetList[i].Sundayhrs && this.timesheetList[i].Sundayhrs !== null && this.timesheetList[i].Sundayhrs.length > 0 && this.deletedTaskIndex != i) {
         this.totalhours.TotalhrsSunday = moment(moment(this.totalhours.TotalhrsSunday, 'HH:mm').add(moment(this.timesheetList[i].Sundayhrs, 'HH:mm').hours() * 60 + moment(this.timesheetList[i].Sundayhrs, 'HH:mm').minutes(), 'minutes')).format('HH:mm');
         totalh = totalh + moment(this.timesheetList[i].Sundayhrs, 'HH:mm').hours();
         totalm = totalm + moment(this.timesheetList[i].Sundayhrs, 'HH:mm').minutes();
         // this.totalhours.TotalhrsTimesheet = moment(moment(this.totalhours.TotalhrsTimesheet, 'HH:mm').add(moment(this.timesheetList[i].Sundayhrs, 'HH:mm').hours() * 60 + moment(this.timesheetList[i].Sundayhrs, 'HH:mm').minutes(), 'minutes')).format('HH:mm');
+
         this.weekProjects.SundayArray[i].TotalhrsSunday = this.totalhours.TotalhrsSunday;
       }
     }
@@ -519,7 +563,7 @@ export class EnterTimesheetDetailsPage {
     totalh = totalh + parseInt((totalm / 60).toString());
     totalm = totalm % 60;
     this.totalhours.TotalhrsTimesheet = (totalh < 10 ? '0' + totalh : totalh) + ':' + (totalm < 10 ? '0' + totalm : totalm);
-    console.log('total hrs', this.totalhours.TotalhrsTimesheet);
+    // console.log('total hrs', this.totalhours.TotalhrsTimesheet);
 
   }
 
@@ -661,11 +705,13 @@ export class EnterTimesheetDetailsPage {
     if (!timesheet.Project || timesheet.Project === null) {
       //this.isError = true;
       //this.errorMessage = 'Please select Project';
+      debugger;
       return false;
     }
     if (!timesheet.Task || timesheet.Task === null || timesheet.Task === '') {
       //this.isError = true;
       //this.errorMessage = 'Please select Task';
+      debugger;
       return false;
     }
     return true;
@@ -675,6 +721,7 @@ export class EnterTimesheetDetailsPage {
     if (this.checkProjectAndTask() == false)
       return;
 
+    this.deletedTaskIndex = index;
     this.weekProjects.MondayArray.splice(index, 1);
     this.weekProjects.TuesdayArray.splice(index, 1);
     this.weekProjects.WednesdayArray.splice(index, 1);
@@ -682,6 +729,11 @@ export class EnterTimesheetDetailsPage {
     this.weekProjects.FridayArray.splice(index, 1);
     this.weekProjects.SaturdayArray.splice(index, 1);
     this.weekProjects.SundayArray.splice(index, 1);
+    debugger;
+    this.timesheetList[index].ProjectTimesheetStatus = 'Inactive';
+    debugger;
+
+    // console.log('this.timesheetList => ', this.timesheetList);
 
     if (this.weekProjects.MondayArray.length === 0) {
       this.weekProjects.MondayArray.push(this.createMondayProject(null));
@@ -693,6 +745,8 @@ export class EnterTimesheetDetailsPage {
       this.weekProjects.SundayArray.push(this.createSundayProject(null));
       this.pushTimeSheet();
     }
+    this.calcDailyHours();
+    this.calculateTotalHrs();
   }
 
   calcDailyHours() {
