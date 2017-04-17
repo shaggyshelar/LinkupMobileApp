@@ -1,3 +1,29 @@
 page-add-projects {
+        .required{
+        color:red;
+    }
+    .error{
+        color:red;
+        margin-left: 5%;
+    }
+    .memberDetails{
+        margin-left: 5%;
+    }
 
+    .right {
+        float: right;
+    }
+
+    .card-close {
+        float: right;
+    }
+
+    .suggestion-list {
+        height: auto;
+        // height: 50vw;
+        overflow-y: auto;
+        border-left: darkgray 1px solid;
+        border-right: darkgray 1px solid;
+        border-bottom: darkgray 2px solid;
+    }
 }
