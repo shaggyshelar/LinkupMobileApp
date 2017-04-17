@@ -72,7 +72,7 @@
               <ion-item>
                 <ion-label floating>Billable</ion-label>
                 <!--<ion-input [(ngModel)]="timesheet.Mondayhrs"></ion-input>-->
-                <ion-datetime name="billable" [(ngModel)]="timesheet.Mondayhrs" displayFormat="HH:mm" [disabled]="timesheetStatus =='Approved'|| timesheetStatus =='Submitted' || timesheetStatus =='Rejected' || timesheet.Task.length == 0 || !checkSelectedProjectBillable(timesheet.Project.Value)"></ion-datetime>
+                <ion-datetime name="billable" [(ngModel)]="timesheet.Mondayhrs" displayFormat="HH:mm" [disabled]="timesheetStatus =='Approved'|| timesheetStatus =='Submitted' || timesheetStatus =='Rejected' || timesheet.Task.length == 0 || !checkSelectedProjectBillable(timesheet.Project.Value)" minuteValues="0,5,10,15,20,25,30,35,40,45,50,55"></ion-datetime>
               </ion-item>
               <ion-item>
                 <ion-label floating>Details</ion-label>
@@ -81,7 +81,7 @@
               <ion-item>
                 <ion-label floating>Non Billable</ion-label>
                 <!--<ion-input [(ngModel)]="timesheet.Mondaynbhrs"></ion-input>-->
-                <ion-datetime name="nonbillable" [(ngModel)]="timesheet.Mondaynbhrs" displayFormat="HH:mm" [disabled]="timesheetStatus =='Approved'|| timesheetStatus =='Submitted' || timesheetStatus =='Rejected' || timesheet.Task.length == 0"></ion-datetime>
+                <ion-datetime name="nonbillable" [(ngModel)]="timesheet.Mondaynbhrs" displayFormat="HH:mm" [disabled]="timesheetStatus =='Approved'|| timesheetStatus =='Submitted' || timesheetStatus =='Rejected' || timesheet.Task.length == 0" minuteValues="0,5,10,15,20,25,30,35,40,45,50,55"></ion-datetime>
               </ion-item>
               <ion-item>
                 <ion-label floating>Details</ion-label>
@@ -145,7 +145,7 @@
               <ion-item>
                 <ion-label floating>Billable</ion-label>
                 <!--<ion-input [(ngModel)]="timesheet.Tuesdayhrs"></ion-input>-->
-                <ion-datetime name="billable" [(ngModel)]="timesheet.Tuesdayhrs" displayFormat="HH:mm" [disabled]="timesheetStatus =='Approved'|| timesheetStatus =='Submitted' || timesheetStatus =='Rejected' || timesheet.Task.length == 0 || !checkSelectedProjectBillable(timesheet.Project.Value)"></ion-datetime>
+                <ion-datetime name="billable" [(ngModel)]="timesheet.Tuesdayhrs" displayFormat="HH:mm" [disabled]="timesheetStatus =='Approved'|| timesheetStatus =='Submitted' || timesheetStatus =='Rejected' || timesheet.Task.length == 0 || !checkSelectedProjectBillable(timesheet.Project.Value)" minuteValues="0,5,10,15,20,25,30,35,40,45,50,55"></ion-datetime>
               </ion-item>
               <ion-item>
                 <ion-label floating>Details</ion-label>
@@ -154,7 +154,7 @@
               <ion-item>
                 <ion-label floating>Non Billable</ion-label>
                 <!--<ion-input [(ngModel)]="timesheet.Tuesdaynbhrs"></ion-input>-->
-                <ion-datetime name="nonbillable" [(ngModel)]="timesheet.Tuesdaynbhrs" displayFormat="HH:mm" [disabled]="timesheetStatus =='Approved'|| timesheetStatus =='Submitted' || timesheetStatus =='Rejected' || timesheet.Task.length == 0"></ion-datetime>
+                <ion-datetime name="nonbillable" [(ngModel)]="timesheet.Tuesdaynbhrs" displayFormat="HH:mm" [disabled]="timesheetStatus =='Approved'|| timesheetStatus =='Submitted' || timesheetStatus =='Rejected' || timesheet.Task.length == 0" minuteValues="0,5,10,15,20,25,30,35,40,45,50,55"></ion-datetime>
               </ion-item>
               <ion-item>
                 <ion-label floating>Details</ion-label>
@@ -215,7 +215,7 @@
               <ion-item>
                 <ion-label floating>Billable</ion-label>
                 <!--<ion-input [(ngModel)]="timesheet.Wednesdayhrs"></ion-input>-->
-                <ion-datetime name="billable" [(ngModel)]="timesheet.Wednesdayhrs" displayFormat="HH:mm" [disabled]="timesheetStatus =='Approved'|| timesheetStatus =='Submitted' || timesheetStatus =='Rejected' || timesheet.Task.length == 0 || !checkSelectedProjectBillable(timesheet.Project.Value)"></ion-datetime>
+                <ion-datetime name="billable" [(ngModel)]="timesheet.Wednesdayhrs" displayFormat="HH:mm" [disabled]="timesheetStatus =='Approved'|| timesheetStatus =='Submitted' || timesheetStatus =='Rejected' || timesheet.Task.length == 0 || !checkSelectedProjectBillable(timesheet.Project.Value)" minuteValues="0,5,10,15,20,25,30,35,40,45,50,55"></ion-datetime>
               </ion-item>
               <ion-item>
                 <ion-label floating>Details</ion-label>
@@ -224,7 +224,7 @@
               <ion-item>
                 <ion-label floating>Non Billable</ion-label>
                 <!--<ion-input [(ngModel)]="timesheet.Wednesdaynbhrs"></ion-input>-->
-                <ion-datetime name="nonbillable" [(ngModel)]="timesheet.Wednesdaynbhrs" displayFormat="HH:mm" [disabled]="timesheetStatus =='Approved'|| timesheetStatus =='Submitted' || timesheetStatus =='Rejected' || timesheet.Task.length == 0"></ion-datetime>
+                <ion-datetime name="nonbillable" [(ngModel)]="timesheet.Wednesdaynbhrs" displayFormat="HH:mm" [disabled]="timesheetStatus =='Approved'|| timesheetStatus =='Submitted' || timesheetStatus =='Rejected' || timesheet.Task.length == 0" minuteValues="0,5,10,15,20,25,30,35,40,45,50,55"></ion-datetime>
               </ion-item>
               <ion-item>
                 <ion-label floating>Details</ion-label>
@@ -286,7 +286,7 @@
               <ion-item>
                 <ion-label floating>Billable</ion-label>
                 <!--<ion-input [(ngModel)]="timesheet.Thursdayhrs"></ion-input>-->
-                <ion-datetime name="billable" [(ngModel)]="timesheet.Thursdayhrs" displayFormat="HH:mm" [disabled]="timesheetStatus =='Approved'|| timesheetStatus =='Submitted' || timesheetStatus =='Rejected' || timesheet.Task.length == 0 || !checkSelectedProjectBillable(timesheet.Project.Value)"></ion-datetime>
+                <ion-datetime name="billable" [(ngModel)]="timesheet.Thursdayhrs" displayFormat="HH:mm" [disabled]="timesheetStatus =='Approved'|| timesheetStatus =='Submitted' || timesheetStatus =='Rejected' || timesheet.Task.length == 0 || !checkSelectedProjectBillable(timesheet.Project.Value)" minuteValues="0,5,10,15,20,25,30,35,40,45,50,55"></ion-datetime>
               </ion-item>
               <ion-item>
                 <ion-label floating>Details</ion-label>
@@ -295,7 +295,7 @@
               <ion-item>
                 <ion-label floating>Non Billable</ion-label>
                 <!--<ion-input [(ngModel)]="timesheet.Thursdaynbhrs"></ion-input>-->
-                <ion-datetime name="nonbillable" [(ngModel)]="timesheet.Thursdaynbhrs" displayFormat="HH:mm" [disabled]="timesheetStatus =='Approved'|| timesheetStatus =='Submitted' || timesheetStatus =='Rejected' || timesheet.Task.length == 0"></ion-datetime>
+                <ion-datetime name="nonbillable" [(ngModel)]="timesheet.Thursdaynbhrs" displayFormat="HH:mm" [disabled]="timesheetStatus =='Approved'|| timesheetStatus =='Submitted' || timesheetStatus =='Rejected' || timesheet.Task.length == 0" minuteValues="0,5,10,15,20,25,30,35,40,45,50,55"></ion-datetime>
               </ion-item>
               <ion-item>
                 <ion-label floating>Details</ion-label>
@@ -357,7 +357,7 @@
               <ion-item>
                 <ion-label floating>Billable</ion-label>
                 <!--<ion-input [(ngModel)]="timesheet.Fridayhrs"></ion-input>-->
-                <ion-datetime name="billable" [(ngModel)]="timesheet.Fridayhrs" displayFormat="HH:mm" [disabled]="timesheetStatus =='Approved'|| timesheetStatus =='Submitted' || timesheetStatus =='Rejected' || timesheet.Task.length == 0 || !checkSelectedProjectBillable(timesheet.Project.Value)"></ion-datetime>
+                <ion-datetime name="billable" [(ngModel)]="timesheet.Fridayhrs" displayFormat="HH:mm" [disabled]="timesheetStatus =='Approved'|| timesheetStatus =='Submitted' || timesheetStatus =='Rejected' || timesheet.Task.length == 0 || !checkSelectedProjectBillable(timesheet.Project.Value)" minuteValues="0,5,10,15,20,25,30,35,40,45,50,55"></ion-datetime>
               </ion-item>
               <ion-item>
                 <ion-label floating>Details</ion-label>
@@ -366,7 +366,7 @@
               <ion-item>
                 <ion-label floating>Non Billable</ion-label>
                 <!--<ion-input [(ngModel)]="timesheet.Fridaynbhrs"></ion-input>-->
-                <ion-datetime name="nonbillable" [(ngModel)]="timesheet.Fridaynbhrs" displayFormat="HH:mm" [disabled]="timesheetStatus =='Approved'|| timesheetStatus =='Submitted' || timesheetStatus =='Rejected' || timesheet.Task.length == 0"></ion-datetime>
+                <ion-datetime name="nonbillable" [(ngModel)]="timesheet.Fridaynbhrs" displayFormat="HH:mm" [disabled]="timesheetStatus =='Approved'|| timesheetStatus =='Submitted' || timesheetStatus =='Rejected' || timesheet.Task.length == 0" minuteValues="0,5,10,15,20,25,30,35,40,45,50,55"></ion-datetime>
               </ion-item>
               <ion-item>
                 <ion-label floating>Details</ion-label>
@@ -428,7 +428,7 @@
               <ion-item>
                 <ion-label floating>Billable</ion-label>
                 <!--<ion-input [(ngModel)]="timesheet.Saturdayhrs"></ion-input>-->
-                <ion-datetime name="billable" [(ngModel)]="timesheet.Saturdayhrs" displayFormat="HH:mm" [disabled]="timesheetStatus =='Approved'|| timesheetStatus =='Submitted' || timesheetStatus =='Rejected' || timesheet.Task.length == 0 || !checkSelectedProjectBillable(timesheet.Project.Value)"></ion-datetime>
+                <ion-datetime name="billable" [(ngModel)]="timesheet.Saturdayhrs" displayFormat="HH:mm" [disabled]="timesheetStatus =='Approved'|| timesheetStatus =='Submitted' || timesheetStatus =='Rejected' || timesheet.Task.length == 0 || !checkSelectedProjectBillable(timesheet.Project.Value)" minuteValues="0,5,10,15,20,25,30,35,40,45,50,55"></ion-datetime>
               </ion-item>
               <ion-item>
                 <ion-label floating>Details</ion-label>
@@ -437,7 +437,7 @@
               <ion-item>
                 <ion-label floating>Non Billable</ion-label>
                 <!--<ion-input [(ngModel)]="timesheet.Saturdaynbhrs"></ion-input>-->
-                <ion-datetime name="nonbillable" [(ngModel)]="timesheet.Saturdaynbhrs" displayFormat="HH:mm" [disabled]="timesheetStatus =='Approved'|| timesheetStatus =='Submitted' || timesheetStatus =='Rejected' || timesheet.Task.length == 0"></ion-datetime>
+                <ion-datetime name="nonbillable" [(ngModel)]="timesheet.Saturdaynbhrs" displayFormat="HH:mm" [disabled]="timesheetStatus =='Approved'|| timesheetStatus =='Submitted' || timesheetStatus =='Rejected' || timesheet.Task.length == 0" minuteValues="0,5,10,15,20,25,30,35,40,45,50,55"></ion-datetime>
               </ion-item>
               <ion-item>
                 <ion-label floating>Details</ion-label>
@@ -499,7 +499,7 @@
               <ion-item>
                 <ion-label floating>Billable</ion-label>
                 <!--<ion-input [(ngModel)]="timesheet.Sundayhrs"></ion-input>-->
-                <ion-datetime name="billable" [(ngModel)]="timesheet.Sundayhrs" displayFormat="HH:mm" [disabled]="timesheetStatus =='Approved'|| timesheetStatus =='Submitted' || timesheetStatus =='Rejected' || timesheet.Task.length == 0 || !checkSelectedProjectBillable(timesheet.Project.Value)"></ion-datetime>
+                <ion-datetime name="billable" [(ngModel)]="timesheet.Sundayhrs" displayFormat="HH:mm" [disabled]="timesheetStatus =='Approved'|| timesheetStatus =='Submitted' || timesheetStatus =='Rejected' || timesheet.Task.length == 0 || !checkSelectedProjectBillable(timesheet.Project.Value)" minuteValues="0,5,10,15,20,25,30,35,40,45,50,55"></ion-datetime>
               </ion-item>
               <ion-item>
                 <ion-label floating>Details</ion-label>
@@ -508,7 +508,7 @@
               <ion-item>
                 <ion-label floating>Non Billable</ion-label>
                 <!--<ion-input [(ngModel)]="timesheet.Sundaynbhrs"></ion-input>-->
-                <ion-datetime name="nonbillable" [(ngModel)]="timesheet.Sundaynbhrs" displayFormat="HH:mm" [disabled]="timesheetStatus =='Approved'|| timesheetStatus =='Submitted' || timesheetStatus =='Rejected' || timesheet.Task.length == 0 "></ion-datetime>
+                <ion-datetime name="nonbillable" [(ngModel)]="timesheet.Sundaynbhrs" displayFormat="HH:mm" [disabled]="timesheetStatus =='Approved'|| timesheetStatus =='Submitted' || timesheetStatus =='Rejected' || timesheet.Task.length == 0 " minuteValues="0,5,10,15,20,25,30,35,40,45,50,55"></ion-datetime>
               </ion-item>
               <ion-item>
                 <ion-label floating>Details</ion-label>
