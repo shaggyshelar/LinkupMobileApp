@@ -37,6 +37,34 @@ export class ProjectService extends BaseService {
             .post$(project)
             .map(res => res.json());
     }
+    addProjectWithTeam(payload: any): Observable<any> {
+        let headers = new Headers();
+        let body = JSON.stringify(payload);
+        headers.append('Authorization', 'Bearer ' + localStorage.getItem('accessToken'));
+        headers.append('Content-Type', 'application/json');
+        let options = new RequestOptions({ headers: headers });
+        return this.http.post(this.baseUrl + 'Project/AddProjectWithTeamMembers', body, options)
+            .map(res => {
+                return res.json();
+            })
+            .catch(err => {
+                return this.handleError(err);
+            });
+    }
+    updateProjectWithTeam(payload: any): Observable<any> {
+        let headers = new Headers();
+        let body = JSON.stringify(payload);
+        headers.append('Authorization', 'Bearer ' + localStorage.getItem('accessToken'));
+        headers.append('Content-Type', 'application/json');
+        let options = new RequestOptions({ headers: headers });
+        return this.http.post(this.baseUrl + 'Project/UpdateProjectWithTeamMembers', body, options)
+            .map(res => {
+                return res.json();
+            })
+            .catch(err => {
+                return this.handleError(err);
+            });
+    }
     editProject(project: any): Observable<any> {
         return this
             .put$(project.Id, project)
