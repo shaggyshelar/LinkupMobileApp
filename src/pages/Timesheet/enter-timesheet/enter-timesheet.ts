@@ -160,11 +160,11 @@ export class EnterTimesheetPage {
       this.timesheetModel = res;
       // console.log('timesheet => ', this.timesheetModel);
       this.timesheetList = res.Timesheets;
-      
+
       //START : handleing 'Inactive' status
       var bufTimesheet = [];
       this.timesheetList.forEach((element, index) => {
-        if(element.ProjectTimesheetStatus != 'Inactive')
+        if (element.ProjectTimesheetStatus != 'Inactive')
           bufTimesheet.push(element);
       });
       this.timesheetList = [];
@@ -449,6 +449,7 @@ export class EnterTimesheetPage {
         }
         else {
           // this.getEmptyTimesheet();
+          this.timesheetStatus = 'New';
           this.createTimesheetList();
         }
         // this.timesheetList = this.cacheData.Timesheets;
@@ -482,6 +483,7 @@ export class EnterTimesheetPage {
         }
         else {
           //this.getEmptyTimesheet();
+          this.timesheetStatus = 'New';
           this.createTimesheetList();
         }
         // this.timesheetList = this.cacheData.Timesheets;
@@ -812,6 +814,10 @@ export class EnterTimesheetPage {
     if (!this.checkProjectAndTask()) {
       return;
     }
+    // if(!this.checkSubmitDateValid()) {
+    //   this.toastService.createToast('Cannot submit timesheet before Friday.');
+    //   return;
+    // }
     if (!this.checkTotalHours()) {
       this.isError = true;
       // this.errorMessage = 'Please make total hours of all days atleast 8 to submit timesheet';
@@ -845,13 +851,14 @@ export class EnterTimesheetPage {
     for (var key in this.totalhours) {
       payload[key] = this.totalhours[key];
     }
-    payload.ApproverUser = [];
+    payload.ApproverUser = payload.PendingApprover = [];
     for (let i = 0; i < this.timesheetList.length; i++) {
       payload.ApproverUser.push(this.timesheetList[i].ApproverUser);
+      payload.PendingApprover.push(this.timesheetList[i].ApproverUser);
       this.timesheetList[i].WeekNumber = moment(this.weekStartDate).week();
       this.timesheetList[i].Project.Value = this.timesheetList[i].Project.Value;
-      if(this.timesheetList[i].ProjectTimesheetStatus != 'Inactive')
-      this.timesheetList[i].ProjectTimesheetStatus = isSave ? 'Not Submitted' : 'Submitted';
+      if (this.timesheetList[i].ProjectTimesheetStatus != 'Inactive')
+        this.timesheetList[i].ProjectTimesheetStatus = isSave ? 'Not Submitted' : 'Submitted';
       this.timesheetList[i].StartDate = this.weekStartDate;
       this.timesheetList[i].EndDate = this.weekStartDate;
       this.timesheetList[i].TimesheetStartDate = this.weekStartDate;
@@ -860,6 +867,7 @@ export class EnterTimesheetPage {
       this.timesheetList[i].TimesheetStatus = 'Active';
       this.timesheetList[i].TimesheetID = this.timesheetID;
     }
+    // payload.PendingApprover = payload.ApproverUser
     payload.Title = this.currentUserDetail.EmpID;
     payload.Timesheets = this.timesheetList;
     payload.Employee = this.currentUserDetail.Employee;
@@ -927,6 +935,10 @@ export class EnterTimesheetPage {
     nbMins = (nbMins % 60);
     return (nbHrs < 10 ? '0' + nbHrs : nbHrs) + ':' + (nbMins < 10 ? '0' + nbMins : nbMins);
   }
+
+  // checkSubmitDateValid() {
+  //   return moment().isSameOrAfter(moment(this.weekStartDate).add(4, 'days'));
+  // }
 
 }
 
