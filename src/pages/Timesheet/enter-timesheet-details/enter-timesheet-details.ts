@@ -82,7 +82,7 @@ export class EnterTimesheetDetailsPage {
   }
 
   ionViewDidEnter() {
-    
+
     this.goToSlide();
   }
 
@@ -92,8 +92,10 @@ export class EnterTimesheetDetailsPage {
   }
 
   ionViewWillLeave() {
-    if (this.timesheetStatus != 'Approved' && this.timesheetStatus != 'Submitted' && this.timesheetStatus != 'Rejected')
+    if (this.timesheetStatus != 'Approved' && this.timesheetStatus != 'Submitted' && this.timesheetStatus != 'Rejected') {
+      this.cleanTimesheet();
       this.SaveData();
+    }
 
   }
 
@@ -260,6 +262,69 @@ export class EnterTimesheetDetailsPage {
     return pindex;
   }
 
+  cleanTimesheet() {
+    // var flag0,flag1,flag2,flag3,flag4,flag5,flag6 = false;
+    let idxSplice: number[] = [];
+    let idxKeep: number[] = [];
+    for (var index = 0; index < this.weekProjects.MondayArray.length; index++) {
+      if (this.deletedTaskIndex == index)
+        continue;
+      var flag0, flag1, flag2, flag3, flag4, flag5, flag6 = false;
+      if (((this.weekProjects.MondayArray[index].Mondaynbhrs == '00:00' || !this.weekProjects.MondayArray[index].Mondaynbhrs) && !this.weekProjects.MondayArray[index].Mondaydesc.trim()) && ((this.weekProjects.MondayArray[index].Mondayhrs == '00:00' || !this.weekProjects.MondayArray[index].Mondayhrs) && !this.weekProjects.MondayArray[index].Mondaydescnb.trim())) {
+        flag0 = true;
+      } else {
+        idxKeep.push(index); flag0 = false;
+      } if (((this.weekProjects.TuesdayArray[index].Tuesdaynbhrs == '00:00' || !this.weekProjects.TuesdayArray[index].Tuesdaynbhrs) && !this.weekProjects.TuesdayArray[index].Tuesdaydesc.trim()) && ((this.weekProjects.TuesdayArray[index].Tuesdayhrs == '00:00' || !this.weekProjects.TuesdayArray[index].Tuesdayhrs) && !this.weekProjects.TuesdayArray[index].Tuesdaydescnb.trim())) {
+        flag1 = true;
+      } else {
+        idxKeep.push(index); flag1 = false;
+      } if (((this.weekProjects.WednesdayArray[index].Wednesdaynbhrs == '00:00' || !this.weekProjects.WednesdayArray[index].Wednesdaynbhrs) && !this.weekProjects.WednesdayArray[index].Wednesdaydesc.trim()) && ((this.weekProjects.WednesdayArray[index].Wednesdayhrs == '00:00' || !this.weekProjects.WednesdayArray[index].Wednesdayhrs) && !this.weekProjects.WednesdayArray[index].Wednesdaydescnb.trim())) {
+        flag2 = true;
+      } else {
+        idxKeep.push(index); flag2 = false;
+      } if (((this.weekProjects.ThursdayArray[index].Thursdaynbhrs == '00:00' || !this.weekProjects.ThursdayArray[index].Thursdaynbhrs) && !this.weekProjects.ThursdayArray[index].Thursdaydesc.trim()) && ((this.weekProjects.ThursdayArray[index].Thursdayhrs == '00:00' || !this.weekProjects.ThursdayArray[index].Thursdayhrs) && !this.weekProjects.ThursdayArray[index].Thursdaydescnb.trim())) {
+        flag3 = true;
+      } else {
+        idxKeep.push(index); flag3 = false;
+      } if (((this.weekProjects.FridayArray[index].Fridaynbhrs == '00:00' || !this.weekProjects.FridayArray[index].Fridaynbhrs) && !this.weekProjects.FridayArray[index].Fridaydesc.trim()) && ((this.weekProjects.FridayArray[index].Fridayhrs == '00:00' || !this.weekProjects.FridayArray[index].Fridayhrs) && !this.weekProjects.FridayArray[index].Fridaydescnb.trim())) {
+        flag4 = true;
+      } else {
+        idxKeep.push(index); flag4 = false;
+      } if (((this.weekProjects.SaturdayArray[index].Saturdaynbhrs == '00:00' || !this.weekProjects.SaturdayArray[index].Saturdaynbhrs) && !this.weekProjects.SaturdayArray[index].Saturdaydesc.trim()) && ((this.weekProjects.SaturdayArray[index].Saturdayhrs == '00:00' || !this.weekProjects.SaturdayArray[index].Saturdayhrs) && !this.weekProjects.SaturdayArray[index].Saturdaydescnb.trim())) {
+        flag5 = true;
+      } else {
+        idxKeep.push(index); flag5 = false;
+      } if (((this.weekProjects.SundayArray[index].Sundaynbhrs == '00:00' || !this.weekProjects.SundayArray[index].Sundaynbhrs) && !this.weekProjects.SundayArray[index].Sundaydesc.trim()) && ((this.weekProjects.SundayArray[index].Sundayhrs == '00:00' || !this.weekProjects.SundayArray[index].Sundayhrs) && !this.weekProjects.SundayArray[index].Sundaydescnb.trim())) {
+        flag6 = true;
+      } else {
+        idxKeep.push(index); flag6 = false;
+      } if (flag0 && flag1 && flag2 && flag3 && flag4 && flag5 && flag6) idxSplice.push(index);
+    }
+    idxSplice.forEach(element => {
+      this.weekProjects.MondayArray.splice(element, 1);
+      this.weekProjects.TuesdayArray.splice(element, 1);
+      this.weekProjects.WednesdayArray.splice(element, 1);
+      this.weekProjects.ThursdayArray.splice(element, 1);
+      this.weekProjects.FridayArray.splice(element, 1);
+      this.weekProjects.SaturdayArray.splice(element, 1);
+      this.weekProjects.SundayArray.splice(element, 1);
+      this.timesheetList.splice(element);
+    });
+    console.log('after splicing','weekProjects =>', this.weekProjects, 'timesheetList =>', this.timesheetList);
+
+    if (this.weekProjects.MondayArray.length == 0) {
+      this.weekProjects.MondayArray.push(this.createMondayProject(null));
+      this.weekProjects.TuesdayArray.push(this.createTuesdayProject(null));
+      this.weekProjects.WednesdayArray.push(this.createWednesdayProject(null));
+      this.weekProjects.ThursdayArray.push(this.createThursdayProject(null));
+      this.weekProjects.FridayArray.push(this.createFridayProject(null));
+      this.weekProjects.SaturdayArray.push(this.createSaturdayProject(null));
+      this.weekProjects.SundayArray.push(this.createSundayProject(null));
+      this.pushTimeSheet();
+    }
+    console.log('leaving cleanTimesheet','weekProjects =>', this.weekProjects, 'timesheetList =>', this.timesheetList);
+  }
+
   SaveData() {
     for (var index = 0; index < this.weekProjects.MondayArray.length; index++) {
       if (this.deletedTaskIndex == index)
@@ -421,7 +486,7 @@ export class EnterTimesheetDetailsPage {
       // this.timesheetList[index].TotalhrsSunday = this.weekProjects.SundayArray[index].TotalhrsSunday;
     }
     // console.log(' popping this.timesheetList => ', this.timesheetList);
-    console.log("timesheetlist => ",this.timesheetList[this.deletedTaskIndex]);
+    console.log("timesheetlist => ", this.timesheetList[this.deletedTaskIndex]);
     this.calculateTotalHrs();
 
 
@@ -705,13 +770,11 @@ export class EnterTimesheetDetailsPage {
     if (!timesheet.Project || timesheet.Project === null) {
       //this.isError = true;
       //this.errorMessage = 'Please select Project';
-      debugger;
       return false;
     }
     if (!timesheet.Task || timesheet.Task === null || timesheet.Task === '') {
       //this.isError = true;
       //this.errorMessage = 'Please select Task';
-      debugger;
       return false;
     }
     return true;
