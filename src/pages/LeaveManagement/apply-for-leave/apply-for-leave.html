@@ -15,10 +15,14 @@
        <button ion-button (click)="showLeaveDeatils()" > 
           <ion-icon name="information-circle"></ion-icon>
       </button>
-      <button ion-button [disabled]="addLeaveArr.length===0"
+      <button ion-button [disabled]="!isCommentValid  || this.isValidationMessage || this.itsWeekend"
       (click)="submitForm()">
           Submit
       </button>
+      <!--<button ion-button [disabled]="addLeaveArr.length===0"
+      (click)="submitForm()">
+          Submit
+      </button>-->
     </ion-buttons>
   </ion-navbar>
 
