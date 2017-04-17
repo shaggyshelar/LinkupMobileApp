@@ -1,7 +1,6 @@
 /** Angular Dependencies */
 import { Injectable } from '@angular/core';
 import { Http } from '@angular/http';
-import { Router } from '@angular/router';
 
 /** Third Party Dependencies */
 //import { Observable } from 'rxjs/Rx';
@@ -19,7 +18,7 @@ const CONTEXT = 'TeamMembers';
 /** Service Definition */
 @Injectable()
 export class TeamMemberService extends BaseService {
-    constructor(public http: Http, messageService: MessageService, router: Router) {
+    constructor(public http: Http) {
         super(http, CONTEXT);
     }
     getTeamByProject(id: string) {
