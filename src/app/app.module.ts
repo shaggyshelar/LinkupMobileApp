@@ -51,7 +51,9 @@ import { LeaveDetailsPage } from '../pages/LeaveManagement/leave-details/leave-d
 import { MyCertificationPage } from '../pages/Certification/my-certification/my-certification';
 
 import { ManageMyProjectsPage } from '../pages/Projects/manage-my-projects/manage-my-projects';
+import { AddProjectsPage } from '../pages/Projects/add-projects/add-projects';
 import { EmployeeProjectManagementPage } from '../pages/Projects/employee-project-management/employee-project-management';
+import { AddTeamMembersPage } from '../pages/Projects/add-team-members/add-team-members';
 
 // Profile
 import { AchievementPage } from '../pages/Corporate/MyProfile/achievement/achievement';
@@ -79,7 +81,7 @@ import { UserService } from '../pages/LeaveManagement/index';
 import { MessageService } from '../providers/index';
 import { CommonService } from '../providers/index';
 import { EmployeeTimesheetService, TimesheetService } from '../pages/Timesheet/index';
-import { PhasesService, ProjectService } from '../pages/Projects/index';
+import { PhasesService, ProjectService, TeamMemberService, EmployeeService } from '../pages/Projects/index';
 import { ClientService } from '../providers/shared/master/client.service';
 import { ProjectTypeService } from '../providers/shared/master/projectType.service';
 import { ProjectCategoryService } from '../providers/shared/master/projectCategory.service';
@@ -141,7 +143,9 @@ import { CacheService, CacheStorageAbstract, CacheLocalStorage } from 'ng2-cache
     LeaveDetailsPage,
     MyLeaveDetailPage,
     ManageMyProjectsPage,
+    AddProjectsPage,
     EmployeeProjectManagementPage,
+    AddTeamMembersPage,
     MyCertificationPage,
     AchievementPage,
     CertificationPage,
@@ -209,7 +213,9 @@ import { CacheService, CacheStorageAbstract, CacheLocalStorage } from 'ng2-cache
     MyLeaveDetailPage,
     MyCertificationPage,
     ManageMyProjectsPage,
+    AddProjectsPage,
     EmployeeProjectManagementPage,
+    AddTeamMembersPage,
     AchievementPage,
     CertificationPage,
     EducationPage,
@@ -230,7 +236,7 @@ import { CacheService, CacheStorageAbstract, CacheLocalStorage } from 'ng2-cache
       useClass: IonicErrorHandler
     }, 
     Auth, AuthService, LeaveService, HolidayService, UserService, MessageService, CommonService, LimitToDirective, KebabCasePipe,
-    CacheService, EmployeeTimesheetService, ClientService, ProjectTypeService, PriceTypeService, LogATicketMasterService, ProjectCategoryService, DeliveryUnitService, DeliveryModelService, PhasesService, ProjectService, TimesheetService, LogATicketService, ConferenceBookingService, ConferenceBookingMasterService,
+    CacheService, EmployeeTimesheetService, ClientService, ProjectTypeService, PriceTypeService, LogATicketMasterService, ProjectCategoryService, DeliveryUnitService, DeliveryModelService, PhasesService, ProjectService, TeamMemberService, EmployeeService, TimesheetService, LogATicketService, ConferenceBookingService, ConferenceBookingMasterService,
     { provide: CacheStorageAbstract, useClass: CacheLocalStorage }]
 })
 export class AppModule { }
