@@ -184,7 +184,7 @@ export class MyApp {
 
     this.pages.push({ title: 'My Timesheets', component: MyTimesheetPage, icon: 'md-clock' });
 
-    if (this.auth.checkPermission('PROJECTS.MANAGEMYPROJECTS.MANAGE') == true) {
+    if ((this.auth.checkPermission('PROJECTS.MANAGEMYPROJECTS.MANAGE') || this.auth.checkPermission('PROJECTS.MANAGEMYPROJECTS.READ') || this.auth.checkPermission('PROJECTS.MANAGEMYPROJECTS.UPDATE') || this.auth.checkPermission('PROJECTS.MANAGEMYPROJECTS.ADD')) == true) {
       this.pages.push({ title: 'Manage My Projects', component: ManageMyProjectsPage, icon: 'calendar' });
     }
     if (this.auth.checkPermission('PROJECTS.EMPLOYEEPROJECTMANAGEMENT.MANAGE') == true) {
