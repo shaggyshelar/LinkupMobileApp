@@ -52,6 +52,7 @@ export class AddProjectsPage {
   suggestionList: any[];
   usersList: any[];
   ID: any;
+  minStrtDt: any;
   // ProjectDetails: Project = new Project();
   isAuthorized: boolean;
   constructor(public navCtrl: NavController,
@@ -472,6 +473,7 @@ export class AddProjectsPage {
   }
   startDateChanged(event) {
     this.ProjectDetails.StartDate = moment(event.month.text + '/' + event.day.text + '/' + event.year.text).toISOString();
+    this.minStrtDt = moment(event.month.text + '/' + event.day.text + '/' + event.year.text).add(2,'day').toISOString();
   }
   endDateChanged(event) {
     this.ProjectDetails.EndDate = moment(event.month.text + '/' + event.day.text + '/' + event.year.text).toISOString();
