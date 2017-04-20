@@ -27,6 +27,11 @@ export class ProjectService extends BaseService {
             .getChildList$('GetMyActiveProjects', 0, 0, true)
             .map(res => res.json());
     }
+    getManageMyProjectsList(): Observable<Project[]> {
+        return this
+            .getChildList$('ManageMyProjects', 0, 0, true)
+            .map(res => res.json());
+    }
     getProjectById(id: string): Observable<Project> {
         return this
             .get$(id, true)
