@@ -66,7 +66,7 @@
         <ion-col width-75 *ngIf="weekProjects.MondayArray.length>0">
           <ion-row class="project-div">
 
-            <ion-col *ngFor="let timesheet of weekProjects.MondayArray" width-50>
+            <ion-col *ngFor="let timesheet of weekProjects.MondayArray" width-45>
               <div *ngIf="timesheet.ProjectTimesheetStatus != 'Inactive'">
                 <h3 class="project-text" *ngIf="timesheet.Mondayhrs || timesheet.Mondaynbhrs">{{timesheet.Project.Value}}</h3>
                 <p *ngIf="timesheet.Mondayhrs || timesheet.Mondaynbhrs">B:{{timesheet.Mondayhrs}} &nbsp;<span>NB:{{timesheet.Mondaynbhrs}}</span></p>
@@ -98,7 +98,7 @@
         </ion-col>
         <ion-col width-75 *ngIf="weekProjects.TuesdayArray.length>0">
           <ion-row class="project-div">
-            <ion-col *ngFor="let timesheet of weekProjects.TuesdayArray"  width-50>
+            <ion-col *ngFor="let timesheet of weekProjects.TuesdayArray"  width-45>
               <div *ngIf="timesheet.ProjectTimesheetStatus != 'Inactive'">
                 <h3 class="project-text" *ngIf="timesheet.Tuesdayhrs || timesheet.Tuesdaynbhrs">{{timesheet.Project.Value}}</h3>
                 <p *ngIf="timesheet.Tuesdayhrs || timesheet.Tuesdaynbhrs">B:{{timesheet.Tuesdayhrs}} &nbsp;<span>NB:{{timesheet.Tuesdaynbhrs}}</span></p>
@@ -129,7 +129,7 @@
         <ion-col width-75 *ngIf="weekProjects.WednesdayArray.length>0">
           <ion-row class="project-div">
 
-            <ion-col *ngFor="let timesheet of weekProjects.WednesdayArray"  width-50>
+            <ion-col *ngFor="let timesheet of weekProjects.WednesdayArray"  width-45>
               <div *ngIf="timesheet.ProjectTimesheetStatus != 'Inactive'">
                 <h3 class="project-text" *ngIf="timesheet.Wednesdayhrs || timesheet.Wednesdaynbhrs">{{timesheet.Project.Value}}</h3>
                 <p *ngIf="timesheet.Wednesdayhrs || timesheet.Wednesdaynbhrs">B:{{timesheet.Wednesdayhrs}} &nbsp;<span>NB:{{timesheet.Wednesdaynbhrs}}</span></p>
@@ -161,7 +161,7 @@
         <ion-col width-75 *ngIf="weekProjects.ThursdayArray.length>0">
           <ion-row class="project-div">
 
-            <ion-col *ngFor="let timesheet of weekProjects.ThursdayArray"  width-50>
+            <ion-col *ngFor="let timesheet of weekProjects.ThursdayArray"  width-45>
               <div *ngIf="timesheet.ProjectTimesheetStatus != 'Inactive'">
                 <h3 class="project-text" *ngIf="timesheet.Thursdayhrs || timesheet.Thursdaynbhrs">{{timesheet.Project.Value}}</h3>
                 <p *ngIf="timesheet.Thursdayhrs || timesheet.Thursdaynbhrs">B:{{timesheet.Thursdayhrs}} &nbsp;<span>NB:{{timesheet.Thursdaynbhrs}}</span></p>
@@ -193,7 +193,7 @@
         <ion-col width-75 *ngIf="weekProjects.FridayArray.length>0">
           <ion-row class="project-div">
 
-            <ion-col *ngFor="let timesheet of weekProjects.FridayArray"  width-50>
+            <ion-col *ngFor="let timesheet of weekProjects.FridayArray"  width-45>
               <div *ngIf="timesheet.ProjectTimesheetStatus != 'Inactive'">
                 <h3 class="project-text" *ngIf="timesheet.Fridayhrs || timesheet.Fridaynbhrs">{{timesheet.Project.Value}}</h3>
                 <p *ngIf="timesheet.Fridayhrs || timesheet.Fridaynbhrs">B:{{timesheet.Fridayhrs}} &nbsp;<span>NB:{{timesheet.Fridaynbhrs}}</span></p>
@@ -225,7 +225,7 @@
         <ion-col width-75 *ngIf="weekProjects.SaturdayArray.length>0">
           <ion-row class="project-div">
 
-            <ion-col *ngFor="let timesheet of weekProjects.SaturdayArray"  width-50>
+            <ion-col *ngFor="let timesheet of weekProjects.SaturdayArray"  width-45>
               <div *ngIf="timesheet.ProjectTimesheetStatus != 'Inactive'">
                 <h3 class="project-text" *ngIf="timesheet.Saturdayhrs || timesheet.Saturdaynbhrs">{{timesheet.Project.Value}}</h3>
                 <p *ngIf="timesheet.Saturdayhrs || timesheet.Saturdaynbhrs">B:{{timesheet.Saturdayhrs}} &nbsp;<span>NB:{{timesheet.Saturdaynbhrs}}</span></p>
@@ -257,7 +257,7 @@
         <ion-col width-75 *ngIf="weekProjects.SundayArray.length>0">
           <ion-row class="project-div">
 
-            <ion-col *ngFor="let timesheet of weekProjects.SundayArray"  width-50>
+            <ion-col *ngFor="let timesheet of weekProjects.SundayArray"  width-45>
               <div *ngIf="timesheet.ProjectTimesheetStatus != 'Inactive'">
                 <h3 class="project-text" *ngIf="timesheet.Sundayhrs || timesheet.Sundaynbhrs">{{timesheet.Project.Value}}</h3>
                 <p *ngIf="timesheet.Sundayhrs || timesheet.Sundaynbhrs">B:{{timesheet.Sundayhrs}} &nbsp; <span>   NB:{{timesheet.Sundaynbhrs}}</span></p>
@@ -311,10 +311,10 @@
 
   <ion-item>
     <ion-row>
-      <ion-col width-50>
+      <ion-col width-45>
         <button full ion-button (click)="saveTimesheetClicked()">Save Timesheet</button>
       </ion-col>
-      <ion-col width-50>
+      <ion-col width-45>
         <button full ion-button (click)="submitTimesheetClicked()">Submit Timesheet</button>
       </ion-col>
     </ion-row>
