@@ -21,7 +21,7 @@
 
 
 <ion-content padding>
-    <ion-fab right bottom>
+    <ion-fab right bottom [hidden]="isAuthorized == false">
     <button ion-fab mini (click)="addFabClicked()"><ion-icon name="add"></ion-icon></button>
   </ion-fab>
 
