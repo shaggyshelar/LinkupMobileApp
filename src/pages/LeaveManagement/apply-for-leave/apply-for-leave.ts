@@ -76,7 +76,7 @@ export class ApplyForLeavePage {
     isShowLeaveSelection: boolean = false;
     isAllDataDownloaded: boolean = false;
     isAddedLeave: boolean = false;
-    selectedLeaveType:string = 'Leave';
+    selectedLeaveType: string = 'Leave';
 
     constructor(public navCtrl: NavController,
         public navParams: NavParams,
@@ -205,6 +205,8 @@ export class ApplyForLeavePage {
 
         });
 
+        this.spinnerService.stopSpinner();
+
 
 
 
@@ -245,29 +247,34 @@ export class ApplyForLeavePage {
 
         }
         this.spinnerService.createSpinner('Please wait..');
-        this.leaveService.submitLeaveRecord(this.addLeaveArr).subscribe(res => {
-            if (res) {
-                this.spinnerService.stopSpinner();
-                //this.leaveStatusChanged.publish('Applied Leave', 'status');
-                MessageService.addMessage({ severity: 'success', summary: 'Success', detail: MessageService.APPLY_LEAVE_2 });
-               // this.showToast(MessageService.APPLY_LEAVE_2);
-               this.toastPresent('Leave Applied successfully');
-                this.navCtrl.pop();
-            } else {
-                this.spinnerService.stopSpinner();
-                this.toastPresent('Leave Applied successfully');
-                MessageService.addMessage({ severity: 'error', summary: 'Failed', detail: MessageService.REQUEST_FAILED });
-            }
-        });
+        setTimeout(() => {
+
+
+            this.leaveService.submitLeaveRecord(this.addLeaveArr).subscribe(res => {
+                if (res) {
+                    this.spinnerService.stopSpinner();
+                    //this.leaveStatusChanged.publish('Applied Leave', 'status');
+                    MessageService.addMessage({ severity: 'success', summary: 'Success', detail: MessageService.APPLY_LEAVE_2 });
+                    // this.showToast(MessageService.APPLY_LEAVE_2);
+                    this.toastPresent('Leave Applied successfully');
+                    console.log('payload =>', this.addLeaveArr, 'res =>', res);
+                    this.navCtrl.pop();
+                } else {
+                    this.spinnerService.stopSpinner();
+                    this.toastPresent('Leave Applied successfully');
+                    MessageService.addMessage({ severity: 'error', summary: 'Failed', detail: MessageService.REQUEST_FAILED });
+                }
+            });
+        }, 250);
     }
 
     cancelLeave(leaveData: any) {
-       var selectedIndex = this.addLeaveArr.indexOf(leaveData);
-       this.addLeaveArr.splice(selectedIndex,1);
+        var selectedIndex = this.addLeaveArr.indexOf(leaveData);
+        this.addLeaveArr.splice(selectedIndex, 1);
     }
 
     onAddLeave() {
-
+        var showAlert
         this.checkIfAlreadyAdded();
         if (!this.isValidationMessage) {
             let totalNoOfdays = moment(this.model.end).diff(this.model.start, 'days') + 1;
@@ -295,7 +302,7 @@ export class ApplyForLeavePage {
             }
 
         }
-        this.presentAlert('Leave Added');
+        // this.presentAlert('Leave Added');
         //this.toastPresent('Leave Added');
         this.removeFocus();
     }
@@ -316,24 +323,22 @@ export class ApplyForLeavePage {
     }
 
     validateLeaveType() {
-       this.model.leaveType = this.getLeaveTypeModel();
+        this.model.leaveType = this.getLeaveTypeModel();
         if (this.model.leaveType !== null) {
             this.leaveTypeValid = true;
             this.dayDiffCalc();
             return;
         }
     }
-    getLeaveTypeModel()
-    {
-        var leavetypeid:number = this.model.leaveType.ID;
-        var leavetype : any;
-      this.leaves.forEach(element => {
-          if(leavetypeid == element.value.ID)
-          {
-           leavetype = element.value;
-          }
-      });
-      return leavetype;
+    getLeaveTypeModel() {
+        var leavetypeid: number = this.model.leaveType.ID;
+        var leavetype: any;
+        this.leaves.forEach(element => {
+            if (leavetypeid == element.value.ID) {
+                leavetype = element.value;
+            }
+        });
+        return leavetype;
     }
 
     reasonTextChanged() {
