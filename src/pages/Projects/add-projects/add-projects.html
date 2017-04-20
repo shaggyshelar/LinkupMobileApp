@@ -49,7 +49,7 @@
       <!-- Recommendation -->
       <ion-item>
         <ion-label floating>Project Manager<span class="required">*</span></ion-label>
-        <ion-input type="text" name="txtProjectManager" [disabled]="!isAuthorized" (keypress)="showSuggestion(0, $event)" (blur)="blurred()"
+        <ion-input type="text" name="txtProjectManager" [disabled]="!isAuthorized" (input)="showSuggestion(0, $event)" (blur)="blurred()"
           formControlName="projectmanager">
         </ion-input>
       </ion-item>
@@ -94,7 +94,7 @@
       <ion-item>
         <ion-label floating>Project End Date (DD/MM/YYYY) <span class="required">*</span></ion-label>
         <ion-datetime displayFormat="DD/MM/YYYY" name="txtProjectend" formControlName="projectend" (ionChange)="endDateChanged($event)"
-          [min]="ProjectDetails.StartDate" [max]="maxYrs" [disabled]="!isAuthorized">
+          [min]="minStrtDt" [max]="maxYrs" [disabled]="!isAuthorized">
         </ion-datetime>
       </ion-item>
       <p *ngIf="(!complexForm.controls.projectend.valid) && complexForm.controls.projectend.dirty" class="error">Please select Project Start Date</p>
@@ -122,7 +122,7 @@
       <!--Recommendation-->
       <ion-item>
         <ion-label floating>Account Manager<span class="required">*</span></ion-label>
-        <ion-input type="text" name="txtAccountManager" [disabled]="!isAuthorized" (keypress)="showSuggestion(1, $event)" (blur)="blurred()"
+        <ion-input type="text" name="txtAccountManager" [disabled]="!isAuthorized" (input)="showSuggestion(1, $event)" (blur)="blurred()"
           formControlName="accountmanager">
         </ion-input>
       </ion-item>
@@ -139,7 +139,7 @@
       <!--Recommendation-->
       <ion-item>
         <ion-label floating>Delivery Manager<span class="required">*</span></ion-label>
-        <ion-input type="text" name="txtDeliveryManager" [disabled]="!isAuthorized" (keypress)="showSuggestion(2, $event)" (blur)="blurred()"
+        <ion-input type="text" name="txtDeliveryManager" [disabled]="!isAuthorized" (input)="showSuggestion(2, $event)" (blur)="blurred()"
           formControlName="deliverymanager">
         </ion-input>
       </ion-item>
