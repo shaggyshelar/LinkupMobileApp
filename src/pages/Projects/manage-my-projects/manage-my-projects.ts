@@ -21,6 +21,12 @@ import { Observable } from 'rxjs/Rx';
 })
 export class ManageMyProjectsPage {
   isAuthorized: boolean;
+  canManageProject: boolean;
+  canReadProject: boolean;
+  canUpdateProject: boolean;
+  canAddProject: boolean;
+  isAllDataLoaded: boolean;
+
   projectList: Observable<Project[]>;
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
@@ -29,19 +35,26 @@ export class ManageMyProjectsPage {
     public auth: AuthService,
   ) {
     this.isAuthorized = this.auth.checkPermission('PROJECTS.EMPLOYEEPROJECTMANAGEMENT.ADD')
-  }
+    this.canAddProject = this.auth.checkPermission('PROJECTS.MANAGEMYPROJECTS.ADD');
+    this.canUpdateProject = this.auth.checkPermission('PROJECTS.MANAGEMYPROJECTS.UPDATE');
+    this.canReadProject = this.auth.checkPermission('PROJECTS.MANAGEMYPROJECTS.READ');
+    this.canManageProject = this.auth.checkPermission('PROJECTS.MANAGEMYPROJECTS.MANAGE');
+
+  }//PROJECTS.MANAGEMYPROJECTS.MANAGE
 
   ionViewDidLoad() {
     //console.log('ionViewDidLoad ManageMyProjectsPage');
     this.getActiveProjects();
   }
   getActiveProjects() {
+    this.isAllDataLoaded = false;
     //this.projectList = this.projectService.getProjectList();
     this.spinnerService.createSpinner('Please wait');
-    this.projectService.getProjectList().subscribe(
+    this.projectService.getManageMyProjectsList().subscribe(
       (res: any) => {
         this.spinnerService.stopSpinner();
         this.projectList = res;
+        this.isAllDataLoaded = true;
       }, error => {
         this.spinnerService.stopSpinner();
       });

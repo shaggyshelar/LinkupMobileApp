@@ -17,7 +17,7 @@
 
 
 <ion-content padding>
-  <ion-fab right bottom *ngIf="isAuthorized">
+  <ion-fab right bottom *ngIf="canAddProject">
     <button ion-fab mini (click)="addFabClicked()"><ion-icon name="add"></ion-icon></button>
   </ion-fab>
 
@@ -34,5 +34,12 @@
       </p>
     </ion-item>
   </ion-list>
+
+  <ion-list-header *ngIf ="(projectList)?.length == 0 && isAllDataLoaded == true">
+    No Records Found
+  </ion-list-header>
+  <ion-list-header [hidden]="canReadProject">
+    You are not Authorized
+  </ion-list-header>  
 
 </ion-content>
