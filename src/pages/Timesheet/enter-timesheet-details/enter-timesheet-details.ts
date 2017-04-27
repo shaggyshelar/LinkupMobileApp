@@ -147,6 +147,7 @@ export class EnterTimesheetDetailsPage {
   }
 
   getTask() {
+    
     if (this.weekProjects.MondayArray[0].Project.Value.length > 0) {
       for (var index = 0; index < this.weekProjects.MondayArray.length; index++) {
         this.onProjectChange(this.weekProjects.MondayArray[index].Project.Value, index, 'Monday');
@@ -157,6 +158,7 @@ export class EnterTimesheetDetailsPage {
   onProjectChange(selectedProjectname: string, index: number, day: string) {
     var selectedProject: any = this.getSelectedProject(selectedProjectname);
     this.setApproverUser(day, index, selectedProject);
+    // this.setPendingApprover(day, index, selectedProject);
     // this.isError = false;
     this.tasksList[index] = [];
     // this.timesheetList[index].ApproverUser = {};
@@ -193,37 +195,55 @@ export class EnterTimesheetDetailsPage {
     this.weekProjects.MondayArray[index].Project.ID = selectedProject.ID;
     this.weekProjects.MondayArray[index].ApproverUser.Value = selectedProject.AccountManager.Name;
     this.weekProjects.MondayArray[index].ApproverUser.ID = selectedProject.AccountManager.ID;
+    this.weekProjects.MondayArray[index].PendingApprover.Value = selectedProject.AccountManager.Name;
+    this.weekProjects.MondayArray[index].PendingApprover.ID = selectedProject.AccountManager.ID;
 
     this.weekProjects.TuesdayArray[index].Project.Value = selectedProject.Title;
     this.weekProjects.TuesdayArray[index].Project.ID = selectedProject.ID;
     this.weekProjects.TuesdayArray[index].ApproverUser.Value = selectedProject.AccountManager.Name;
     this.weekProjects.TuesdayArray[index].ApproverUser.ID = selectedProject.AccountManager.ID;
+    this.weekProjects.TuesdayArray[index].PendingApprover.Value = selectedProject.AccountManager.Name;
+    this.weekProjects.TuesdayArray[index].PendingApprover.ID = selectedProject.AccountManager.ID;
 
     this.weekProjects.WednesdayArray[index].Project.Value = selectedProject.Title;
     this.weekProjects.WednesdayArray[index].Project.ID = selectedProject.ID;
     this.weekProjects.WednesdayArray[index].ApproverUser.Value = selectedProject.AccountManager.Name;
     this.weekProjects.WednesdayArray[index].ApproverUser.ID = selectedProject.AccountManager.ID;
+    this.weekProjects.WednesdayArray[index].PendingApprover.Value = selectedProject.AccountManager.Name;
+    this.weekProjects.WednesdayArray[index].PendingApprover.ID = selectedProject.AccountManager.ID;
 
     this.weekProjects.ThursdayArray[index].Project.Value = selectedProject.Title;
     this.weekProjects.ThursdayArray[index].Project.ID = selectedProject.ID;
     this.weekProjects.ThursdayArray[index].ApproverUser.Value = selectedProject.AccountManager.Name;
     this.weekProjects.ThursdayArray[index].ApproverUser.ID = selectedProject.AccountManager.ID;
+    this.weekProjects.ThursdayArray[index].PendingApprover.Value = selectedProject.AccountManager.Name;
+    this.weekProjects.ThursdayArray[index].PendingApprover.ID = selectedProject.AccountManager.ID;
 
     this.weekProjects.FridayArray[index].Project.Value = selectedProject.Title;
     this.weekProjects.FridayArray[index].Project.ID = selectedProject.ID;
     this.weekProjects.FridayArray[index].ApproverUser.Value = selectedProject.AccountManager.Name;
     this.weekProjects.FridayArray[index].ApproverUser.ID = selectedProject.AccountManager.ID;
+    this.weekProjects.FridayArray[index].PendingApprover.Value = selectedProject.AccountManager.Name;
+    this.weekProjects.FridayArray[index].PendingApprover.ID = selectedProject.AccountManager.ID;
 
     this.weekProjects.SaturdayArray[index].Project.Value = selectedProject.Title;
     this.weekProjects.SaturdayArray[index].Project.ID = selectedProject.ID;
     this.weekProjects.SaturdayArray[index].ApproverUser.Value = selectedProject.AccountManager.Name;
     this.weekProjects.SaturdayArray[index].ApproverUser.ID = selectedProject.AccountManager.ID;
+    this.weekProjects.SaturdayArray[index].PendingApprover.Value = selectedProject.AccountManager.Name;
+    this.weekProjects.SaturdayArray[index].PendingApprover.ID = selectedProject.AccountManager.ID;
 
 
     this.weekProjects.SundayArray[index].Project.Value = selectedProject.Title;
     this.weekProjects.SundayArray[index].Project.ID = selectedProject.ID;
     this.weekProjects.SundayArray[index].ApproverUser.Value = selectedProject.AccountManager.Name;
     this.weekProjects.SundayArray[index].ApproverUser.ID = selectedProject.AccountManager.ID;
+    this.weekProjects.SundayArray[index].PendingApprover.Value = selectedProject.AccountManager.Name;
+    this.weekProjects.SundayArray[index].PendingApprover.ID = selectedProject.AccountManager.ID;
+
+  }
+
+    setPendingApprover(day: string, index: number, selectedProject: any) {
 
   }
 
@@ -334,7 +354,10 @@ export class EnterTimesheetDetailsPage {
         this.weekProjects.MondayArray[i].Mondayhrs = null;
         this.weekProjects.MondayArray[i].Mondaydesc = null;
       } else {
-        if (!this.isDescriptionOK(this.weekProjects.MondayArray[i].Mondaydesc, this.workingHrsStatus(this.weekProjects.MondayArray[i].Mondayhrs))) { isDescEmpty = true; this.toastService.createToast("Invalid description"); break; }
+        if (!this.isDescriptionOK(this.weekProjects.MondayArray[i].Mondaydesc, this.workingHrsStatus(this.weekProjects.MondayArray[i].Mondayhrs))) { isDescEmpty = true; this.toastService.createToast("Invalid description"); //break; 
+        this.weekProjects.MondayArray[i].Mondayhrs = null;
+        this.weekProjects.MondayArray[i].Mondaydesc = null;
+        }
       }
       if (this.workingHrsStatus(this.weekProjects.MondayArray[i].Mondaynbhrs) < 0) {
         isHrsEmpty = true; this.toastService.createToast('Invalid working hours data');
@@ -466,6 +489,7 @@ export class EnterTimesheetDetailsPage {
         continue;
 
       this.timesheetList[index].ApproverUser = this.weekProjects.MondayArray[index].ApproverUser;
+      this.timesheetList[index].PendingApprover = this.weekProjects.MondayArray[index].PendingApprover;
       this.timesheetList[index].Project = this.weekProjects.MondayArray[index].Project;
       this.timesheetList[index].Task = this.weekProjects.MondayArray[index].Task;
       this.timesheetList[index].Mondayhrs = this.weekProjects.MondayArray[index].Mondayhrs;
@@ -505,6 +529,7 @@ export class EnterTimesheetDetailsPage {
       if (this.deletedTaskIndex == index)
         continue;
       this.timesheetList[index].ApproverUser = this.weekProjects.TuesdayArray[index].ApproverUser;
+      this.timesheetList[index].PendingApprover = this.weekProjects.TuesdayArray[index].PendingApprover;
       this.timesheetList[index].Project = this.weekProjects.TuesdayArray[index].Project;
       this.timesheetList[index].Task = this.weekProjects.TuesdayArray[index].Task;
       this.timesheetList[index].Tuesdayhrs = this.weekProjects.TuesdayArray[index].Tuesdayhrs;
@@ -525,6 +550,7 @@ export class EnterTimesheetDetailsPage {
       if (this.deletedTaskIndex == index)
         continue;
       this.timesheetList[index].ApproverUser = this.weekProjects.WednesdayArray[index].ApproverUser;
+      this.timesheetList[index].PendingApprover = this.weekProjects.WednesdayArray[index].PendingApprover;
       this.timesheetList[index].Project = this.weekProjects.WednesdayArray[index].Project;
       this.timesheetList[index].Task = this.weekProjects.WednesdayArray[index].Task;
       this.timesheetList[index].Wednesdayhrs = this.weekProjects.WednesdayArray[index].Wednesdayhrs;
@@ -545,6 +571,7 @@ export class EnterTimesheetDetailsPage {
       if (this.deletedTaskIndex == index)
         continue;
       this.timesheetList[index].ApproverUser = this.weekProjects.ThursdayArray[index].ApproverUser;
+      this.timesheetList[index].PendingApprover = this.weekProjects.ThursdayArray[index].PendingApprover;
       this.timesheetList[index].Project = this.weekProjects.ThursdayArray[index].Project;
       this.timesheetList[index].Task = this.weekProjects.ThursdayArray[index].Task;
       this.timesheetList[index].Thursdayhrs = this.weekProjects.ThursdayArray[index].Thursdayhrs;
@@ -565,6 +592,7 @@ export class EnterTimesheetDetailsPage {
       if (this.deletedTaskIndex == index)
         continue;
       this.timesheetList[index].ApproverUser = this.weekProjects.FridayArray[index].ApproverUser;
+      this.timesheetList[index].PendingApprover = this.weekProjects.FridayArray[index].PendingApprover;
       this.timesheetList[index].Project = this.weekProjects.FridayArray[index].Project;
       this.timesheetList[index].Task = this.weekProjects.FridayArray[index].Task;
       this.timesheetList[index].Fridayhrs = this.weekProjects.FridayArray[index].Fridayhrs;
@@ -585,6 +613,7 @@ export class EnterTimesheetDetailsPage {
       if (this.deletedTaskIndex == index)
         continue;
       this.timesheetList[index].ApproverUser = this.weekProjects.SaturdayArray[index].ApproverUser;
+      this.timesheetList[index].PendingApprover = this.weekProjects.SaturdayArray[index].PendingApprover;
       this.timesheetList[index].Project = this.weekProjects.SaturdayArray[index].Project;
       this.timesheetList[index].Task = this.weekProjects.SaturdayArray[index].Task;
       this.timesheetList[index].Saturdayhrs = this.weekProjects.SaturdayArray[index].Saturdayhrs;
@@ -605,6 +634,7 @@ export class EnterTimesheetDetailsPage {
       if (this.deletedTaskIndex == index)
         continue;
       this.timesheetList[index].ApproverUser = this.weekProjects.SundayArray[index].ApproverUser;
+      this.timesheetList[index].PendingApprover = this.weekProjects.SundayArray[index].PendingApprover;
       this.timesheetList[index].Project = this.weekProjects.SundayArray[index].Project;
       this.timesheetList[index].Task = this.weekProjects.SundayArray[index].Task;
       this.timesheetList[index].Sundayhrs = this.weekProjects.SundayArray[index].Sundayhrs;
@@ -798,6 +828,7 @@ export class EnterTimesheetDetailsPage {
   createMondayProject(project: any) {
     var mondayProject: monday = new monday();
     mondayProject.ApproverUser = project ? project.ApproverUser : { ID: 0, Value: '' };
+    mondayProject.PendingApprover = project ? project.PendingApprover : { ID: 0, Value: '' };
     mondayProject.ApproverComment = project ? project.ApproverComment : '';
     mondayProject.Billable = project ? project.Billable : '';
     mondayProject.ID = project ? project.ID : '';
@@ -818,6 +849,7 @@ export class EnterTimesheetDetailsPage {
   createTuesdayProject(project: any) {
     var tuesdayProject: tuesday = new tuesday();
     tuesdayProject.ApproverUser = project ? project.ApproverUser : { ID: 0, Value: '' };
+    tuesdayProject.PendingApprover = project ? project.PendingApprover : { ID: 0, Value: '' };
     tuesdayProject.ApproverComment = project ? project.ApproverComment : '';
     tuesdayProject.Billable = project ? project.Billable : '';
     tuesdayProject.ID = project ? project.ID : '';
@@ -837,6 +869,7 @@ export class EnterTimesheetDetailsPage {
   createWednesdayProject(project: any) {
     var wednesdayProject: wednesday = new wednesday();
     wednesdayProject.ApproverUser = project ? project.ApproverUser : { ID: 0, Value: '' };
+    wednesdayProject.PendingApprover = project ? project.ApproverUser : { ID: 0, Value: '' };
     wednesdayProject.ApproverComment = project ? project.ApproverComment : '';
     wednesdayProject.Billable = project ? project.Billable : '';
     wednesdayProject.ID = project ? project.ID : '';
@@ -856,6 +889,7 @@ export class EnterTimesheetDetailsPage {
   createThursdayProject(project: any) {
     var thursdayProject: thursday = new thursday();
     thursdayProject.ApproverUser = project ? project.ApproverUser : { ID: 0, Value: '' };
+    thursdayProject.PendingApprover = project ? project.PendingApprover : { ID: 0, Value: '' };
     thursdayProject.ApproverComment = project ? project.ApproverComment : '';
     thursdayProject.Billable = project ? project.Billable : '';
     thursdayProject.ID = project ? project.ID : '';
@@ -875,6 +909,7 @@ export class EnterTimesheetDetailsPage {
   createFridayProject(project: any) {
     var fridayProject: friday = new friday();
     fridayProject.ApproverUser = project ? project.ApproverUser : { ID: 0, Value: '' };
+    fridayProject.PendingApprover = project ? project.PendingApprover : { ID: 0, Value: '' };
     fridayProject.ApproverComment = project ? project.ApproverComment : '';
     fridayProject.Billable = project ? project.Billable : '';
     fridayProject.ID = project ? project.ID : '';
@@ -893,6 +928,7 @@ export class EnterTimesheetDetailsPage {
   createSaturdayProject(project: any) {
     var saturdayProject: saturday = new saturday();
     saturdayProject.ApproverUser = project ? project.ApproverUser : { ID: 0, Value: '' };
+    saturdayProject.PendingApprover = project ? project.PendingApprover : { ID: 0, Value: '' };
     saturdayProject.ApproverComment = project ? project.ApproverComment : '';
     saturdayProject.Billable = project ? project.Billable : '';
     saturdayProject.ID = project ? project.ID : '';
@@ -911,6 +947,7 @@ export class EnterTimesheetDetailsPage {
   createSundayProject(project: any) {
     var sundayProject: sunday = new sunday();
     sundayProject.ApproverUser = project ? project.ApproverUser : { ID: 0, Value: '' };
+    sundayProject.PendingApprover = project ? project.PendingApprover : { ID: 0, Value: '' };
     sundayProject.ApproverComment = project ? project.ApproverComment : '';
     sundayProject.Billable = project ? project.Billable : '';
     sundayProject.ID = project ? project.ID : '';
