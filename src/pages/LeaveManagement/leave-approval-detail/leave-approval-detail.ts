@@ -4,6 +4,7 @@ import { NavController, NavParams, Events , ToastController} from 'ionic-angular
 //import { LeaveDetail } from '../models/leaveDetail';
 import { SpinnerService } from '../../../providers/index';
 import { LeaveService } from '../index';
+import { AuthService } from '../../../providers/index';
 /** Third Party Dependencies */
 //import { Observable } from 'rxjs/Rx';
 import { Toast } from 'ionic-native';
@@ -19,7 +20,7 @@ import * as moment from 'moment/moment';
 @Component({
     selector: 'page-leave-approval-detail',
     templateUrl: 'leave-approval-detail.html',
-    providers: [LeaveService, SpinnerService]
+    providers: [LeaveService, SpinnerService, AuthService]
 })
 export class LeaveApprovalDetailPage {
 
@@ -30,16 +31,19 @@ export class LeaveApprovalDetailPage {
     public approverList: any;
     public leaveList: any;
     public isPending: boolean;
+    public isUserHR: boolean;
     commentForm: FormGroup;
     submitted: boolean;
     public startDate: string;
     public endDate: string;
     public ishowLeaveDetails: boolean;
+    public status: string;
 
     constructor(public navCtrl: NavController,
         public navParams: NavParams,
         public leaveService: LeaveService,
         public spinnerService: SpinnerService,
+        public auth: AuthService,
         public formBuilder: FormBuilder,
         public leaveStatusChangedEvent: Events,
         public toastCtrl:ToastController) {
@@ -47,6 +51,7 @@ export class LeaveApprovalDetailPage {
         this.leaveID = this.leave.LeaveRequestMasterId;
         this.comment = '';
         this.isPending = false;
+        this.isUserHR = this.auth.checkPermission('LEAVE.HRAPPROVAL.UPDATE');
         this.ishowLeaveDetails = false;
         this.commentForm = formBuilder.group({
             comment: ['', Validators.compose([Validators.minLength(2), Validators.maxLength(600), Validators.required])]
@@ -63,6 +68,7 @@ export class LeaveApprovalDetailPage {
             res => {
                 this.leaveList = res;
                 this.getEmployeeDetails(this.leaveList[0].EmpID);
+                this.status = this.leaveList[0].Status;
                 if (this.leaveList[0].Status == 'Pending') {
                     this.isPending = true;
                 }
@@ -109,13 +115,13 @@ export class LeaveApprovalDetailPage {
             this.spinnerService.createSpinner('Please wait..');
             this.leaveService.singleLeaveApprove(params)
                 .subscribe(res => {
-                    if (res) {
+                    if (res.StatusCode == 1) {
                         this.spinnerService.stopSpinner();
                         this.toastPresent('Leave is approved successfully!');
                         //this.leaveStatusChangedEvent.publish('Changed Leave Status', 'status');
                         this.navCtrl.pop();
                     } else {
-                        this.toastPresent('Failed to approve Leave.');
+                        this.toastPresent(res.ErrorMsg);
                         this.spinnerService.stopSpinner();
                     }
                 },
@@ -141,13 +147,13 @@ export class LeaveApprovalDetailPage {
 
             this.leaveService.singleLeaveReject(params)
                 .subscribe(res => {
-                    if (res) {
+                    if (res.StatusCode == 1) {
                         this.spinnerService.stopSpinner();
-                        this.toastPresent('Leave is rejcted successfully!');
+                        this.toastPresent('Leave is rejected successfully!');
                         //this.leaveStatusChangedEvent.publish('Changed Leave Status', 'status');
                         this.navCtrl.pop();
                     } else {
-                        this.toastPresent('Failed to reject Leave!');
+                        this.toastPresent(res.ErrorMsg);
                         this.spinnerService.stopSpinner();
                     }
                 },
