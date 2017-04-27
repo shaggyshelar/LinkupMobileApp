@@ -14,8 +14,8 @@
 
 
 <ion-content padding>
-
-  <form [formGroup]="commentForm" [hidden]="!isPending">
+<!--[hidden]="!isPending"-->
+  <form [formGroup]="commentForm" [hidden]="!(isPending || isUserHR)">
     <div class="bottom">
       <ion-item>
         <ion-label floating>Comments</ion-label>
@@ -25,10 +25,10 @@
   </form>
   <ion-row>
         <ion-col width-50>
-          <button ion-button full [disabled]="!commentForm.controls.comment.valid" (click)="rejectClicked()">Reject</button>
+          <button ion-button full [disabled]="!commentForm.controls.comment.valid || status=='Rejected'" (click)="rejectClicked()">Reject</button>
         </ion-col>
         <ion-col width-50>
-          <button ion-button full [disabled]="!commentForm.controls.comment.valid" (click)="approveClicked()">Approve</button>
+          <button ion-button full [disabled]="!commentForm.controls.comment.valid || status=='Approved'" (click)="approveClicked()">Approve</button>
         </ion-col>
   </ion-row>
   
