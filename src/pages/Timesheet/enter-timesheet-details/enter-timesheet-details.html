@@ -11,11 +11,11 @@
       <span class="right" *ngIf="(timesheetStatus == 'Approved' || timesheetStatus == 'Submitted' || timesheetStatus == 'Rejected')">{{dailyTotalhours[selectedIndex]}} Hrs </span>
     </ion-title>
     <ion-buttons start>
-      <button *ngIf="timesheetStatus !='Approved'&& timesheetStatus !='Submitted' && timesheetStatus !='Rejected'" ion-button (click)="addClicked()">
-        Add
+      <button *ngIf="timesheetStatus !='Approved'&& timesheetStatus !='Submitted' && timesheetStatus !='Rejected'  && timesheetStatus !='Partially Approved'" ion-button (click)="addClicked()" class="border-padding">
+        <!--Add--><ion-icon name="add"></ion-icon>
       </button>
-      <button *ngIf="timesheetStatus !='Approved'&& timesheetStatus !='Submitted' && timesheetStatus !='Rejected'" ion-button (click)="saveClicked()">
-        Save
+      <button *ngIf="timesheetStatus !='Approved'&& timesheetStatus !='Submitted' && timesheetStatus !='Rejected' && timesheetStatus !='Partially Approved'" ion-button (click)="saveClicked()" class="border-padding">
+        <!--Save--><ion-icon name="checkmark"></ion-icon>
       </button>
     </ion-buttons>
   </ion-navbar>
@@ -33,17 +33,20 @@
         <div *ngFor="let timesheet of weekProjects.MondayArray  let i = index;">
           <!--<div *ngIf="timesheet.ProjectTimesheetStatus != 'Inactive'">-->
           <div [attr.id]="i">
-            <ion-icon *ngIf="!(timesheetStatus =='Approved'|| timesheetStatus =='Submitted' || timesheetStatus =='Rejected') && timesheet.ProjectTimesheetStatus != 'Inactive' && !(timesheet.Project.Value == 'Holiday' || timesheet.Project.Value == 'Leave' && timesheet.Mondaynbhrs) "
+            <ion-icon *ngIf="(timesheetStatus !='Approved'&& timesheetStatus !='Submitted' && timesheetStatus !='Rejected' && timesheetStatus !='Partially Approved') && timesheet.ProjectTimesheetStatus != 'Inactive' && (timesheet.Project.Value != 'Holiday' &&timesheet.Project.Value == 'Leave' && (timesheet.Mondaynbhrs != '' || timesheet.Mondaynbhrs != null))"
               name="close" (click)="closeClick(i)" color="primary" class="right"></ion-icon>
+            <!--<ion-icon *ngIf="!(timesheetStatus =='Approved'|| timesheetStatus =='Submitted' || timesheetStatus =='Rejected' || timesheetStatus !='Partially Approved') && timesheet.ProjectTimesheetStatus != 'Inactive' && !(timesheet.Project.Value == 'Holiday' || timesheet.Project.Value == 'Leave' && timesheet.Mondaynbhrs) "
+              name="close" (click)="closeClick(i)" color="primary" class="right"></ion-icon>-->
             <!--</div>-->
-            <ion-list *ngIf="timesheet.Project.Value == 'Holiday' || timesheet.Project.Value == 'Leave' && timesheet.Mondaynbhrs">
+            <!--<ion-list *ngIf="timesheet.Project.Value == 'Holiday' || timesheet.Project.Value == 'Leave' && timesheet.Mondaynbhrs">
               <ion-item>
                 <h3>{{timesheet.Project.Value}}</h3>
                 <p>Desc: {{timesheet.Mondaydescnb}}</p>
                 <p>NB: {{timesheet.Mondaynbhrs}}</p>
               </ion-item>
-            </ion-list>
-            <ion-list *ngIf="timesheet.Project.Value != 'Holiday' &&  timesheet.Project.Value !='Leave' && timesheet.ProjectTimesheetStatus != 'Inactive' ">
+            </ion-list>-->
+            <!--<ion-list *ngIf="timesheet.Project.Value != 'Holiday' &&  timesheet.Project.Value !='Leave' && timesheet.ProjectTimesheetStatus != 'Inactive' ">-->
+            <ion-list>
 
               <ion-item *ngIf="!(timesheetStatus =='Approved'|| timesheetStatus =='Submitted' || timesheetStatus =='Rejected')">
                 <ion-label floating>Project <span class="required">*</span></ion-label>
@@ -104,17 +107,18 @@
         <div *ngFor="let timesheet of weekProjects.TuesdayArray let i = index;">
           <div [attr.id]="i">
             <div *ngIf="!(timesheet.Project.Value == 'Holiday' || timesheet.Project.Value == 'Leave' && timesheet.Tuesdaynbhrs)">
-              <ion-icon *ngIf="!(timesheetStatus =='Approved'|| timesheetStatus =='Submitted' || timesheetStatus =='Rejected') && timesheet.ProjectTimesheetStatus != 'Inactive' && !(timesheet.Project.Value == 'Holiday' || timesheet.Project.Value == 'Leave' && timesheet.Tuesdaynbhrs) "
+              <ion-icon *ngIf="(timesheetStatus !='Approved'&& timesheetStatus !='Submitted' && timesheetStatus !='Rejected' && timesheetStatus !='Partially Approved') && timesheet.ProjectTimesheetStatus != 'Inactive' && (timesheet.Project.Value != 'Holiday' &&timesheet.Project.Value == 'Leave' && (timesheet.Tuesdaynbhrs != '' || timesheet.Tuesdaynbhrs != null))"
                 name="close" (click)="closeClick(i)" color="primary" class="right"></ion-icon>
             </div>
-            <ion-list *ngIf="(timesheet.Project.Value == 'Holiday' || timesheet.Project.Value == 'Leave') && timesheet.Tuesdaynbhrs">
+            <!--<ion-list *ngIf="(timesheet.Project.Value == 'Holiday' || timesheet.Project.Value == 'Leave') && timesheet.Tuesdaynbhrs">
               <ion-item>
                 <h3>{{timesheet.Project.Value}}</h3>
                 <p>Desc: {{timesheet.Tuesdaydescnb}}</p>
                 <p>NB: {{timesheet.Tuesdaynbhrs}}</p>
               </ion-item>
             </ion-list>
-            <ion-list *ngIf="timesheet.Project.Value != 'Holiday' &&  timesheet.Project.Value !='Leave' && timesheet.ProjectTimesheetStatus != 'Inactive'">
+            <ion-list *ngIf="timesheet.Project.Value != 'Holiday' &&  timesheet.Project.Value !='Leave' && timesheet.ProjectTimesheetStatus != 'Inactive'">-->
+            <ion-list>
 
               <ion-item *ngIf="!(timesheetStatus =='Approved'|| timesheetStatus =='Submitted' || timesheetStatus =='Rejected')">
                 <ion-label floating>Project <span class="required">*</span></ion-label>
@@ -176,16 +180,17 @@
       <div class="project-div">
         <div *ngFor="let timesheet of weekProjects.WednesdayArray let i = index;">
           <div [attr.id]="i">
-            <ion-icon *ngIf="!(timesheetStatus =='Approved'|| timesheetStatus =='Submitted' || timesheetStatus =='Rejected') && timesheet.ProjectTimesheetStatus != 'Inactive' && !(timesheet.Project.Value == 'Holiday' || timesheet.Project.Value == 'Leave' && timesheet.Wednesdaynbhrs) "
+            <ion-icon *ngIf="(timesheetStatus !='Approved'&& timesheetStatus !='Submitted' && timesheetStatus !='Rejected' && timesheetStatus !='Partially Approved') && timesheet.ProjectTimesheetStatus != 'Inactive' && (timesheet.Project.Value != 'Holiday' &&timesheet.Project.Value == 'Leave' && (timesheet.Wednesdaynbhrs != '' || timesheet.Wednesdaynbhrs != null))"
               name="close" (click)="closeClick(i)" color="primary" class="right"></ion-icon>
-            <ion-list *ngIf="(timesheet.Project.Value == 'Holiday' || timesheet.Project.Value == 'Leave') && timesheet.Wednesdaynbhrs">
+            <!--<ion-list *ngIf="(timesheet.Project.Value == 'Holiday' || timesheet.Project.Value == 'Leave') && timesheet.Wednesdaynbhrs">
               <ion-item>
                 <h3>{{timesheet.Project.Value}}</h3>
                 <p>Desc: {{timesheet.Wednesdaydescnb}}</p>
                 <p>NB: {{timesheet.Wednesdaynbhrs}}</p>
               </ion-item>
             </ion-list>
-            <ion-list *ngIf="timesheet.Project.Value != 'Holiday' &&  timesheet.Project.Value !='Leave' && timesheet.ProjectTimesheetStatus != 'Inactive'">
+            <ion-list *ngIf="timesheet.Project.Value != 'Holiday' &&  timesheet.Project.Value !='Leave' && timesheet.ProjectTimesheetStatus != 'Inactive'">-->
+            <ion-list>
 
               <ion-item *ngIf="!(timesheetStatus =='Approved'|| timesheetStatus =='Submitted' || timesheetStatus =='Rejected')">
                 <ion-label floating>Project <span class="required">*</span></ion-label>
@@ -246,16 +251,17 @@
       <div class="project-div">
         <div *ngFor="let timesheet of weekProjects.ThursdayArray let i = index;">
           <div [attr.id]="i">
-            <ion-icon *ngIf="!(timesheetStatus =='Approved'|| timesheetStatus =='Submitted' || timesheetStatus =='Rejected') && timesheet.ProjectTimesheetStatus != 'Inactive' && !(timesheet.Project.Value == 'Holiday' || timesheet.Project.Value == 'Leave' && timesheet.Thursdaynbhrs) "
+            <ion-icon *ngIf="(timesheetStatus !='Approved'&& timesheetStatus !='Submitted' && timesheetStatus !='Rejected' && timesheetStatus !='Partially Approved') && timesheet.ProjectTimesheetStatus != 'Inactive' && (timesheet.Project.Value != 'Holiday' &&timesheet.Project.Value == 'Leave' && (timesheet.Thursdaynbhrs != '' || timesheet.Thursdaynbhrs != null))"
               name="close" (click)="closeClick(i)" color="primary" class="right"></ion-icon>
-            <ion-list *ngIf=" (timesheet.Project.Value == 'Holiday' || timesheet.Project.Value == 'Leave') && timesheet.Thursdaynbhrs">
+            <!--<ion-list *ngIf=" (timesheet.Project.Value == 'Holiday' || timesheet.Project.Value == 'Leave') && timesheet.Thursdaynbhrs">
               <ion-item>
                 <h3>{{timesheet.Project.Value}}</h3>
                 <p>Desc: {{timesheet.Thursdaydescnb}}</p>
                 <p>NB: {{timesheet.Thursdaynbhrs}}</p>
               </ion-item>
             </ion-list>
-            <ion-list *ngIf="timesheet.Project.Value != 'Holiday' &&  timesheet.Project.Value !='Leave' && timesheet.ProjectTimesheetStatus != 'Inactive'">
+            <ion-list *ngIf="timesheet.Project.Value != 'Holiday' &&  timesheet.Project.Value !='Leave' && timesheet.ProjectTimesheetStatus != 'Inactive'">-->
+            <ion-list>
 
               <ion-item *ngIf="!(timesheetStatus =='Approved'|| timesheetStatus =='Submitted' || timesheetStatus =='Rejected')">
                 <ion-label floating>Project <span class="required">*</span></ion-label>
@@ -317,16 +323,17 @@
       <div class="project-div">
         <div *ngFor="let timesheet of weekProjects.FridayArray let i = index;">
           <div [attr.id]="i">
-            <ion-icon *ngIf="!(timesheetStatus =='Approved'|| timesheetStatus =='Submitted' || timesheetStatus =='Rejected') && timesheet.ProjectTimesheetStatus != 'Inactive' && !(timesheet.Project.Value == 'Holiday' || timesheet.Project.Value == 'Leave' && timesheet.Fridaynbhrs) "
+            <ion-icon *ngIf="(timesheetStatus !='Approved'&& timesheetStatus !='Submitted' && timesheetStatus !='Rejected' && timesheetStatus !='Partially Approved') && timesheet.ProjectTimesheetStatus != 'Inactive' && (timesheet.Project.Value != 'Holiday' &&timesheet.Project.Value == 'Leave' && (timesheet.Fridaynbhrs != '' || timesheet.Fridaynbhrs != null))"
               name="close" (click)="closeClick(i)" color="primary" class="right"></ion-icon>
-            <ion-list *ngIf=" (timesheet.Project.Value == 'Holiday' || timesheet.Project.Value == 'Leave') && timesheet.Fridaynbhrs">
+            <!--<ion-list *ngIf=" (timesheet.Project.Value == 'Holiday' || timesheet.Project.Value == 'Leave') && timesheet.Fridaynbhrs">
               <ion-item>
                 <h3>{{timesheet.Project.Value}}</h3>
                 <p>Desc: {{timesheet.Fridaydescnb}}</p>
                 <p>NB: {{timesheet.Fridaynbhrs}}</p>
               </ion-item>
             </ion-list>
-            <ion-list *ngIf="timesheet.Project.Value != 'Holiday' &&  timesheet.Project.Value !='Leave' && timesheet.ProjectTimesheetStatus != 'Inactive'">
+            <ion-list *ngIf="timesheet.Project.Value != 'Holiday' &&  timesheet.Project.Value !='Leave' && timesheet.ProjectTimesheetStatus != 'Inactive'">-->
+            <ion-list>
 
               <ion-item *ngIf="!(timesheetStatus =='Approved'|| timesheetStatus =='Submitted' || timesheetStatus =='Rejected')">
                 <ion-label floating>Project <span class="required">*</span></ion-label>
@@ -388,16 +395,17 @@
       <div class="project-div">
         <div *ngFor="let timesheet of weekProjects.SaturdayArray let i = index;">
           <div [attr.id]="i">
-            <ion-icon *ngIf="!(timesheetStatus =='Approved'|| timesheetStatus =='Submitted' || timesheetStatus =='Rejected')  && timesheet.ProjectTimesheetStatus != 'Inactive' && !(timesheet.Project.Value == 'Holiday' || timesheet.Project.Value == 'Leave' && timesheet.Saturdaynbhrs) "
+            <ion-icon *ngIf="(timesheetStatus !='Approved'&& timesheetStatus !='Submitted' && timesheetStatus !='Rejected' && timesheetStatus !='Partially Approved') && timesheet.ProjectTimesheetStatus != 'Inactive' && (timesheet.Project.Value != 'Holiday' &&timesheet.Project.Value == 'Leave' && (timesheet.Saturdaynbhrs != '' || timesheet.Saturdaynbhrs != null))"
               name="close" (click)="closeClick(i)" color="primary" class="right"></ion-icon>
-            <ion-list *ngIf=" (timesheet.Project.Value == 'Holiday' || timesheet.Project.Value == 'Leave') && timesheet.Saturdaynbhrs">
+            <!--<ion-list *ngIf=" (timesheet.Project.Value == 'Holiday' || timesheet.Project.Value == 'Leave') && timesheet.Saturdaynbhrs">
               <ion-item>
                 <h3>{{timesheet.Project.Value}}</h3>
                 <p>Desc: {{timesheet.Saturdaydescnb}}</p>
                 <p>NB: {{timesheet.Saturdaynbhrs}}</p>
               </ion-item>
             </ion-list>
-            <ion-list *ngIf="timesheet.Project.Value != 'Holiday' &&  timesheet.Project.Value !='Leave' && timesheet.ProjectTimesheetStatus != 'Inactive'">
+            <ion-list *ngIf="timesheet.Project.Value != 'Holiday' &&  timesheet.Project.Value !='Leave' && timesheet.ProjectTimesheetStatus != 'Inactive'">-->
+            <ion-list>
 
               <ion-item *ngIf="!(timesheetStatus =='Approved'|| timesheetStatus =='Submitted' || timesheetStatus =='Rejected')">
                 <ion-label floating>Project <span class="required">*</span></ion-label>
@@ -459,16 +467,17 @@
       <div class="project-div">
         <div *ngFor="let timesheet of weekProjects.SundayArray let i = index;">
           <div [attr.id]="i">
-            <ion-icon *ngIf="!(timesheetStatus =='Approved'|| timesheetStatus =='Submitted' || timesheetStatus =='Rejected') && timesheet.ProjectTimesheetStatus != 'Inactive' && !(timesheet.Project.Value == 'Holiday' || timesheet.Project.Value == 'Leave' && timesheet.Sundaynbhrs) "
+            <ion-icon *ngIf="(timesheetStatus !='Approved'&& timesheetStatus !='Submitted' && timesheetStatus !='Rejected' && timesheetStatus !='Partially Approved') && timesheet.ProjectTimesheetStatus != 'Inactive' && (timesheet.Project.Value != 'Holiday' &&timesheet.Project.Value == 'Leave' && (timesheet.Sundaynbhrs != '' || timesheet.Sundaynbhrs != null))"
               name="close" (click)="closeClick(i)" color="primary" class="right"></ion-icon>
-            <ion-list *ngIf=" (timesheet.Project.Value == 'Holiday' || timesheet.Project.Value == 'Leave') && timesheet.Sundaynbhrs">
+            <!--<ion-list *ngIf=" (timesheet.Project.Value == 'Holiday' || timesheet.Project.Value == 'Leave') && timesheet.Sundaynbhrs">
               <ion-item>
                 <h3>{{timesheet.Project.Value}}</h3>
                 <p>Desc: {{timesheet.Sundaydescnb}}</p>
                 <p>NB: {{timesheet.Sundaynbhrs}}</p>
               </ion-item>
             </ion-list>
-            <ion-list *ngIf="timesheet.Project.Value != 'Holiday' &&  timesheet.Project.Value !='Leave' && timesheet.ProjectTimesheetStatus != 'Inactive'">
+            <ion-list *ngIf="timesheet.Project.Value != 'Holiday' &&  timesheet.Project.Value !='Leave' && timesheet.ProjectTimesheetStatus != 'Inactive'">-->
+            <ion-list>
 
               <ion-item *ngIf="!(timesheetStatus =='Approved'|| timesheetStatus =='Submitted' || timesheetStatus =='Rejected')">
                 <ion-label floating>Project <span class="required">*</span></ion-label>
