@@ -254,7 +254,7 @@ export class ApplyForLeavePage {
                 if (res) {
                     this.spinnerService.stopSpinner();
                     //this.leaveStatusChanged.publish('Applied Leave', 'status');
-                    MessageService.addMessage({ severity: 'success', summary: 'Success', detail: MessageService.APPLY_LEAVE_2 });
+                    //MessageService.addMessage({ severity: 'success', summary: 'Success', detail: MessageService.APPLY_LEAVE_2 });
                     // this.showToast(MessageService.APPLY_LEAVE_2);
                     this.toastPresent('Leave Applied successfully');
                     console.log('payload =>', this.addLeaveArr, 'res =>', res);
@@ -293,6 +293,7 @@ export class ApplyForLeavePage {
                     StartDate: moment(this.model.start).add(i, 'days'),
                     EndDate: moment(this.model.start).add(i, 'days'),
                     Reason: this.model.reason,
+                    EmpID: this.userDetail.EmpID,
                     LeaveType: { ID: this.model.leaveType.ID, Value: this.model.leaveType.Name }
                 };
                 this.addLeaveArr.push(leave);
