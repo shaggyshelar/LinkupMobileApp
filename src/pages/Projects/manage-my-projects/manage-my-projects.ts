@@ -42,7 +42,7 @@ export class ManageMyProjectsPage {
 
   }//PROJECTS.MANAGEMYPROJECTS.MANAGE
 
-  ionViewDidLoad() {
+  ionViewDidEnter() {
     //console.log('ionViewDidLoad ManageMyProjectsPage');
     this.getActiveProjects();
   }
@@ -53,7 +53,7 @@ export class ManageMyProjectsPage {
     this.projectService.getManageMyProjectsList().subscribe(
       (res: any) => {
         this.spinnerService.stopSpinner();
-        this.projectList = res;
+        this.projectList = res.reverse();
         this.isAllDataLoaded = true;
       }, error => {
         this.spinnerService.stopSpinner();
