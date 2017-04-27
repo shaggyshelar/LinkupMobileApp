@@ -10,7 +10,7 @@
     <ion-title>Add Team Members</ion-title>
     <ion-buttons start>
       <button *ngIf="selectedTeam.length > 0" ion-button (click)="okClicked()">
-        <ion-icon name="checkbox"></ion-icon>
+        <ion-icon name="checkmark"></ion-icon>
       </button>
     </ion-buttons>
   </ion-navbar>
@@ -24,13 +24,14 @@
 
   <div *ngIf="selectedTeam.length > 0">
     <!--<ion-badge  color="primary"> -->
+      <span> Curent Team : </span>
     <ion-chip *ngFor="let member of selectedTeam; let index = index" #index>
       <ion-label>
         {{member.Name}}
       </ion-label>
-      <button ion-button clear color="primary" (click)="removeMember(member, index)">
+      <!--<button ion-button clear color="primary" (click)="removeMember(member, index)">
         <ion-icon name="close-circle"></ion-icon>
-      </button>
+      </button>-->
     </ion-chip>
     <!--</ion-badge>-->
   </div>
