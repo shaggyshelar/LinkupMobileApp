@@ -2,6 +2,7 @@
 export class Timesheet {
     constructor() {}
         ApproverUser: Array<User> = [{ ID: 0, Value: null }];
+        PendingApprover: Array<User> = [{ ID: 0, Value: null }];
         Project: Project = { ID: 0, Value: null };
         Task: string = null;
         Mondayhrs: string = null;
@@ -77,6 +78,7 @@ export class monday{
     ){}
 
       ApproverUser: User;
+      PendingApprover: User;
         Project: Project;
         Task: string;
         Mondayhrs: string;
@@ -97,6 +99,7 @@ export class tuesday{
      constructor(
     ){}
      ApproverUser: User;
+     PendingApprover: User;
         Project: Project;
         Task: string;
         Tuesdayhrs: string;
@@ -116,6 +119,7 @@ export class wednesday{
      constructor()
     {}
       ApproverUser: User;
+      PendingApprover: User;
         Project: Project;
         Task: string;
         Wednesdayhrs: string;
@@ -135,6 +139,7 @@ export class thursday{
      constructor()
     {}
      ApproverUser: User;
+     PendingApprover: User;
         Project: Project;
         Task: string;
         Thursdayhrs: string;
@@ -155,6 +160,7 @@ export class friday{
     constructor()
     {}
       ApproverUser: User;
+      PendingApprover: User;
         Project: Project;
         Task: string;
         Fridayhrs: string;
@@ -175,6 +181,7 @@ export class saturday{
      constructor()
     {}
     ApproverUser: User;
+    PendingApprover: User;
         Project: Project;
         Task: string;
         Saturdayhrs: string;
@@ -195,6 +202,7 @@ export class sunday{
     constructor()
     {}
      ApproverUser: User;
+     PendingApprover: User;
         Project: Project;
         Task: string;
         Sundayhrs: string;
