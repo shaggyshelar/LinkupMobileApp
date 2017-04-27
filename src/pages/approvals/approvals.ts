@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
+import { NavController, NavParams, Events } from 'ionic-angular';
 import { LeaveApprovalPage } from '../LeaveManagement/leave-approval/leave-approval';
 import { ApproveTimesheetPage } from '../Timesheet/approve-timesheet/approve-timesheet';
 import { CacheService } from 'ng2-cache/ng2-cache';
@@ -23,9 +23,27 @@ export class ApprovalsPage {
 
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
+    public leaveStatusChangedEvent: Events,
     public _cacheService: CacheService) {
     this.leavesTab = LeaveApprovalPage;
     this.timesheetsTab = ApproveTimesheetPage;
+
+  }
+
+  ionViewDidEnter() {
+    debugger;
+    this.leaveStatusChangedEvent.subscribe('Hr Approval Leave changed', () => {
+      this.leavesToApproveCount = localStorage.getItem('PendingLeavesApprovalCount');
+    });
+    this.leaveStatusChangedEvent.subscribe('Bulk Approval Leave changed', () => {
+      this.leavesToApproveCount = localStorage.getItem('PendingLeavesApprovalCount');
+    });
+    this.leaveStatusChangedEvent.subscribe('Rejected single Leave', () => {
+      this.leavesToApproveCount = localStorage.getItem('PendingLeavesApprovalCount');
+    });
+    this.leaveStatusChangedEvent.subscribe('Approved single Leave', () => {
+      this.leavesToApproveCount = localStorage.getItem('PendingLeavesApprovalCount');
+    });
   }
 
   ionViewDidLoad() {
