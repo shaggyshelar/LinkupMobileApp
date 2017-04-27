@@ -382,11 +382,11 @@ export class LeaveApprovalPage {
       this.leaveService.hrsingleLeaveApprove(params)
         .subscribe(res => {
           this.spinnerService.stopSpinner();
-          if (res) {
+          if (res.StatusCode == 1) {
             this.toastPresent('Leave is Approved successfully!');
             this.getApproverLeave();
           } else {
-            this.toastPresent('Failed to Approve Please try again!');
+            this.toastPresent(res.ErrorMsg);
             this.resetAllFlags();
           }
         },
@@ -399,11 +399,11 @@ export class LeaveApprovalPage {
       this.leaveService.singleLeaveApprove(params)
         .subscribe(res => {
           this.spinnerService.stopSpinner();
-          if (res) {
+          if (res.StatusCode == 1) {
             this.toastPresent('Leave is Approved successfully!');
             this.getApproverLeave();
           } else {
-            this.toastPresent('Failed to Approve Please try again!');
+            this.toastPresent(res.ErrorMsg);
             this.resetAllFlags();
           }
         },
@@ -427,11 +427,11 @@ export class LeaveApprovalPage {
     this.leaveService.singleLeaveReject(params)
       .subscribe(res => {
         this.spinnerService.stopSpinner();
-        if (res) {
+        if (res.StatusCode == 1) {
           this.toastPresent('Leave is Rejected successfully!');
           this.getApproverLeave();
         } else {
-          this.toastPresent('Failed to Reject Please try again!');
+          this.toastPresent(res.ErrorMsg);
           this.resetAllFlags();
         }
       },
