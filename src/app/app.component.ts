@@ -4,7 +4,7 @@ import { Nav, Platform } from 'ionic-angular';
 import { StatusBar, Splashscreen, InAppBrowser } from 'ionic-native';
 import { LoadingController, AlertController, ToastController } from 'ionic-angular';
 import { HomePage } from '../pages/home/home';
-import { Events } from 'ionic-angular';
+import { Events,ModalController } from 'ionic-angular';
 import { CacheService } from 'ng2-cache/ng2-cache';
 import 'rxjs/add/observable/fromEvent';
 import { Observable } from 'rxjs/Observable';
@@ -19,6 +19,7 @@ import { LeaveApprovalPage } from '../pages/LeaveManagement/leave-approval/leave
 import { MyLeavesPage } from '../pages/LeaveManagement/my-leaves/my-leaves';
 import { LeaveService } from '../pages/LeaveManagement/services/leave.service';
 
+import { DiscrepancyModalPage } from '../pages/discrepancy-modal/discrepancy-modal';
 
 // Timesheet
 
@@ -52,7 +53,7 @@ import { ManageResignedEmployeeLeavesPage } from '../pages/HR/manage-resigned-em
 import { ManageEmployeeLeaveBalancePage } from '../pages/HR/manage-employee-leave-balance/manage-employee-leave-balance';
 
 import { LoginPage } from '../pages/login/login';
-import { AuthService, MessageService } from '../providers/index';
+import { AuthService, MessageService, EmployeeDiscrepancyService } from '../providers/index';
 
 import { Subscription } from 'rxjs/Subscription';
 
@@ -111,6 +112,8 @@ export class MyApp {
     public unauthorizedEvent: Events,
     public alertCtrl: AlertController,
     public toastCtrl: ToastController,
+    public discrepancyService: EmployeeDiscrepancyService,
+    public modalCtrl: ModalController,
     public _cacheService: CacheService) {
 
     var offline = Observable.fromEvent(document, "offline");
@@ -146,11 +149,32 @@ export class MyApp {
           this.toggleProjectsMenu();
           this.loadUserDetails();
           this.getPendingApprovalCount();
+          this.checkDiscrepancy();
         } else {
           this.isAuthenticated = false;
           this.rootPage = LoginPage;
         }
       });
+
+    
+  }
+
+  checkDiscrepancy() {
+    this.discrepancyService.getEmployeeDiscrepancy().subscribe(res => {
+      if (res.length > 0) this.showModal(res[0]);
+      console.log('discrepancy => ', res[0]);
+    });
+  }
+
+  showModal(data) {
+    let modal = this.modalCtrl.create(DiscrepancyModalPage, data);
+    modal.onDidDismiss(data => {
+      console.log('dismissed modal',data);
+      if(data.wasLeaveTaken)
+        this.openPage({ component: ApplyForLeavePage });
+    });
+    modal.present();
+
   }
 
   onLogout(): void {
