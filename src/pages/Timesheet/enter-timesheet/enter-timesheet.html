@@ -11,10 +11,10 @@
     </button>
     <ion-title>Enter Timesheet</ion-title>
     <ion-buttons start>
-      <button ion-button (click)="saveTimsheet()" *ngIf="timesheetStatus !='Approved' && timesheetStatus !='Submitted' && timesheetStatus !='Rejected'">
+      <button ion-button (click)="saveTimsheet()" *ngIf="timesheetStatus !='Approved' && timesheetStatus !='Submitted' && timesheetStatus !='Rejected' && timesheetStatus !='Partially Approved'">
         Save
       </button>
-      <button ion-button (click)="onSendForApproval()" [disabled]="totalhours.TotalhrsTimesheet<40 " *ngIf="timesheetStatus !='Approved' && timesheetStatus !='Submitted' && timesheetStatus !='Rejected'">
+      <button ion-button (click)="onSendForApproval()" [disabled]="totalhours.TotalhrsTimesheet<40 " *ngIf="timesheetStatus !='Approved' && timesheetStatus !='Submitted' && timesheetStatus !='Rejected' && timesheetStatus !='Partially Approved'">
         Submit
       </button>
     </ion-buttons>
@@ -27,13 +27,13 @@
 
   <ion-row>
     <ion-col width-10>
-      <button ion-button clear class="left-align" (click)="lastWeekClick()"><ion-icon name="arrow-back" class="left-align"></ion-icon></button>
+      <button ion-button clear class="left-align" (click)="lastWeekClick()"><ion-icon name="arrow-dropleft-circle" class="left-align"></ion-icon></button>
     </ion-col>
     <ion-col width-80>
       <ion-label class="center-align">{{showWeekStart | date:'d MMM y'}} - {{showWeekEnd | date:'d MMM y'}}</ion-label>
     </ion-col>
     <ion-col width-10>
-      <button ion-button clear class="right-align" (click)="nextWeekClick()"><ion-icon name="arrow-forward" class="right-align"></ion-icon></button>
+      <button ion-button clear class="right-align" (click)="nextWeekClick()"><ion-icon name="arrow-dropright-circle" class="right-align"></ion-icon></button>
     </ion-col>
   </ion-row>
 
@@ -79,7 +79,7 @@
         </ion-col>
         <ion-col width-15>
           <p>{{totalhours.TotalhrsMonday}}</p>
-          <ion-icon *ngIf="weekProjects.MondayArray.length > 2" name="swap"></ion-icon>
+          <ion-icon *ngIf="weekProjects.MondayArray.length > 3" name="swap"></ion-icon>
         </ion-col>
       </ion-row>
     </ion-item>
@@ -110,7 +110,7 @@
         </ion-col>
         <ion-col width-15>
           <p>{{totalhours.TotalhrsTuesday}}</p>
-          <ion-icon *ngIf="weekProjects.TuesdayArray.length > 2" name="swap"></ion-icon>
+          <ion-icon *ngIf="weekProjects.TuesdayArray.length > 3" name="swap"></ion-icon>
         </ion-col>
       </ion-row>
     </ion-item>
@@ -142,7 +142,7 @@
         </ion-col>
         <ion-col width-15>
           <p>{{totalhours.TotalhrsWednesday}}</p>
-          <ion-icon *ngIf="weekProjects.WednesdayArray.length > 2" name="swap"></ion-icon>
+          <ion-icon *ngIf="weekProjects.WednesdayArray.length > 3" name="swap"></ion-icon>
         </ion-col>
       </ion-row>
     </ion-item>
@@ -174,7 +174,7 @@
         </ion-col>
         <ion-col width-15>
           <p>{{totalhours.TotalhrsThursday}}</p>
-          <ion-icon *ngIf="weekProjects.ThursdayArray.length > 2" name="swap"></ion-icon>
+          <ion-icon *ngIf="weekProjects.ThursdayArray.length > 3" name="swap"></ion-icon>
         </ion-col>
       </ion-row>
     </ion-item>
@@ -206,7 +206,7 @@
         </ion-col>
         <ion-col width-15>
           <p>{{totalhours.TotalhrsFriday}}</p>
-          <ion-icon *ngIf="weekProjects.FridayArray.length > 2" name="swap"></ion-icon>
+          <ion-icon *ngIf="weekProjects.FridayArray.length > 3" name="swap"></ion-icon>
         </ion-col>
       </ion-row>
     </ion-item>
@@ -238,7 +238,7 @@
         </ion-col>
         <ion-col width-15>
           <p>{{totalhours.TotalhrsSaturday}}</p>
-          <ion-icon *ngIf="weekProjects.SaturdayArray.length > 2" name="swap"></ion-icon>
+          <ion-icon *ngIf="weekProjects.SaturdayArray.length >3" name="swap"></ion-icon>
         </ion-col>
       </ion-row>
     </ion-item>
@@ -270,7 +270,7 @@
         </ion-col>
         <ion-col width-15>
           <p>{{totalhours.TotalhrsSunday}}</p>
-          <ion-icon *ngIf="weekProjects.SundayArray.length > 2" name="swap"></ion-icon>
+          <ion-icon *ngIf="weekProjects.SundayArray.length > 3" name="swap"></ion-icon>
         </ion-col>
       </ion-row>
     </ion-item>
