@@ -17,6 +17,24 @@ const CONTEXT = 'Timesheets';
 /** Service Definition */
 @Injectable()
 export class LogATicketService extends BaseService {
+    ticket = [
+        {
+            "Title": "Title",
+            "Employee": null,
+            "EmployeeID": "10241",
+            "ServiceDeskID": "SD6801815979",
+            "ActualConcern ": "Hardware Issue / Requirement",
+            "Description": "I am getting a popup always as USB Device Not Recognized. The mouse stops functioning in between. I unplugged and plugged the device again but the error keeps popping up.",
+            "Priority": "Medium",
+            "Department": null,
+            "PredefinedConcern": null,
+            "ApproverPriority  ": null,
+            "ApproverStatus ": null,
+            "Approvercomment ": null,
+            "ID": 1019
+        }
+    ];
+
 
     ticketData = [
         {
@@ -74,6 +92,14 @@ export class LogATicketService extends BaseService {
         //         observer.next(this._cacheService.get('logATicketData'));
         //     });
         // } else {
+
+        // return this.get$(id, true).map(res => {
+        //     this._cacheService.set('holidayList', res.json(), { maxAge: 60 * 60 });
+        //     return res.json();
+        // }).catch(err => {
+        //     return this.handleError(err);
+        // });
+
         //     return this.get$('Edit/' + id, true).map(res => {
         //         this._cacheService.set('Edit' + id, res.json(), { maxAge: 60 * 60 * 24 });
         //         return res.json();
@@ -93,6 +119,14 @@ export class LogATicketService extends BaseService {
         //         observer.next(this._cacheService.get('logATicketData'));
         //     });
         // } else {
+
+        // return this.getList$(0, 0, true).map(res => {
+        //     this._cacheService.set('holidayList', res.json(), { maxAge: 60 * 60 });
+        //     return res.json();
+        // }).catch(err => {
+        //     return this.handleError(err);
+        // });
+
         //     return this.get$('Edit/' + id, true).map(res => {
         //         this._cacheService.set('Edit' + id, res.json(), { maxAge: 60 * 60 * 24 });
         //         return res.json();
