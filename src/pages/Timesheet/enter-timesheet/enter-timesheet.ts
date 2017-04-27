@@ -95,7 +95,6 @@ export class EnterTimesheetPage {
   }
 
   ionViewDidEnter() {
-    console.log('timesheetList => ', this.timesheetList);
   }
 
   addProjectClicked() {
@@ -107,7 +106,6 @@ export class EnterTimesheetPage {
     let time = new Timesheet();
     time.ID = 0;
     this.timesheetList.push(time);
-    console.log('in pushTimeSheet => ', this.timesheetList);
   }
   getEmptyTimesheet() {
     this.timesheetStatus = 'New';
@@ -161,14 +159,20 @@ export class EnterTimesheetPage {
       // console.log('timesheet => ', this.timesheetModel);
       this.timesheetList = res.Timesheets;
 
-      //START : handleing 'Inactive' status
-      var bufTimesheet = [];
+      //START : Add PendingApprover to res.Timesheets[] object from res.PendingApprovers
       this.timesheetList.forEach((element, index) => {
-        if (element.ProjectTimesheetStatus != 'Inactive')
-          bufTimesheet.push(element);
+        this.timesheetList[index].PendingApprover = { Value : null, ID: 0};
       });
-      this.timesheetList = [];
-      this.timesheetList = bufTimesheet;
+      //END
+
+      //START : handleing 'Inactive' status
+      // var bufTimesheet = [];
+      // this.timesheetList.forEach((element, index) => {
+      //   if (element.ProjectTimesheetStatus != 'Inactive')
+      //     bufTimesheet.push(element);
+      // });
+      // this.timesheetList = [];
+      // this.timesheetList = bufTimesheet;
       //End : handleing 'Inactive' status
 
       if (res.Timesheets.length < 1) {
@@ -208,6 +212,9 @@ export class EnterTimesheetPage {
     this.timesheetList[index].ApproverUser = {};
     this.timesheetList[index].ApproverUser.Value = selectedProject.AccountManager.Name;
     this.timesheetList[index].ApproverUser.ID = selectedProject.AccountManager.ID;
+    this.timesheetList[index].PendingApprover = {};
+    this.timesheetList[index].PendingApprover.Value = selectedProject.AccountManager.Name;
+    this.timesheetList[index].PendingApprover.ID = selectedProject.AccountManager.ID;
     this.phasesService.getPhasesByProject(selectedProject).subscribe((res: any) => {
       this.tasksList[index].push({ label: 'Select', value: null });
       for (var i in res) {
@@ -314,8 +321,6 @@ export class EnterTimesheetPage {
   }
 
   timesheetClicked(index) {
-    console.log('weekProjects => ', this.weekProjects);
-    console.log('timesheetList => ', this.timesheetList);
     this.navCtrl.push(EnterTimesheetDetailsPage, {
       data: this.weekProjects, index: index, weekstart: this.weekStartDate, myProjects: this.projectList, tStatus: this.timesheetStatus, timesheetData: this.timesheetModel, timesheetList: this.timesheetList
       , totalhours: this.totalhours
@@ -441,7 +446,7 @@ export class EnterTimesheetPage {
     });
 
     loader.present().then(() => {
-      this.employeeTimesheetService.getCurrentEmpTimesheetByDate({ Date: this.showWeekStart }).subscribe(res => {
+      this.employeeTimesheetService.getCurrentEmpTimesheetByDate({ Date: moment(new Date(this.showWeekStart)).add(1,'days').toISOString() }).subscribe(res => {
         this.timesheetModel = res;
         if (this.timesheetModel) {
           this.timesheetID = res.ID;
@@ -475,7 +480,7 @@ export class EnterTimesheetPage {
     });
 
     loader.present().then(() => {
-      this.employeeTimesheetService.getCurrentEmpTimesheetByDate({ Date: this.showWeekStart }).subscribe(res => {
+      this.employeeTimesheetService.getCurrentEmpTimesheetByDate({ Date: moment(new Date(this.showWeekStart)).add(1,'days').toISOString() }).subscribe(res => {
         this.timesheetModel = res;
         if (this.timesheetModel) {
           this.timesheetID = res.ID;
@@ -584,13 +589,14 @@ export class EnterTimesheetPage {
   createMondayProject(project: any) {
     var mondayProject: monday = new monday();
     mondayProject.ApproverUser = project ? project.ApproverUser : { ID: 0, Value: '' };
+    mondayProject.PendingApprover = project ? project.PendingApprover : { ID: 0, Value: '' };
     mondayProject.ApproverComment = project ? project.ApproverComment : '';
     mondayProject.Billable = project ? project.Billable : '';
     mondayProject.ID = project ? project.ID : '';
-    mondayProject.Mondaydesc = project ? project.Mondaydesc : '';
-    mondayProject.Mondaydescnb = project ? project.Mondaydescnb : '';
-    mondayProject.Mondayhrs = project ? project.Mondayhrs : '';
-    mondayProject.Mondaynbhrs = project ? project.Mondaynbhrs : '';
+    mondayProject.Mondaydesc = project ? project.Mondaydesc : null;
+    mondayProject.Mondaydescnb = project ? project.Mondaydescnb : null;
+    mondayProject.Mondayhrs = project ? project.Mondayhrs : null;
+    mondayProject.Mondaynbhrs = project ? project.Mondaynbhrs : null;
     mondayProject.Project = project ? project.Project : { ID: 0, Value: '' };
     mondayProject.ProjectTimesheetStatus = project ? project.ProjectTimesheetStatus : '';
     mondayProject.Task = project ? project.Task : '';
@@ -606,13 +612,14 @@ export class EnterTimesheetPage {
   createTuesdayProject(project: any) {
     var tuesdayProject: tuesday = new tuesday();
     tuesdayProject.ApproverUser = project ? project.ApproverUser : { ID: 0, Value: '' };
+    tuesdayProject.PendingApprover = project ? project.PendingApprover : { ID: 0, Value: '' };
     tuesdayProject.ApproverComment = project ? project.ApproverComment : '';
     tuesdayProject.Billable = project ? project.Billable : '';
     tuesdayProject.ID = project ? project.ID : '';
-    tuesdayProject.Tuesdaydesc = project ? project.Tuesdaydesc : '';
-    tuesdayProject.Tuesdaydescnb = project ? project.Tuesdaydescnb : '';
-    tuesdayProject.Tuesdayhrs = project ? project.Tuesdayhrs : '';
-    tuesdayProject.Tuesdaynbhrs = project ? project.Tuesdaynbhrs : '';
+    tuesdayProject.Tuesdaydesc = project ? project.Tuesdaydesc : null;
+    tuesdayProject.Tuesdaydescnb = project ? project.Tuesdaydescnb : null;
+    tuesdayProject.Tuesdayhrs = project ? project.Tuesdayhrs : null;
+    tuesdayProject.Tuesdaynbhrs = project ? project.Tuesdaynbhrs : null;
     tuesdayProject.Project = project ? project.Project : { ID: 0, Value: '' };
     tuesdayProject.ProjectTimesheetStatus = project ? project.ProjectTimesheetStatus : '';
     tuesdayProject.Task = project ? project.Task : '';
@@ -625,13 +632,14 @@ export class EnterTimesheetPage {
   createWednesdayProject(project: any) {
     var wednesdayProject: wednesday = new wednesday();
     wednesdayProject.ApproverUser = project ? project.ApproverUser : { ID: 0, Value: '' };
+    wednesdayProject.PendingApprover = project ? project.ApproverUser : { ID: 0, Value: '' };
     wednesdayProject.ApproverComment = project ? project.ApproverComment : '';
     wednesdayProject.Billable = project ? project.Billable : '';
     wednesdayProject.ID = project ? project.ID : '';
-    wednesdayProject.Wednesdaydesc = project ? project.Wednesdaydesc : '';
-    wednesdayProject.Wednesdaydescnb = project ? project.Wednesdaydescnb : '';
-    wednesdayProject.Wednesdayhrs = project ? project.Wednesdayhrs : '';
-    wednesdayProject.Wednesdaynbhrs = project ? project.Wednesdaynbhrs : '';
+    wednesdayProject.Wednesdaydesc = project ? project.Wednesdaydesc : null;
+    wednesdayProject.Wednesdaydescnb = project ? project.Wednesdaydescnb : null;
+    wednesdayProject.Wednesdayhrs = project ? project.Wednesdayhrs : null;
+    wednesdayProject.Wednesdaynbhrs = project ? project.Wednesdaynbhrs : null;
     wednesdayProject.Project = project ? project.Project : { ID: 0, Value: '' };
     wednesdayProject.ProjectTimesheetStatus = project ? project.ProjectTimesheetStatus : '';
     wednesdayProject.Task = project ? project.Task : '';
@@ -644,13 +652,14 @@ export class EnterTimesheetPage {
   createThursdayProject(project: any) {
     var thursdayProject: thursday = new thursday();
     thursdayProject.ApproverUser = project ? project.ApproverUser : { ID: 0, Value: '' };
+    thursdayProject.PendingApprover = project ? project.PendingApprover : { ID: 0, Value: '' };
     thursdayProject.ApproverComment = project ? project.ApproverComment : '';
     thursdayProject.Billable = project ? project.Billable : '';
     thursdayProject.ID = project ? project.ID : '';
-    thursdayProject.Thursdaydesc = project ? project.Thursdaydesc : '';
-    thursdayProject.Thursdaydescnb = project ? project.Thursdaydescnb : '';
-    thursdayProject.Thursdayhrs = project ? project.Thursdayhrs : '';
-    thursdayProject.Thursdaynbhrs = project ? project.Thursdaynbhrs : '';
+    thursdayProject.Thursdaydesc = project ? project.Thursdaydesc : null;
+    thursdayProject.Thursdaydescnb = project ? project.Thursdaydescnb : null;
+    thursdayProject.Thursdayhrs = project ? project.Thursdayhrs : null;
+    thursdayProject.Thursdaynbhrs = project ? project.Thursdaynbhrs : null;
     thursdayProject.Project = project ? project.Project : { ID: 0, Value: '' };
     thursdayProject.ProjectTimesheetStatus = project ? project.ProjectTimesheetStatus : '';
     thursdayProject.Task = project ? project.Task : '';
@@ -663,13 +672,14 @@ export class EnterTimesheetPage {
   createFridayProject(project: any) {
     var fridayProject: friday = new friday();
     fridayProject.ApproverUser = project ? project.ApproverUser : { ID: 0, Value: '' };
+    fridayProject.PendingApprover = project ? project.PendingApprover : { ID: 0, Value: '' };
     fridayProject.ApproverComment = project ? project.ApproverComment : '';
     fridayProject.Billable = project ? project.Billable : '';
     fridayProject.ID = project ? project.ID : '';
-    fridayProject.Fridaydesc = project ? project.Fridaydesc : '';
-    fridayProject.Fridaydescnb = project ? project.Fridaydescnb : '';
-    fridayProject.Fridayhrs = project ? project.Fridayhrs : '';
-    fridayProject.Fridaynbhrs = project ? project.Fridaynbhrs : '';
+    fridayProject.Fridaydesc = project ? project.Fridaydesc : null;
+    fridayProject.Fridaydescnb = project ? project.Fridaydescnb : null;
+    fridayProject.Fridayhrs = project ? project.Fridayhrs : null;
+    fridayProject.Fridaynbhrs = project ? project.Fridaynbhrs : null;
     fridayProject.Project = project ? project.Project : { ID: 0, Value: '' };
     fridayProject.ProjectTimesheetStatus = project ? project.ProjectTimesheetStatus : '';
     fridayProject.Task = project ? project.Task : '';
@@ -681,13 +691,14 @@ export class EnterTimesheetPage {
   createSaturdayProject(project: any) {
     var saturdayProject: saturday = new saturday();
     saturdayProject.ApproverUser = project ? project.ApproverUser : { ID: 0, Value: '' };
+    saturdayProject.PendingApprover = project ? project.PendingApprover : { ID: 0, Value: '' };
     saturdayProject.ApproverComment = project ? project.ApproverComment : '';
     saturdayProject.Billable = project ? project.Billable : '';
     saturdayProject.ID = project ? project.ID : '';
-    saturdayProject.Saturdaydesc = project ? project.Saturdaydesc : '';
-    saturdayProject.Saturdaydescnb = project ? project.Saturdaydescnb : '';
-    saturdayProject.Saturdayhrs = project ? project.Saturdayhrs : '';
-    saturdayProject.Saturdaynbhrs = project ? project.Saturdaynbhrs : '';
+    saturdayProject.Saturdaydesc = project ? project.Saturdaydesc : null;
+    saturdayProject.Saturdaydescnb = project ? project.Saturdaydescnb : null;
+    saturdayProject.Saturdayhrs = project ? project.Saturdayhrs : null;
+    saturdayProject.Saturdaynbhrs = project ? project.Saturdaynbhrs : null;
     saturdayProject.Project = project ? project.Project : { ID: 0, Value: '' };
     saturdayProject.ProjectTimesheetStatus = project ? project.ProjectTimesheetStatus : '';
     saturdayProject.Task = project ? project.Task : '';
@@ -699,13 +710,14 @@ export class EnterTimesheetPage {
   createSundayProject(project: any) {
     var sundayProject: sunday = new sunday();
     sundayProject.ApproverUser = project ? project.ApproverUser : { ID: 0, Value: '' };
+    sundayProject.PendingApprover = project ? project.PendingApprover : { ID: 0, Value: '' };
     sundayProject.ApproverComment = project ? project.ApproverComment : '';
     sundayProject.Billable = project ? project.Billable : '';
     sundayProject.ID = project ? project.ID : '';
-    sundayProject.Sundaydesc = project ? project.Sundaydesc : '';
-    sundayProject.Sundaydescnb = project ? project.Sundaydescnb : '';
-    sundayProject.Sundayhrs = project ? project.Sundayhrs : '';
-    sundayProject.Sundaynbhrs = project ? project.Sundaynbhrs : '';
+    sundayProject.Sundaydesc = project ? project.Sundaydesc : null;
+    sundayProject.Sundaydescnb = project ? project.Sundaydescnb : null;
+    sundayProject.Sundayhrs = project ? project.Sundayhrs : null;
+    sundayProject.Sundaynbhrs = project ? project.Sundaynbhrs : null;
     sundayProject.Project = project ? project.Project : { ID: 0, Value: '' };
     sundayProject.ProjectTimesheetStatus = project ? project.ProjectTimesheetStatus : '';
     sundayProject.Task = project ? project.Task : '';
@@ -832,6 +844,7 @@ export class EnterTimesheetPage {
     loader.present().then(() => {
 
       let payload = this.getPayload(false);
+      console.log('sending for approval payload=> ', payload);
       this.timesheetService.submitTimesheet(payload).subscribe((res: any) => {
         if (res.StatusCode == 1) { this.navCtrl.pop(); loader.dismiss(); this.toastService.createToast("Timesheet Submitted") }
         else { this.toastService.createToast(res.Message); loader.dismiss(); }
@@ -851,10 +864,14 @@ export class EnterTimesheetPage {
     for (var key in this.totalhours) {
       payload[key] = this.totalhours[key];
     }
-    payload.ApproverUser = payload.PendingApprover = [];
+    payload.ApproverUser = [];
+    payload.PendingApprovers = [];
+    if(this.timesheetModel.PendingApprovers != null)
+      payload.PendingApprovers = this.timesheetModel.PendingApprovers;
     for (let i = 0; i < this.timesheetList.length; i++) {
       payload.ApproverUser.push(this.timesheetList[i].ApproverUser);
-      payload.PendingApprover.push(this.timesheetList[i].ApproverUser);
+      if(this.timesheetList[i].PendingApprover.Value != null) 
+        payload.PendingApprovers.push(this.timesheetList[i].PendingApprover);
       this.timesheetList[i].WeekNumber = moment(this.weekStartDate).week();
       this.timesheetList[i].Project.Value = this.timesheetList[i].Project.Value;
       if (this.timesheetList[i].ProjectTimesheetStatus != 'Inactive')
@@ -867,7 +884,7 @@ export class EnterTimesheetPage {
       this.timesheetList[i].TimesheetStatus = 'Active';
       this.timesheetList[i].TimesheetID = this.timesheetID;
     }
-    // payload.PendingApprover = payload.ApproverUser
+    // payload.PendingApprovers = payload.ApproverUser
     payload.Title = this.currentUserDetail.EmpID;
     payload.Timesheets = this.timesheetList;
     payload.Employee = this.currentUserDetail.Employee;
