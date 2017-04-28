@@ -32,7 +32,7 @@ import { AuthService } from '../../../providers/index';
   providers: [ToastService, SpinnerService]
 })
 export class AddProjectsPage {
-    complexForm: FormGroup;
+  complexForm: FormGroup;
   clients: any[];
   billTypes: any[];
   projectType: any[];
@@ -41,6 +41,7 @@ export class AddProjectsPage {
   deliverModels: any[];
   priceType: any[];
   teamMember: any[];
+  oldMembers: any[];
   selectedProjectDetails: any;
   isTeamValid: boolean = false;
   ProjectDetails: any;
@@ -53,6 +54,7 @@ export class AddProjectsPage {
   usersList: any[];
   ID: any;
   minStrtDt: any;
+  updateTeamMembers: any[];
   // ProjectDetails: Project = new Project();
   isAuthorized: boolean;
   constructor(public navCtrl: NavController,
@@ -99,6 +101,7 @@ export class AddProjectsPage {
     this.suggestionList = [];
     this.usersList = [];
     this.teamMember = [];
+    this.oldMembers = [];
     this.selectedProjectDetails = {};
     this.clients = [];
     this.billTypes = [];
@@ -107,6 +110,7 @@ export class AddProjectsPage {
     this.deliverUnits = [];
     this.deliverModels = [];
     this.priceType = [];
+    this.updateTeamMembers = [];
     this.isAuthorized = this.auth.checkPermission('PROJECTS.EMPLOYEEPROJECTMANAGEMENT.ADD') && this.auth.checkPermission('PROJECTS.EMPLOYEEPROJECTMANAGEMENT.MANAGE');
 
     if (this.navParams.get('selectedProject')) {
@@ -140,6 +144,13 @@ export class AddProjectsPage {
 
   }
 
+  ionViewDidEnter() {
+    console.log('onEnter model updation teamMember=> ',this.teamMember);
+    debugger;
+    this.updateTeamMembers = this.assembleNewTeam();
+    debugger;
+  }
+
   initData() {
     this.ProjectDetails.ClientName = null;
     this.ProjectDetails.ProjectManager = { Name: '', ID: 0 };
@@ -169,7 +180,7 @@ export class AddProjectsPage {
   }
 
   setProjectDetails(selectedproject) {
-    console.log('selectedproject => ', selectedproject);
+    console.log('setProjectDetails selectedproject => ', selectedproject);
 
     this.ProjectDetails.ClientName = selectedproject.ClientName;
     this.ProjectDetails.ProjectManager = selectedproject.ProjectManager;
@@ -206,6 +217,7 @@ export class AddProjectsPage {
     }
     if (selectedproject.Active.toLowerCase() === 'yes') {
       this.ProjectDetails.isActive = isActive = true;
+      console.log('selectedproject-this.ProjectDetails =>', this.ProjectDetails);
     }
 
     this.complexForm.setValue({
@@ -228,8 +240,6 @@ export class AddProjectsPage {
       'isglobal': isGlobal,
       'active': isActive
     });
-
-    console.log(this.complexForm.controls['deliveryunit'].value);
   }
   loadUsers() {
     this.empService.getActiveEmployeeList().subscribe((res) => {
@@ -296,8 +306,16 @@ export class AddProjectsPage {
     });
   }
   loadTeamMembers() {
-    this.teamMemberService.getTeamByProject(this.selectedProjectDetails.ID).subscribe(res => {
-      this.teamMember = res;
+    this.teamMemberService.getTeamByProject(this.projMasterId).subscribe(res => {
+      res.forEach(element => {
+        if (element.Status == 'Active') {
+          this.teamMember.push(element.TeamMember);
+          this.oldMembers.push(element);
+          // this.projMasterId ? this.updateTeamMembers.push(element);
+        }
+        debugger;
+      });
+      this.projMasterId ? this.updateTeamMembers = res : this.updateTeamMembers = [];
     });
   }
   addMembers(member: string) {
@@ -306,6 +324,14 @@ export class AddProjectsPage {
     this.isTeamValid = false;
   }
   onDeleteMembers(index: number, member) {
+    var idx;
+    var employee = member.Name;
+    if (this.projMasterId) {
+      idx = this.oldMembers.findIndex((item) => {
+        return employee == item.TeamMember.Name;
+      });
+      this.updateTeamMembers[idx].Status = 'Inactive';
+    }
     this.teamMember.splice(index, 1);
   }
   textChanged(event: any) {
@@ -317,25 +343,25 @@ export class AddProjectsPage {
   }
 
   addMembersClicked() {
-    this.navCtrl.push(AddTeamMembersPage, { teamMembers: this.teamMember });
+    this.navCtrl.push(AddTeamMembersPage, { teamMembers: this.teamMember, projMasterId : this.projMasterId });
   }
 
   saveClicked(value) {
     var payload = this.getData();
 
-    console.log('payload deactivateClicked=> ', payload);
+    console.log('payload saveClicked '+this.projMasterId+'=> ', payload);
 
-    if (this.selectedProjectDetails.ID == {}) {
+    if (this.projMasterId) {
       //Call Update API
-      // this.projectService.updateProjectWithTeam(payload).subscribe(res => {
-      this.projectService.addProjectWithTeam(payload).subscribe(res => {
+      this.projectService.updateProjectWithTeam(payload).subscribe(res => {
+        // this.projectService.addProjectWithTeam(payload).subscribe(res => {
         if (res.StatusCode == 1) {
           this.toastService.createToast(res.Message);
           this.complexForm.reset();
           this.initData();
           this.teamMember = [];
           this.navCtrl.pop();
-        }
+        } else { this.toastService.createToast(res.Message); }
       }, err => {
         console.log(err);
       });
@@ -349,7 +375,7 @@ export class AddProjectsPage {
           this.initData();
           this.teamMember = [];
           this.navCtrl.pop();
-        }
+        } else { this.toastService.createToast(res.Message); }
       }, err => {
         console.log(err);
       });
@@ -377,7 +403,6 @@ export class AddProjectsPage {
           this.deliveryManagerSuggestion = true;
         break;
     }
-    console.log('suggestion=>', event);
 
     this.suggestionList = this.usersList
     var val = event.target.value;
@@ -412,21 +437,18 @@ export class AddProjectsPage {
     this.complexForm.controls['accountmanager'].setValue(manager.Name);
     this.ProjectDetails.AccountManager = manager;
     this.accManagerSuggestion = false;
-    console.log('form accountmanager value => ', this.complexForm.get('accountmanager').value);
   }
 
   projectManagerSelected(manager, index) {
     this.complexForm.controls['projectmanager'].setValue(manager.Name);
     this.ProjectDetails.ProjectManager = manager;
     this.projectManagerSuggestion = false;
-    console.log('form projectmanager value => ', this.complexForm.get('projectmanager').value);
   }
 
   deliveryManagerSelected(manager, index) {
     this.complexForm.controls['deliverymanager'].setValue(manager.Name);
     this.ProjectDetails.DeliveryManager = manager;
     this.deliveryManagerSuggestion = false;
-    console.log('form deliverymanager value => ', this.complexForm.get('deliverymanager').value);
   }
 
   clientNameChanged(event) {
@@ -460,7 +482,6 @@ export class AddProjectsPage {
           return item;
       });
     }
-    console.log('delivery unit', this.ProjectDetails.DeliveryUnit);
   }
   deliveryModelChanged(event) {
     if (event && event.trim() != '') {
@@ -469,11 +490,10 @@ export class AddProjectsPage {
           return item;
       });
     }
-    console.log('delivery model', this.ProjectDetails.DeliveryModel);
   }
   startDateChanged(event) {
     this.ProjectDetails.StartDate = moment(event.month.text + '/' + event.day.text + '/' + event.year.text).toISOString();
-    this.minStrtDt = moment(event.month.text + '/' + event.day.text + '/' + event.year.text).add(2,'day').toISOString();
+    this.minStrtDt = moment(event.month.text + '/' + event.day.text + '/' + event.year.text).add(2, 'day').toISOString();
   }
   endDateChanged(event) {
     this.ProjectDetails.EndDate = moment(event.month.text + '/' + event.day.text + '/' + event.year.text).toISOString();
@@ -503,21 +523,46 @@ export class AddProjectsPage {
   }
   priceTypeChanged(event) {
     this.ProjectDetails.PriceType = event;
-    console.log('priceTypeChanged =>', event);
   }
 
-  getData() {
-    //for AddProjectWithTeamMembers
+
+
+  assembleNewTeam() {
     var team = [];
-    this.teamMember.forEach(element => {
+    
+    this.teamMember.forEach((element, index) => {
+      var isNewlyAdded =this.oldMembers.find((item)=> {
+          if(item.TeamMember.Name==element.Name)
+            return true;
+          else return false;
+      });
+      debugger;
       team.push({
+        ID: isNewlyAdded ? this.oldMembers[index].ID : 0,
         ProjectMasterID: this.projMasterId ? this.projMasterId : '',
         Status: this.ProjectDetails.isActive ? 'Active' : 'InActive',
         TeamMember: element,
         StartDate: this.ProjectDetails.StartDate,
         EndDate: this.ProjectDetails.EndDate,
       });
+      debugger;
     });
+
+    return team;
+  }
+
+  getData() {
+    //for AddProjectWithTeamMembers
+    // var team = [];
+    // this.teamMember.forEach(element => {
+    //   team.push({
+    //     ProjectMasterID: this.projMasterId ? this.projMasterId : '',
+    //     Status: this.ProjectDetails.isActive ? 'Active' : 'InActive',
+    //     TeamMember: element,
+    //     StartDate: this.ProjectDetails.StartDate,
+    //     EndDate: this.ProjectDetails.EndDate,
+    //   });
+    // });
     var payload = {
       // Id: this.ID ? this.ID : '',
       ProjectManager: this.ProjectDetails.ProjectManager,
@@ -527,11 +572,11 @@ export class AddProjectsPage {
       DeliveryUnit: this.ProjectDetails.DeliveryUnit,
       ProjectCategory: this.ProjectDetails.ProjectCategory,
       DeliveryModel: this.ProjectDetails.DeliveryModel,
-      // Id: '',          //for UpdateProjectWithTeamMembers
+      Id: this.projMasterId ? this.ProjectDetails.ID : '',          //for UpdateProjectWithTeamMembers
       Title: this.ProjectDetails.Title,
       Tasks: '',
       Active: this.ProjectDetails.isActive ? 'Yes' : 'No',
-      ProjectType: this.ProjectDetails.ProjectType.value,
+      ProjectType: this.projMasterId ? this.ProjectDetails.ProjectType : this.ProjectDetails.ProjectType.value,
       ProjectSummary: this.ProjectDetails.ProjectSummary,
       PriceType: this.ProjectDetails.PriceType,
       StartDate: this.ProjectDetails.StartDate,
@@ -540,11 +585,11 @@ export class AddProjectsPage {
       // ExecutionStatus: this.ProjectDetails.ExecutionStatus,
       ExecutionStatus: '',
       Isglobal: this.ProjectDetails.isGlobal ? 'Yes' : 'No',
-      BillableNonBillable: this.ProjectDetails.Billable.value,
+      BillableNonBillable: this.projMasterId ? this.ProjectDetails.Billable : this.ProjectDetails.Billable.value,
       ProjectMasterID: this.projMasterId ? this.projMasterId : '',
       DeletedStamp: '',
       Status: this.ProjectDetails.isActive ? 'Active' : 'InActive',
-      ProjectTeamMembers: team
+      ProjectTeamMembers: this.projMasterId ? this.updateTeamMembers : this.assembleNewTeam()
     };
     console.log('getData=>', payload);
     return payload;
