@@ -36,9 +36,10 @@
   <ion-list>
       <ion-item>
         <ion-label floating>Leave Type<span class="required">*</span></ion-label>
-        <ion-select [(ngModel)]="model.leaveType.ID" name ="leavetype" (ionChange)= "validateLeaveType()">
-          <ion-option [value]="leavetype.value.ID" *ngFor="let leavetype of leaves">{{ leavetype.label }}</ion-option>
+        <ion-select [(ngModel)]="model.leaveType.Type" name ="leavetype" (ionChange)= "validateLeaveTypeEvent($event)" multiple="false">
+          <ion-option *ngFor="let leavetype of leaves">{{ leavetype.label }}</ion-option>
         </ion-select>
+        <!--[value]="leavetype.value.ID"-->
      </ion-item>
 
      <ion-item>
