@@ -33,10 +33,12 @@
       <ion-icon name="calendar"></ion-icon>
     </ion-avatar>
     <h2>My Leaves</h2>
-    <p> Balance - <span *ngIf="myLeaveBalance">{{myLeaveBalance}}</span>
+    <p> Balance - {{myLeaveBalance != 'null' ? myLeaveBalance : 0}}, Taken - {{myLeaveTaken != 'null' ? myLeaveTaken : 0}}
+    </p>
+    <!--<p> Balance - <span *ngIf="myLeaveBalance">{{myLeaveBalance}}</span>
       <span *ngIf="!myLeaveBalance">0</span>, Taken - <span *ngIf="myLeaveTaken"> {{myLeaveTaken}}</span>
       <span *ngIf="!myLeaveTaken">0</span>
-    </p>
+    </p>-->
   </ion-item>
   <ion-item (click)="gotoMyTimesheet()">
     <ion-avatar item-left class="homeIcons">
