@@ -191,6 +191,7 @@ export class ApplyForLeavePage {
                                 this.validationMessage = MessageService.APPLY_LEAVE_1;
                                 this.isValidationMessage = true;
                                 this.formDisabled = true;
+                                this.currentUserLeaveDetail = this.setLeaveDetailsEmpty();
                             } else {
                                 this.currentUserLeaveDetail = res;
                                 this.isAllDataDownloaded = true;
@@ -303,9 +304,22 @@ export class ApplyForLeavePage {
             }
 
         }
+        console.log('leaves array => ', this.addLeaveArr);
         // this.presentAlert('Leave Added');
         //this.toastPresent('Leave Added');
+        /** Reset view */
         this.removeFocus();
+
+        // this.startSDate = this.navParams.get('date');
+        // this.endEDate = this.navParams.get('date');
+        // this.sdate = this.startSDate.toString();
+        // this.edate = this.endEDate.toString();
+        // this.model.start = this.navParams.get('date');
+        // this.startChanged();
+        // this.endChanged();
+
+        // this.model.leaveType.Type = this.leaves[0].label;
+        // this.validateLeaveTypeEvent(this.leaves[0].label);
     }
 
     deleteLeave(index: number) {
@@ -323,8 +337,19 @@ export class ApplyForLeavePage {
         this.dayDiffCalc();
     }
 
+    validateLeaveTypeEvent(event) {
+        console.log('ionChnage event=>', event);
+        this.leaves.forEach((element, index) => {
+            if (event == element.value.Type) {
+                this.model.leaveType = element.value;
+            }
+        });
+        this.validateLeaveType();
+    }
+
     validateLeaveType() {
         this.model.leaveType = this.getLeaveTypeModel();
+        console.log('leave type=>', this.model.leaveType);
         if (this.model.leaveType !== null) {
             this.leaveTypeValid = true;
             this.dayDiffCalc();
@@ -534,5 +559,50 @@ export class ApplyForLeavePage {
             buttons: ['Dismiss']
         });
         alert.present();
+    }
+
+    setLeaveDetailsEmpty() {
+        return {
+            Employee: {
+                Name: "",
+                ID: 0
+            },
+            Status: {
+                Value: "",
+                ID: 0
+            },
+            Year: "0",
+            EmpID: 0,
+            PLB: '0',
+            LeaveBalance: 0,
+            LeaveTaken: 0,
+            FloatingHolidayBalance: 0,
+            FloatingHolidayTaken: 0,
+            HalfdayLeaveTaken: 0,
+            AbsentTaken: 0,
+            HalfdayAbsentTaken: 0,
+            YearStartDate: "",
+            YearEndDate: "",
+            AccruedLeave: 0,
+            AdjustmentEntry: 0,
+            ActualBalance: 0,
+            AccruedFloatingHoliday: 0,
+            ActualFHBalance: 0,
+            FHAdjustmentEntry: 0,
+            BRLB: 0,
+            IsResigned: "",
+            PaternityLeaveTaken: 0,
+            PTLAvailedTime: 0,
+            PaternityAdjustmentEntry: 0,
+            MaternityLeaveTaken: 0,
+            MTLAvailedTime: 0,
+            MaternityAdjustmentEntry: 0,
+            MarriageLeaveTaken: 0,
+            MRLAvailedTime: 0,
+            MarriageAdjustmentEntry: 0,
+            ID: 0
+        }
+
+
     }
 }
