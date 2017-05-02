@@ -19,8 +19,6 @@ import { LeaveApprovalPage } from '../pages/LeaveManagement/leave-approval/leave
 import { MyLeavesPage } from '../pages/LeaveManagement/my-leaves/my-leaves';
 import { LeaveService } from '../pages/LeaveManagement/services/leave.service';
 
-import { DiscrepancyModalPage } from '../pages/discrepancy-modal/discrepancy-modal';
-
 // Timesheet
 
 import { MyTimesheetPage } from '../pages/Timesheet/my-timesheet/my-timesheet';
@@ -112,7 +110,6 @@ export class MyApp {
     public unauthorizedEvent: Events,
     public alertCtrl: AlertController,
     public toastCtrl: ToastController,
-    public discrepancyService: EmployeeDiscrepancyService,
     public modalCtrl: ModalController,
     public _cacheService: CacheService) {
 
@@ -149,7 +146,6 @@ export class MyApp {
           this.toggleProjectsMenu();
           this.loadUserDetails();
           this.getPendingApprovalCount();
-          this.checkDiscrepancy();
         } else {
           this.isAuthenticated = false;
           this.rootPage = LoginPage;
@@ -157,24 +153,6 @@ export class MyApp {
       });
 
     
-  }
-
-  checkDiscrepancy() {
-    this.discrepancyService.getEmployeeDiscrepancy().subscribe(res => {
-      if (res.length > 0) this.showModal(res[0]);
-      console.log('discrepancy => ', res[0]);
-    });
-  }
-
-  showModal(data) {
-    let modal = this.modalCtrl.create(DiscrepancyModalPage, data);
-    modal.onDidDismiss(data => {
-      console.log('dismissed modal',data);
-      if(data.wasLeaveTaken)
-        this.openPage({ component: ApplyForLeavePage });
-    });
-    modal.present();
-
   }
 
   onLogout(): void {
@@ -215,8 +193,9 @@ export class MyApp {
       this.pages.push({ title: 'Employee Project Management', component: EmployeeProjectManagementPage, icon: 'contacts' });
     }
 
-    this.pages.push({ title: 'Log a Ticket', component: LogATicketPage, icon: 'contacts' });
-    this.pages.push({ title: 'Conference Booking', component: ConferenceBookingPage, icon: 'contacts' });
+    // Features under development
+    // this.pages.push({ title: 'Log a Ticket', component: LogATicketPage, icon: 'contacts' });
+    // this.pages.push({ title: 'Conference Booking', component: ConferenceBookingPage, icon: 'contacts' });
 
     if (this.auth.checkPermission('HR.RESIGNEDEMPLOYEELEAVE.MANAGE') == true) {
       this.pages.push({ title: 'Resigned Employee Leaves', component: ManageResignedEmployeeLeavesPage, icon: 'contacts' });
