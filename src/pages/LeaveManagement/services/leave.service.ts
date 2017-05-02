@@ -42,7 +42,7 @@ export class LeaveService extends BaseService {
     getLeaves(): Observable<Leave> {
         return this.getList$(0, 0, true).map(res => res.json());
     }
-    getMyLeaves(isPullToRefresh:boolean): Observable<Leave> {
+    getMyLeaves(isPullToRefresh: boolean): Observable<Leave> {
         //return this.getChildList$('myleaves', 0, 0, true).map(res => res.json());
         if (this._cacheService.exists('myLeaveList') && isPullToRefresh === false) {
             return new Observable<any>((observer: any) => {
@@ -202,7 +202,7 @@ export class LeaveService extends BaseService {
     }
 
 
-    getLeaveByStatus(status: any,isPullToRefresh:boolean): Observable<Leave[]> {
+    getLeaveByStatus(status: any, isPullToRefresh: boolean): Observable<Leave[]> {
 
         // return this.getChildList$('ByStatus/' + status, 0, 0, true).map(res => {
 
@@ -229,8 +229,8 @@ export class LeaveService extends BaseService {
         }
     }
 
-    getLeaveByPendingStatus(status: any,isPullToRefresh:boolean): Observable<Leave[]> {
-          if (this._cacheService.exists('hrpendingApproverList') && isPullToRefresh === false) {
+    getLeaveByPendingStatus(status: any, isPullToRefresh: boolean): Observable<Leave[]> {
+        if (this._cacheService.exists('hrpendingApproverList') && isPullToRefresh === false) {
             return new Observable<any>((observer: any) => {
                 observer.next(this._cacheService.get('hrpendingApproverList'));
             });
@@ -345,6 +345,22 @@ export class LeaveService extends BaseService {
                 return this.handleError(err);
             });
     }
+
+    getCurrentUserLeaveDiscrepancy(payload) {
+        let headers = new Headers();
+        let body = JSON.stringify(payload);
+        headers.append('Authorization', 'Bearer ' + localStorage.getItem('accessToken'));
+        headers.append('Content-Type', 'application/json');
+        let options = new RequestOptions({ headers: headers });
+        return this.http.post(this.baseUrl + 'LeaveDetails/GetCurrentUserLeaveDescripancy', body, options)
+            .map(res => {
+                return res.json();
+            })
+            .catch(err => {
+                return this.handleError(err);
+            });
+    }
+
     checkIfAlreadyApplied(payload: any) {
         let headers = new Headers();
         let body = JSON.stringify(payload);
