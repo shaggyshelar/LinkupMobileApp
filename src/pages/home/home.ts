@@ -1,17 +1,21 @@
 import { Component, ViewChild } from '@angular/core';
 import { NavController, NavParams, Slides } from 'ionic-angular';
-import { AuthService } from '../../providers/index';
+import { SpinnerService, AuthService, EmployeeDiscrepancyService } from '../../providers/index';
 import { MyTimesheetPage } from '../Timesheet/my-timesheet/my-timesheet';
 import { MyLeavesPage } from '../LeaveManagement/my-leaves/my-leaves';
 import { Chart } from 'chart.js';
 import { ModalController } from 'ionic-angular';
+
+import { DiscrepancyModalPage } from '../discrepancy-modal/discrepancy-modal';
+import { ApplyForLeavePage } from '../LeaveManagement/apply-for-leave/apply-for-leave';
 
 import { Subscription } from 'rxjs/Subscription';
 
 
 @Component({
   selector: 'page-home',
-  templateUrl: 'home.html'
+  templateUrl: 'home.html',
+  providers: [SpinnerService]
 })
 export class HomePage {
   @ViewChild('pieMyTimesheetCanvas') pieMyTimesheetCanvas;
@@ -37,10 +41,10 @@ export class HomePage {
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
     public authService: AuthService,
+    public discrepancyService: EmployeeDiscrepancyService,
+    public spinner: SpinnerService,
     public modalCtrl: ModalController) {
     this.isSearchShow = false;
-
-
     this.subscription = this.authService.onAuthStatusChanged$.subscribe(
       isAuthenticated => {
         if (isAuthenticated == "true") {
@@ -69,6 +73,8 @@ export class HomePage {
 
     //Calculation for Pie Chart According to values
     this.calculatePieChartParams();
+
+    // this.checkDiscrepancy();
   }
   showSearch() {
     this.isSearchShow = true;
@@ -136,6 +142,7 @@ export class HomePage {
   ionViewDidLoad() {
     this.createCharts();
     this.initializeItems();
+    this.checkDiscrepancy()
   }
   gotoMyLeaves() {
     this.navCtrl.push(MyLeavesPage);
@@ -151,6 +158,36 @@ export class HomePage {
     this.pieParams[3] = parseInt(this.myTimesheetNotSubmitted);
     this.pieParams[4] = parseInt(this.myTimesheetRejected);
     this.pieParams[5] = parseInt(this.myTimesheetPending);
+  }
+
+  checkDiscrepancy() {
+    var response = [];
+    this.spinner.createSpinner('Please wait...');
+    this.discrepancyService.getEmployeeDiscrepancy().subscribe(res => {
+      if (res.length > 0) {
+        res.forEach(element => {
+          response.push(element);
+        });
+        console.log('discrepancy in ',response);
+        this.spinner.stopSpinner();
+        this.showModal(response);
+      }
+      this.spinner.stopSpinner();
+    }, err => {
+      this.spinner.stopSpinner();
+    });
+  }
+
+  showModal(data) {
+
+    let modal = this.modalCtrl.create(DiscrepancyModalPage, data);
+    modal.onDidDismiss(data => {
+      console.log('dismissed modal', data);
+      if (data.wasLeaveTaken && data.date != null)
+        this.navCtrl.push(ApplyForLeavePage, { date: data.date });
+    });
+    modal.present();
+
   }
 
 }
