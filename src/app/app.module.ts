@@ -69,6 +69,7 @@ import { SkillSetPage } from '../pages/Corporate/MyProfile/skill-set/skill-set';
 //DiscrepancyModalPage
 import { DiscrepancyModalPage } from '../pages/discrepancy-modal/discrepancy-modal';
 
+
 //HR
 import { ResignedEmployeeLeavesPage } from '../pages/HR/resigned-employee-leaves/resigned-employee-leaves';
 import { EmployeeLeaveBalancePage } from '../pages/HR/employee-leave-balance/employee-leave-balance';
@@ -94,6 +95,7 @@ import { PriceTypeService } from '../providers/shared/master/priceType.service';
 import { LogATicketMasterService } from '../providers/shared/master/logATicketMaster.service';
 import { ConferenceBookingMasterService } from '../providers/shared/master/conferenceBooking.service';
 import { LogATicketService, ConferenceBookingService } from '../pages/Corporate/index';
+import { LeaveTypeMasterService } from '../providers/shared/master/leaveTypeMaster.service';
 
 // Direrctives
 import { LimitToDirective } from '../providers/shared/directives/limit-to';
@@ -241,7 +243,7 @@ import { CacheService, CacheStorageAbstract, CacheLocalStorage } from 'ng2-cache
       useClass: IonicErrorHandler
     }, 
     Auth, AuthService, LeaveService, HolidayService, UserService, MessageService, CommonService, LimitToDirective, KebabCasePipe,
-    CacheService, EmployeeTimesheetService, ClientService, ProjectTypeService, PriceTypeService, LogATicketMasterService, ProjectCategoryService, DeliveryUnitService, DeliveryModelService, PhasesService, ProjectService, TeamMemberService, EmployeeService, TimesheetService, LogATicketService, ConferenceBookingService, ConferenceBookingMasterService,EmployeeDiscrepancyService,
+    CacheService, EmployeeTimesheetService, ClientService, ProjectTypeService, PriceTypeService, LogATicketMasterService, ProjectCategoryService, DeliveryUnitService, DeliveryModelService, PhasesService, ProjectService, TeamMemberService, EmployeeService, TimesheetService, LogATicketService, ConferenceBookingService, ConferenceBookingMasterService,EmployeeDiscrepancyService, LeaveTypeMasterService, 
     { provide: CacheStorageAbstract, useClass: CacheLocalStorage }]
 })
 export class AppModule { }
