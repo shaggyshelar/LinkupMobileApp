@@ -6,7 +6,7 @@
 -->
 <ion-header>
 
-  <ion-navbar>
+  <ion-navbar hideBackButton >
     <ion-title>Access Control Discrepancy</ion-title>
   </ion-navbar>
 
@@ -17,7 +17,7 @@
   <h3 class="center">Leave Records Mismatch</h3>
   <form [formGroup]="complexForm">
     <ion-list>
-      <ion-list-header>Date : {{discrepancyData.LeaveDate | date:'mediumDate'}}</ion-list-header>
+      <ion-list-header>Date : {{discrepancyData[0].LeaveDate | date:'yMMMMEEEEd'}}</ion-list-header>
       <!--<ion-list-header>Date : 24/04/2017</ion-list-header>-->
 
       <ion-item>
@@ -37,14 +37,14 @@
 
       <ion-item *ngIf="showDateRange">
         <ion-label floating>From <span class="required">*</span></ion-label>
-        <ion-datetime formControlName="From" (ionChange)="fromDateChanged($event)"></ion-datetime>
+        <ion-datetime formControlName="From" (ionChange)="fromDateChanged($event, true)"></ion-datetime>
         <!--[(ngModel)]="data.From"-->
       </ion-item>
       <p *ngIf="!complexForm.controls.From.valid && complexForm.controls.From.dirty" class="error">Please enter From Date</p>
 
       <ion-item *ngIf="showDateRange">
         <ion-label floating>To <span class="required">*</span></ion-label>
-        <ion-datetime formControlName="To" [min]="minDate"></ion-datetime>
+        <ion-datetime formControlName="To" [min]="minDate" [max]="maxDate"></ion-datetime>
         <!--[(ngModel)]="data.To"-->
       </ion-item>
       <p *ngIf="!complexForm.controls.To.valid && complexForm.controls.To.dirty" class="error">Please enter To Date</p>
