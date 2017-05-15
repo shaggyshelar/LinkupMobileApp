@@ -21,6 +21,13 @@
     <button ion-fab mini (click)="addFabClicked()"><ion-icon name="add"></ion-icon></button>
   </ion-fab>
 
+  <!--Pull to refresh Start-->
+  <ion-refresher (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content pullingIcon="arrow-dropdown" pullingText="Pull to refresh" refreshingSpinner="circles" refreshingText="Refreshing...">
+    </ion-refresher-content>
+  </ion-refresher>
+  <!--Pull to refresh Ends-->
+
   <ion-list>
     <ion-item class="no-padding" *ngFor="let project of projectList" ion-item [attr.billablenonbillable]="project.BillableNonBillable | lowercase"
       (click)="goToProjectDetail(project)">
@@ -35,11 +42,11 @@
     </ion-item>
   </ion-list>
 
-  <ion-list-header *ngIf ="(projectList)?.length == 0 && isAllDataLoaded == true">
+  <ion-list-header *ngIf="(projectList)?.length == 0 && isAllDataLoaded == true">
     No Records Found
   </ion-list-header>
   <ion-list-header [hidden]="canReadProject">
     You are not Authorized
-  </ion-list-header>  
+  </ion-list-header>
 
 </ion-content>
