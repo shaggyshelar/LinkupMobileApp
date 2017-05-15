@@ -68,7 +68,7 @@ export class TimesheetDetailsPage {
       this.timesheetService.getMyTimesheet(id).subscribe((res: any) => {
         this.employeeTimesheet = res;
         this.timesheets = res.Timesheets;
-        console.log('this.timesheets => ', this.timesheets);
+        // console.log('this.timesheets => ', this.timesheets);
         this.cacheStore(this.assembleCacheKey(), res);
         res.SubmittedStatus === 'Not Submitted' ? this.isSubmitted = false : this.isSubmitted = true;
         loader.dismiss();
