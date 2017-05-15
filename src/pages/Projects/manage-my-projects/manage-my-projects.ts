@@ -27,7 +27,9 @@ export class ManageMyProjectsPage {
   canAddProject: boolean;
   isAllDataLoaded: boolean;
 
-  projectList: Observable<Project[]>;
+  isPulltoRefresh: boolean = false;
+
+  projectList: Project[];
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
     private projectService: ProjectService,
@@ -50,7 +52,7 @@ export class ManageMyProjectsPage {
     this.isAllDataLoaded = false;
     //this.projectList = this.projectService.getProjectList();
     this.spinnerService.createSpinner('Please wait');
-    this.projectService.getManageMyProjectsList().subscribe(
+    this.projectService.getManageMyProjectsList(this.isPulltoRefresh).subscribe(
       (res: any) => {
         this.spinnerService.stopSpinner();
         this.projectList = res.reverse();
@@ -66,6 +68,20 @@ export class ManageMyProjectsPage {
 
   addFabClicked() {
     this.navCtrl.push(AddProjectsPage);
+  }
+
+  doRefresh(refresher) {
+    this.isPulltoRefresh = true;
+    this.projectService.getManageMyProjectsList(this.isPulltoRefresh).subscribe(
+      (res: any) => {
+        refresher.complete();
+        this.projectList = [];
+        this.projectList = res.reverse();
+        this.isAllDataLoaded = true;
+      }, error => {
+        console.log('error', error);
+        refresher.complete();
+      });
   }
 
 }
