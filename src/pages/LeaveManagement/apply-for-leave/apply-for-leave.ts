@@ -52,7 +52,8 @@ export class ApplyForLeavePage {
     EndDate: any = {};
     LeaveType: any = {};
     leaveTypes: any[] = [];
-    minDate: Date;
+    minDate: string;
+    maxDate: string;
     charsLeft: number = 600;
     isLeaveAdded: boolean = false;
     isEndDtEnable: boolean = true;
@@ -336,7 +337,9 @@ export class ApplyForLeavePage {
     }
     startChanged() {
         this.model.end = this.model.start;
-        this.minDate = this.model.start;
+        // this.minDate = this.model.start;
+        this.minDate = moment(this.model.start).format('YYYY-MM-DD');
+        this.maxDate = moment(this.model.start).add(5, 'years').format('YYYY-MM-DD');
         this.dayDiffCalc();
     }
 
