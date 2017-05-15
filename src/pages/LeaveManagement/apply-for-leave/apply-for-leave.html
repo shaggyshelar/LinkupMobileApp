@@ -51,7 +51,7 @@
 	      </p> -->
     <ion-item>
       <ion-label floating>To<span class="required">*</span></ion-label>
-      <ion-datetime name ="enddate" [(ngModel)]="model.end" placeholder="MM/DD/YYYY" (ionChange)="endChanged()" displayFormat="MM/DD/YYYY"></ion-datetime>
+      <ion-datetime name ="enddate" [(ngModel)]="model.end" placeholder="MM/DD/YYYY" (ionChange)="endChanged()" displayFormat="MM/DD/YYYY" [min]="minDate" [max]="maxDate"></ion-datetime>
     </ion-item>
       <!--<p ion-text [hidden]="applyLeaveForm.controls.end.valid || submitted == false" color="danger" padding-left>
 				End Date is required.
@@ -66,12 +66,15 @@
 <form [formGroup]="applyLeaveForm">
    <div >
   <ion-item>
-        <ion-label floating>Comments<span class="required">*</span></ion-label>
-        <ion-textarea name ="reason" [(ngModel)]="comment" formControlName="reason" spellcheck="false" autocapitalize="off" (input)="textChanged($event)" ></ion-textarea>
+        <ion-label floating>Reason<span class="required">*</span></ion-label>
+        <ion-textarea name ="reason" [(ngModel)]="comment" formControlName="reason" spellcheck="false" autocapitalize="off" (input)="textChanged($event)" maxLength="600"></ion-textarea>
   </ion-item>
 
     <p ion-text [hidden]="applyLeaveForm.controls.reason.valid || submitted == false" color="danger" padding-left>
 				Reason is required.
+	     </p> 
+    <p ion-text [hidden]="!(comment.length >= 600)" color="danger" padding-left>
+				Character limit exceeded.
 	     </p> 
    </div>
 </form>
