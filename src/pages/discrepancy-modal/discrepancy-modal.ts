@@ -81,6 +81,7 @@ export class DiscrepancyModalPage {
       });
     });
 
+    /* Check entries that match discrepancy and applied leave WRT date */
     if (discrepancyDates.length > 0)
       this.discrepancyData.forEach((element, index) => {
         discrepancyDates.forEach((item) => {
@@ -90,17 +91,46 @@ export class DiscrepancyModalPage {
         });
       });
 
+    /* Separate discrepancy (in this.discrepancyData) and applied leave (in spliced[]) */
     if (discrepancyIndex.length > 0) {
       discrepancyIndex.forEach(item => {
         var splice = this.discrepancyData.splice(item, 1);
-        if(splice.length > 0)
+        if (splice.length > 0)
           splice.forEach(element => {
             spliced.push(element);
           });
       });
     }
 
-    // TODO : Make API call for each entry's contents in spliced[]
+    /* TODO : Assemble contents (of spliced[]) for update API call */
+    var payload = [];
+    spliced.forEach(element => {
+      payload.push({
+        ID: element.ID,
+        Employee: this.userDetail.Employee,
+        Approvers: [],
+        Department: this.userDetail.Department.Value,
+        LeaveDate: element.LeaveDate,
+        LeaveReason: 'Leave',
+        ReasonDetails: 'Leave',
+        EmployeeID: this.userDetail.EmpID
+      });
+    });
+
+    /* TODO : Make API call for each entry's contents in spliced[]  */
+    payload.forEach(element => {
+      this.discrepancyService.updateEmployeeDiscrepancy(element).subscribe(res => {
+        if (res.StatusCode == 1) {
+          // this.toastPresent('Entry submitted successfully');
+          // this.clearLocalstorageFlags();
+        } else {
+          this.toastPresent(res.Message);
+          console.log(res);
+        }
+      }, err => {
+        console.log(err);
+      });
+    });
   }
 
   initModel() {
@@ -120,7 +150,7 @@ export class DiscrepancyModalPage {
   getReasonsMaster() {
     this.discrepancyService.getBioMetricReasons().subscribe(res => {
       this.biometricReasons = res;
-      console.log('reasons => ', res);
+      // console.log('reasons => ', res);
     });
 
   }
@@ -161,8 +191,9 @@ export class DiscrepancyModalPage {
   }
 
   submitClick(formValue) {
-    console.log('form value => ', formValue)
+    // console.log('form value => ', formValue)
     if (this.wasLeaveTaken) {
+      localStorage.setItem('discrepancyDataToApplyLeave', JSON.stringify(this.discrepancyData));
       this.viewCtrl.dismiss({
         date: this.discrepancyData[0].LeaveDate,
         wasLeaveTaken: this.wasLeaveTaken
@@ -178,6 +209,7 @@ export class DiscrepancyModalPage {
           this.discrepancyService.updateEmployeeDiscrepancy(entry).subscribe(res => {
             res.StatusCode == 1 ? this.toastPresent('Entry submitted successfully') : this.toastPresent(res.Message);
           });
+          this.clearLocalstorageFlags();
         });
 
       }
@@ -186,6 +218,7 @@ export class DiscrepancyModalPage {
         this.discrepancyService.updateEmployeeDiscrepancy(this.submitPayload(formValue)).subscribe(res => {
           if (res.StatusCode == 1) {
             this.toastPresent('Entry submitted successfully');
+            this.clearLocalstorageFlags();
           } else {
             this.toastPresent(res.Message);
           }
@@ -262,7 +295,7 @@ export class DiscrepancyModalPage {
   fromDateChanged(event) {
     this.minDate = moment(event.month.text + '/' + event.day.text + '/' + event.year.text).add(1, 'days').toISOString();
     this.maxDate = moment(this.minDate).add(5, 'years').toISOString();
-    console.log('from date change => ', this.minDate);
+    // console.log('from date change => ', this.minDate);
   }
 
   toastPresent(message: string) {
@@ -273,4 +306,8 @@ export class DiscrepancyModalPage {
     toast.present();
   }
 
+  clearLocalstorageFlags() {
+    localStorage.removeItem('blockHardwareBackButton');
+    localStorage.removeItem('biometricDiscrepancyPresent');
+  }
 }
