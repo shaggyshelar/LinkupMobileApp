@@ -27,10 +27,22 @@ export class ProjectService extends BaseService {
             .getChildList$('GetMyActiveProjects', 0, 0, true)
             .map(res => res.json());
     }
-    getManageMyProjectsList(): Observable<Project[]> {
-        return this
-            .getChildList$('ManageMyProjects', 0, 0, true)
-            .map(res => res.json());
+    getManageMyProjectsList(isPullToRefresh): Observable<Project[]> {
+        if (this._cacheService.exists('manageMyProjects') && isPullToRefresh === false) {
+            return new Observable<any>((observer: any) => {
+                observer.next(this._cacheService.get('manageMyProjects'));
+            });
+        } else {
+            return this.getChildList$('manageMyProjects', 0, 0, true).map(res => {
+                this._cacheService.set('manageMyProjects', res.json(), { maxAge: 60 * 60 });
+                return res.json();
+            }).catch(err => {
+                return this.handleError(err);
+            });
+        }
+        // return this
+        //     .getChildList$('ManageMyProjects', 0, 0, true)
+        //     .map(res => res.json());
     }
     getProjectById(id: string): Observable<Project> {
         return this
