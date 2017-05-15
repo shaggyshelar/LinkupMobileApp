@@ -4,7 +4,7 @@ import { Nav, Platform } from 'ionic-angular';
 import { StatusBar, Splashscreen, InAppBrowser } from 'ionic-native';
 import { LoadingController, AlertController, ToastController } from 'ionic-angular';
 import { HomePage } from '../pages/home/home';
-import { Events,ModalController } from 'ionic-angular';
+import { Events, ModalController } from 'ionic-angular';
 import { CacheService } from 'ng2-cache/ng2-cache';
 import 'rxjs/add/observable/fromEvent';
 import { Observable } from 'rxjs/Observable';
@@ -152,7 +152,22 @@ export class MyApp {
         }
       });
 
-    
+    this.platform.registerBackButtonAction(() => {
+      // console.log('back clicked => ', 'canGoBack() => ', this.nav.canGoBack(), 'biometricDiscrepancyPresent => ', localStorage.getItem('biometricDiscrepancyPresent'), 'blockHardwareBackButton => ', localStorage.getItem('blockHardwareBackButton'));
+      
+      if (this.nav.canGoBack()) {
+        if (JSON.parse(localStorage.getItem('biometricDiscrepancyPresent'))) {
+          // if (!JSON.parse(localStorage.getItem('blockHardwareBackButton') ? localStorage.getItem('blockHardwareBackButton') : 'false')) {
+          if (!(localStorage.getItem('blockHardwareBackButton') ? JSON.parse(localStorage.getItem('blockHardwareBackButton')) : false)) {
+            this.nav.pop();
+          }
+        } else if (!JSON.parse(localStorage.getItem('biometricDiscrepancyPresent'))) {
+          this.nav.pop();
+        }
+      } else if (!this.nav.canGoBack()) {
+        this.platform.exitApp();
+      }
+    });
   }
 
   onLogout(): void {
