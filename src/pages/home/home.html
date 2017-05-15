@@ -33,7 +33,7 @@
       <ion-icon name="calendar"></ion-icon>
     </ion-avatar>
     <h2>My Leaves</h2>
-    <p> Balance - {{myLeaveBalance != 'null' ? myLeaveBalance : 0}}, Taken - {{myLeaveTaken != 'null' ? myLeaveTaken : 0}}
+    <p> Balance - {{myLeaveBalance != 'null' ? (myLeaveBalance | number:'1.1-3') : 0}}, Taken - {{myLeaveTaken != 'null' ? (myLeaveTaken | number:'1.1-3') : 0}}
     </p>
     <!--<p> Balance - <span *ngIf="myLeaveBalance">{{myLeaveBalance}}</span>
       <span *ngIf="!myLeaveBalance">0</span>, Taken - <span *ngIf="myLeaveTaken"> {{myLeaveTaken}}</span>
