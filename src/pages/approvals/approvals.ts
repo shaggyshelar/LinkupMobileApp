@@ -23,26 +23,32 @@ export class ApprovalsPage {
 
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
-    public leaveStatusChangedEvent: Events,
+    public countChangedEvent: Events,
     public _cacheService: CacheService) {
     this.leavesTab = LeaveApprovalPage;
     this.timesheetsTab = ApproveTimesheetPage;
-
+    this.leavesToApproveCount = localStorage.getItem('PendingLeavesApprovalCount');
+    this.approveTimesheetsBadgeCount = parseInt(localStorage.getItem('PendingTimesheetApprovalCount'));
   }
 
   ionViewDidEnter() {
-    debugger;
-    this.leaveStatusChangedEvent.subscribe('Hr Approval Leave changed', () => {
+    this.countChangedEvent.subscribe('Hr Approval Leave changed', () => {
       this.leavesToApproveCount = localStorage.getItem('PendingLeavesApprovalCount');
     });
-    this.leaveStatusChangedEvent.subscribe('Bulk Approval Leave changed', () => {
+    this.countChangedEvent.subscribe('Bulk Approval Leave changed', () => {
       this.leavesToApproveCount = localStorage.getItem('PendingLeavesApprovalCount');
     });
-    this.leaveStatusChangedEvent.subscribe('Rejected single Leave', () => {
+    this.countChangedEvent.subscribe('Rejected single Leave', () => {
       this.leavesToApproveCount = localStorage.getItem('PendingLeavesApprovalCount');
     });
-    this.leaveStatusChangedEvent.subscribe('Approved single Leave', () => {
+    this.countChangedEvent.subscribe('Approved single Leave', () => {
       this.leavesToApproveCount = localStorage.getItem('PendingLeavesApprovalCount');
+    });
+    this.countChangedEvent.subscribe('Timesheet Rejected', () => {
+      this.approveTimesheetsBadgeCount = parseInt(localStorage.getItem('PendingTimesheetApprovalCount'));
+    });
+    this.countChangedEvent.subscribe('Timesheet Approved', () => {
+      this.approveTimesheetsBadgeCount = parseInt(localStorage.getItem('PendingTimesheetApprovalCount'));
     });
   }
 
@@ -55,6 +61,13 @@ export class ApprovalsPage {
     this.leavesToApproveCount = localStorage.getItem('PendingLeavesApprovalCount');
     this.approveTimesheetsBadgeCount = parseInt(localStorage.getItem('PendingTimesheetApprovalCount'));
 
+  }
+
+  ionViewWillUnload() {
+    this.countChangedEvent.unsubscribe('Hr Approval Leave changed');
+    this.countChangedEvent.unsubscribe('Bulk Approval Leave changed');
+    this.countChangedEvent.unsubscribe('Rejected single Leave');
+    this.countChangedEvent.unsubscribe('Approved single Leave');
   }
 
 
