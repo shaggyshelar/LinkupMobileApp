@@ -53,7 +53,7 @@ export class DailyTimesheetDetailPage {
   }
 
   ionViewDidEnter() {
-    console.log('daily detail cacheKey=> ',this.navParams.data.cacheKey);
+    // console.log('daily detail cacheKey=> ',this.navParams.data.cacheKey);
     if (this._cacheService.exists(this.navParams.data.cacheKey)) {
       this.timesheet = this._cacheService.get(this.navParams.data.cacheKey);
     } else { console.log('not there') }
