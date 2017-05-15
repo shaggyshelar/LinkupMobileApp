@@ -3,7 +3,7 @@ import { NavController, NavParams, ActionSheetController, ModalController, Event
 import { LeaveDetailsPage } from '../leave-details/leave-details';
 import { LeaveService } from '../index';
 import { Leave } from '../models/leave';
-import { SpinnerService } from '../../../providers/index';
+import { SpinnerService, EmployeeDiscrepancyService } from '../../../providers/index';
 import { LeaveDetail } from '../models/leaveDetail';
 import { MessageService } from '../../../providers/index';
 import { AuthService } from '../../../providers/index';
@@ -57,7 +57,7 @@ export class ApplyForLeavePage {
     isLeaveAdded: boolean = false;
     isEndDtEnable: boolean = true;
     isCommentValid: boolean = false;
-
+    biometricDiscrepancyPresent: boolean;
     leaves: any[];
     model: ApplyLeaveValidation;
     comment: string = '';
@@ -77,6 +77,9 @@ export class ApplyForLeavePage {
     isAllDataDownloaded: boolean = false;
     isAddedLeave: boolean = false;
     selectedLeaveType: string = 'Leave';
+    dayDiff: number = 0;
+
+    discrepancyRecord: any = null;
 
     constructor(public navCtrl: NavController,
         public navParams: NavParams,
@@ -91,10 +94,12 @@ export class ApplyForLeavePage {
         public modalCtrl: ModalController,
         private alertCtrl: AlertController,
         private toastCtrl: ToastController,
+        public discrepancyService: EmployeeDiscrepancyService
     ) {
 
 
-
+        this.biometricDiscrepancyPresent = JSON.parse(localStorage.getItem('biometricDiscrepancyPresent')) ? true : false;
+        this.biometricDiscrepancyPresent ? this.discrepancyRecord = JSON.parse(localStorage.getItem('discrepancyDataToApplyLeave')) : null;
         this.leaves = [];
         this.addLeaveArr = [];
         this.numberdays = true;
@@ -194,11 +199,13 @@ export class ApplyForLeavePage {
                                 this.currentUserLeaveDetail = this.setLeaveDetailsEmpty();
                             } else {
                                 this.currentUserLeaveDetail = res;
+                                this.dayDiff = this.currentUserLeaveDetail.ActualBalance;
                                 this.isAllDataDownloaded = true;
                                 this.selectLeaveType(this.leaves[0]);
                                 this.spinnerService.stopSpinner();
 
                             }
+                            this.dayDiffCalc();
                         });
                     });
                 });
@@ -258,6 +265,9 @@ export class ApplyForLeavePage {
                     //MessageService.addMessage({ severity: 'success', summary: 'Success', detail: MessageService.APPLY_LEAVE_2 });
                     // this.showToast(MessageService.APPLY_LEAVE_2);
                     this.toastPresent('Leave Applied successfully');
+                    if (this.biometricDiscrepancyPresent && this.discrepancyRecord != null)
+                        this.updateDiscrepancyRecords();
+                    this.updateDiscrepancyFlags();
                     console.log('payload =>', this.addLeaveArr, 'res =>', res);
                     this.navCtrl.pop();
                 } else {
@@ -272,6 +282,12 @@ export class ApplyForLeavePage {
     cancelLeave(leaveData: any) {
         var selectedIndex = this.addLeaveArr.indexOf(leaveData);
         this.addLeaveArr.splice(selectedIndex, 1);
+        this.handleCancelledLeave(leaveData);
+    }
+    handleCancelledLeave(leaveData) {
+        console.log('removed', leaveData.LeaveType);
+        if (leaveData.LeaveType.Value === 'Half Day Absent (LWP)' || leaveData.leaveType.Value === 'Absent (LWP)') return;
+        this.dayDiff += leaveData.NumberOfLeaves;
     }
 
     onAddLeave() {
@@ -304,22 +320,15 @@ export class ApplyForLeavePage {
             }
 
         }
-        console.log('leaves array => ', this.addLeaveArr);
+        // console.log('leaves array => ', this.addLeaveArr);
         // this.presentAlert('Leave Added');
         //this.toastPresent('Leave Added');
         /** Reset view */
         this.removeFocus();
 
-        // this.startSDate = this.navParams.get('date');
-        // this.endEDate = this.navParams.get('date');
-        // this.sdate = this.startSDate.toString();
-        // this.edate = this.endEDate.toString();
-        // this.model.start = this.navParams.get('date');
-        // this.startChanged();
-        // this.endChanged();
-
-        // this.model.leaveType.Type = this.leaves[0].label;
-        // this.validateLeaveTypeEvent(this.leaves[0].label);
+        /** TODO : Test the functionality */
+        // this.checkPending();
+        this.checkLeaveDifference();
     }
 
     deleteLeave(index: number) {
@@ -409,6 +418,7 @@ export class ApplyForLeavePage {
             this.model.numDays = dayCount;
         }
         this.checkIfAlreadyApplied();
+        this.checkForLeaveBalance();
 
 
     }
@@ -447,7 +457,7 @@ export class ApplyForLeavePage {
         return false;
     }
     checkPending(totalLeaveApplied: number) {
-        if (this.currentUserLeaveDetail.ActualBalance - this.pendingLeaveCount.LeaveTotal < totalLeaveApplied) {
+        if ((this.currentUserLeaveDetail.ActualBalance - this.pendingLeaveCount.LeaveTotal) < totalLeaveApplied) {
             if (this.pendingLeaveCount.LeaveTotal == 0) {
                 this.validationMessage = MessageService.APPLY_LEAVE_3;
             } else {
@@ -535,6 +545,44 @@ export class ApplyForLeavePage {
             }
         }
     }
+    checkForLeaveBalance() {
+        if (this.model.leaveType.Type === 'Half Day Absent (LWP)' || this.model.leaveType.Type === 'Absent (LWP)' || this.isValidationMessage)
+            return;
+        let dayCount = (moment(this.model.end).diff(this.model.start, 'days') + 1);
+        let leaveBal = this.dayDiff;
+        if (this.addLeaveArr.length > 0) {
+            leaveBal = leaveBal - (dayCount * this.leaveMultiplier());
+        } else if (this.addLeaveArr.length <= 0) {
+            // this.dayDiff = 0;
+            leaveBal = this.currentUserLeaveDetail.ActualBalance - (dayCount * this.leaveMultiplier());
+        }
+        if (leaveBal < 0) {
+            this.validationMessage = MessageService.APPLY_LEAVE_3;
+            this.isValidationMessage = true;
+            console.log('dayDiff =>', this.dayDiff);
+            // this.checkLeaveDifference();
+        }
+    }
+
+    /** TODO : Test the functionality */
+    checkLeaveDifference() {
+        if (this.model.leaveType.Type === 'Half Day Absent (LWP)' || this.model.leaveType.Type === 'Absent (LWP)' || this.isValidationMessage)
+            return;
+        let dayCount = (moment(this.model.end).diff(this.model.start, 'days') + 1);
+        this.dayDiff = this.dayDiff - (dayCount * this.leaveMultiplier());
+        if (this.dayDiff >= 0)
+            return;
+        var tempList = this.addLeaveArr.reverse();
+        tempList.splice(0, this.dayDiff);
+        console.log('temp added leaves =>', tempList);
+    }
+    leaveMultiplier() {
+        let multiplier = 1;
+        if (this.model.leaveType.Type === 'Half Day Absent (LWP)' || this.model.leaveType.Type === 'Half Day Leave') {
+            multiplier = 0.5;
+        }
+        return multiplier;
+    }
 
 
     showToast(message: string) {
@@ -604,5 +652,52 @@ export class ApplyForLeavePage {
         }
 
 
+    }
+
+    updateDiscrepancyFlags() {
+        localStorage.removeItem('biometricDiscrepancyPresent');
+        localStorage.removeItem('blockHardwareBackButton');
+    }
+
+    updateDiscrepancyRecords() {
+        this.assembleDiscrepancyPayload().forEach(payload => {
+            this.discrepancyService.updateEmployeeDiscrepancy(payload).subscribe(res => {
+                if (res.StatusCode == 1) {
+                    this.toastPresent('Entry submitted successfully');
+                } else {
+                    this.toastPresent(res.Message);
+                }
+            }, err => {
+                console.log(err);
+            });
+        });
+
+        localStorage.removeItem('discrepancyDataToApplyLeave');
+    }
+
+    assembleDiscrepancyPayload() {
+        var payload = this.pickLeavesFromDiscrepancy();
+        payload.forEach(element => {
+            element.LeaveReason = 'Leave';
+            element.ReasonDetails = 'Leave';
+        });
+        return payload;
+    }
+
+    pickLeavesFromDiscrepancy() {
+        var filtered = [],
+            discrepancies = [];
+        this.discrepancyRecord.forEach(element => discrepancies.push(element));
+        this.addLeaveArr.forEach(item => {
+            var remove;
+            filtered.push(discrepancies.find((element, index) => {
+                if (moment(element.LeaveDate).format('MM-DD-YYYY').indexOf(moment(item.StartDate).format('MM-DD-YYYY')) > -1) {
+                    remove = index;
+                    return true;
+                }
+            }));
+            discrepancies.splice(remove, 1);
+        });
+        return filtered;
     }
 }
