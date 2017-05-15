@@ -51,7 +51,6 @@ export class TaskDetailPage {
   }
 
   enterTimesheet(params) {
-    console.log('enterTimesheet => ', params.timesheetIndex);
     this.timesheetParams = params.data;
     this.isSubmitted = params.isSubmitted;
     this.cacheKey = params.cacheKey;
