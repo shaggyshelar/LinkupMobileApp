@@ -47,6 +47,7 @@ export class LeaveApprovalPage {
   public filterValues:any[];
   public modifiedList :any[];
   public leavesReplicate :any[];
+  public employeeSelected :any;
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
     public leaveService: LeaveService,
@@ -217,8 +218,9 @@ export class LeaveApprovalPage {
   /*show more action */
 
   presentActionSheet(leave: any, leaveID: string) {
+    this.employeeSelected = leave.Employee;
     this.isMoreclicked = true;
-    if (leave.Status == 'Approved' || leave.Status == 'Rejected' || leave.Status == 'Cancelled')
+    if (leave.Status == 'Approved' || leave.Status == 'Cancelled')
       return;
     this.selectedLeave = leave;  
     let actbuttons: any[] = [
@@ -258,6 +260,10 @@ export class LeaveApprovalPage {
         }
       }
     ];
+
+    if(leave.Status == 'Rejected') {
+      actbuttons.splice(0,2);
+    }
 
     if (this.checkBulkApprovePermission('LEAVE.HRAPPROVAL.UPDATE') == false) {
       actbuttons.splice(2, 1);
@@ -344,6 +350,7 @@ export class LeaveApprovalPage {
       payload.LeaveRequestIDs.push(
         {
           LeaveRequestRefId: this.selectedEmployees[index].LeaveRequestMasterId,
+          Employee: this.selectedEmployees[index].Employee
         });
     }
     return payload;
@@ -375,7 +382,8 @@ export class LeaveApprovalPage {
     var params = {
       LeaveRequestRefId: this.selectedLeaveID,
       Comments: this.comment,
-      Status: 'Approved'
+      Status: 'Approved',
+      Employee: this.employeeSelected
     };
     this.spinnerService.createSpinner('Please wait..');
     if (this.isHrApprove == true) {
@@ -383,7 +391,7 @@ export class LeaveApprovalPage {
         .subscribe(res => {
           this.spinnerService.stopSpinner();
           if (res.StatusCode == 1) {
-            this.toastPresent('Leave is Approved successfully!');
+            this.toastPresent('Leave  has been approved.');
             this.getApproverLeave();
           } else {
             this.toastPresent(res.ErrorMsg);
@@ -400,7 +408,7 @@ export class LeaveApprovalPage {
         .subscribe(res => {
           this.spinnerService.stopSpinner();
           if (res.StatusCode == 1) {
-            this.toastPresent('Leave is Approved successfully!');
+            this.toastPresent('Leave  has been approved!');
             this.getApproverLeave();
           } else {
             this.toastPresent(res.ErrorMsg);
