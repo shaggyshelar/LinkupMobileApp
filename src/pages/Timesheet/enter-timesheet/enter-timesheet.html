@@ -33,7 +33,13 @@
       <ion-label class="center-align">{{showWeekStart | date:'d MMM y'}} - {{showWeekEnd | date:'d MMM y'}}</ion-label>
     </ion-col>
     <ion-col width-10>
-      <button ion-button clear class="right-align" (click)="nextWeekClick()"><ion-icon name="arrow-dropright-circle" class="right-align"></ion-icon></button>
+      <!--START : Comment this code during deployment-->
+      <button ion-button clear class="right-align" (click)="nextWeekClick()"><ion-icon name="arrow-dropright-circle" class="right-align" ></ion-icon></button>
+      <!--END : Comment this code during deployment-->
+      
+      <!--START : Unomment this code during deployment-->
+      <!--<button ion-button clear class="right-align" (click)="nextWeekClick()" [disabled]="!allowNextWeekClick"><ion-icon name="arrow-dropright-circle" class="right-align" ></ion-icon></button>-->
+      <!--END : Unomment this code during deployment-->
     </ion-col>
   </ion-row>
 

@@ -55,6 +55,7 @@ export class EnterTimesheetPage {
   isDailyHoursComplete: boolean = false;
   isDayScrollable: any[] = [0, 0, 0, 0, 0, 0, 0];
   isLeaveApproved: boolean;
+  allowNextWeekClick: boolean = true;
 
 
   constructor(public navCtrl: NavController, public navParams: NavParams
@@ -94,6 +95,16 @@ export class EnterTimesheetPage {
   ionViewDidLoad() {
     this.getProjects();
     //this.pushTimeSheet();
+  }
+
+  /** Uncomment the code below during deployment */
+  allowPeekNextWeek() {
+    // let date = /*this.timesheetModel == {} || this.timesheetModel == null ? this.timesheetModel.StartDate : */this.showWeekStart.toISOString();
+    // if (moment(moment(date).format('MM-DD-YYYY')).isSameOrAfter(moment().add(0, 'weeks').isoWeekday(1).format('MM-DD-YYYY'))) {
+    //   this.allowNextWeekClick = false;
+    // } else {
+    //   this.allowNextWeekClick = true;
+    // }
   }
 
   ionViewWillEnter() {
@@ -153,6 +164,7 @@ export class EnterTimesheetPage {
         loader.dismiss();
       });
     });
+    this.allowPeekNextWeek();
   }
 
   /** Get Timesheet to Edit */
@@ -186,7 +198,7 @@ export class EnterTimesheetPage {
       this.weekEndDate = res.EndDate;
       this.showWeekEnd = new Date(this.weekEndDate);
       this.showWeekStart = new Date(this.weekStartDate);
-      // if (moment(moment(this.currentWkStrt).format('mm-DD-YYYY')).isAfter(moment(this.weekStartDate).format('mm-DD-YYYY'), 'day'))
+      // if (moment(moment(this.currentWkStrt).format('mm-DD-YYYY')).after(moment(this.weekStartDate).format('mm-DD-YYYY'), 'day'))
       //   this.timesheetStatus = 'New';
       // else
       this.timesheetStatus = res.SubmittedStatus;
@@ -207,6 +219,7 @@ export class EnterTimesheetPage {
       // }
       this.createTimesheetList();
       //console.log(res);
+      this.allowPeekNextWeek();
     });
   }
 
@@ -463,6 +476,7 @@ export class EnterTimesheetPage {
         }
         // this.timesheetList = this.cacheData.Timesheets;
         loader.dismiss();
+        this.allowPeekNextWeek();
       });
     });
   }
@@ -497,6 +511,7 @@ export class EnterTimesheetPage {
         }
         // this.timesheetList = this.cacheData.Timesheets;
         loader.dismiss();
+        this.allowPeekNextWeek();
       });
     });
   }
