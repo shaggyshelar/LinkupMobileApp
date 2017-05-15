@@ -121,8 +121,8 @@ export class AddProjectsPage {
       this.projMasterId = this.selectedProjectDetails.ProjectMasterID;
       this.ID = this.selectedProjectDetails.ID;
 
-      debugger;
-    } else { debugger; this.initData(); }
+      
+    } else {  this.initData(); }
     this.billTypes = [{
       label: 'Billable',
       value: 'Billable'
@@ -145,10 +145,10 @@ export class AddProjectsPage {
   }
 
   ionViewDidEnter() {
-    console.log('onEnter model updation teamMember=> ',this.teamMember);
-    debugger;
+    // console.log('onEnter model updation teamMember=> ',this.teamMember);
+    
     this.updateTeamMembers = this.assembleNewTeam();
-    debugger;
+    
   }
 
   initData() {
@@ -180,7 +180,7 @@ export class AddProjectsPage {
   }
 
   setProjectDetails(selectedproject) {
-    console.log('setProjectDetails selectedproject => ', selectedproject);
+    // console.log('setProjectDetails selectedproject => ', selectedproject);
 
     this.ProjectDetails.ClientName = selectedproject.ClientName;
     this.ProjectDetails.ProjectManager = selectedproject.ProjectManager;
@@ -313,7 +313,7 @@ export class AddProjectsPage {
           this.oldMembers.push(element);
           // this.projMasterId ? this.updateTeamMembers.push(element);
         }
-        debugger;
+        
       });
       this.projMasterId ? this.updateTeamMembers = res : this.updateTeamMembers = [];
     });
@@ -416,7 +416,7 @@ export class AddProjectsPage {
   }
 
   blurred(param) {
-    debugger;
+    
     setTimeout(function () {
       this.accManagerSuggestion = false;
       this.deliveryManagerSuggestion = false;
@@ -425,7 +425,7 @@ export class AddProjectsPage {
   }
 
   closeRecommendation() {
-    debugger;
+    
     setTimeout(function () {
       this.accManagerSuggestion = false;
       this.deliveryManagerSuggestion = false;
@@ -536,7 +536,7 @@ export class AddProjectsPage {
             return true;
           else return false;
       });
-      debugger;
+      
       team.push({
         ID: isNewlyAdded ? this.oldMembers[index].ID : 0,
         ProjectMasterID: this.projMasterId ? this.projMasterId : '',
@@ -545,7 +545,7 @@ export class AddProjectsPage {
         StartDate: this.ProjectDetails.StartDate,
         EndDate: this.ProjectDetails.EndDate,
       });
-      debugger;
+      
     });
 
     return team;
