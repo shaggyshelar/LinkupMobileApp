@@ -183,7 +183,7 @@ export class MyLeavesPage {
     this.leaveService.deleteLeaveRecord(leaveTobeCancelled).subscribe(res => {
       if (res) {
         //this.getMyLeaves();
-        this.toastPresent('Leave Canceled');
+        this.toastPresent('Leave Cancelled');
       } else {
         this.toastPresent('Failed to cancel leave');
       }
