@@ -78,7 +78,7 @@
         No of Leaves: {{leave.NumberOfLeaves | number : '1.1-3'}}
         <span class="right">{{leave.Status}}</span>
       </p>
-      <ion-icon *ngIf="leave.Status == 'Pending' " name="more" item-right (click)="presentActionSheet(leave , leave.LeaveRequestMasterId)"></ion-icon>
+      <ion-icon *ngIf="leave.Status == 'Pending' || leave.Status == 'Rejected'" name="more" item-right (click)="presentActionSheet(leave , leave.LeaveRequestMasterId)"></ion-icon>
     </ion-item>
   </ion-list>
 
