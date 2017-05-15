@@ -5,6 +5,7 @@ import { LeaveService } from '../index';
 import { Leave } from '../models/leave';
 import { SpinnerService } from '../../../providers/index';
 import { Toast } from 'ionic-native';
+import * as _ from 'lodash';
 
 
 /** Third Party Dependencies */
@@ -26,7 +27,7 @@ export class MyLeaveDetailPage {
   public leaveObs: Observable<Leave>;
   public today: Date;
   public leaveList: Leave[];
-  public approverObs: Observable<Leave>;
+  public approverObs: Leave[] = [];
   public activeProjectsObs: Observable<Leave>;
   public selectedLeave: any;
   public isCancellable: boolean;
@@ -57,7 +58,7 @@ export class MyLeaveDetailPage {
       this.leaveObs = res;
     });
     this.leaveService.getApproverListByRefID(this.leaveid).subscribe((res: any) => {
-      this.approverObs = res;
+      this.approverObs = this.makeArrayDistinct(res);
     });
     this.leaveService.getActiveProjects().subscribe((res: any) => {
       this.activeProjectsObs = res;
@@ -93,7 +94,7 @@ export class MyLeaveDetailPage {
       if (res) {
         this.spinnerService.stopSpinner();
         // this.leaveStatusChangedEvent.publish('Delected Leave','status');
-        this.toastPresent('Leave Canceled');
+        this.toastPresent('Leave Cancelled');
         this.navCtrl.pop();
       } else {
         this.spinnerService.stopSpinner();
@@ -137,5 +138,13 @@ export class MyLeaveDetailPage {
       }
     );
   }
+
+  makeArrayDistinct(param: any) {
+        let distinct = [];
+        distinct = _.uniqBy(param, (e) => {
+            return e.Approver.ID;
+        });
+        return distinct;
+    }
 
 }
