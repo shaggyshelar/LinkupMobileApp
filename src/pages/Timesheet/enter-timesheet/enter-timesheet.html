@@ -14,7 +14,7 @@
       <button ion-button (click)="saveTimsheet()" *ngIf="timesheetStatus !='Approved' && timesheetStatus !='Submitted' && timesheetStatus !='Rejected' && timesheetStatus !='Partially Approved'">
         Save
       </button>
-      <button ion-button (click)="onSendForApproval()" [disabled]="totalhours.TotalhrsTimesheet<40 " *ngIf="timesheetStatus !='Approved' && timesheetStatus !='Submitted' && timesheetStatus !='Rejected' && timesheetStatus !='Partially Approved'">
+      <button ion-button (click)="onSendForApproval()" [disabled]="totalhours.TotalhrsTimesheet<40 " *ngIf="timesheetStatus !='Approved' && timesheetStatus !='Submitted' && timesheetStatus !='Rejected' && timesheetStatus !='Partially Approved' && isLeaveApproved">
         Submit
       </button>
     </ion-buttons>
