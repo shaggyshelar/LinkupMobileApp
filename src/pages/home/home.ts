@@ -54,6 +54,7 @@ export class HomePage {
   }
 
   initializeItems() {
+    
     this.items = [
       'Leaves',
       'Timesheets',
@@ -140,6 +141,7 @@ export class HomePage {
     this.filters = [];
   }
   ionViewDidLoad() {
+    this.authService.getCurrentUserDetails();
     this.createCharts();
     this.initializeItems();
     this.checkDiscrepancy()
@@ -168,9 +170,14 @@ export class HomePage {
         res.forEach(element => {
           response.push(element);
         });
-        console.log('discrepancy in ',response);
+        console.log('discrepancy in ', response);
+        localStorage.setItem('biometricDiscrepancyPresent', 'true');
+        localStorage.setItem('blockHardwareBackButton', 'true');
+
         this.spinner.stopSpinner();
         this.showModal(response);
+      } else if (res.length == 0) {
+        localStorage.removeItem('biometricDiscrepancyPresent');
       }
       this.spinner.stopSpinner();
     }, err => {
