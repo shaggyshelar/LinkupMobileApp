@@ -31,7 +31,7 @@ export class Timesheet {
         Saturdaynbhrs: string = null;
         Sundaynbhrs: string = null;
         WeekNumber: string = null;
-        ProjectTimesheetStatus: string = 'New';
+        ProjectTimesheetStatus: string = 'New Timesheet';
         StartDate: string = null;
         EndDate: string = null;
         Mondaydescnb: string = null;
