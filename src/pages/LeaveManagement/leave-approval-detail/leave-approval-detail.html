@@ -60,7 +60,7 @@
     <ion-item>
       Leave Details
     </ion-item>
-    <ion-item *ngFor="let leaveEntry of leaveList">
+    <ion-item *ngFor="let leaveEntry of leaveList" text-wrap>
       <p> Leave Type : {{leaveEntry.LeaveType.Value}}
       </p>
       <p> {{leaveEntry.StartDate | date : 'shortDate'}} &mdash; {{leaveEntry.EndDate | date : 'shortDate'}}
