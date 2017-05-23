@@ -44,6 +44,7 @@ export class EnterTimesheetDetailsPage {
     public phasesService: PhasesService) {
     this.timesheetList = [];
     this.weekProjects = this.navParams.get('data');
+    this.weekProjects.MondayArray.length == 0 ? this.createWeekProjects() : null;
     this.selectedIndex = this.navParams.get('index');
     this.weekStartDate = this.navParams.get('weekstart');
     this.projectList = this.navParams.get('myProjects');
@@ -129,13 +130,7 @@ export class EnterTimesheetDetailsPage {
     if (this.checkProjectAndTask() == false)
       return;
 
-    this.weekProjects.MondayArray.push(this.createMondayProject(null));
-    this.weekProjects.TuesdayArray.push(this.createTuesdayProject(null));
-    this.weekProjects.WednesdayArray.push(this.createWednesdayProject(null));
-    this.weekProjects.ThursdayArray.push(this.createThursdayProject(null));
-    this.weekProjects.FridayArray.push(this.createFridayProject(null));
-    this.weekProjects.SaturdayArray.push(this.createSaturdayProject(null));
-    this.weekProjects.SundayArray.push(this.createSundayProject(null));
+    this.createWeekProjects();
     this.pushTimeSheet();
 
     /**
@@ -149,11 +144,10 @@ export class EnterTimesheetDetailsPage {
   }
 
   getTask() {
-
-    if (this.weekProjects.MondayArray[0].Project.Value.length > 0) {
+    if (this.weekProjects.MondayArray[0].Project.Value == "" || this.weekProjects.MondayArray[0].Project.Value == null) 
+      return;
       for (var index = 0; index < this.weekProjects.MondayArray.length; index++) {
         this.onProjectChange(this.weekProjects.MondayArray[index].Project.Value, index, 'Monday');
-      }
     }
   }
 
@@ -1005,13 +999,7 @@ export class EnterTimesheetDetailsPage {
     // console.log('this.timesheetList => ', this.timesheetList);
 
     if (this.weekProjects.MondayArray.length === 0) {
-      this.weekProjects.MondayArray.push(this.createMondayProject(null));
-      this.weekProjects.TuesdayArray.push(this.createTuesdayProject(null));
-      this.weekProjects.WednesdayArray.push(this.createWednesdayProject(null));
-      this.weekProjects.ThursdayArray.push(this.createThursdayProject(null));
-      this.weekProjects.FridayArray.push(this.createFridayProject(null));
-      this.weekProjects.SaturdayArray.push(this.createSaturdayProject(null));
-      this.weekProjects.SundayArray.push(this.createSundayProject(null));
+      this.createWeekProjects();
       this.pushTimeSheet();
     }
     this.calcDailyHours();
@@ -1066,7 +1054,7 @@ export class EnterTimesheetDetailsPage {
       return;
     }
     var projectMatch = this.weekProjects.MondayArray.find((item, idx) => {
-      if(index == idx || item.ProjectTimesheetStatus == 'Inactive')
+      if (index == idx || item.ProjectTimesheetStatus == 'Inactive')
         return false;
       return (item.Project.Value.indexOf(this.weekProjects.MondayArray[index].Project.Value) > -1) && (item[checkFor].indexOf(selectedEntry) > -1);
     });
@@ -1099,6 +1087,16 @@ export class EnterTimesheetDetailsPage {
       }
     }
     return false;
+  }
+
+  createWeekProjects() {
+    this.weekProjects.MondayArray.push(this.createMondayProject(null));
+    this.weekProjects.TuesdayArray.push(this.createTuesdayProject(null));
+    this.weekProjects.WednesdayArray.push(this.createWednesdayProject(null));
+    this.weekProjects.ThursdayArray.push(this.createThursdayProject(null));
+    this.weekProjects.FridayArray.push(this.createFridayProject(null));
+    this.weekProjects.SaturdayArray.push(this.createSaturdayProject(null));
+    this.weekProjects.SundayArray.push(this.createSundayProject(null));
   }
 
 }
