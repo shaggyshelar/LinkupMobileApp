@@ -1,6 +1,7 @@
 /** Angular Dependencies */
 import { Injectable } from '@angular/core';
 import { Http, RequestOptions, Headers } from '@angular/http';
+import { CacheService } from 'ng2-cache/ng2-cache';
 // import { Router } from '@angular/router';
 
 
@@ -24,7 +25,7 @@ const CONTEXT = 'Admin';
 export class EmployeeDiscrepancyService extends BaseService {
     dummyData: any[];
 
-    constructor(public http: Http) {
+    constructor(public http: Http, public _cacheService: CacheService) {
         super(http, CONTEXT);
         this.dummyData = [
             {
@@ -32,12 +33,37 @@ export class EmployeeDiscrepancyService extends BaseService {
                 Employee: { Value: 'Shrikant Mane', ID: 72 },
                 Approvers: [{ Value: '', ID: 0 }],
                 LeaveDate: new Date(),
-                LeaveReason: '',
-                ReasonDetails: '',
+                LeaveReason: 'Client side',
+                ReasonDetails: 'Nyx Client side',
                 EmployeeID: 0,
                 ApproverStatus: '',
+                Approvercomment: '',
                 ApprovedBy: { Value: '', ID: 0 }
-            }
+            },
+            {
+                ID: 101,
+                Employee: { Value: 'Shrikant Mane', ID: 72 },
+                Approvers: [{ Value: '', ID: 0 }],
+                LeaveDate: new Date(),
+                LeaveReason: 'Client side',
+                ReasonDetails: 'Nyx Client side',
+                EmployeeID: 0,
+                ApproverStatus: '',
+                Approvercomment: '',
+                ApprovedBy: { Value: '', ID: 0 }
+            },
+            {
+                ID: 101,
+                Employee: { Value: 'Shrikant Mane', ID: 72 },
+                Approvers: [{ Value: '', ID: 0 }],
+                LeaveDate: new Date(),
+                LeaveReason: 'Client side',
+                ReasonDetails: 'Nyx Client side',
+                EmployeeID: 0,
+                ApproverStatus: '',
+                Approvercomment: '',
+                ApprovedBy: { Value: '', ID: 0 }
+            },
         ];
     }
 
@@ -74,5 +100,22 @@ export class EmployeeDiscrepancyService extends BaseService {
             .map(res => res.json());
     }
 
+    getDiscrepancyForApproval(isPullToRefresh: boolean): Observable<any> {
+        return new Observable<any>((observer: any) => {
+            observer.next(this.dummyData);
+        });
+        // if (this._cacheService.exists('discrepancyApproval') && isPullToRefresh === false) {
+        //     return new Observable<any>((observer: any) => {
+        //         observer.next(this._cacheService.get('discrepancyApproval'));
+        //     });
+        // } else {
+        //     return this.getChildList$('EmployeeDiscrepancy/Approval', 0, 0, true).map(res => {
+        //         this._cacheService.set('discrepancyApproval', res.json(), { maxAge: 60 * 60 });
+        //         return res.json();
+        //     }).catch(err => {
+        //         return this.handleError(err);
+        //     });
+        // }
+    }
 
 }
