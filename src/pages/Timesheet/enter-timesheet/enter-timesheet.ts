@@ -48,7 +48,7 @@ export class EnterTimesheetPage {
   timesheetID: string;
   timesheetModel: any = {};
   emptyTimesheet: emptyTimesheetModel;
-  timesheetStatus: string = 'New';
+  timesheetStatus: string = 'New Timesheet';
   weekProjects: weekArray;
   isDataretrived: boolean = false;
   currentWkStrt: any = {};
@@ -94,7 +94,10 @@ export class EnterTimesheetPage {
 
   ionViewDidLoad() {
     this.getProjects();
-    //this.pushTimeSheet();
+  }
+
+  ionViewDidEnter() {
+    // this.timesheetID = this.
   }
 
   /** Uncomment the code below during deployment */
@@ -108,7 +111,6 @@ export class EnterTimesheetPage {
   }
 
   ionViewWillEnter() {
-    // this.scrollIconCalculate();
   }
 
   addProjectClicked() {
@@ -119,11 +121,11 @@ export class EnterTimesheetPage {
   pushTimeSheet() {
     let time = new Timesheet();
     time.ID = 0;
-    time.ProjectTimesheetStatus = 'New';
+    time.ProjectTimesheetStatus = 'New Timesheet';
     this.timesheetList.push(time);
   }
   getEmptyTimesheet() {
-    this.timesheetStatus = 'New';
+    this.timesheetStatus = 'New Timesheet';
     for (var index = 0; index < 7; index++) {
       var empty: emptyTimesheetModel = new emptyTimesheetModel();
       empty.date = moment(this.weekStartDate).add(index, 'days');
@@ -457,6 +459,7 @@ export class EnterTimesheetPage {
     this.showWeekStart = new Date(this.weekStartDate);
     this.timesheetList = [];
     this.cacheData = {};
+    this.timesheetID = '';
     /** TODO: get timesheet acc to date selected for edit mode */
     var loader = this.loadingCtrl.create({
       content: 'Please wait...'
@@ -471,7 +474,7 @@ export class EnterTimesheetPage {
         }
         else {
           // this.getEmptyTimesheet();
-          this.timesheetStatus = 'New';
+          this.timesheetStatus = 'New Timesheet';
           this.createTimesheetList();
         }
         // this.timesheetList = this.cacheData.Timesheets;
@@ -492,6 +495,7 @@ export class EnterTimesheetPage {
     this.showWeekStart = new Date(this.weekStartDate);
     this.timesheetList = [];
     this.cacheData = {};
+    this.timesheetID = '';
     /** TODO: get timesheet acc to date selected for edit mode */
     var loader = this.loadingCtrl.create({
       content: 'Please wait...'
@@ -506,7 +510,7 @@ export class EnterTimesheetPage {
         }
         else {
           //this.getEmptyTimesheet();
-          this.timesheetStatus = 'New';
+          this.timesheetStatus = 'New Timesheet';
           this.createTimesheetList();
         }
         // this.timesheetList = this.cacheData.Timesheets;
@@ -602,7 +606,7 @@ export class EnterTimesheetPage {
 
 
 
-
+    this.scrollIconCalculate();
     this.leaveTaskValidation();
   }
   createMondayProject(project: any) {
@@ -794,6 +798,10 @@ export class EnterTimesheetPage {
   }
   checkProjectAndTask() {
     this.isError = false;
+    if (this.timesheetList.length == 0) {
+      this.isError = true;
+      return false;
+    }
     let timesheet = this.timesheetList[this.timesheetList.length - 1];
     if (!timesheet.Project || timesheet.Project === null) {
       this.isError = true;
@@ -885,8 +893,9 @@ export class EnterTimesheetPage {
     }
     payload.ApproverUser = [];
     payload.PendingApprovers = [];
-    if (this.timesheetModel.PendingApprovers != null)
-      payload.PendingApprovers = this.timesheetModel.PendingApprovers;
+    if (this.timesheetModel)
+      if (this.timesheetModel.PendingApprovers != null)
+        payload.PendingApprovers = this.timesheetModel.PendingApprovers;
     for (let i = 0; i < this.timesheetList.length; i++) {
       payload.ApproverUser.push(this.timesheetList[i].ApproverUser);
       if (this.timesheetList[i].PendingApprover.Value != null)
@@ -896,12 +905,13 @@ export class EnterTimesheetPage {
       if (this.timesheetList[i].ProjectTimesheetStatus != 'Inactive')
         this.timesheetList[i].ProjectTimesheetStatus = isSave ? 'Not Submitted' : 'Submitted';
       this.timesheetList[i].StartDate = this.weekStartDate;
-      this.timesheetList[i].EndDate = this.weekStartDate;
+      this.timesheetList[i].EndDate = this.weekEndDate;
       this.timesheetList[i].TimesheetStartDate = this.weekStartDate;
       this.timesheetList[i].TimesheetEndDate = this.weekEndDate;
       this.timesheetList[i].ApproverComment = null;
       this.timesheetList[i].TimesheetStatus = 'Active';
       this.timesheetList[i].TimesheetID = this.timesheetID;
+      this.timesheetList[i].ID = this.timesheetList[i].ID ? this.timesheetList[i].ID : 0;
     }
     // payload.PendingApprovers = payload.ApproverUser
     payload.Title = this.currentUserDetail.EmpID;
@@ -973,6 +983,7 @@ export class EnterTimesheetPage {
   }
 
   scrollIconCalculate() {
+    this.isDayScrollable = [0, 0, 0, 0, 0, 0, 0];
     for (var index = 0; index < this.weekProjects.MondayArray.length; index++) {
       if (this.weekProjects.MondayArray[index].ProjectTimesheetStatus != 'Inactive') {
         this.weekProjects.MondayArray[index].Mondayhrs || this.weekProjects.MondayArray[index].Mondaynbhrs ? this.isDayScrollable[0]++ : null;
@@ -987,17 +998,37 @@ export class EnterTimesheetPage {
   }
 
   leaveTaskValidation() {
-    var leave = this.weekProjects.MondayArray.find((item, index) => {
-      return ((item.Project.Value.indexOf('Leave') > -1) || (item.Project.Value.indexOf('Absent') > -1))
+    /**
+     * Handles multiple Leave/Absent records
+     */
+    let leave: any[] = []
+      , unapproved: any[] = [];
+    leave = this.weekProjects.MondayArray.filter((item, index) => {
+      return ((item.Project.Value.indexOf('Leave') > -1) || (item.Project.Value.indexOf('Absent') > -1));
     });
-
-    if (leave) {
-      if (leave.ProjectTimesheetStatus != 'Approved') {
-        this.isLeaveApproved = false;
-        this.toastService.createToast('You can not submit timesheet until your leave is approved');
-      }
+    unapproved = leave.filter((item, index) => {
+      return item.ProjectTimesheetStatus != 'Approved';
+    });
+    if (unapproved.length > 0) {
+      this.isLeaveApproved = false;
+      this.toastService.createToast('You can not submit timesheet until your leave is approved');
     } else
       this.isLeaveApproved = true;
+    
+    /**
+     * Handles only 1 Leave/Absent record
+     */
+    // var leave = this.weekProjects.MondayArray.find((item, index) => {
+    //   return ((item.Project.Value.indexOf('Leave') > -1) || (item.Project.Value.indexOf('Absent') > -1))
+    // });
+
+    // if (leave) {
+    //   if (leave.ProjectTimesheetStatus != 'Approved') {
+    //     this.isLeaveApproved = false;
+    //     this.toastService.createToast('You can not submit timesheet until your leave is approved');
+    //   }
+    // } else
+    //   this.isLeaveApproved = true;
   }
 
   // checkSubmitDateValid() {
