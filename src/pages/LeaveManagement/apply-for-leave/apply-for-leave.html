@@ -44,14 +44,14 @@
 
      <ion-item>
       <ion-label floating>From<span class="required">*</span></ion-label>
-      <ion-datetime name ="startdate" [(ngModel)]="model.start" placeholder="MM/DD/YYYY" (ionChange)="startChanged()" displayFormat="MM/DD/YYYY"></ion-datetime>
+      <ion-datetime name ="startdate" [(ngModel)]="model.start" placeholder="DD/MM/YYYY" (ionChange)="startChanged()" displayFormat="DD/MM/YYYY"></ion-datetime>
     </ion-item>
      <!--<p ion-text [hidden]="applyLeaveForm.controls.start.valid || submitted == false" color="danger" padding-left>
 				Start Date is required.
 	      </p> -->
     <ion-item>
       <ion-label floating>To<span class="required">*</span></ion-label>
-      <ion-datetime name ="enddate" [(ngModel)]="model.end" placeholder="MM/DD/YYYY" (ionChange)="endChanged()" displayFormat="MM/DD/YYYY" [min]="minDate" [max]="maxDate"></ion-datetime>
+      <ion-datetime name ="enddate" [(ngModel)]="model.end" placeholder="DD/MM/YYYY" (ionChange)="endChanged()" displayFormat="DD/MM/YYYY" [min]="minDate" [max]="maxDate"></ion-datetime>
     </ion-item>
       <!--<p ion-text [hidden]="applyLeaveForm.controls.end.valid || submitted == false" color="danger" padding-left>
 				End Date is required.
