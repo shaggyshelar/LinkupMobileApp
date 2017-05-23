@@ -55,7 +55,6 @@ export class AddProjectsPage {
   ID: any;
   minStrtDt: any;
   updateTeamMembers: any[];
-  // ProjectDetails: Project = new Project();
   isAuthorized: boolean;
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
@@ -112,16 +111,12 @@ export class AddProjectsPage {
     this.priceType = [];
     this.updateTeamMembers = [];
     this.isAuthorized = this.auth.checkPermission('PROJECTS.EMPLOYEEPROJECTMANAGEMENT.ADD') && this.auth.checkPermission('PROJECTS.EMPLOYEEPROJECTMANAGEMENT.MANAGE');
-
     if (this.navParams.get('selectedProject')) {
-      // this.selectedProjectDetails = ;
       this.initData();
       this.selectedProjectDetails = this.navParams.get('selectedProject');
       this.setProjectDetails(this.navParams.get('selectedProject'));
       this.projMasterId = this.selectedProjectDetails.ProjectMasterID;
       this.ID = this.selectedProjectDetails.ID;
-
-      
     } else {  this.initData(); }
     this.billTypes = [{
       label: 'Billable',
@@ -141,14 +136,10 @@ export class AddProjectsPage {
   }
 
   ionViewDidLoad() {
-
   }
 
   ionViewDidEnter() {
-    // console.log('onEnter model updation teamMember=> ',this.teamMember);
-    
     this.updateTeamMembers = this.assembleNewTeam();
-    
   }
 
   initData() {
@@ -180,8 +171,6 @@ export class AddProjectsPage {
   }
 
   setProjectDetails(selectedproject) {
-    // console.log('setProjectDetails selectedproject => ', selectedproject);
-
     this.ProjectDetails.ClientName = selectedproject.ClientName;
     this.ProjectDetails.ProjectManager = selectedproject.ProjectManager;
     this.ProjectDetails.AccountManager = selectedproject.AccountManager;
@@ -204,21 +193,15 @@ export class AddProjectsPage {
     this.ProjectDetails.Tasks = selectedproject.Tasks;
     this.ProjectDetails.TeamSize = selectedproject.TeamSize;
     this.ProjectDetails.Title = selectedproject.Title;
-
     var isGlobal, isActive;
-    if (selectedproject.Isglobal.toLowerCase() === 'no') {
+    if (selectedproject.Isglobal.toLowerCase() === 'no') 
       this.ProjectDetails.isGlobal = isGlobal = false;
-    }
-    if (selectedproject.Isglobal.toLowerCase() === 'yes') {
+    if (selectedproject.Isglobal.toLowerCase() === 'yes') 
       this.ProjectDetails.isGlobal = isGlobal = true;
-    }
-    if (selectedproject.Active.toLowerCase() === 'no') {
+    if (selectedproject.Active.toLowerCase() === 'no') 
       this.ProjectDetails.isActive = isActive = false;
-    }
-    if (selectedproject.Active.toLowerCase() === 'yes') {
+    if (selectedproject.Active.toLowerCase() === 'yes') 
       this.ProjectDetails.isActive = isActive = true;
-      console.log('selectedproject-this.ProjectDetails =>', this.ProjectDetails);
-    }
 
     this.complexForm.setValue({
       'clientname': selectedproject.ClientName.Value,
@@ -305,15 +288,14 @@ export class AddProjectsPage {
       this.priceType = result;
     });
   }
+
   loadTeamMembers() {
     this.teamMemberService.getTeamByProject(this.projMasterId).subscribe(res => {
       res.forEach(element => {
         if (element.Status == 'Active') {
           this.teamMember.push(element.TeamMember);
           this.oldMembers.push(element);
-          // this.projMasterId ? this.updateTeamMembers.push(element);
         }
-        
       });
       this.projMasterId ? this.updateTeamMembers = res : this.updateTeamMembers = [];
     });
@@ -334,12 +316,12 @@ export class AddProjectsPage {
     }
     this.teamMember.splice(index, 1);
   }
+
   textChanged(event: any) {
     if (this.ProjectDetails.TeamMembers.trim().length > 1)
       this.isTeamValid = true;
     else
       this.isTeamValid = false;
-
   }
 
   addMembersClicked() {
@@ -348,13 +330,8 @@ export class AddProjectsPage {
 
   saveClicked(value) {
     var payload = this.getData();
-
-    console.log('payload saveClicked '+this.projMasterId+'=> ', payload);
-
     if (this.projMasterId) {
-      //Call Update API
       this.projectService.updateProjectWithTeam(payload).subscribe(res => {
-        // this.projectService.addProjectWithTeam(payload).subscribe(res => {
         if (res.StatusCode == 1) {
           this.toastService.createToast(res.Message);
           this.complexForm.reset();
@@ -365,8 +342,7 @@ export class AddProjectsPage {
       }, err => {
         console.log(err);
       });
-    }
-    else {
+    } else {
       //Call Add API
       this.projectService.addProjectWithTeam(payload).subscribe(res => {
         if (res.StatusCode == 1) {
@@ -379,9 +355,7 @@ export class AddProjectsPage {
       }, err => {
         console.log(err);
       });
-
     }
-
   }
 
   deactivateClicked(value) {
@@ -416,7 +390,6 @@ export class AddProjectsPage {
   }
 
   blurred(param) {
-    
     setTimeout(function () {
       this.accManagerSuggestion = false;
       this.deliveryManagerSuggestion = false;
@@ -425,7 +398,6 @@ export class AddProjectsPage {
   }
 
   closeRecommendation() {
-    
     setTimeout(function () {
       this.accManagerSuggestion = false;
       this.deliveryManagerSuggestion = false;
@@ -529,14 +501,12 @@ export class AddProjectsPage {
 
   assembleNewTeam() {
     var team = [];
-    
     this.teamMember.forEach((element, index) => {
       var isNewlyAdded =this.oldMembers.find((item)=> {
           if(item.TeamMember.Name==element.Name)
             return true;
           else return false;
       });
-      
       team.push({
         ID: isNewlyAdded ? this.oldMembers[index].ID : 0,
         ProjectMasterID: this.projMasterId ? this.projMasterId : '',
@@ -545,24 +515,11 @@ export class AddProjectsPage {
         StartDate: this.ProjectDetails.StartDate,
         EndDate: this.ProjectDetails.EndDate,
       });
-      
     });
-
     return team;
   }
 
   getData() {
-    //for AddProjectWithTeamMembers
-    // var team = [];
-    // this.teamMember.forEach(element => {
-    //   team.push({
-    //     ProjectMasterID: this.projMasterId ? this.projMasterId : '',
-    //     Status: this.ProjectDetails.isActive ? 'Active' : 'InActive',
-    //     TeamMember: element,
-    //     StartDate: this.ProjectDetails.StartDate,
-    //     EndDate: this.ProjectDetails.EndDate,
-    //   });
-    // });
     var payload = {
       // Id: this.ID ? this.ID : '',
       ProjectManager: this.ProjectDetails.ProjectManager,
