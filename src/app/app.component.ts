@@ -153,8 +153,7 @@ export class MyApp {
       });
 
     this.platform.registerBackButtonAction(() => {
-      // console.log('back clicked => ', 'canGoBack() => ', this.nav.canGoBack(), 'biometricDiscrepancyPresent => ', localStorage.getItem('biometricDiscrepancyPresent'), 'blockHardwareBackButton => ', localStorage.getItem('blockHardwareBackButton'));
-      
+      console.log('Component => ', this.nav._componentName, 'back clicked => ', 'canGoBack() => ', this.nav.canGoBack(), 'biometricDiscrepancyPresent => ', localStorage.getItem('biometricDiscrepancyPresent'), 'blockHardwareBackButton => ', localStorage.getItem('blockHardwareBackButton'));
       if (this.nav.canGoBack()) {
         if (JSON.parse(localStorage.getItem('biometricDiscrepancyPresent'))) {
           // if (!JSON.parse(localStorage.getItem('blockHardwareBackButton') ? localStorage.getItem('blockHardwareBackButton') : 'false')) {
@@ -217,6 +216,11 @@ export class MyApp {
     }
     if (this.auth.checkPermission('HR.EMPLOYEELEAVEBALANCE.MANAGE') == true) {
       this.pages.push({ title: 'Employee Leave Balance', component: ManageEmployeeLeaveBalancePage, icon: 'contacts' });
+    }
+
+    /** TODO : check if user is authorized for Biometric Discrepancy Approval */
+    if(true) {
+      this.pages.push({ title: 'Biometric Discrepancy Approval', component: BiometricDiscrepancyApprovalPage, icon: 'unlock'})
     }
   }
 
