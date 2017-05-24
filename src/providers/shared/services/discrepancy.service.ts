@@ -32,7 +32,7 @@ export class EmployeeDiscrepancyService extends BaseService {
                 ID: 101,
                 Employee: { Value: 'Shrikant Mane', ID: 72 },
                 Approvers: [{ Value: '', ID: 0 }],
-                LeaveDate: new Date(),
+                LeaveDate: new Date().toISOString(),
                 LeaveReason: 'Client side',
                 ReasonDetails: 'Nyx Client side',
                 EmployeeID: 0,
@@ -44,7 +44,7 @@ export class EmployeeDiscrepancyService extends BaseService {
                 ID: 101,
                 Employee: { Value: 'Shrikant Mane', ID: 72 },
                 Approvers: [{ Value: '', ID: 0 }],
-                LeaveDate: new Date(),
+                LeaveDate: new Date().toISOString(),
                 LeaveReason: 'Client side',
                 ReasonDetails: 'Nyx Client side',
                 EmployeeID: 0,
@@ -56,7 +56,7 @@ export class EmployeeDiscrepancyService extends BaseService {
                 ID: 101,
                 Employee: { Value: 'Shrikant Mane', ID: 72 },
                 Approvers: [{ Value: '', ID: 0 }],
-                LeaveDate: new Date(),
+                LeaveDate: new Date().toISOString(),
                 LeaveReason: 'Client side',
                 ReasonDetails: 'Nyx Client side',
                 EmployeeID: 0,
@@ -101,21 +101,21 @@ export class EmployeeDiscrepancyService extends BaseService {
     }
 
     getDiscrepancyForApproval(isPullToRefresh: boolean): Observable<any> {
-        return new Observable<any>((observer: any) => {
-            observer.next(this.dummyData);
-        });
-        // if (this._cacheService.exists('discrepancyApproval') && isPullToRefresh === false) {
-        //     return new Observable<any>((observer: any) => {
-        //         observer.next(this._cacheService.get('discrepancyApproval'));
-        //     });
-        // } else {
-        //     return this.getChildList$('EmployeeDiscrepancy/Approval', 0, 0, true).map(res => {
-        //         this._cacheService.set('discrepancyApproval', res.json(), { maxAge: 60 * 60 });
-        //         return res.json();
-        //     }).catch(err => {
-        //         return this.handleError(err);
-        //     });
-        // }
+        // return new Observable<any>((observer: any) => {
+        //     observer.next(this.dummyData);
+        // });
+        if (this._cacheService.exists('discrepancyApproval') && isPullToRefresh === false) {
+            return new Observable<any>((observer: any) => {
+                observer.next(this._cacheService.get('discrepancyApproval'));
+            });
+        } else {
+            return this.getChildList$('EmployeeDiscrepancy/Approval', 0, 0, true).map(res => {
+                this._cacheService.set('discrepancyApproval', res.json(), { maxAge: 60 * 60 });
+                return res.json();
+            }).catch(err => {
+                return this.handleError(err);
+            });
+        }
     }
 
 }
