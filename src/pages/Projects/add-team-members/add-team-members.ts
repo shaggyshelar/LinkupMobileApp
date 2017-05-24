@@ -37,7 +37,6 @@ export class AddTeamMembersPage {
   }
 
   ionViewDidLoad() {
-    // console.log('ionViewDidLoad AddTeamMembersPage');
     this.spinnerService.createSpinner('Please Wait...');
     this.empService.getActiveEmployeeList().subscribe((res) => {
       res.forEach((element) => {
@@ -91,7 +90,6 @@ export class AddTeamMembersPage {
   removeMember(member, index) {
     this.suggestionList.push(member);
     this.selectedTeam.splice(index, 1);
-    console.log('member =>', member.Name, 'index =>', index);
   }
 
 }

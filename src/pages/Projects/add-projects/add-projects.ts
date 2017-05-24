@@ -117,7 +117,7 @@ export class AddProjectsPage {
       this.setProjectDetails(this.navParams.get('selectedProject'));
       this.projMasterId = this.selectedProjectDetails.ProjectMasterID;
       this.ID = this.selectedProjectDetails.ID;
-    } else {  this.initData(); }
+    } else { this.initData(); }
     this.billTypes = [{
       label: 'Billable',
       value: 'Billable'
@@ -194,13 +194,13 @@ export class AddProjectsPage {
     this.ProjectDetails.TeamSize = selectedproject.TeamSize;
     this.ProjectDetails.Title = selectedproject.Title;
     var isGlobal, isActive;
-    if (selectedproject.Isglobal.toLowerCase() === 'no') 
+    if (selectedproject.Isglobal.toLowerCase() === 'no')
       this.ProjectDetails.isGlobal = isGlobal = false;
-    if (selectedproject.Isglobal.toLowerCase() === 'yes') 
+    if (selectedproject.Isglobal.toLowerCase() === 'yes')
       this.ProjectDetails.isGlobal = isGlobal = true;
-    if (selectedproject.Active.toLowerCase() === 'no') 
+    if (selectedproject.Active.toLowerCase() === 'no')
       this.ProjectDetails.isActive = isActive = false;
-    if (selectedproject.Active.toLowerCase() === 'yes') 
+    if (selectedproject.Active.toLowerCase() === 'yes')
       this.ProjectDetails.isActive = isActive = true;
 
     this.complexForm.setValue({
@@ -234,7 +234,6 @@ export class AddProjectsPage {
       this.toastService.createToast(err);
       console.log("err => ", err);
     });
-    console.log(this.usersList);
   }
   loadClients() {
     this.clients = [];
@@ -325,7 +324,7 @@ export class AddProjectsPage {
   }
 
   addMembersClicked() {
-    this.navCtrl.push(AddTeamMembersPage, { teamMembers: this.teamMember, projMasterId : this.projMasterId });
+    this.navCtrl.push(AddTeamMembersPage, { teamMembers: this.teamMember, projMasterId: this.projMasterId });
   }
 
   saveClicked(value) {
@@ -502,10 +501,10 @@ export class AddProjectsPage {
   assembleNewTeam() {
     var team = [];
     this.teamMember.forEach((element, index) => {
-      var isNewlyAdded =this.oldMembers.find((item)=> {
-          if(item.TeamMember.Name==element.Name)
-            return true;
-          else return false;
+      var isNewlyAdded = this.oldMembers.find((item) => {
+        if (item.TeamMember.Name == element.Name)
+          return true;
+        else return false;
       });
       team.push({
         ID: isNewlyAdded ? this.oldMembers[index].ID : 0,
@@ -548,7 +547,6 @@ export class AddProjectsPage {
       Status: this.ProjectDetails.isActive ? 'Active' : 'InActive',
       ProjectTeamMembers: this.projMasterId ? this.updateTeamMembers : this.assembleNewTeam()
     };
-    console.log('getData=>', payload);
     return payload;
   }
 }

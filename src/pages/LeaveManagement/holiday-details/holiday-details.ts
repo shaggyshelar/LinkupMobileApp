@@ -12,13 +12,12 @@ import { NavController, NavParams } from 'ionic-angular';
   templateUrl: 'holiday-details.html'
 })
 export class HolidayDetailsPage {
-  public selectedHoliday:any;
+  public selectedHoliday: any;
   constructor(public navCtrl: NavController, public navParams: NavParams) {
     this.selectedHoliday = navParams.get('holiday');
   }
 
   ionViewDidLoad() {
-    //console.log(this.selectedHoliday);
   }
 
 }

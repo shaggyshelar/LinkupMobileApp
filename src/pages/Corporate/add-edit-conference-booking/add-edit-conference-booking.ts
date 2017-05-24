@@ -61,7 +61,6 @@ export class AddEditConferenceBookingPage {
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad AddEditConferenceBookingPage');
     // this.start = this.end = moment(this.navParams.data.date._d).toISOString();
     this.bookConfForm.setValue({
       title: ''
@@ -75,7 +74,6 @@ export class AddEditConferenceBookingPage {
       , numberOfGuests: ''
       , isDeleted: false
     });
-    console.log(this.navParams.data.date._d);
     var loader = this.loadingCtrl.create({
       content: 'Please wait...'
     });
@@ -83,7 +81,6 @@ export class AddEditConferenceBookingPage {
       this.confMasterService.getRoomsList().subscribe(res => {
         this.roomList = res;
       }, err => {
-        console.log(err);
         loader.dismiss();
       });
       this.confMasterService.getSpecialTreatmentList().subscribe(res => {
@@ -106,12 +103,10 @@ export class AddEditConferenceBookingPage {
   recurrenceClicked() {
     let modal = this.modalCtrl.create(RecurrenceModalPage, { params: { start: this.start } });
     modal.onDidDismiss(data => {
-      console.log(data);
     });
     modal.present();
   }
   specialTreatmentChanged(specialTreatment) {
-    console.log(specialTreatment);
   }
 
   submit() {

@@ -45,7 +45,6 @@ export class ManageMyProjectsPage {
   }//PROJECTS.MANAGEMYPROJECTS.MANAGE
 
   ionViewDidEnter() {
-    //console.log('ionViewDidLoad ManageMyProjectsPage');
     this.getActiveProjects();
   }
   getActiveProjects() {

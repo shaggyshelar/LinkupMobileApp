@@ -40,7 +40,6 @@ export class TaskDetailPage {
 
   ionViewDidEnter() {
     this.navParams.data.isEnterTimesheet ? this.enterTimesheet(this.navParams.data.timesheetData) : this.viewTimesheet(this.navParams.data.timesheetData);
-    console.log('TaskDetailPage cacheKey=>', this.navParams.data.timesheetData.cacheKey);
   }
 
   viewTimesheet(params) {
@@ -64,7 +63,6 @@ export class TaskDetailPage {
   }
 
   addRecord(dayOfWeek) {
-    console.log('timesheetIndex', this.navParams.data.timesheetData.timesheetIndex, 'dayOfWeek', dayOfWeek);
     if (this.navParams.data.timesheetData.isSubmitted) {
       this.navCtrl.push(DailyTimesheetDetailPage, { isSubmitted: true, timesheetIndex: this.navParams.data.timesheetData.timesheetIndex, cacheKey: this.cacheKey, dayOfWeek: dayOfWeek });
     } else {

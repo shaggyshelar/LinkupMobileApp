@@ -269,7 +269,6 @@ export class ApplyForLeavePage {
                     if (this.biometricDiscrepancyPresent && this.discrepancyRecord != null)
                         this.updateDiscrepancyRecords();
                     this.updateDiscrepancyFlags();
-                    console.log('payload =>', this.addLeaveArr, 'res =>', res);
                     this.navCtrl.pop();
                 } else {
                     this.spinnerService.stopSpinner();
@@ -286,7 +285,6 @@ export class ApplyForLeavePage {
         this.handleCancelledLeave(leaveData);
     }
     handleCancelledLeave(leaveData) {
-        console.log('removed', leaveData.LeaveType);
         if (leaveData.LeaveType.Value === 'Half Day Absent (LWP)' || leaveData.leaveType.Value === 'Absent (LWP)') return;
         this.dayDiff += leaveData.NumberOfLeaves;
     }
@@ -321,7 +319,6 @@ export class ApplyForLeavePage {
             }
 
         }
-        // console.log('leaves array => ', this.addLeaveArr);
         // this.presentAlert('Leave Added');
         //this.toastPresent('Leave Added');
         /** Reset view */
@@ -350,7 +347,6 @@ export class ApplyForLeavePage {
     }
 
     validateLeaveTypeEvent(event) {
-        console.log('ionChnage event=>', event);
         this.leaves.forEach((element, index) => {
             if (event == element.value.Type) {
                 this.model.leaveType = element.value;
@@ -361,7 +357,6 @@ export class ApplyForLeavePage {
 
     validateLeaveType() {
         this.model.leaveType = this.getLeaveTypeModel();
-        console.log('leave type=>', this.model.leaveType);
         if (this.model.leaveType !== null) {
             this.leaveTypeValid = true;
             this.dayDiffCalc();
@@ -562,7 +557,6 @@ export class ApplyForLeavePage {
         if (leaveBal < 0) {
             this.validationMessage = MessageService.APPLY_LEAVE_3;
             this.isValidationMessage = true;
-            console.log('dayDiff =>', this.dayDiff);
             // this.checkLeaveDifference();
         }
     }
@@ -577,7 +571,6 @@ export class ApplyForLeavePage {
             return;
         var tempList = this.addLeaveArr.reverse();
         tempList.splice(0, this.dayDiff);
-        console.log('temp added leaves =>', tempList);
     }
     leaveMultiplier() {
         let multiplier = 1;
@@ -591,7 +584,6 @@ export class ApplyForLeavePage {
     showToast(message: string) {
         Toast.show(message, '5000', 'center').subscribe(
             toast => {
-                //console.log(toast);
             }
         );
     }

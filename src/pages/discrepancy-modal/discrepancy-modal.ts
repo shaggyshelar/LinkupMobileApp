@@ -54,7 +54,6 @@ export class DiscrepancyModalPage {
       this.discrepancyData.push(element);
     });
     this.checkIfAlreadyApplied();
-    // console.log('discrepancyData => ', this.discrepancyData);
     this.getReasonsMaster();
     // this.initModel();
   }
@@ -77,7 +76,6 @@ export class DiscrepancyModalPage {
       this.leaveService.getCurrentUserLeaveDiscrepancy({ Date: element.LeaveDate }).subscribe(res => {
         if (res.length > 0)
           discrepancyDates = res;
-        console.log('Date : ' + element.LeaveDate + ' =>', res);
       });
     });
 
@@ -125,10 +123,8 @@ export class DiscrepancyModalPage {
           // this.clearLocalstorageFlags();
         } else {
           this.toastPresent(res.Message);
-          console.log(res);
         }
       }, err => {
-        console.log(err);
       });
     });
   }
@@ -150,7 +146,6 @@ export class DiscrepancyModalPage {
   getReasonsMaster() {
     this.discrepancyService.getBioMetricReasons().subscribe(res => {
       this.biometricReasons = res;
-      // console.log('reasons => ', res);
     });
 
   }
@@ -191,7 +186,6 @@ export class DiscrepancyModalPage {
   }
 
   submitClick(formValue) {
-    // console.log('form value => ', formValue)
     if (this.wasLeaveTaken) {
       localStorage.setItem('discrepancyDataToApplyLeave', JSON.stringify(this.discrepancyData));
       this.viewCtrl.dismiss({
@@ -223,7 +217,6 @@ export class DiscrepancyModalPage {
             this.toastPresent(res.Message);
           }
         }, err => {
-          console.log(err);
         });
 
       }
@@ -295,7 +288,6 @@ export class DiscrepancyModalPage {
   fromDateChanged(event) {
     this.minDate = moment(event.month.text + '/' + event.day.text + '/' + event.year.text).add(1, 'days').toISOString();
     this.maxDate = moment(this.minDate).add(5, 'years').toISOString();
-    // console.log('from date change => ', this.minDate);
   }
 
   toastPresent(message: string) {

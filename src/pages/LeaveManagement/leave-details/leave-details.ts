@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams ,ViewController } from 'ionic-angular';
+import { NavController, NavParams, ViewController } from 'ionic-angular';
 
 /*
   Generated class for the LeaveDetails page.
@@ -13,18 +13,17 @@ import { NavController, NavParams ,ViewController } from 'ionic-angular';
 })
 export class LeaveDetailsPage {
 
-public leaveDetails:any;
-  constructor(public navCtrl: NavController, public navParams: NavParams ,public viewCtrl: ViewController) {
+  public leaveDetails: any;
+  constructor(public navCtrl: NavController, public navParams: NavParams, public viewCtrl: ViewController) {
     this.leaveDetails = this.navParams.get('leaveDetails');
   }
 
   ionViewDidLoad() {
-    //console.log('ionViewDidLoad LeaveDetailsPage');
-    
+
   }
 
-  
-close() {
+
+  close() {
     this.viewCtrl.dismiss({ message: 'Closed achievement' });
   }
 

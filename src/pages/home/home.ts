@@ -54,7 +54,7 @@ export class HomePage {
   }
 
   initializeItems() {
-    
+
     this.items = [
       'Leaves',
       'Timesheets',
@@ -170,7 +170,6 @@ export class HomePage {
         res.forEach(element => {
           response.push(element);
         });
-        console.log('discrepancy in ', response);
         localStorage.setItem('biometricDiscrepancyPresent', 'true');
         localStorage.setItem('blockHardwareBackButton', 'true');
 
@@ -189,7 +188,6 @@ export class HomePage {
 
     let modal = this.modalCtrl.create(DiscrepancyModalPage, data);
     modal.onDidDismiss(data => {
-      console.log('dismissed modal', data);
       if (data.wasLeaveTaken && data.date != null)
         this.navCtrl.push(ApplyForLeavePage, { date: data.date });
     });

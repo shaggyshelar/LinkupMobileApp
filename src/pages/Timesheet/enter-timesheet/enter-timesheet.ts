@@ -174,7 +174,6 @@ export class EnterTimesheetPage {
   getTimesheetForEdit() {
     this.timesheetService.getTimesheetByID(this.timesheetID).subscribe((res: any) => {
       this.timesheetModel = res;
-      // console.log('timesheet => ', this.timesheetModel);
       this.timesheetList = res.Timesheets;
 
       //START : Add PendingApprover to res.Timesheets[] object from res.PendingApprovers
@@ -208,7 +207,6 @@ export class EnterTimesheetPage {
       //   if (typeof this.timesheetList[i].ID === 'undefined')
       //     this.timesheetList[i].ID = 0;
       // }
-      // console.log('timesheetList => ', this.timesheetList);
       this.setTotal(res);
       // if (this.timesheetStatus !== 'Approved' && this.timesheetStatus !== 'Submitted') {
       //   for (let i = 0; i < this.timesheetList.length; i++) {
@@ -220,7 +218,6 @@ export class EnterTimesheetPage {
       //   }
       // }
       this.createTimesheetList();
-      //console.log(res);
       this.allowPeekNextWeek();
     });
   }
@@ -362,12 +359,9 @@ export class EnterTimesheetPage {
     // "SubmittedStatus": "Not Submitted",
     // "WeekNumber": "09",
     // this.timesheetService.saveTimesheet(this.cacheData).subscribe( res => {
-    //   console.log('save clicked, response => ', res);
     // }, err => {
-    //   console.log('save clicked, errror response => ', err);
     // });
 
-    // console.log(this.cacheData);
   }
 
   objectAssembly() {
@@ -833,7 +827,6 @@ export class EnterTimesheetPage {
       return;
     }
     let payload = this.getPayload(true);
-    console.log('saving payload=> ', payload);
     loader.present().then(() => {
       this.timesheetService.saveTimesheet(payload).subscribe((res: any) => {
         //this.onCancel();
@@ -841,7 +834,6 @@ export class EnterTimesheetPage {
         else { this.toastService.createToast(res.Message); loader.dismiss(); }
       }, err => {
         loader.dismiss();
-        console.log('err', err);
       });
     });
   }
@@ -871,7 +863,6 @@ export class EnterTimesheetPage {
     loader.present().then(() => {
 
       let payload = this.getPayload(false);
-      console.log('sending for approval payload=> ', payload);
       this.timesheetService.submitTimesheet(payload).subscribe((res: any) => {
         if (res.StatusCode == 1) { this.navCtrl.pop(); loader.dismiss(); this.toastService.createToast("Timesheet Submitted") }
         else { this.toastService.createToast(res.Message); loader.dismiss(); }
@@ -879,7 +870,6 @@ export class EnterTimesheetPage {
         loader.dismiss();
       });
       // this.timesheetService.submitTimesheet().subscribe((res: any) => {
-      //   console.log(res);
       // });
     });
 
@@ -1014,7 +1004,7 @@ export class EnterTimesheetPage {
       this.toastService.createToast('You can not submit timesheet until your leave is approved');
     } else
       this.isLeaveApproved = true;
-    
+
     /**
      * Handles only 1 Leave/Absent record
      */

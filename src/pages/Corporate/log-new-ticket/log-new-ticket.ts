@@ -41,7 +41,6 @@ export class LogNewTicketPage {
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad LogNewTicketPage');
     this.navParams.data.readOnly ? this.getDataForView(this.navParams.data.Id) : null;
   }
 
@@ -53,10 +52,8 @@ export class LogNewTicketPage {
     loader.present().then(() => {
       this.logTicketService.getMyTicket(id).subscribe(res => {
         this.ticketEntry = res;
-        console.log(this.ticketEntry);
         loader.dismiss();
       }, err => {
-        console.log(err);
         loader.dismiss();
       });
     });
@@ -86,7 +83,6 @@ export class LogNewTicketPage {
   }
 
   departmentChanged(value) {
-    console.log(value);
     var loader = this.loadingCtrl.create({
       content: 'Please wait...'
     });
@@ -102,11 +98,9 @@ export class LogNewTicketPage {
   }
 
   priorityChanged(value) {
-    console.log(value);
   }
 
   concernChanged(value) {
-    console.log(value);
   }
 
   submit(value, isValid) {
@@ -123,7 +117,6 @@ export class LogNewTicketPage {
         this.navCtrl.pop();
       });
     }
-    console.log(this.ticketEntry, value, isValid);
     /** Assemble object, API call */
   }
 

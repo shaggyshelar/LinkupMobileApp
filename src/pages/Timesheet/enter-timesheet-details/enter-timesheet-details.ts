@@ -105,7 +105,6 @@ export class EnterTimesheetDetailsPage {
   }
 
   saveClicked() {
-    // console.log('popping timesheetList => ', this.timesheetList);
     // this.cleanTimesheet();
     if (!this.cleanTimesheet())
       this.navCtrl.pop();
@@ -144,10 +143,10 @@ export class EnterTimesheetDetailsPage {
   }
 
   getTask() {
-    if (this.weekProjects.MondayArray[0].Project.Value == "" || this.weekProjects.MondayArray[0].Project.Value == null) 
+    if (this.weekProjects.MondayArray[0].Project.Value == "" || this.weekProjects.MondayArray[0].Project.Value == null)
       return;
-      for (var index = 0; index < this.weekProjects.MondayArray.length; index++) {
-        this.onProjectChange(this.weekProjects.MondayArray[index].Project.Value, index, 'Monday');
+    for (var index = 0; index < this.weekProjects.MondayArray.length; index++) {
+      this.onProjectChange(this.weekProjects.MondayArray[index].Project.Value, index, 'Monday');
     }
   }
 
@@ -173,7 +172,6 @@ export class EnterTimesheetDetailsPage {
   }
 
   onTaskChange(selectedProjecttask: string, index: number, day: string) {
-    console.log('selectedProjecttask => ', selectedProjecttask)
     // if (index == 0) {
     //   this.setTimesheetTask(day, index, selectedProjecttask);
     //   return;
@@ -315,7 +313,6 @@ export class EnterTimesheetDetailsPage {
 
   isDescriptionOK(desc: string, hrsStat: number) {
     var retParam;// = false;
-    console.log('desc => ' + typeof desc);
     // if (desc) {
     //   retParam = desc.trim().length > 0 ? true : false;
     // }
@@ -328,7 +325,6 @@ export class EnterTimesheetDetailsPage {
       else retParam = false;
     }
     if (hrsStat == 0) { desc == null ? retParam = true : null; }
-    console.log('desc =>', retParam);
     return retParam;
   }
 
@@ -642,8 +638,6 @@ export class EnterTimesheetDetailsPage {
       this.timesheetList[index].ID = this.weekProjects.SundayArray[index].ID;
       // this.timesheetList[index].TotalhrsSunday = this.weekProjects.SundayArray[index].TotalhrsSunday;
     }
-    // console.log(' popping this.timesheetList => ', this.timesheetList);
-    console.log("timesheetlist => ", this.timesheetList[this.deletedTaskIndex]);
     this.calculateTotalHrs();
 
 
@@ -813,7 +807,6 @@ export class EnterTimesheetDetailsPage {
     totalh = totalh + parseInt((totalm / 60).toString());
     totalm = totalm % 60;
     this.totalhours.TotalhrsTimesheet = (totalh < 10 ? '0' + totalh : totalh) + ':' + (totalm < 10 ? '0' + totalm : totalm);
-    // console.log('total hrs', this.totalhours.TotalhrsTimesheet);
 
   }
 
@@ -996,7 +989,6 @@ export class EnterTimesheetDetailsPage {
     this.timesheetList[index].ProjectTimesheetStatus = 'Inactive';
 
 
-    // console.log('this.timesheetList => ', this.timesheetList);
 
     if (this.weekProjects.MondayArray.length === 0) {
       this.createWeekProjects();

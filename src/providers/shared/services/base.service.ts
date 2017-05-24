@@ -17,7 +17,7 @@ interface HttpServices {
 /** Base Service Definition */
 export class BaseService implements HttpServices {
     public baseUrl: string = 'http://192.168.101.21:8009/api/';
-    //public baseUrl: string = 'http://linkupmobile.eternussolutions.com/webapi/api/';
+    // public baseUrl: string = 'http://linkupmobile.eternussolutions.com/webapi/api/';
     public options: RequestOptions;
 
     private httpService: Http;

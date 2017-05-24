@@ -198,7 +198,6 @@ export class MyLeavesPage {
   }
 
   handleScrollCalender(event: any) {
-    console.log('scrolled calender');
   }
 
   handleDayClick(event: any) {
@@ -319,7 +318,6 @@ export class MyLeavesPage {
   showToast(message: string) {
     Toast.show(message, '5000', 'center').subscribe(
       toast => {
-        //console.log(toast);
       }
     );
   }

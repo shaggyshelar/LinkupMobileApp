@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, AlertController, Events , ToastController } from 'ionic-angular';
+import { NavController, NavParams, AlertController, Events, ToastController } from 'ionic-angular';
 //import { LeaveDetail } from '../models/leaveDetail';
 import { LeaveService } from '../index';
 import { Leave } from '../models/leave';
@@ -38,7 +38,7 @@ export class MyLeaveDetailPage {
     public spinnerService: SpinnerService,
     public alertCtrl: AlertController,
     public leaveStatusChangedEvent: Events,
-    public toastCtrl:ToastController) {
+    public toastCtrl: ToastController) {
     this.leaveid = navParams.get('leaveid');
     this.selectedLeave = navParams.get('leave');
     this.today = new Date();
@@ -79,16 +79,16 @@ export class MyLeaveDetailPage {
       Status: 'Cancelled',
       LeaveRequestMasterId: this.leaveid,
       ID: this.selectedLeave.ID,
-      startdate:this.selectedLeave.StartDate,
-      enddate:this.selectedLeave.EndDate,
-      LeaveTotal:this.selectedLeave.LeaveTotal,
-      FloatingHolidayTotal:this.selectedLeave.FloatingHolidayTotal,
-      HalfdayLeaveTotal:this.selectedLeave.HalfdayLeaveTotal,
-      AbsentTotal:this.selectedLeave.AbsentTotal,
-      HalfdayAbsentTotal:this.selectedLeave.HalfdayAbsentTotal,
-      MaternityLeaveTotal:this.selectedLeave.MaternityLeaveTotal,
-      PaternityLeaveTotal:this.selectedLeave.PaternityLeaveTotal,
-      MarriageLeaveTotal:this.selectedLeave.MarriageLeaveTotal,
+      startdate: this.selectedLeave.StartDate,
+      enddate: this.selectedLeave.EndDate,
+      LeaveTotal: this.selectedLeave.LeaveTotal,
+      FloatingHolidayTotal: this.selectedLeave.FloatingHolidayTotal,
+      HalfdayLeaveTotal: this.selectedLeave.HalfdayLeaveTotal,
+      AbsentTotal: this.selectedLeave.AbsentTotal,
+      HalfdayAbsentTotal: this.selectedLeave.HalfdayAbsentTotal,
+      MaternityLeaveTotal: this.selectedLeave.MaternityLeaveTotal,
+      PaternityLeaveTotal: this.selectedLeave.PaternityLeaveTotal,
+      MarriageLeaveTotal: this.selectedLeave.MarriageLeaveTotal,
     };
     this.leaveService.deleteLeaveRecord(leaveTobeCancelled).subscribe(res => {
       if (res) {
@@ -124,27 +124,26 @@ export class MyLeaveDetailPage {
   }
 
   toastPresent(message: string) {
-        let toast = this.toastCtrl.create({
-            message: message,
-            duration: 5000
-        });
-        toast.present();
-    }
+    let toast = this.toastCtrl.create({
+      message: message,
+      duration: 5000
+    });
+    toast.present();
+  }
 
   showToast(message: string) {
     Toast.show(message, '5000', 'center').subscribe(
       toast => {
-        //console.log(toast);
       }
     );
   }
 
   makeArrayDistinct(param: any) {
-        let distinct = [];
-        distinct = _.uniqBy(param, (e) => {
-            return e.Approver.ID;
-        });
-        return distinct;
-    }
+    let distinct = [];
+    distinct = _.uniqBy(param, (e) => {
+      return e.Approver.ID;
+    });
+    return distinct;
+  }
 
 }

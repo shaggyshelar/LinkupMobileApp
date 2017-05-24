@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, ActionSheetController, Events, ModalController,ToastController } from 'ionic-angular';
+import { NavController, NavParams, ActionSheetController, Events, ModalController, ToastController } from 'ionic-angular';
 import { SpinnerService } from '../../../providers/index';
 import { LeaveService } from '../index';
 import { AuthService } from '../../../providers/index';
@@ -29,7 +29,7 @@ export class LeaveApprovalPage {
   public userPermissions: any[];
   public isBulkApprovePermission: boolean;
   public selectedLeaveID: string;
-  public selectedLeave:any;
+  public selectedLeave: any;
   public isMoreclicked: boolean;
   public isHrApprove: boolean;
   public leavechecked: boolean;
@@ -44,10 +44,10 @@ export class LeaveApprovalPage {
   public isSelectall: boolean = false;
   public isshowApproveRejectItems = false;
   public isAuthorized: boolean;
-  public filterValues:any[];
-  public modifiedList :any[];
-  public leavesReplicate :any[];
-  public employeeSelected :any;
+  public filterValues: any[];
+  public modifiedList: any[];
+  public leavesReplicate: any[];
+  public employeeSelected: any;
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
     public leaveService: LeaveService,
@@ -57,11 +57,11 @@ export class LeaveApprovalPage {
     public alertCtrl: AlertController,
     public leaveStatusChangedEvent: Events,
     public modalCtrl: ModalController,
-    public toastCtrl:ToastController) {
+    public toastCtrl: ToastController) {
     this.filterValues = [];
-    this.filterValues.push({pending:true});
-    this.filterValues.push({approved:true});
-    this.filterValues.push({rejected:true});
+    this.filterValues.push({ pending: true });
+    this.filterValues.push({ approved: true });
+    this.filterValues.push({ rejected: true });
     this.userPermissions = JSON.parse(localStorage.getItem("loggedInUserPermission"));
     this.isAuthorized = this.auth.checkPermission('LEAVE.APPROVAL.MANAGE');
     this.isBulkApprovePermission = this.checkBulkApprovePermission('LEAVE.BULK_APPROVAL.MANAGE');
@@ -110,8 +110,8 @@ export class LeaveApprovalPage {
     // if (res.length > 0) {
     //  this.leaveList = res.reverse();
     this.getPendingLeavesToApprove();
-    if(this.isBulkApprovePermission)
-    this.getBulkApprovalLeaves();
+    if (this.isBulkApprovePermission)
+      this.getBulkApprovalLeaves();
 
     //}
     //  },
@@ -122,12 +122,12 @@ export class LeaveApprovalPage {
 
   /* Get Pending Leaves */
 
-  getBulkApprovalLeaves(){
-     this.isPullToRefresh = false;
+  getBulkApprovalLeaves() {
+    this.isPullToRefresh = false;
     this.isDataretrived = false;
     this.spinnerService.createSpinner('Please wait..');
-    this.leaveService.getLeaveByPendingStatus('Pending',this.isPullToRefresh)
-     .subscribe(
+    this.leaveService.getLeaveByPendingStatus('Pending', this.isPullToRefresh)
+      .subscribe(
       (res: any) => {
         this.spinnerService.stopSpinner();
         this.leavesArray = [];
@@ -152,7 +152,7 @@ export class LeaveApprovalPage {
     this.isPullToRefresh = false;
     this.isDataretrived = false;
     this.spinnerService.createSpinner('Please wait..');
-    this.leaveService.getLeaveByStatus('Pending',this.isPullToRefresh)
+    this.leaveService.getLeaveByStatus('Pending', this.isPullToRefresh)
       .subscribe(
       (res: any) => {
         this.spinnerService.stopSpinner();
@@ -160,7 +160,7 @@ export class LeaveApprovalPage {
         this.leavesReplicate = [];
         //this.selectedEmployees = [];
         if (res.length > 0)
-        this.leaveList = res.reverse();
+          this.leaveList = res.reverse();
         //this.leavesArray = res.reverse();
         this.leavesReplicate = res;
         // this.leavesArray.forEach(leave => {
@@ -178,7 +178,7 @@ export class LeaveApprovalPage {
   /**Pull To Refresh */
   doRefresh(refresher) {
     this.isPullToRefresh = true;
-    this.leaveService.getLeaveByStatus('Pending',this.isPullToRefresh)
+    this.leaveService.getLeaveByStatus('Pending', this.isPullToRefresh)
       .subscribe(
       (res: any) => {
         refresher.complete();
@@ -222,7 +222,7 @@ export class LeaveApprovalPage {
     this.isMoreclicked = true;
     if (leave.Status == 'Approved' || leave.Status == 'Cancelled')
       return;
-    this.selectedLeave = leave;  
+    this.selectedLeave = leave;
     let actbuttons: any[] = [
       {
         text: 'Approve',
@@ -254,15 +254,15 @@ export class LeaveApprovalPage {
       }, {
         text: 'Cancel',
         role: 'cancel',
-        icon:'close-circle',
+        icon: 'close-circle',
         handler: () => {
           this.isMoreclicked = false;
         }
       }
     ];
 
-    if(leave.Status == 'Rejected') {
-      actbuttons.splice(0,2);
+    if (leave.Status == 'Rejected') {
+      actbuttons.splice(0, 2);
     }
 
     if (this.checkBulkApprovePermission('LEAVE.HRAPPROVAL.UPDATE') == false) {
@@ -304,7 +304,7 @@ export class LeaveApprovalPage {
           handler: data => {
 
             this.comment = data.title;
-           // var cmt = this.comment;//this.model.comments;
+            // var cmt = this.comment;//this.model.comments;
 
             if (isApprove == 'Approve') {
               if (this.comment.trim().length == 0) {
@@ -428,8 +428,8 @@ export class LeaveApprovalPage {
       LeaveRequestRefId: this.selectedLeaveID,
       Comments: this.comment,
       Status: 'Rejected',
-      startdate:this.selectedLeave.StartDate,
-      enddate:this.selectedLeave.EndDate
+      startdate: this.selectedLeave.StartDate,
+      enddate: this.selectedLeave.EndDate
     };
 
     this.leaveService.singleLeaveReject(params)
@@ -558,24 +558,22 @@ export class LeaveApprovalPage {
   showToast(message: string) {
     Toast.show(message, '5000', 'center').subscribe(
       toast => {
-        //console.log(toast);
       }
     );
   }
 
-   toastPresent(message: string) {
-        let toast = this.toastCtrl.create({
-            message: message,
-            duration: 5000
-        });
-        toast.present();
-    }
+  toastPresent(message: string) {
+    let toast = this.toastCtrl.create({
+      message: message,
+      duration: 5000
+    });
+    toast.present();
+  }
 
   onFilter() {
     let modal = this.modalCtrl.create(LeaveApprovalFilterPage, { filtervalue: this.filterValues });
     modal.present();
-     modal.onDidDismiss(data => {
-       console.log(data);
+    modal.onDidDismiss(data => {
       if (data !== undefined) {
         if (data.length > 0) {
           this.leavesArray = [];
@@ -588,29 +586,29 @@ export class LeaveApprovalPage {
               })
               this.leavesArray = this.leavesArray.concat(this.modifiedList);
               this.modifiedList = [];
-              if(data[index].modelValue === 'pending')
-                this.filterValues.push({pending:true});
-              if(data[index].modelValue === 'approved')
-                this.filterValues.push({approved:true});
-              if(data[index].modelValue === 'rejected')
-                this.filterValues.push({rejected:true});
+              if (data[index].modelValue === 'pending')
+                this.filterValues.push({ pending: true });
+              if (data[index].modelValue === 'approved')
+                this.filterValues.push({ approved: true });
+              if (data[index].modelValue === 'rejected')
+                this.filterValues.push({ rejected: true });
             }
-            else{
-              if(data[index].modelValue === 'pending')
-                this.filterValues.push({pending:false});
-              if(data[index].modelValue === 'approved')
-                this.filterValues.push({approved:false});
-              if(data[index].modelValue === 'rejected')
-                this.filterValues.push({rejected:false});
+            else {
+              if (data[index].modelValue === 'pending')
+                this.filterValues.push({ pending: false });
+              if (data[index].modelValue === 'approved')
+                this.filterValues.push({ approved: false });
+              if (data[index].modelValue === 'rejected')
+                this.filterValues.push({ rejected: false });
             }
           }
-          if(this.filterValues[0].pending === false && this.filterValues[1].approved === false && this.filterValues[2].rejected === false){
+          if (this.filterValues[0].pending === false && this.filterValues[1].approved === false && this.filterValues[2].rejected === false) {
             this.leavesArray = [];
             this.leavesArray = this.leavesArray.concat(this.leavesReplicate);
           }
         }
       }
-     })
+    })
   }
   onSort() {
     let actionSheet = this.actionSheetCtrl.create({
