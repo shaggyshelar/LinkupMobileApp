@@ -56,13 +56,13 @@ export class BiometricDiscrepancyApprovalPage {
           let bgCol = '';
           /** Tells day of week case 1 = Monday*/
           switch (mod) {
-            case 0: bgCol = '#3F4247'; break;
-            case 1: bgCol = '#098BD4'; break;
-            case 2: bgCol = '#79B334'; break;
-            case 3: bgCol = '#FBBC05'; break;
-            case 4: bgCol = '#B0A5BF'; break;
-            case 5: bgCol = '#63B2B6'; break;
-            case 6: bgCol = '#FA464E'; break;
+            case 0: bgCol = '#659BE0'; break;
+            case 1: bgCol = '#337AB7'; break;
+            case 2: bgCol = '#3B3F51'; break;
+            case 3: bgCol = '#36C6D3'; break;
+            case 4: bgCol = '#ED6B75'; break;
+            case 5: bgCol = '#F1C40F'; break;
+            case 6: bgCol = '#8E44AD'; break;
           }
           this.discrepancies.push({
             Employee: element.Employee,
@@ -132,13 +132,13 @@ export class BiometricDiscrepancyApprovalPage {
         let bgCol = '';
         /** Tells day of week case 1 = Monday*/
         switch (mod) {
-          case 0: bgCol = '#FA464E'; break;
-          case 1: bgCol = '#098BD4'; break;
-          case 2: bgCol = '#79B334'; break;
-          case 3: bgCol = '#FBBC05'; break;
-          case 4: bgCol = '#B0A5BF'; break;
-          case 5: bgCol = '#63B2B6'; break;
-          case 6: bgCol = '#3F4247'; break;
+          case 0: bgCol = '#659BE0'; break;
+          case 1: bgCol = '#337AB7'; break;
+          case 2: bgCol = '#3B3F51'; break;
+          case 3: bgCol = '#36C6D3'; break;
+          case 4: bgCol = '#ED6B75'; break;
+          case 5: bgCol = '#F1C40F'; break;
+          case 6: bgCol = '#8E44AD'; break;
         }
         this.discrepancies.push({
           Employee: element.Employee,
