@@ -38,7 +38,7 @@ export class LogATicketService extends BaseService {
 
     ticketData = [
         {
-            "Id": 1,
+            "Id": 1019,
             "ticket": "Installation NodeJS",
             "Department": "IT",
             "Concern": "Abc",
@@ -52,7 +52,7 @@ export class LogATicketService extends BaseService {
             "AgeDays": 1
         },
         {
-            "Id": 3,
+            "Id": 1019,
             "ticket": "Installation NodeJS",
             "Department": "IT",
             "Concern": "Abc",
@@ -66,7 +66,7 @@ export class LogATicketService extends BaseService {
             "AgeDays": 10
         },
         {
-            "Id": 2,
+            "Id": 1019,
             "ticket": "Installation NodeJS",
             "Department": "IT",
             "Concern": "Abc",
