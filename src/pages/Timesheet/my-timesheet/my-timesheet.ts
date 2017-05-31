@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams, ActionSheetController, ModalController } from 'ionic-angular';
-import { LoadingController } from 'ionic-angular';
+import { LoadingController, Events } from 'ionic-angular';
 
 import { EmployeeTimesheetService } from '../index';
 import { AuthService } from '../../../providers/index';
@@ -31,6 +31,7 @@ export class MyTimesheetPage {
     public loadingCtrl: LoadingController,
     public actionSheetCtrl: ActionSheetController,
     public auth: AuthService,
+    public saveSubmitClicked: Events,
     public modalCtrl: ModalController) {
     this.isAuthorized = this.auth.checkPermission('TIMESHEET.MYTIMESHEET.MANAGE');
     this.filterValues = [];
@@ -60,6 +61,29 @@ export class MyTimesheetPage {
       this.isDataReceived = true;
       this.loader.dismiss();
     });
+
+    this.listeners()
+  }
+
+  listeners() {
+    this.saveSubmitClicked.subscribe('Save/Submit Successful', () => {
+      // this.loader.present();
+      this.employeeTimesheetService.getMyTimesheets(true).subscribe((res: any) => {
+        this.myTimeSheets = [];
+        this.replicateTimesheet = [];
+        this.myTimeSheets = res.reverse();
+        this.replicateTimesheet = res;
+        this.isDataReceived = true;
+        // this.loader.dismiss();
+      }, err => {
+        this.isDataReceived = true;
+        // this.loader.dismiss();
+      });
+    });
+  }
+
+  ionViewWillUnload() {
+    this.saveSubmitClicked.unsubscribe('Save/Submit Successful');
   }
 
   /**Pull To Refresh */

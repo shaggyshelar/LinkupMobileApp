@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
+import { NavController, NavParams, Events } from 'ionic-angular';
 import { AlertController } from 'ionic-angular';
 import { LoadingController } from 'ionic-angular';
 import { Observable } from 'rxjs/Rx';
@@ -69,6 +69,7 @@ export class EnterTimesheetPage {
     , public authService: AuthService
     , public employeeTimesheetService: EmployeeTimesheetService
     , public toastService: ToastService
+    , public saveSubmitClicked: Events,
   ) {
     this.currentWkStrt = moment().add(0, 'weeks').isoWeekday(1);
     this.weekStartDate = moment().add(0, 'weeks').isoWeekday(1);
@@ -830,7 +831,11 @@ export class EnterTimesheetPage {
     loader.present().then(() => {
       this.timesheetService.saveTimesheet(payload).subscribe((res: any) => {
         //this.onCancel();
-        if (res.StatusCode == 1) { this.navCtrl.pop(); loader.dismiss(); this.toastService.createToast("Timesheet Saved"); }
+        if (res.StatusCode == 1) { 
+          this.navCtrl.pop(); loader.dismiss(); this.toastService.createToast("Timesheet Saved"); 
+          /** Broadcast event to refresh My Timesheet list */
+          this.saveSubmitClicked.publish('Save/Submit Successful');
+        }
         else { this.toastService.createToast(res.Message); loader.dismiss(); }
       }, err => {
         loader.dismiss();
@@ -864,7 +869,11 @@ export class EnterTimesheetPage {
 
       let payload = this.getPayload(false);
       this.timesheetService.submitTimesheet(payload).subscribe((res: any) => {
-        if (res.StatusCode == 1) { this.navCtrl.pop(); loader.dismiss(); this.toastService.createToast("Timesheet Submitted") }
+        if (res.StatusCode == 1) { 
+          this.navCtrl.pop(); loader.dismiss(); 
+          this.toastService.createToast("Timesheet Submitted");
+          this.saveSubmitClicked.publish('Save/Submit Successful');
+        }
         else { this.toastService.createToast(res.Message); loader.dismiss(); }
       }, err => {
         loader.dismiss();
