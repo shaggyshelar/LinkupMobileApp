@@ -208,8 +208,8 @@ export class MyApp {
     }
 
     // Features under development
-    // this.pages.push({ title: 'Log a Ticket', component: LogATicketPage, icon: 'contacts' });
-    // this.pages.push({ title: 'Conference Booking', component: ConferenceBookingPage, icon: 'contacts' });
+    this.pages.push({ title: 'Log a Ticket', component: LogATicketPage, icon: 'contacts' });
+    this.pages.push({ title: 'Conference Booking', component: ConferenceBookingPage, icon: 'contacts' });
 
     if (this.auth.checkPermission('HR.RESIGNEDEMPLOYEELEAVE.MANAGE') == true) {
       this.pages.push({ title: 'Resigned Employee Leaves', component: ManageResignedEmployeeLeavesPage, icon: 'contacts' });
