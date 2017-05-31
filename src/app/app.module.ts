@@ -67,7 +67,9 @@ import { ProfileDetailsPage } from '../pages/Corporate/MyProfile/profile-details
 import { SkillSetPage } from '../pages/Corporate/MyProfile/skill-set/skill-set';
 
 //DiscrepancyModalPage
-import { DiscrepancyModalPage } from '../pages/discrepancy-modal/discrepancy-modal';
+import { DiscrepancyModalPage } from '../pages/biometric-discrepancy-modal/biometric-discrepancy-modal';
+//StartupNoticeModal
+import { StartupNoticeModal } from '../pages/startup-notice-modal/startup-notice-modal';
 
 
 //HR
@@ -107,6 +109,8 @@ import { KebabCasePipe } from '../providers/pipes/kebab-case.pipe';
 import { ProgressBarComponent } from '../components/progress-bar/progress-bar';
 import { CacheService, CacheStorageAbstract, CacheLocalStorage } from 'ng2-cache/ng2-cache';
 
+// Third Party Dependencies
+import {FormlyModule, FormlyBootstrapModule} from 'ng-formly';
 
 
 @NgModule({
@@ -166,6 +170,7 @@ import { CacheService, CacheStorageAbstract, CacheLocalStorage } from 'ng2-cache
     ManageEmployeeLeaveBalancePage,
     ManageResignedEmployeeLeavesPage,
     DiscrepancyModalPage,
+    StartupNoticeModal,
 
     LimitToDirective,
 
@@ -177,6 +182,8 @@ import { CacheService, CacheStorageAbstract, CacheLocalStorage } from 'ng2-cache
   imports: [
     IonicModule.forRoot(MyApp),
     ScheduleModule,
+    FormlyModule.forRoot(),
+    FormlyBootstrapModule,
     // MultiPickerModule
   ],
   bootstrap: [IonicApp],
@@ -235,7 +242,8 @@ import { CacheService, CacheStorageAbstract, CacheLocalStorage } from 'ng2-cache
     EmployeeLeaveBalancePage,
     ManageEmployeeLeaveBalancePage,
     ManageResignedEmployeeLeavesPage,
-    DiscrepancyModalPage
+    DiscrepancyModalPage,
+    StartupNoticeModal
   ],
   providers: [
     {
