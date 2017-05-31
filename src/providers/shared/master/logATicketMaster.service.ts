@@ -67,14 +67,7 @@ export class LogATicketMasterService extends BaseService {
     }
 
     getPriorityTypes() {
-        // if (this._cacheService.exists('leaveType')) {
-        //     return new Observable<any>((observer: any) => {
-        //         observer.next(this._cacheService.get('leaveType'));
-        //     });
-        // } else {
-        //     return this.getList$(0, 0, true)
-        //         .map(res => {
-        //             this._cacheService.set('leaveType', res.json(), { maxAge: 60 * 60 });
+        // if (this._cacheService.exists('ticketConcern', res.json(), { maxAge: 60 * 60 });
         //             return res.json();
         //         })
         //         .catch(err => {
@@ -86,61 +79,50 @@ export class LogATicketMasterService extends BaseService {
         });
     }
     getDepartmentTypes() {
-        // if (this._cacheService.exists('leaveType')) {
+        // if (this._cacheService.exists('ticketConcern')) {
         //     return new Observable<any>((observer: any) => {
-        //         observer.next(this._cacheService.get('leaveType'));
+        //         observer.next(this._cacheService.get('ticketConcern'));
         //     });
         // } else {
-
-        // return this.getChildList$('Departments', 0, 0, true)
-        //     .map(res => {
-        //         this._cacheService.set('leaveType', res.json(), { maxAge: 60 * 60 });
-        //         return res.json();
-        //     })
-        //     .catch(err => {
-        //         return this.handleError(err);
-        //     });
+        return this.getChildList$('Departments', 0, 0, true)
+            .map(res => {
+        //         this._cacheService.set('ticketConcern', res.json(), { maxAge: 60 * 60 });
+                return res.json();
+            })
+            .catch(err => {
+                return this.handleError(err);
+            });
 
         //     return this.getList$(0, 0, true)
         //         .map(res => {
-        //             this._cacheService.set('leaveType', res.json(), { maxAge: 60 * 60 });
+        //             this._cacheService.set('ticketConcern', res.json(), { maxAge: 60 * 60 });
         //             return res.json();
         //         })
         //         .catch(err => {
         //             return this.handleError(err);
         //         });
         // }
-        return new Observable<any>((observer: any) => {
-            observer.next(this.department);
-        });
+        // return new Observable<any>((observer: any) => {
+        //     observer.next(this.department);
+        // });
     }
     getConcernTypes() {
-        // if (this._cacheService.exists('leaveType')) {
+        // if (this._cacheService.exists('ticketConcern')) {
         //     return new Observable<any>((observer: any) => {
-        //         observer.next(this._cacheService.get('leaveType'));
+        //         observer.next(this._cacheService.get('ticketConcern'));
         //     });
         // } else {
-
-        // return this.getChildList$('Concerns/' + id, 0, 0, true)
-        //     .map(res => {
-        //         this._cacheService.set('leaveType', res.json(), { maxAge: 60 * 60 });
-        //         return res.json();
-        //     })
-        //     .catch(err => {
-        //         return this.handleError(err);
-        //     });
-
-        //     return this.getList$(0, 0, true)
-        //         .map(res => {
-        //             this._cacheService.set('leaveType', res.json(), { maxAge: 60 * 60 });
-        //             return res.json();
-        //         })
-        //         .catch(err => {
-        //             return this.handleError(err);
-        //         });
-        // }
-        return new Observable<any>((observer: any) => {
-            observer.next(this.concern);
-        });
+        return this.getChildList$('Concerns', 0, 0, true)
+            .map(res => {
+                // this._cacheService.set('ticketConcern', res.json(), { maxAge: 60 * 60 });
+                return res.json();
+            })
+            .catch(err => {
+                return this.handleError(err);
+            });
     }
+    // return new Observable<any>((observer: any) => {
+    //     observer.next(this.concern);
+    // });
+    // }
 }
