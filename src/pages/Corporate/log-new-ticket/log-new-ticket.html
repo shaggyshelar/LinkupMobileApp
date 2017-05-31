@@ -8,6 +8,11 @@
 
   <ion-navbar>
     <ion-title>Log New Ticket</ion-title>
+    <ion-buttons end>
+      <button ion-button icon-only (click)="submit(validateTicket.value,validateTicket.valid)" [disabled]="!validateTicket.valid"> 
+          <ion-icon name="checkmark"></ion-icon>
+      </button>
+    </ion-buttons>
   </ion-navbar>
 
 </ion-header>
@@ -19,38 +24,51 @@
     <ion-list>
 
       <ion-item>
-        <ion-label>Department</ion-label>
-        <ion-select formControlName="department" [(ngModel)]="ticketEntry.Department" (ionChange)="departmentChanged(ticketEntry.Department)">
-          <ion-option *ngFor="let item of department" [value]="item"> {{item.Name}} </ion-option>
+        <ion-label>Department<span class="required">*</span></ion-label>
+        <ion-select formControlName="department" (ionChange)="departmentChanged($event)">
+          <ion-option *ngFor="let item of department" [value]="item.Value"> {{item.Value}} </ion-option>
         </ion-select>
         <p class="error" *ngIf="!validateTicket.controls.department.valid ">Field required</p>
       </ion-item>
 
       <ion-item>
-        <ion-label>Priority</ion-label>
-        <ion-select formControlName="priority" [(ngModel)]="ticketEntry.Priority" (ionChange)="priorityChanged(ticketEntry.Priority)">
-          <ion-option *ngFor="let item of priority" [value]="item"> {{item.Name}} </ion-option>
+        <ion-label>Priority<span class="required">*</span></ion-label>
+        <ion-select formControlName="priority" (ionChange)="priorityChanged($event)">
+          <ion-option *ngFor="let item of priority" [value]="item.Name"> {{item.Name}} </ion-option>
         </ion-select>
         <p class="error" *ngIf="!validateTicket.controls.priority.valid">Field required</p>
       </ion-item>
 
       <ion-item>
-        <ion-label>Concern</ion-label>
-        <ion-select formControlName="concern" [(ngModel)]="ticketEntry.Concern" (ionChange)="concernChanged(ticketEntry.Concern)">
-          <ion-option *ngFor="let item of concern" [value]="item"> {{item.Name}} </ion-option>
+        <ion-label>Concern<span class="required">*</span></ion-label>
+        <ion-select formControlName="concern" (ionChange)="concernChanged($event)">
+          <ion-option *ngFor="let item of concern" [value]="item.Value"> {{item.Value}} </ion-option>
         </ion-select>
         <p class="error" *ngIf="!validateTicket.controls.concern.valid">Field required</p>
       </ion-item>
 
-      <ion-item color="light">
-        <p>Description</p>
-      </ion-item>
       <ion-item>
-        <ion-input [(ngModel)]="ticketEntry.Description" formControlName="description" type="text"></ion-input>
+        <ion-label floating>Description<span class="required">*</span></ion-label>
+        <ion-textarea (blur)="descriptionChanged()" formControlName="description" type="text"></ion-textarea>
       </ion-item>
-      <p class="error" *ngIf="!validateTicket.controls.priority.valid && (validateTicket.controls.priority.dirty || validateTicket.controls.description.touched)">Field required</p>
+      <p class="error" *ngIf="(!validateTicket.controls.description.valid) && validateTicket.controls.description.dirty">Field required</p>
     </ion-list>
   </form>
+  <div>
+    <ion-item-divider>
+      Comments
+    </ion-item-divider>
 
-  <button ion-button full (click)="submit(validateTicket.value,validateTicket.valid)" [disabled]="!validateTicket.valid">Submit</button>
+    <ion-list>
+      <ion-item *ngFor="let element of comments; let index = index" text-wrap (click)="hideDate = !hideDate" [ngClass]="{ isEven : index % 2 == 0 }">
+        <p class="comfy-fit">
+          {{element.Title}}
+          <span [hidden]="hideDate" class="right"> {{element.Date | date : 'short'}} </span>
+        </p>
+        <p class="comfy-fit"> {{element.Comments}} </p>
+        <p class="right comfy-fit"> {{element.User.Name}} </p>
+      </ion-item>
+    </ion-list>
+  </div>
+
 </ion-content>
