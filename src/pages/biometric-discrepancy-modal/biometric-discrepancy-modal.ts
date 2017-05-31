@@ -13,7 +13,7 @@ import { LeaveTypeMasterService } from '../../providers/shared/master/leaveTypeM
 
 @Component({
   selector: 'page-discrepancy-modal',
-  templateUrl: 'discrepancy-modal.html'
+  templateUrl: 'biometric-discrepancy-modal.html'
 })
 export class DiscrepancyModalPage {
   userDetail: any;
