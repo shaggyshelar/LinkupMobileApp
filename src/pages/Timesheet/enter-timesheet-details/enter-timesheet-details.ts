@@ -328,7 +328,22 @@ export class EnterTimesheetDetailsPage {
     return retParam;
   }
 
+  trimDescription() {
+    for (let day in this.weekProjects) {
+      this.weekProjects[day].forEach((element, index) => {
+        console.log('element => ', element);
+        if (element[day.split('Array')[0] + 'desc'] != null) {
+          this.weekProjects[day][index][day.split('Array')[0] + 'desc'] = element[day.split('Array')[0] + 'desc'].trim() == '' ? null : element[day.split('Array')[0] + 'desc'].trim();
+        }
+        if (element[day.split('Array')[0] + 'descnb'] != null) {
+          this.weekProjects[day][index][day.split('Array')[0] + 'descnb'] = element[day.split('Array')[0] + 'descnb'].trim() == '' ? null : element[day.split('Array')[0] + 'descnb'].trim();
+        }
+      });
+    }
+  }
+
   cleanTimesheet() {
+    this.trimDescription();
     var isHrsEmpty;
     var isDescEmpty;
     for (var i = 0; i < this.weekProjects.MondayArray.length; i++) {
