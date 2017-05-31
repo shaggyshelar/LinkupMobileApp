@@ -2,4 +2,29 @@ page-log-new-ticket {
     .error{
         color: indianred;
     }
+    
+    .required  {
+      color: #e32;
+      }
+
+      .right {
+          float: right;
+      }
+
+      .comfy-fit {
+          padding-bottom: 3px;
+          padding-top: 3px;
+      }
+
+      .isEven {
+          background-color: #F7F6F3;
+      }
+
+        .empty
+    {
+        background-color: lightskyblue;
+        height: 2px;
+        padding-left: 30px;
+        padding-right: 30px;
+    }
 }
