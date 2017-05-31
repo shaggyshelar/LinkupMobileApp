@@ -6,7 +6,8 @@ import { MyLeavesPage } from '../LeaveManagement/my-leaves/my-leaves';
 import { Chart } from 'chart.js';
 import { ModalController } from 'ionic-angular';
 
-import { DiscrepancyModalPage } from '../discrepancy-modal/discrepancy-modal';
+import { DiscrepancyModalPage } from '../biometric-discrepancy-modal/biometric-discrepancy-modal';
+import { StartupNoticeModal } from '../startup-notice-modal/startup-notice-modal';
 import { ApplyForLeavePage } from '../LeaveManagement/apply-for-leave/apply-for-leave';
 
 import { Subscription } from 'rxjs/Subscription';
@@ -75,7 +76,7 @@ export class HomePage {
     //Calculation for Pie Chart According to values
     this.calculatePieChartParams();
 
-    // this.checkDiscrepancy();
+    // this.checkDiscrepancies();
   }
   showSearch() {
     this.isSearchShow = true;
@@ -144,7 +145,7 @@ export class HomePage {
     this.authService.getCurrentUserDetails();
     this.createCharts();
     this.initializeItems();
-    this.checkDiscrepancy()
+    this.checkDiscrepancies()
   }
   gotoMyLeaves() {
     this.navCtrl.push(MyLeavesPage);
@@ -161,9 +162,13 @@ export class HomePage {
     this.pieParams[4] = parseInt(this.myTimesheetRejected);
     this.pieParams[5] = parseInt(this.myTimesheetPending);
   }
+  checkDiscrepancies() {
+    this.checkBiometricDiscrepancy();
+    this.checkStartupNotice();
+  }
 
-  checkDiscrepancy() {
-    var response = [];
+  checkBiometricDiscrepancy() {
+    let response = [], blockingModal = false;
     this.spinner.createSpinner('Please wait...');
     this.discrepancyService.getEmployeeDiscrepancy().subscribe(res => {
       if (res.length > 0) {
@@ -172,9 +177,10 @@ export class HomePage {
         });
         localStorage.setItem('biometricDiscrepancyPresent', 'true');
         localStorage.setItem('blockHardwareBackButton', 'true');
+        blockingModal = true;
 
         this.spinner.stopSpinner();
-        this.showModal(response);
+        this.showBiometricDiscrepancyModal(response,blockingModal);
       } else if (res.length == 0) {
         localStorage.removeItem('biometricDiscrepancyPresent');
       }
@@ -183,16 +189,71 @@ export class HomePage {
       this.spinner.stopSpinner();
     });
   }
-
-  showModal(data) {
-
-    let modal = this.modalCtrl.create(DiscrepancyModalPage, data);
+  showBiometricDiscrepancyModal(data, blockingModal) {
+    let modal = this.modalCtrl.create(DiscrepancyModalPage, data, {showBackdrop: false, enableBackdropDismiss: !blockingModal});
     modal.onDidDismiss(data => {
       if (data.wasLeaveTaken && data.date != null)
         this.navCtrl.push(ApplyForLeavePage, { date: data.date });
     });
     modal.present();
+  }
 
+  checkStartupNotice() {
+    let data;
+    data = {
+      pageDetails: {
+        allowDismiss: true,
+        redirectTo: {
+          url: 'http://linkup.eternussolutions.com',
+          text: ''
+        },
+        pageTitle: 'XYZ Notice',
+        message: 'Please make a note of this notice'
+      },
+      pageFields: [
+        {
+          key: 'email',
+          type: 'input',
+          templateOptions: {
+            type: 'email',
+            label: 'Email address',
+            placeholder: 'Enter email'
+          }
+        }, {
+          key: 'name',
+          type: 'input',
+          templateOptions: {
+            type: 'text',
+            label: 'Name',
+            placeholder: 'Enter name'
+          }
+        }, {
+          key: 'candy',
+          type: 'select',
+          defaultValue: 'milky_way',
+          templateOptions: {
+            label: 'Favorite Candy',
+            options: [
+              { label: 'Snickers', value: 'snickers' },
+              { label: 'Baby Ruth', value: 'baby_ruth' },
+              { label: 'Milky Way', value: 'milky_way' }
+            ]
+          }
+        }]
+    };
+    data = null;
+    if(data != null)
+    this.showNoticeModal(data);
+    /**
+     * input types : text, date, datetime, time, radio, checkbox, dropdown
+     */
+  }
+  showNoticeModal(data) {
+    let noticeModal = this.modalCtrl.create(StartupNoticeModal, data, {showBackdrop: false, enableBackdropDismiss: data.pageDetails.allowDismiss});
+    noticeModal.onDidDismiss(data => {
+      console.log(data);
+    });
+    noticeModal.present();
   }
 
 }
