@@ -5,7 +5,7 @@
     </button>
     <ion-toolbar>
       <ion-title *ngIf="isSearchShow == false">
-        <img src="assets/img/elogo.png" class="Logo">
+        <img src="assets/img/LinkupLogo.png" class="Logo">
       </ion-title>
       <!--<ion-searchbar *ngIf="isSearchShow == true" (ionInput)="getItems($event)"
     (ionClear)="onClear($event)"
@@ -33,7 +33,12 @@
       <ion-icon name="calendar"></ion-icon>
     </ion-avatar>
     <h2>My Leaves</h2>
-    <p> Balance - {{myLeaveBalance | number:'1.0-3' }}, Taken - {{myLeaveTaken}} </p>
+    <p> Balance - {{myLeaveBalance != 'null' ? (myLeaveBalance | number:'1.1-3') : 0}}, Taken - {{myLeaveTaken != 'null' ? (myLeaveTaken | number:'1.1-3') : 0}}
+    </p>
+    <!--<p> Balance - <span *ngIf="myLeaveBalance">{{myLeaveBalance}}</span>
+      <span *ngIf="!myLeaveBalance">0</span>, Taken - <span *ngIf="myLeaveTaken"> {{myLeaveTaken}}</span>
+      <span *ngIf="!myLeaveTaken">0</span>
+    </p>-->
   </ion-item>
   <ion-item (click)="gotoMyTimesheet()">
     <ion-avatar item-left class="homeIcons">

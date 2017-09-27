@@ -11,10 +11,10 @@
     </button>
     <ion-title>Enter Timesheet</ion-title>
     <ion-buttons start>
-      <button ion-button (click)="saveTimsheet()" *ngIf="timesheetStatus !='Approved' && timesheetStatus !='Submitted' && timesheetStatus !='Rejected'">
+      <button ion-button (click)="saveTimsheet()" *ngIf="timesheetStatus !='Approved' && timesheetStatus !='Submitted' && timesheetStatus !='Rejected' && timesheetStatus !='Partially Approved'">
         Save
       </button>
-      <button ion-button (click)="onSendForApproval()" [disabled]="totalhours.TotalhrsTimesheet<40" *ngIf="timesheetStatus !='Approved' && timesheetStatus !='Submitted' && timesheetStatus !='Rejected'">
+      <button ion-button (click)="onSendForApproval()" [disabled]="totalhours.TotalhrsTimesheet<40 " *ngIf="timesheetStatus !='Approved' && timesheetStatus !='Submitted' && timesheetStatus !='Rejected' && timesheetStatus !='Partially Approved' && isLeaveApproved">
         Submit
       </button>
     </ion-buttons>
@@ -27,13 +27,19 @@
 
   <ion-row>
     <ion-col width-10>
-      <button ion-button clear class="left-align" (click)="lastWeekClick()"><ion-icon name="arrow-back" class="left-align"></ion-icon></button>
+      <button ion-button clear class="left-align" (click)="lastWeekClick()"><ion-icon name="arrow-dropleft-circle" class="left-align"></ion-icon></button>
     </ion-col>
     <ion-col width-80>
       <ion-label class="center-align">{{showWeekStart | date:'d MMM y'}} - {{showWeekEnd | date:'d MMM y'}}</ion-label>
     </ion-col>
     <ion-col width-10>
-      <button ion-button clear class="right-align" (click)="nextWeekClick()"><ion-icon name="arrow-forward" class="right-align"></ion-icon></button>
+      <!--START : Comment this code during deployment-->
+      <button ion-button clear class="right-align" (click)="nextWeekClick()"><ion-icon name="arrow-dropright-circle" class="right-align" ></ion-icon></button>
+      <!--END : Comment this code during deployment-->
+      
+      <!--START : Unomment this code during deployment-->
+      <!--<button ion-button clear class="right-align" (click)="nextWeekClick()" [disabled]="!allowNextWeekClick"><ion-icon name="arrow-dropright-circle" class="right-align" ></ion-icon></button>-->
+      <!--END : Unomment this code during deployment-->
     </ion-col>
   </ion-row>
 
@@ -45,13 +51,18 @@
       <div class="empty"></div>
     </ion-item>
   </ion-list>-->
-
+  <ion-row *ngIf="isDataretrived == true">
+    <ion-label class="center-align">
+      <span class="left-align left-padding">Status: {{timesheetStatus}} </span>
+      <span class="right-align right-padding">Total: {{totalhours.TotalhrsTimesheet}} Hrs</span>
+    </ion-label>
+  </ion-row>
   <ion-list *ngIf="isDataretrived == true">
     <ion-item (click)="timesheetClicked(0)">
       <ion-row>
         <ion-col width-10>
-          <p>{{weekStartDate | date:'d'}}</p>
-          <p>{{weekStartDate | date:'MMM'}}</p>
+          <p class="text-mid">{{weekStartDate | date:'d'}}</p>
+          <p class="text-mid">{{weekStartDate | date:'EEE'}}</p>
         </ion-col>
         <ion-col *ngIf="weekProjects.MondayArray.length==0" width-80>
           <br>
@@ -60,16 +71,21 @@
         </ion-col>
         <ion-col width-75 *ngIf="weekProjects.MondayArray.length>0">
           <ion-row class="project-div">
-            <ion-col *ngFor="let timesheet of weekProjects.MondayArray">
-              <h3 class="project-text" *ngIf="timesheet.Mondayhrs || timesheet.Mondaynbhrs">{{timesheet.Project.Value}}</h3>
-              <p *ngIf="timesheet.Mondayhrs || timesheet.Mondaynbhrs">B:{{timesheet.Mondayhrs}} &nbsp;<span>NB:{{timesheet.Mondaynbhrs}}</span></p>
-              <div class="billable" *ngIf="timesheet.Mondayhrs"></div>
-              <div class="nonbillable" *ngIf="timesheet.Mondaynbhrs"></div>
+
+            <ion-col *ngFor="let timesheet of weekProjects.MondayArray" width-30>
+              <div *ngIf="timesheet.ProjectTimesheetStatus != 'Inactive'">
+                <h3 class="project-text" *ngIf="timesheet.Mondayhrs || timesheet.Mondaynbhrs">{{timesheet.Project.Value}}</h3>
+                <p *ngIf="timesheet.Mondayhrs || timesheet.Mondaynbhrs">B:{{timesheet.Mondayhrs}} &nbsp;<span>NB:{{timesheet.Mondaynbhrs}}</span></p>
+                <div class="billable" *ngIf="timesheet.Mondayhrs"></div>
+                <div class="nonbillable" *ngIf="timesheet.Mondaynbhrs"></div>
+              </div>
             </ion-col>
+
           </ion-row>
         </ion-col>
         <ion-col width-15>
-          {{totalhours.TotalhrsMonday}}
+          <p>{{totalhours.TotalhrsMonday}}</p>
+          <ion-icon *ngIf="this.isDayScrollable[0] > 3" name="swap"></ion-icon>
         </ion-col>
       </ion-row>
     </ion-item>
@@ -78,8 +94,8 @@
 
       <ion-row>
         <ion-col width-10>
-          <p>{{getDate(1) | date:'d'}}</p>
-          <p>{{getDate(1) | date:'MMM'}}</p>
+          <p class="text-mid">{{getDate(1) | date:'d'}}</p>
+          <p class="text-mid">{{getDate(1) | date:'EEE'}}</p>
         </ion-col>
         <ion-col *ngIf="weekProjects.TuesdayArray.length==0" width-80>
           <br>
@@ -88,16 +104,19 @@
         </ion-col>
         <ion-col width-75 *ngIf="weekProjects.TuesdayArray.length>0">
           <ion-row class="project-div">
-            <ion-col *ngFor="let timesheet of weekProjects.TuesdayArray">
-              <h3 class="project-text" *ngIf="timesheet.Tuesdayhrs || timesheet.Tuesdaynbhrs">{{timesheet.Project.Value}}</h3>
-              <p *ngIf="timesheet.Tuesdayhrs || timesheet.Tuesdaynbhrs">B:{{timesheet.Tuesdayhrs}} &nbsp;<span>NB:{{timesheet.Tuesdaynbhrs}}</span></p>
-              <div class="billable" *ngIf="timesheet.Tuesdayhrs"></div>
-              <div class="nonbillable" *ngIf="timesheet.Tuesdaynbhrs"></div>
+            <ion-col *ngFor="let timesheet of weekProjects.TuesdayArray"  width-30>
+              <div *ngIf="timesheet.ProjectTimesheetStatus != 'Inactive'">
+                <h3 class="project-text" *ngIf="timesheet.Tuesdayhrs || timesheet.Tuesdaynbhrs">{{timesheet.Project.Value}}</h3>
+                <p *ngIf="timesheet.Tuesdayhrs || timesheet.Tuesdaynbhrs">B:{{timesheet.Tuesdayhrs}} &nbsp;<span>NB:{{timesheet.Tuesdaynbhrs}}</span></p>
+                <div class="billable" *ngIf="timesheet.Tuesdayhrs"></div>
+                <div class="nonbillable" *ngIf="timesheet.Tuesdaynbhrs"></div>
+              </div>
             </ion-col>
           </ion-row>
         </ion-col>
         <ion-col width-15>
-          {{totalhours.TotalhrsTuesday}}
+          <p>{{totalhours.TotalhrsTuesday}}</p>
+          <ion-icon *ngIf="isDayScrollable[1] > 3" name="swap"></ion-icon>
         </ion-col>
       </ion-row>
     </ion-item>
@@ -105,8 +124,8 @@
     <ion-item (click)="timesheetClicked(2)">
       <ion-row>
         <ion-col width-10>
-          <p>{{getDate(2) | date:'d'}}</p>
-          <p>{{getDate(2) | date:'MMM'}}</p>
+          <p class="text-mid">{{getDate(2) | date:'d'}}</p>
+          <p class="text-mid">{{getDate(2) | date:'EEE'}}</p>
         </ion-col>
         <ion-col *ngIf="weekProjects.WednesdayArray.length==0" width-80>
           <br>
@@ -115,16 +134,21 @@
         </ion-col>
         <ion-col width-75 *ngIf="weekProjects.WednesdayArray.length>0">
           <ion-row class="project-div">
-            <ion-col *ngFor="let timesheet of weekProjects.WednesdayArray">
-              <h3 class="project-text" *ngIf="timesheet.Wednesdayhrs || timesheet.Wednesdaynbhrs">{{timesheet.Project.Value}}</h3>
-              <p *ngIf="timesheet.Wednesdayhrs || timesheet.Wednesdaynbhrs">B:{{timesheet.Wednesdayhrs}} &nbsp;<span>NB:{{timesheet.Wednesdaynbhrs}}</span></p>
-              <div class="billable" *ngIf="timesheet.Wednesdayhrs"></div>
-              <div class="nonbillable" *ngIf="timesheet.Wednesdaynbhrs"></div>
+
+            <ion-col *ngFor="let timesheet of weekProjects.WednesdayArray"  width-30>
+              <div *ngIf="timesheet.ProjectTimesheetStatus != 'Inactive'">
+                <h3 class="project-text" *ngIf="timesheet.Wednesdayhrs || timesheet.Wednesdaynbhrs">{{timesheet.Project.Value}}</h3>
+                <p *ngIf="timesheet.Wednesdayhrs || timesheet.Wednesdaynbhrs">B:{{timesheet.Wednesdayhrs}} &nbsp;<span>NB:{{timesheet.Wednesdaynbhrs}}</span></p>
+                <div class="billable" *ngIf="timesheet.Wednesdayhrs"></div>
+                <div class="nonbillable" *ngIf="timesheet.Wednesdaynbhrs"></div>
+              </div>
             </ion-col>
+
           </ion-row>
         </ion-col>
         <ion-col width-15>
-          {{totalhours.TotalhrsWednesday}}
+          <p>{{totalhours.TotalhrsWednesday}}</p>
+          <ion-icon *ngIf="this.isDayScrollable[2] > 3" name="swap"></ion-icon>
         </ion-col>
       </ion-row>
     </ion-item>
@@ -132,8 +156,8 @@
     <ion-item (click)="timesheetClicked(3)">
       <ion-row>
         <ion-col width-10>
-          <p>{{getDate(3) | date:'d'}}</p>
-          <p>{{getDate(3) | date:'MMM'}}</p>
+          <p class="text-mid">{{getDate(3) | date:'d'}}</p>
+          <p class="text-mid">{{getDate(3) | date:'EEE'}}</p>
         </ion-col>
         <ion-col *ngIf="weekProjects.ThursdayArray.length==0" width-80>
           <br>
@@ -142,16 +166,21 @@
         </ion-col>
         <ion-col width-75 *ngIf="weekProjects.ThursdayArray.length>0">
           <ion-row class="project-div">
-            <ion-col *ngFor="let timesheet of weekProjects.ThursdayArray">
-              <h3 class="project-text" *ngIf="timesheet.Thursdayhrs || timesheet.Thursdaynbhrs">{{timesheet.Project.Value}}</h3>
-              <p *ngIf="timesheet.Thursdayhrs || timesheet.Thursdaynbhrs">B:{{timesheet.Thursdayhrs}} &nbsp;<span>NB:{{timesheet.Thursdaynbhrs}}</span></p>
-              <div class="billable" *ngIf="timesheet.Thursdayhrs"></div>
-              <div class="nonbillable" *ngIf="timesheet.Thursdaynbhrs"></div>
+
+            <ion-col *ngFor="let timesheet of weekProjects.ThursdayArray"  width-30>
+              <div *ngIf="timesheet.ProjectTimesheetStatus != 'Inactive'">
+                <h3 class="project-text" *ngIf="timesheet.Thursdayhrs || timesheet.Thursdaynbhrs">{{timesheet.Project.Value}}</h3>
+                <p *ngIf="timesheet.Thursdayhrs || timesheet.Thursdaynbhrs">B:{{timesheet.Thursdayhrs}} &nbsp;<span>NB:{{timesheet.Thursdaynbhrs}}</span></p>
+                <div class="billable" *ngIf="timesheet.Thursdayhrs"></div>
+                <div class="nonbillable" *ngIf="timesheet.Thursdaynbhrs"></div>
+              </div>
             </ion-col>
+
           </ion-row>
         </ion-col>
         <ion-col width-15>
-          {{totalhours.TotalhrsThursday}}
+          <p>{{totalhours.TotalhrsThursday}}</p>
+          <ion-icon *ngIf="this.isDayScrollable[3] > 3" name="swap"></ion-icon>
         </ion-col>
       </ion-row>
     </ion-item>
@@ -159,8 +188,8 @@
     <ion-item (click)="timesheetClicked(4)">
       <ion-row>
         <ion-col width-10>
-          <p>{{getDate(4) | date:'d'}}</p>
-          <p>{{getDate(4) | date:'MMM'}}</p>
+          <p class="text-mid">{{getDate(4) | date:'d'}}</p>
+          <p class="text-mid">{{getDate(4) | date:'EEE'}}</p>
         </ion-col>
         <ion-col *ngIf="weekProjects.FridayArray.length==0" width-80>
           <br>
@@ -169,16 +198,21 @@
         </ion-col>
         <ion-col width-75 *ngIf="weekProjects.FridayArray.length>0">
           <ion-row class="project-div">
-            <ion-col *ngFor="let timesheet of weekProjects.FridayArray">
-              <h3 class="project-text" *ngIf="timesheet.Fridayhrs || timesheet.Fridaynbhrs">{{timesheet.Project.Value}}</h3>
-              <p *ngIf="timesheet.Fridayhrs || timesheet.Fridaynbhrs">B:{{timesheet.Fridayhrs}} &nbsp;<span>NB:{{timesheet.Fridaynbhrs}}</span></p>
-              <div class="billable" *ngIf="timesheet.Fridayhrs"></div>
-              <div class="nonbillable" *ngIf="timesheet.Fridaynbhrs"></div>
+
+            <ion-col *ngFor="let timesheet of weekProjects.FridayArray"  width-30>
+              <div *ngIf="timesheet.ProjectTimesheetStatus != 'Inactive'">
+                <h3 class="project-text" *ngIf="timesheet.Fridayhrs || timesheet.Fridaynbhrs">{{timesheet.Project.Value}}</h3>
+                <p *ngIf="timesheet.Fridayhrs || timesheet.Fridaynbhrs">B:{{timesheet.Fridayhrs}} &nbsp;<span>NB:{{timesheet.Fridaynbhrs}}</span></p>
+                <div class="billable" *ngIf="timesheet.Fridayhrs"></div>
+                <div class="nonbillable" *ngIf="timesheet.Fridaynbhrs"></div>
+              </div>
             </ion-col>
+
           </ion-row>
         </ion-col>
         <ion-col width-15>
-          {{totalhours.TotalhrsFriday}}
+          <p>{{totalhours.TotalhrsFriday}}</p>
+          <ion-icon *ngIf="this.isDayScrollable[4] > 3" name="swap"></ion-icon>
         </ion-col>
       </ion-row>
     </ion-item>
@@ -186,8 +220,8 @@
     <ion-item (click)="timesheetClicked(5)">
       <ion-row>
         <ion-col width-10>
-          <p>{{getDate(5) | date:'d'}}</p>
-          <p>{{getDate(5) | date:'MMM'}}</p>
+          <p class="text-mid">{{getDate(5) | date:'d'}}</p>
+          <p class="text-mid">{{getDate(5) | date:'EEE'}}</p>
         </ion-col>
         <ion-col *ngIf="weekProjects.SaturdayArray.length==0" width-80>
           <br>
@@ -196,16 +230,21 @@
         </ion-col>
         <ion-col width-75 *ngIf="weekProjects.SaturdayArray.length>0">
           <ion-row class="project-div">
-            <ion-col *ngFor="let timesheet of weekProjects.SaturdayArray">
-              <h3 class="project-text" *ngIf="timesheet.Saturdayhrs || timesheet.Saturdaynbhrs">{{timesheet.Project.Value}}</h3>
-              <p *ngIf="timesheet.Saturdayhrs || timesheet.Saturdaynbhrs">B:{{timesheet.Saturdayhrs}} &nbsp;<span>NB:{{timesheet.Saturdaynbhrs}}</span></p>
-              <div class="billable" *ngIf="timesheet.Saturdayhrs"></div>
-              <div class="nonbillable" *ngIf="timesheet.Saturdaynbhrs"></div>
+
+            <ion-col *ngFor="let timesheet of weekProjects.SaturdayArray"  width-30>
+              <div *ngIf="timesheet.ProjectTimesheetStatus != 'Inactive'">
+                <h3 class="project-text" *ngIf="timesheet.Saturdayhrs || timesheet.Saturdaynbhrs">{{timesheet.Project.Value}}</h3>
+                <p *ngIf="timesheet.Saturdayhrs || timesheet.Saturdaynbhrs">B:{{timesheet.Saturdayhrs}} &nbsp;<span>NB:{{timesheet.Saturdaynbhrs}}</span></p>
+                <div class="billable" *ngIf="timesheet.Saturdayhrs"></div>
+                <div class="nonbillable" *ngIf="timesheet.Saturdaynbhrs"></div>
+              </div>
             </ion-col>
+
           </ion-row>
         </ion-col>
         <ion-col width-15>
-          {{totalhours.TotalhrsSaturday}}
+          <p>{{totalhours.TotalhrsSaturday}}</p>
+          <ion-icon *ngIf="this.isDayScrollable[5] >3" name="swap"></ion-icon>
         </ion-col>
       </ion-row>
     </ion-item>
@@ -213,8 +252,8 @@
     <ion-item (click)="timesheetClicked(6)">
       <ion-row>
         <ion-col width-10>
-          <p>{{weekEndDate | date:'d'}}</p>
-          <p>{{weekEndDate | date:'MMM'}}</p>
+          <p class="text-mid">{{weekEndDate | date:'d'}}</p>
+          <p class="text-mid">{{weekEndDate | date:'EEE'}}</p>
         </ion-col>
         <ion-col *ngIf="weekProjects.SundayArray.length==0" width-76>
           <br>
@@ -223,25 +262,28 @@
         </ion-col>
         <ion-col width-75 *ngIf="weekProjects.SundayArray.length>0">
           <ion-row class="project-div">
-            <ion-col *ngFor="let timesheet of weekProjects.SundayArray">
-              <h3 class="project-text" *ngIf="timesheet.Sundayhrs || timesheet.Sundaynbhrs">{{timesheet.Project.Value}}</h3>
-              <p *ngIf="timesheet.Sundayhrs || timesheet.Sundaynbhrs">B:{{timesheet.Sundayhrs}} &nbsp; <span>   NB:{{timesheet.Sundaynbhrs}}</span></p>
-              <div class="billable" *ngIf="timesheet.Sundayhrs"></div>
-              <div class="nonbillable" *ngIf="timesheet.Sundaynbhrs"></div>
+
+            <ion-col *ngFor="let timesheet of weekProjects.SundayArray"  width-30>
+              <div *ngIf="timesheet.ProjectTimesheetStatus != 'Inactive'">
+                <h3 class="project-text" *ngIf="timesheet.Sundayhrs || timesheet.Sundaynbhrs">{{timesheet.Project.Value}}</h3>
+                <p *ngIf="timesheet.Sundayhrs || timesheet.Sundaynbhrs">B:{{timesheet.Sundayhrs}} &nbsp; <span>   NB:{{timesheet.Sundaynbhrs}}</span></p>
+                <div class="billable" *ngIf="timesheet.Sundayhrs"></div>
+                <div class="nonbillable" *ngIf="timesheet.Sundaynbhrs"></div>
+              </div>
             </ion-col>
+
           </ion-row>
         </ion-col>
         <ion-col width-15>
-          {{totalhours.TotalhrsSunday}}
+          <p>{{totalhours.TotalhrsSunday}}</p>
+          <ion-icon *ngIf="this.isDayScrollable[6] > 3" name="swap"></ion-icon>
         </ion-col>
       </ion-row>
     </ion-item>
 
   </ion-list>
 
-  <ion-row *ngIf="isDataretrived == true">
-    <ion-label class="center-align">Total: {{totalhours.TotalhrsTimesheet}}</ion-label>
-  </ion-row>
+
 
 
 
@@ -275,10 +317,10 @@
 
   <ion-item>
     <ion-row>
-      <ion-col width-50>
+      <ion-col width-30>
         <button full ion-button (click)="saveTimesheetClicked()">Save Timesheet</button>
       </ion-col>
-      <ion-col width-50>
+      <ion-col width-30>
         <button full ion-button (click)="submitTimesheetClicked()">Submit Timesheet</button>
       </ion-col>
     </ion-row>

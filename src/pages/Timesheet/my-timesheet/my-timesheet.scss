@@ -4,6 +4,8 @@ $categories: (
  pending: #FED035,
  approved: #69BB7B,
  not-submitted: #642822,
+ partially-approved: #e5e500,
+ submitted: #4285F4
 );
 
 @function auxiliary-categories() {
@@ -13,9 +15,12 @@ $categories: (
 page-my-timesheet {
 @each $submittedstatus, $value in auxiliary-categories() {
    ion-item-sliding[submittedstatus=#{$submittedstatus}] ion-label {
-     border-left: 2px solid $value;
+     border-left: 3px solid $value;
      padding-left: 10px;
    }
+  }
+  .black-color {
+    color: black;
   }
   .right {
       float: right;

@@ -1,0 +1,26 @@
+page-add-projects {
+        .required{
+        color:red;
+    }
+    .error{
+        color:red;
+        margin-left: 5%;
+    }
+    .memberDetails{
+        margin-left: 5%;
+    }
+
+    .right {
+        float: right;
+    }
+
+    .card-close {
+        float: right;
+    }
+
+    .suggestion-list {
+        height: auto;
+        // height: 50vw;
+        overflow-y: auto;
+    }
+}

@@ -183,7 +183,7 @@ export class MyLeavesPage {
     this.leaveService.deleteLeaveRecord(leaveTobeCancelled).subscribe(res => {
       if (res) {
         //this.getMyLeaves();
-        this.toastPresent('Leave Canceled');
+        this.toastPresent('Leave Cancelled');
       } else {
         this.toastPresent('Failed to cancel leave');
       }
@@ -198,7 +198,6 @@ export class MyLeavesPage {
   }
 
   handleScrollCalender(event: any) {
-    console.log('scrolled calender');
   }
 
   handleDayClick(event: any) {
@@ -319,7 +318,6 @@ export class MyLeavesPage {
   showToast(message: string) {
     Toast.show(message, '5000', 'center').subscribe(
       toast => {
-        //console.log(toast);
       }
     );
   }

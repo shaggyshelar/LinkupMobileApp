@@ -21,7 +21,7 @@
 
 
 <ion-content padding>
-    <ion-fab right bottom>
+    <ion-fab right bottom [hidden]="isAuthorized == false">
     <button ion-fab mini (click)="addFabClicked()"><ion-icon name="add"></ion-icon></button>
   </ion-fab>
 
@@ -40,24 +40,34 @@
     <ion-item-sliding #slidingItem *ngFor="let entry of myTimeSheets" [attr.submittedstatus]="entry.SubmittedStatus | kebabCase">
       <button class="no-padding" ion-item (click)="itemClicked(entry)">
         <h3>
-          <span *ngFor="let approver of entry.ApproverUser"> {{approver.Name}} </span>
+          <!--<span *ngFor="let approver of entry.ApproverUser; let index=index"> {{approver.Name}} 
+            <span *ngIf="index < entry.ApproverUser.length-1">&nbsp;|&nbsp;</span> 
+            <span *ngIf="entry.ApproverUser.length > 2" class="right">...</span> 
+          </span>-->
+          <span> {{entry.ApproverUser[0].Name}}</span>
+          <span *ngIf="entry.ApproverUser.length > 1">&nbsp;|&nbsp; {{entry.ApproverUser[1].Name}} </span>
+          <span *ngIf="entry.ApproverUser.length > 2">...</span> 
         </h3>
         <h3> 
-          {{entry.StartDate | date: 'fullDate'}} &mdash;
-          {{entry.EndDate | date: 'fullDate'}} 
+          {{entry.StartDate | date: 'mediumDate'}} &mdash;
+          {{entry.EndDate | date: 'mediumDate'}} 
         </h3>
         <p>
           Billable Hours {{entry.BillableHours}}
+          <span class='right'> Non Billable Hours: {{entry.NonBillableHours}} </span>
         </p>
         <p>
-          Non Billable Hours: {{entry.NonBillableHours}}
-          <span *ngIf="entry.TimesheetSubmittedDate" class="right">{{entry.TimesheetSubmittedDate | date: 'fullDate'}}</span>
-          <span *ngIf="!entry.TimesheetSubmittedDate" class="right"></span>
+          
+          <!--<span *ngIf="!entry.SubmittedStatus"></span>-->
+          <!---->
+          <span *ngIf="entry.TimesheetSubmittedDate" >{{entry.TimesheetSubmittedDate | date: 'mediumDate'}}</span>
+          <span *ngIf="!entry.TimesheetSubmittedDate" ></span>
+          <span class="right black-color" *ngIf="entry.SubmittedStatus">{{entry.SubmittedStatus}}</span>
         </p>
       </button>
 
       <ion-item-options>
-        <button ion-button (click)="editClicked(item)">Edit</button>
+        <button ion-button (click)="editClicked(entry)">Edit</button>
       </ion-item-options>
     </ion-item-sliding>
   </ion-list>

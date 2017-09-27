@@ -4,7 +4,7 @@ import { Nav, Platform } from 'ionic-angular';
 import { StatusBar, Splashscreen, InAppBrowser } from 'ionic-native';
 import { LoadingController, AlertController, ToastController } from 'ionic-angular';
 import { HomePage } from '../pages/home/home';
-import { Events } from 'ionic-angular';
+import { Events, ModalController } from 'ionic-angular';
 import { CacheService } from 'ng2-cache/ng2-cache';
 import 'rxjs/add/observable/fromEvent';
 import { Observable } from 'rxjs/Observable';
@@ -18,7 +18,6 @@ import { ApprovalsPage } from '../pages/approvals/approvals';
 import { LeaveApprovalPage } from '../pages/LeaveManagement/leave-approval/leave-approval';
 import { MyLeavesPage } from '../pages/LeaveManagement/my-leaves/my-leaves';
 import { LeaveService } from '../pages/LeaveManagement/services/leave.service';
-
 
 // Timesheet
 
@@ -52,7 +51,7 @@ import { ManageResignedEmployeeLeavesPage } from '../pages/HR/manage-resigned-em
 import { ManageEmployeeLeaveBalancePage } from '../pages/HR/manage-employee-leave-balance/manage-employee-leave-balance';
 
 import { LoginPage } from '../pages/login/login';
-import { AuthService, MessageService } from '../providers/index';
+import { AuthService, MessageService, EmployeeDiscrepancyService } from '../providers/index';
 
 import { Subscription } from 'rxjs/Subscription';
 
@@ -111,6 +110,7 @@ export class MyApp {
     public unauthorizedEvent: Events,
     public alertCtrl: AlertController,
     public toastCtrl: ToastController,
+    public modalCtrl: ModalController,
     public _cacheService: CacheService) {
 
     var offline = Observable.fromEvent(document, "offline");
@@ -151,6 +151,22 @@ export class MyApp {
           this.rootPage = LoginPage;
         }
       });
+
+    this.platform.registerBackButtonAction(() => {
+      console.log('Component => ', this.nav._componentName, 'back clicked => ', 'canGoBack() => ', this.nav.canGoBack(), 'biometricDiscrepancyPresent => ', localStorage.getItem('biometricDiscrepancyPresent'), 'blockHardwareBackButton => ', localStorage.getItem('blockHardwareBackButton'));
+      if (this.nav.canGoBack()) {
+        if (JSON.parse(localStorage.getItem('biometricDiscrepancyPresent'))) {
+          // if (!JSON.parse(localStorage.getItem('blockHardwareBackButton') ? localStorage.getItem('blockHardwareBackButton') : 'false')) {
+          if (!(localStorage.getItem('blockHardwareBackButton') ? JSON.parse(localStorage.getItem('blockHardwareBackButton')) : false)) {
+            this.nav.pop();
+          }
+        } else if (!JSON.parse(localStorage.getItem('biometricDiscrepancyPresent'))) {
+          this.nav.pop();
+        }
+      } else if (!this.nav.canGoBack()) {
+        this.platform.exitApp();
+      }
+    });
   }
 
   onLogout(): void {
@@ -184,12 +200,28 @@ export class MyApp {
 
     this.pages.push({ title: 'My Timesheets', component: MyTimesheetPage, icon: 'md-clock' });
 
-    this.pages.push({ title: 'Manage My Projects', component: ManageMyProjectsPage, icon: 'calendar'},
-        { title: 'Employee Project Management', component: EmployeeProjectManagementPage, icon: 'contacts'});
-    this.pages.push({title:'Log a Ticket',component:LogATicketPage,icon:'contacts'});
-    this.pages.push({title:'Conference Booking',component:ConferenceBookingPage,icon:'contacts'});
-    this.pages.push({title:'Resigned Employee Leaves',component:ManageResignedEmployeeLeavesPage,icon:'contacts'},
-        { title:'Employee Leave Balance',component:ManageEmployeeLeaveBalancePage,icon:'contacts'});
+    if ((this.auth.checkPermission('PROJECTS.MANAGEMYPROJECTS.MANAGE') || this.auth.checkPermission('PROJECTS.MANAGEMYPROJECTS.READ') || this.auth.checkPermission('PROJECTS.MANAGEMYPROJECTS.UPDATE') || this.auth.checkPermission('PROJECTS.MANAGEMYPROJECTS.ADD')) == true) {
+      this.pages.push({ title: 'Manage My Projects', component: ManageMyProjectsPage, icon: 'calendar' });
+    }
+    if (this.auth.checkPermission('PROJECTS.EMPLOYEEPROJECTMANAGEMENT.MANAGE') == true) {
+      this.pages.push({ title: 'Employee Project Management', component: EmployeeProjectManagementPage, icon: 'contacts' });
+    }
+
+    // Features under development
+    this.pages.push({ title: 'Log a Ticket', component: LogATicketPage, icon: 'contacts' });
+    this.pages.push({ title: 'Conference Booking', component: ConferenceBookingPage, icon: 'contacts' });
+
+    if (this.auth.checkPermission('HR.RESIGNEDEMPLOYEELEAVE.MANAGE') == true) {
+      this.pages.push({ title: 'Resigned Employee Leaves', component: ManageResignedEmployeeLeavesPage, icon: 'contacts' });
+    }
+    if (this.auth.checkPermission('HR.EMPLOYEELEAVEBALANCE.MANAGE') == true) {
+      this.pages.push({ title: 'Employee Leave Balance', component: ManageEmployeeLeaveBalancePage, icon: 'contacts' });
+    }
+
+    /** TODO : check if user is authorized for Biometric Discrepancy Approval */
+    if(true) {
+      this.pages.push({ title: 'Biometric Discrepancy Approval', component: BiometricDiscrepancyApprovalPage, icon: 'unlock'})
+    }
   }
 
   initializeApp() {

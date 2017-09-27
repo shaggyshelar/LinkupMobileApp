@@ -14,8 +14,8 @@
 
 
 <ion-content padding>
-
-  <form [formGroup]="commentForm" [hidden]="!isPending">
+  <!--[hidden]="!isPending"-->
+  <form [formGroup]="commentForm" [hidden]="!(isPending || isUserHR)">
     <div class="bottom">
       <ion-item>
         <ion-label floating>Comments</ion-label>
@@ -24,14 +24,14 @@
     </div>
   </form>
   <ion-row>
-        <ion-col width-50>
-          <button ion-button full [disabled]="!commentForm.controls.comment.valid" (click)="rejectClicked()">Reject</button>
-        </ion-col>
-        <ion-col width-50>
-          <button ion-button full [disabled]="!commentForm.controls.comment.valid" (click)="approveClicked()">Approve</button>
-        </ion-col>
+    <ion-col width-50>
+      <button ion-button full [disabled]="!commentForm.controls.comment.valid || status=='Rejected'" (click)="rejectClicked()">Reject</button>
+    </ion-col>
+    <ion-col width-50>
+      <button ion-button full [disabled]="!commentForm.controls.comment.valid || status=='Approved'" (click)="approveClicked()">Approve</button>
+    </ion-col>
   </ion-row>
-  
+
   <br>
 
   <ion-list *ngIf="ishowLeaveDetails == true">
@@ -60,7 +60,15 @@
     <ion-item>
       Leave Details
     </ion-item>
-    <ion-item>
+    <ion-item *ngFor="let leaveEntry of leaveList" text-wrap>
+      <p> Leave Type : {{leaveEntry.LeaveType.Value}}
+      </p>
+      <p> {{leaveEntry.StartDate | date : 'shortDate'}} &mdash; {{leaveEntry.EndDate | date : 'shortDate'}}
+      </p>
+      <p> Number of days : {{leaveEntry.NumberOfDays}}</p>
+      <p> Reason : {{leaveEntry.Reason}} </p>
+    </ion-item>
+    <!--<ion-item>
       <ion-label floating>Leave Type</ion-label>
       <ion-input type="text" disabled="true" [(ngModel)]="leaveList[0].LeaveType.Value"></ion-input>
     </ion-item>
@@ -79,7 +87,8 @@
     <ion-item>
       <ion-label floating>Number of Days</ion-label>
       <ion-textarea disabled="true" [(ngModel)]="leaveList[0].NumberOfDays"></ion-textarea>
-    </ion-item>
+    </ion-item>-->
+
   </ion-list>
 
   <ion-list *ngIf="ishowLeaveDetails == true">

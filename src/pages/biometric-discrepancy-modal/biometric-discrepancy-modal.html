@@ -1,0 +1,63 @@
+<!--
+  Generated template for the DiscrepancyModal page.
+
+  See http://ionicframework.com/docs/v2/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar hideBackButton >
+    <ion-title>Access Control Discrepancy</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+  <h3 class="center">Leave Records Mismatch</h3>
+  <form [formGroup]="complexForm">
+    <ion-list>
+      <ion-list-header>Date : {{discrepancyData[0].LeaveDate | date:'yMMMMEEEEd'}}</ion-list-header>
+      <!--<ion-list-header>Date : 24/04/2017</ion-list-header>-->
+
+      <ion-item>
+        <ion-label floating>Reason <span class="required">*</span></ion-label>
+        <ion-select formControlName="Reason" (ionChange)="reasonChanged($event)">
+          <ion-option *ngFor="let reason of biometricReasons; let index=index">{{reason.Reason}}</ion-option>
+        </ion-select>
+      </ion-item>
+      <p *ngIf="!complexForm.controls.Reason.valid && complexForm.controls.Reason.dirty" class="error">Please select Reason</p>
+
+      <ion-item *ngIf="showReason">
+        <ion-label floating>Specify Reason <span class="required">*</span></ion-label>
+        <ion-input formControlName="SpecifyReason"></ion-input>
+        <!--[(ngModel)]="data.SpecifyReason"-->
+      </ion-item>
+      <p *ngIf="!complexForm.controls.SpecifyReason.valid && complexForm.controls.SpecifyReason.dirty" class="error">Please enter Specify Reason</p>
+
+      <ion-item *ngIf="showDateRange">
+        <ion-label floating>From <span class="required">*</span></ion-label>
+        <ion-datetime formControlName="From" (ionChange)="fromDateChanged($event, true)"></ion-datetime>
+        <!--[(ngModel)]="data.From"-->
+      </ion-item>
+      <p *ngIf="!complexForm.controls.From.valid && complexForm.controls.From.dirty" class="error">Please enter From Date</p>
+
+      <ion-item *ngIf="showDateRange">
+        <ion-label floating>To <span class="required">*</span></ion-label>
+        <ion-datetime formControlName="To" [min]="minDate" [max]="maxDate"></ion-datetime>
+        <!--[(ngModel)]="data.To"-->
+      </ion-item>
+      <p *ngIf="!complexForm.controls.To.valid && complexForm.controls.To.dirty" class="error">Please enter To Date</p>
+
+    </ion-list>
+  </form>
+
+  <p class="required center">*In case of leave, kindly apply leave on Linkup</p>
+
+  <!--<ion-list>
+    <ion-item>-->
+  <button full ion-button [disabled]="!complexForm.valid" (click)="submitClick(complexForm.value)">Submit</button>
+  <!--</ion-item>
+  </ion-list>-->
+
+</ion-content>

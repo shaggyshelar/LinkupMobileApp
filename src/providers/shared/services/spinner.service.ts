@@ -15,6 +15,7 @@ export class SpinnerService {
     }
     stopSpinner()
     {
-        this.loader.dismiss();
+        this.loader.dismiss().catch((err)=>{
+        });
     }
 }

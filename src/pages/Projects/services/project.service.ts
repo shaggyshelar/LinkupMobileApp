@@ -27,6 +27,23 @@ export class ProjectService extends BaseService {
             .getChildList$('GetMyActiveProjects', 0, 0, true)
             .map(res => res.json());
     }
+    getManageMyProjectsList(isPullToRefresh): Observable<Project[]> {
+        if (this._cacheService.exists('manageMyProjects') && isPullToRefresh === false) {
+            return new Observable<any>((observer: any) => {
+                observer.next(this._cacheService.get('manageMyProjects'));
+            });
+        } else {
+            return this.getChildList$('manageMyProjects', 0, 0, true).map(res => {
+                this._cacheService.set('manageMyProjects', res.json(), { maxAge: 60 * 60 });
+                return res.json();
+            }).catch(err => {
+                return this.handleError(err);
+            });
+        }
+        // return this
+        //     .getChildList$('ManageMyProjects', 0, 0, true)
+        //     .map(res => res.json());
+    }
     getProjectById(id: string): Observable<Project> {
         return this
             .get$(id, true)
@@ -36,6 +53,34 @@ export class ProjectService extends BaseService {
         return this
             .post$(project)
             .map(res => res.json());
+    }
+    addProjectWithTeam(payload: any): Observable<any> {
+        let headers = new Headers();
+        let body = JSON.stringify(payload);
+        headers.append('Authorization', 'Bearer ' + localStorage.getItem('accessToken'));
+        headers.append('Content-Type', 'application/json');
+        let options = new RequestOptions({ headers: headers });
+        return this.http.post(this.baseUrl + 'Project/AddProjectWithTeamMembers', body, options)
+            .map(res => {
+                return res.json();
+            })
+            .catch(err => {
+                return this.handleError(err);
+            });
+    }
+    updateProjectWithTeam(payload: any): Observable<any> {
+        let headers = new Headers();
+        let body = JSON.stringify(payload);
+        headers.append('Authorization', 'Bearer ' + localStorage.getItem('accessToken'));
+        headers.append('Content-Type', 'application/json');
+        let options = new RequestOptions({ headers: headers });
+        return this.http.post(this.baseUrl + 'Project/UpdateProjectWithTeamMembers', body, options)
+            .map(res => {
+                return res.json();
+            })
+            .catch(err => {
+                return this.handleError(err);
+            });
     }
     editProject(project: any): Observable<any> {
         return this

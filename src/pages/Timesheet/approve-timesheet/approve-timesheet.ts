@@ -90,15 +90,12 @@ export class ApproveTimesheetPage {
   // decideAction() {
   //   switch (this.navParams.data.caller) {
   //     case 'my-timesheet':
-  //       console.log('my-timesheet => approve-timesheets');
   //       this.getUserData();
   //       break;
   //     case 'enter-timesheet':
-  //       console.log('enter timesheet => approve-timesheets');
   //       break;
 
   //     default:
-  //       console.log('unknown caller => approve-timesheets');
   //       this.getApproverData();
   //       break;
   //   }
@@ -467,8 +464,8 @@ export class ApproveTimesheetPage {
                 this.filterValues.push({ rejected: false });
             }
           }
-          if(this.filterValues[0].submitted === false && this.filterValues[1].approved === false && this.filterValues[2].partiallyApproved === false
-          && this.filterValues[3].notSubmitted === false && this.filterValues[4].pending === false && this.filterValues[5].rejected === false){
+          if (this.filterValues[0].submitted === false && this.filterValues[1].approved === false && this.filterValues[2].partiallyApproved === false
+            && this.filterValues[3].notSubmitted === false && this.filterValues[4].pending === false && this.filterValues[5].rejected === false) {
             this.pendingtimesheetsArray = [];
             this.pendingtimesheetsArray = this.pendingtimesheetsArray.concat(this.replicateTimesheet);
           }

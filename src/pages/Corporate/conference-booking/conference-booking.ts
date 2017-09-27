@@ -14,8 +14,8 @@ export class ConferenceBookingPage {
     conferenceBookings: any[];
     header: any;
     constructor(public navCtrl: NavController, public navParams: NavParams
-    , public confBookingService: ConferenceBookingService
-    , public loadingCtrl: LoadingController
+        , public confBookingService: ConferenceBookingService
+        , public loadingCtrl: LoadingController
     ) {
         this.header = {
             left: 'prev,next today',
@@ -34,23 +34,19 @@ export class ConferenceBookingPage {
                 this.conferenceBookings = res;
                 loader.dismiss();
             }, err => {
-                console.log(err);
                 loader.dismiss();
             });
         });
     }
 
     handleDayClick(event) {
-        console.log('Day Click', event);
         this.navCtrl.push(AddEditConferenceBookingPage, event);
     }
 
     handleScrollCalender(event) {
-        console.log('Scroll', event);
     }
 
     handleEventClick(event) {
-        console.log('Event', event);
     }
 
     goToLeaveDetail() {

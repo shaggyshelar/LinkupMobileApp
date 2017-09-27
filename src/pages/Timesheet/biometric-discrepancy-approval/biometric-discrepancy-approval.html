@@ -9,12 +9,53 @@
     <button ion-button icon-only menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
-    <ion-title>Biometric Discrepancy Approval</ion-title>
+    <ion-buttons start *ngIf="isLongPressed">
+      <button (click)="selectAll()" ion-button>
+        Select ALL
+      </button>
+      <button ion-button>
+        {{selectedCount}}
+      </button>
+      <button (click)="approve()" ion-button icon-only>
+        <ion-icon name="checkmark"> </ion-icon>
+      </button>
+      <button (click)="reject()" ion-button icon-only>
+        <ion-icon name="close"> </ion-icon>
+      </button>
+    </ion-buttons>
+    <ion-title *ngIf="!isLongPressed">Biometric Discrepancy Approval</ion-title>
   </ion-navbar>
 
 </ion-header>
 
 
 <ion-content padding>
+  <ion-refresher (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content pullingIcon="arrow-dropdown" pullingText="Pull to refresh" refreshingSpinner="circles" refreshingText="Refreshing...">
+    </ion-refresher-content>
+  </ion-refresher>
 
+  <ion-list>
+    <ion-item *ngFor="let item of discrepancies; let i = index" ion-item (click)="clicked(item, i)" (press)="longPressed(item, i)"
+      [ngStyle]="{'background-color': item.color}" class="no-padding" text-wrap>
+      <div class="parent" [ngStyle]="{ 'background-color': item.badgeColor }">
+        <p class="date">{{item.LeaveDate | date : 'd'}}</p>
+        <p class="month">{{item.LeaveDate | date : 'MMM'}}</p>
+      </div>
+      <div class="data-container">
+        <p class="topBottomMargins">{{item.Employee.Name}}
+          <!--<span class="right"><ion-badge>{{item.LeaveDate | date : 'mediumDate'}}</ion-badge></span>-->
+        </p>
+        <p class="topBottomMargins">{{item.LeaveReason}} </p>
+        <p class="topBottomMargins">Details: {{item.ReasonDetails}} </p>
+      </div>
+    </ion-item>
+  </ion-list>
+
+  <ion-list-header *ngIf="(discrepancies)?.length == 0 && isDataReceived ==true">
+    No Records Found
+  </ion-list-header>
+  <ion-list-header [hidden]="isAuthorized == true">
+    You are not Authorized
+  </ion-list-header>
 </ion-content>

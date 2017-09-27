@@ -1,10 +1,11 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, AlertController, Events , ToastController } from 'ionic-angular';
+import { NavController, NavParams, AlertController, Events, ToastController } from 'ionic-angular';
 //import { LeaveDetail } from '../models/leaveDetail';
 import { LeaveService } from '../index';
 import { Leave } from '../models/leave';
 import { SpinnerService } from '../../../providers/index';
 import { Toast } from 'ionic-native';
+import * as _ from 'lodash';
 
 
 /** Third Party Dependencies */
@@ -26,7 +27,7 @@ export class MyLeaveDetailPage {
   public leaveObs: Observable<Leave>;
   public today: Date;
   public leaveList: Leave[];
-  public approverObs: Observable<Leave>;
+  public approverObs: Leave[] = [];
   public activeProjectsObs: Observable<Leave>;
   public selectedLeave: any;
   public isCancellable: boolean;
@@ -37,7 +38,7 @@ export class MyLeaveDetailPage {
     public spinnerService: SpinnerService,
     public alertCtrl: AlertController,
     public leaveStatusChangedEvent: Events,
-    public toastCtrl:ToastController) {
+    public toastCtrl: ToastController) {
     this.leaveid = navParams.get('leaveid');
     this.selectedLeave = navParams.get('leave');
     this.today = new Date();
@@ -57,7 +58,7 @@ export class MyLeaveDetailPage {
       this.leaveObs = res;
     });
     this.leaveService.getApproverListByRefID(this.leaveid).subscribe((res: any) => {
-      this.approverObs = res;
+      this.approverObs = this.makeArrayDistinct(res);
     });
     this.leaveService.getActiveProjects().subscribe((res: any) => {
       this.activeProjectsObs = res;
@@ -78,22 +79,22 @@ export class MyLeaveDetailPage {
       Status: 'Cancelled',
       LeaveRequestMasterId: this.leaveid,
       ID: this.selectedLeave.ID,
-      startdate:this.selectedLeave.StartDate,
-      enddate:this.selectedLeave.EndDate,
-      LeaveTotal:this.selectedLeave.LeaveTotal,
-      FloatingHolidayTotal:this.selectedLeave.FloatingHolidayTotal,
-      HalfdayLeaveTotal:this.selectedLeave.HalfdayLeaveTotal,
-      AbsentTotal:this.selectedLeave.AbsentTotal,
-      HalfdayAbsentTotal:this.selectedLeave.HalfdayAbsentTotal,
-      MaternityLeaveTotal:this.selectedLeave.MaternityLeaveTotal,
-      PaternityLeaveTotal:this.selectedLeave.PaternityLeaveTotal,
-      MarriageLeaveTotal:this.selectedLeave.MarriageLeaveTotal,
+      startdate: this.selectedLeave.StartDate,
+      enddate: this.selectedLeave.EndDate,
+      LeaveTotal: this.selectedLeave.LeaveTotal,
+      FloatingHolidayTotal: this.selectedLeave.FloatingHolidayTotal,
+      HalfdayLeaveTotal: this.selectedLeave.HalfdayLeaveTotal,
+      AbsentTotal: this.selectedLeave.AbsentTotal,
+      HalfdayAbsentTotal: this.selectedLeave.HalfdayAbsentTotal,
+      MaternityLeaveTotal: this.selectedLeave.MaternityLeaveTotal,
+      PaternityLeaveTotal: this.selectedLeave.PaternityLeaveTotal,
+      MarriageLeaveTotal: this.selectedLeave.MarriageLeaveTotal,
     };
     this.leaveService.deleteLeaveRecord(leaveTobeCancelled).subscribe(res => {
       if (res) {
         this.spinnerService.stopSpinner();
         // this.leaveStatusChangedEvent.publish('Delected Leave','status');
-        this.toastPresent('Leave Canceled');
+        this.toastPresent('Leave Cancelled');
         this.navCtrl.pop();
       } else {
         this.spinnerService.stopSpinner();
@@ -123,19 +124,26 @@ export class MyLeaveDetailPage {
   }
 
   toastPresent(message: string) {
-        let toast = this.toastCtrl.create({
-            message: message,
-            duration: 5000
-        });
-        toast.present();
-    }
+    let toast = this.toastCtrl.create({
+      message: message,
+      duration: 5000
+    });
+    toast.present();
+  }
 
   showToast(message: string) {
     Toast.show(message, '5000', 'center').subscribe(
       toast => {
-        //console.log(toast);
       }
     );
+  }
+
+  makeArrayDistinct(param: any) {
+    let distinct = [];
+    distinct = _.uniqBy(param, (e) => {
+      return e.Approver.ID;
+    });
+    return distinct;
   }
 
 }

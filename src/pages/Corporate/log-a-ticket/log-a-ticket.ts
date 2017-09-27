@@ -36,7 +36,6 @@ export class LogATicketPage {
         this.ticketData = res;
         loader.dismiss();
       }, err => {
-        console.log(err);
         loader.dismiss();
       });
     });
@@ -59,7 +58,6 @@ export class LogATicketPage {
           text: 'Close',
           icon: 'close',
           handler: () => {
-            console.log('Close Ticket');
             this.isItemClick = false;
             /** API call */
           }
@@ -68,7 +66,6 @@ export class LogATicketPage {
           text: 'Reopen',
           icon: 'open',
           handler: () => {
-            console.log('Reopen Ticket');
             this.isItemClick = false;
             /** API call */
           }
@@ -77,7 +74,6 @@ export class LogATicketPage {
           text: 'Cancel',
           role: 'cancel',
           handler: () => {
-            console.log('Cancel');
             this.isItemClick = false;
           }
         },

@@ -6,7 +6,7 @@
 -->
 <ion-header>
 
-    <ion-navbar>
+  <ion-navbar>
     <button ion-button icon-only menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
@@ -17,18 +17,36 @@
 
 
 <ion-content padding>
+  <ion-fab right bottom *ngIf="canAddProject">
+    <button ion-fab mini (click)="addFabClicked()"><ion-icon name="add"></ion-icon></button>
+  </ion-fab>
 
-   <ion-list>
-    <ion-item class="no-padding" *ngFor="let project of projectList"  ion-item [attr.billablenonbillable]="project.BillableNonBillable | lowercase" (click)="goToProjectDetail(project)">
+  <!--Pull to refresh Start-->
+  <ion-refresher (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content pullingIcon="arrow-dropdown" pullingText="Pull to refresh" refreshingSpinner="circles" refreshingText="Refreshing...">
+    </ion-refresher-content>
+  </ion-refresher>
+  <!--Pull to refresh Ends-->
+
+  <ion-list>
+    <ion-item class="no-padding" *ngFor="let project of projectList" ion-item [attr.billablenonbillable]="project.BillableNonBillable | lowercase"
+      (click)="goToProjectDetail(project)">
       <h3>{{project.Title}}</h3>
       <p>
         {{project.StartDate | date:"MM/dd/yyyy" }} &mdash; {{project.EndDate | date:"MM/dd/yyyy" }}
       </p>
       <p>
-       {{ project.ProjectManager.Name }}
+        {{ project.ProjectManager.Name }}
         <span class="right">{{project.DeliveryUnit.Value}}</span>
       </p>
     </ion-item>
   </ion-list>
+
+  <ion-list-header *ngIf="(projectList)?.length == 0 && isAllDataLoaded == true">
+    No Records Found
+  </ion-list-header>
+  <ion-list-header [hidden]="canReadProject">
+    You are not Authorized
+  </ion-list-header>
 
 </ion-content>

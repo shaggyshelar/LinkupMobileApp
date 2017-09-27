@@ -77,7 +77,7 @@
   <ion-list>
     <ion-item class="no-padding" [ngStyle]="{'background-color': entry.selectionColor}" *ngFor="let entry of pendingtimesheetsArray" ion-item (click)="itemTapped(entry)"
       (press)="longPressedItem(entry)" [attr.submittedstatus]="entry.SubmittedStatus | lowercase">
-      <h3><span *ngFor="let approver of entry.ApproverUser">{{entry.Employee.Name}}</span></h3>
+      <h3>{{entry.Employee.Name}}</h3>
       <h3>
         {{entry.StartDate | date: 'dd/MM/yyyy'}} &mdash; {{entry.EndDate | date: 'dd/MM/yyyy'}}
       </h3>

@@ -19,7 +19,7 @@ export class TimesheetDetailsPage {
   timesheets: any;
   isSubmitted: boolean = true;
 
-  cacheKey :string;
+  cacheKey: string;
   dayRec: any = {
     start: null,
     end: null,
@@ -30,23 +30,20 @@ export class TimesheetDetailsPage {
     , private timesheetService: TimesheetService
     , public _cacheService: CacheService
     , public loadingCtrl: LoadingController) {
-      this.cacheKey = '';
+    this.cacheKey = '';
   }
 
   ionViewDidLoad() {
 
     switch (this.navParams.data.caller) {
       case 'enter-timesheet':
-        //console.log('enter-timesheet => timesheet-details');
         this.enterTimesheet();
         break;
       case 'my-timesheet':
-        //console.log('my-timesheet => timesheet-details');
         this.getMyTimesheetDetails(this.navParams.data.payload.ID);
         break;
 
       default:
-        //console.log('unknown => timesheet-details');
         this.enterTimesheet();
         break;
     }
@@ -68,7 +65,6 @@ export class TimesheetDetailsPage {
       this.timesheetService.getMyTimesheet(id).subscribe((res: any) => {
         this.employeeTimesheet = res;
         this.timesheets = res.Timesheets;
-        console.log('this.timesheets => ', this.timesheets);
         this.cacheStore(this.assembleCacheKey(), res);
         res.SubmittedStatus === 'Not Submitted' ? this.isSubmitted = false : this.isSubmitted = true;
         loader.dismiss();
@@ -80,7 +76,7 @@ export class TimesheetDetailsPage {
   }
 
   itemClicked(rec, index) {
-    this.navCtrl.push(TaskDetailPage, { caller: 'timesheet-details', isEnterTimesheet: false, timesheetData: { timesheetIndex: index, isSubmitted: this.isSubmitted, cacheKey: this.cacheKey} });
+    this.navCtrl.push(TaskDetailPage, { caller: 'timesheet-details', isEnterTimesheet: false, timesheetData: { timesheetIndex: index, isSubmitted: this.isSubmitted, cacheKey: this.cacheKey } });
   }
 
   assembleCacheKey() {

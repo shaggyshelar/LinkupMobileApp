@@ -29,8 +29,7 @@ export class TaskDetailPage {
   constructor(public navCtrl: NavController, public navParams: NavParams
     , public _cacheService: CacheService) {
     this.task = {};
-    this.taskDetail = new Timesheet(null, null, '', '', '', '', '', '', '', '',
-      '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', 0);
+    this.taskDetail = new Timesheet();
     this.project = {};
     this.timesheetParams = {};
     this.isSubmitted = true;
@@ -41,7 +40,6 @@ export class TaskDetailPage {
 
   ionViewDidEnter() {
     this.navParams.data.isEnterTimesheet ? this.enterTimesheet(this.navParams.data.timesheetData) : this.viewTimesheet(this.navParams.data.timesheetData);
-    console.log('TaskDetailPage cacheKey=>', this.navParams.data.timesheetData.cacheKey);
   }
 
   viewTimesheet(params) {
@@ -52,7 +50,6 @@ export class TaskDetailPage {
   }
 
   enterTimesheet(params) {
-    console.log('enterTimesheet => ', params.timesheetIndex);
     this.timesheetParams = params.data;
     this.isSubmitted = params.isSubmitted;
     this.cacheKey = params.cacheKey;
@@ -66,7 +63,6 @@ export class TaskDetailPage {
   }
 
   addRecord(dayOfWeek) {
-    console.log('timesheetIndex', this.navParams.data.timesheetData.timesheetIndex, 'dayOfWeek', dayOfWeek);
     if (this.navParams.data.timesheetData.isSubmitted) {
       this.navCtrl.push(DailyTimesheetDetailPage, { isSubmitted: true, timesheetIndex: this.navParams.data.timesheetData.timesheetIndex, cacheKey: this.cacheKey, dayOfWeek: dayOfWeek });
     } else {

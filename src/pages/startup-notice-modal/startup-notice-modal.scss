@@ -1,0 +1,23 @@
+startup-notice-modal {
+    .ready-made-form label {
+        display: block;
+        padding-left: 8px;
+        margin-left: 10px;
+        margin-top: 5px;
+    }
+    .ready-made-form input,select {
+        display: block;
+        padding: 8px;
+        width: 95%;
+        margin-left: 10px;
+        border-bottom: solid 1px gray;
+        border-top: solid 1px white;
+        border-left: solid 1px white;
+        border-right: solid 1px white;
+        margin-bottom: 5px;
+    }
+    .ready-made-form {
+        margin: 13px 8px 13px 0;
+        border-bottom: solid 1px darkgrey;
+    }
+}

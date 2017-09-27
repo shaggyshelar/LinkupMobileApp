@@ -7,7 +7,7 @@ page-enter-timesheet-details {
       .empty
     {
         background-color: dodgerblue;
-        height: 1px;
+        height: 2px;
         padding-left: 30px;
         padding-right: 30px;
     }
@@ -24,5 +24,19 @@ page-enter-timesheet-details {
 .slides-height{
     height: auto;
 }
+
+    .right{
+        float: right;
+    }
+
+    .border-padding {
+        padding: 15px;
+    }
+
+    .distinction-line {
+        border-bottom-color: #1E90FF;
+        border-bottom-style: solid;
+        border-bottom-width: 2px;
+    }
 
 }

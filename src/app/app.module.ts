@@ -8,7 +8,7 @@ import { Page1 } from '../pages/page1/page1';
 import { Page2 } from '../pages/page2/page2';
 import { LoginPage } from '../pages/login/login';
 import { HomePage } from '../pages/home/home';
-import { MultiPickerModule } from 'ion-multi-picker';
+// import { MultiPickerModule } from 'ion-multi-picker';
 
 // Corporate
 import { LogATicketPage } from '../pages/Corporate/log-a-ticket/log-a-ticket';
@@ -51,7 +51,9 @@ import { LeaveDetailsPage } from '../pages/LeaveManagement/leave-details/leave-d
 import { MyCertificationPage } from '../pages/Certification/my-certification/my-certification';
 
 import { ManageMyProjectsPage } from '../pages/Projects/manage-my-projects/manage-my-projects';
+import { AddProjectsPage } from '../pages/Projects/add-projects/add-projects';
 import { EmployeeProjectManagementPage } from '../pages/Projects/employee-project-management/employee-project-management';
+import { AddTeamMembersPage } from '../pages/Projects/add-team-members/add-team-members';
 
 // Profile
 import { AchievementPage } from '../pages/Corporate/MyProfile/achievement/achievement';
@@ -64,6 +66,12 @@ import { PersonalInfoPage } from '../pages/Corporate/MyProfile/personal-info/per
 import { ProfileDetailsPage } from '../pages/Corporate/MyProfile/profile-details/profile-details';
 import { SkillSetPage } from '../pages/Corporate/MyProfile/skill-set/skill-set';
 
+//DiscrepancyModalPage
+import { DiscrepancyModalPage } from '../pages/biometric-discrepancy-modal/biometric-discrepancy-modal';
+//StartupNoticeModal
+import { StartupNoticeModal } from '../pages/startup-notice-modal/startup-notice-modal';
+
+
 //HR
 import { ResignedEmployeeLeavesPage } from '../pages/HR/resigned-employee-leaves/resigned-employee-leaves';
 import { EmployeeLeaveBalancePage } from '../pages/HR/employee-leave-balance/employee-leave-balance';
@@ -72,14 +80,14 @@ import { ManageResignedEmployeeLeavesPage } from '../pages/HR/manage-resigned-em
 
 // Providers
 import { Auth } from '../providers/auth';
-import { AuthService } from '../providers/index';
+import { AuthService, EmployeeDiscrepancyService } from '../providers/index';
 import { LeaveService } from '../pages/LeaveManagement/index';
 import { HolidayService } from '../pages/LeaveManagement/index';
 import { UserService } from '../pages/LeaveManagement/index';
 import { MessageService } from '../providers/index';
 import { CommonService } from '../providers/index';
 import { EmployeeTimesheetService, TimesheetService } from '../pages/Timesheet/index';
-import { PhasesService, ProjectService } from '../pages/Projects/index';
+import { PhasesService, ProjectService, TeamMemberService, EmployeeService } from '../pages/Projects/index';
 import { ClientService } from '../providers/shared/master/client.service';
 import { ProjectTypeService } from '../providers/shared/master/projectType.service';
 import { ProjectCategoryService } from '../providers/shared/master/projectCategory.service';
@@ -89,6 +97,7 @@ import { PriceTypeService } from '../providers/shared/master/priceType.service';
 import { LogATicketMasterService } from '../providers/shared/master/logATicketMaster.service';
 import { ConferenceBookingMasterService } from '../providers/shared/master/conferenceBooking.service';
 import { LogATicketService, ConferenceBookingService } from '../pages/Corporate/index';
+import { LeaveTypeMasterService } from '../providers/shared/master/leaveTypeMaster.service';
 
 // Direrctives
 import { LimitToDirective } from '../providers/shared/directives/limit-to';
@@ -100,6 +109,8 @@ import { KebabCasePipe } from '../providers/pipes/kebab-case.pipe';
 import { ProgressBarComponent } from '../components/progress-bar/progress-bar';
 import { CacheService, CacheStorageAbstract, CacheLocalStorage } from 'ng2-cache/ng2-cache';
 
+// Third Party Dependencies
+import {FormlyModule, FormlyBootstrapModule} from 'ng-formly';
 
 
 @NgModule({
@@ -141,7 +152,9 @@ import { CacheService, CacheStorageAbstract, CacheLocalStorage } from 'ng2-cache
     LeaveDetailsPage,
     MyLeaveDetailPage,
     ManageMyProjectsPage,
+    AddProjectsPage,
     EmployeeProjectManagementPage,
+    AddTeamMembersPage,
     MyCertificationPage,
     AchievementPage,
     CertificationPage,
@@ -156,6 +169,8 @@ import { CacheService, CacheStorageAbstract, CacheLocalStorage } from 'ng2-cache
     EmployeeLeaveBalancePage,
     ManageEmployeeLeaveBalancePage,
     ManageResignedEmployeeLeavesPage,
+    DiscrepancyModalPage,
+    StartupNoticeModal,
 
     LimitToDirective,
 
@@ -167,7 +182,9 @@ import { CacheService, CacheStorageAbstract, CacheLocalStorage } from 'ng2-cache
   imports: [
     IonicModule.forRoot(MyApp),
     ScheduleModule,
-    MultiPickerModule
+    FormlyModule.forRoot(),
+    FormlyBootstrapModule,
+    // MultiPickerModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -209,7 +226,9 @@ import { CacheService, CacheStorageAbstract, CacheLocalStorage } from 'ng2-cache
     MyLeaveDetailPage,
     MyCertificationPage,
     ManageMyProjectsPage,
+    AddProjectsPage,
     EmployeeProjectManagementPage,
+    AddTeamMembersPage,
     AchievementPage,
     CertificationPage,
     EducationPage,
@@ -222,7 +241,9 @@ import { CacheService, CacheStorageAbstract, CacheLocalStorage } from 'ng2-cache
     ResignedEmployeeLeavesPage,
     EmployeeLeaveBalancePage,
     ManageEmployeeLeaveBalancePage,
-    ManageResignedEmployeeLeavesPage
+    ManageResignedEmployeeLeavesPage,
+    DiscrepancyModalPage,
+    StartupNoticeModal
   ],
   providers: [
     {
@@ -230,7 +251,7 @@ import { CacheService, CacheStorageAbstract, CacheLocalStorage } from 'ng2-cache
       useClass: IonicErrorHandler
     }, 
     Auth, AuthService, LeaveService, HolidayService, UserService, MessageService, CommonService, LimitToDirective, KebabCasePipe,
-    CacheService, EmployeeTimesheetService, ClientService, ProjectTypeService, PriceTypeService, LogATicketMasterService, ProjectCategoryService, DeliveryUnitService, DeliveryModelService, PhasesService, ProjectService, TimesheetService, LogATicketService, ConferenceBookingService, ConferenceBookingMasterService,
+    CacheService, EmployeeTimesheetService, ClientService, ProjectTypeService, PriceTypeService, LogATicketMasterService, ProjectCategoryService, DeliveryUnitService, DeliveryModelService, PhasesService, ProjectService, TeamMemberService, EmployeeService, TimesheetService, LogATicketService, ConferenceBookingService, ConferenceBookingMasterService,EmployeeDiscrepancyService, LeaveTypeMasterService, 
     { provide: CacheStorageAbstract, useClass: CacheLocalStorage }]
 })
 export class AppModule { }

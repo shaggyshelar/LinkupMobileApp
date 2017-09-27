@@ -23,8 +23,8 @@
     <ion-item *ngFor="let leave of leaveObs"  [attr.status]="leave.Status | lowercase">
       <h3>{{leave.LeaveType.Value}}</h3>
       <p>
-       {{leave.StartDate | date:"MM/dd/yyyy"}} &mdash;
-       {{leave.EndDate | date:"MM/dd/yyyy"}}:
+       {{leave.StartDate | date:"dd/MM/yyyy"}} &mdash;
+       {{leave.EndDate | date:"dd/MM/yyyy"}}:
       </p>
       <p>
        {{leave.Reason}}

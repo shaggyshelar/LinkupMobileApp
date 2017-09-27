@@ -87,7 +87,6 @@ export class RecurrenceModalPage {
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad RecurranceModalPage');
     this.eventStrtDt = this.navParams.data.params.start;
   }
 
@@ -96,7 +95,6 @@ export class RecurrenceModalPage {
   }
 
   radioChnage(repeat) {
-    console.log(repeat);
   }
 
   eventRepeatingChanged() { }

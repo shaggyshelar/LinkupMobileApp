@@ -1,7 +1,7 @@
 export class EmployeeTimeSheet {
     PendingApprover: Array<User>;
     ApproverUser: Array<User>;
-    SubmittedStatus: string;
+    SubmittedStatus: string = 'New Timesheet';
     BillableHours: string;
     NonBillableHours: string;
     StartDate: string;

@@ -1,0 +1,233 @@
+<ion-header>
+
+  <ion-navbar>
+    <button ion-button icon-only menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title *ngIf="((selectedProjectDetails | json) !== '{}')">{{selectedProjectDetails.Title}}</ion-title>
+    <ion-title *ngIf="((selectedProjectDetails | json) === '{}')">Add Project</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+  <form [formGroup]="complexForm">
+    <ion-list>
+      <ion-item>
+        <ion-label floating>Client Name <span class="required">*</span></ion-label>
+        <ion-select name="selectClientName" formControlName="clientname" (ionChange)="clientNameChanged($event)" [disabled]="!isAuthorized">
+          <ion-option *ngFor="let client of clients; let index=index" [value]="client.Value">
+            {{client.Value}}
+          </ion-option>
+        </ion-select>
+      </ion-item>
+      <p *ngIf="!complexForm.controls.clientname.valid && complexForm.controls.clientname.dirty" class="error">Please select Client Name</p>
+
+      <ion-item>
+        <ion-label floating>Billable/Non-Billable<span class="required">*</span></ion-label>
+        <ion-select name="selectBillable" formControlName="billable" [disabled]="!isAuthorized" (ionChange)="billingChanged($event)">
+          <ion-option *ngFor="let bill of billTypes" [value]="bill.value">
+            {{bill.label}}
+          </ion-option>
+        </ion-select>
+      </ion-item>
+      <p *ngIf="(!complexForm.controls.billable.valid) && complexForm.controls.billable.dirty" class="error">Please select Project Name</p>
+
+      <ion-item>
+        <ion-label floating>Project Name <span class="required">*</span></ion-label>
+        <ion-input type="text" name="txtProject" formControlName="projectname" (blur)="projectTitleChanged()" [disabled]="!isAuthorized"></ion-input>
+      </ion-item>
+      <p *ngIf="(!complexForm.controls.projectname.valid) && complexForm.controls.projectname.dirty" class="error">Please enter Project Name</p>
+
+      <ion-item>
+        <ion-label floating>Project Summary <span class="required">*</span></ion-label>
+        <ion-input type="text" name="txtSummary" formControlName="projectsummary" (blur)="projectSummaryChanged()" [disabled]="!isAuthorized">
+        </ion-input>
+      </ion-item>
+
+      <!-- Recommendation -->
+      <ion-item>
+        <ion-label floating>Project Manager<span class="required">*</span></ion-label>
+        <ion-input type="text" name="txtProjectManager" [disabled]="!isAuthorized" (input)="showSuggestion(0, $event)" (blur)="blurred()"
+          formControlName="projectmanager">
+        </ion-input>
+      </ion-item>
+      <p *ngIf="!complexForm.controls.projectmanager.valid && complexForm.controls.projectmanager.touched" class="error">Please select Product Manager</p>
+      <ion-card class="suggestion-list" *ngIf="projectManagerSuggestion ">
+        <!--<button (click)="closeRecommendation()" ion-button clear class="card-close"><ion-icon color="primary" name="close"> </ion-icon></button>-->
+        <ion-list>
+          <ion-item *ngFor="let manager of suggestionList; let index=index" (click)="projectManagerSelected(manager, index)">
+            {{manager.Name}}
+          </ion-item>
+        </ion-list>
+      </ion-card>
+
+      <ion-item>
+        <ion-label floating>Project Type <span class="required">*</span></ion-label>
+        <ion-select name="txtProjecttype" formControlName="projecttype" (ionChange)="projectTypeChanged($event)" [disabled]="!isAuthorized">
+          <ion-option *ngFor="let proj of projectType" [value]="proj.value">
+            {{proj.label}}
+          </ion-option>
+        </ion-select>
+      </ion-item>
+      <p *ngIf="(!complexForm.controls.projecttype.valid) && complexForm.controls.projecttype.dirty" class="error">Please select Project Type</p>
+
+      <ion-item>
+        <ion-label floating>Project Category <span class="required">*</span></ion-label>
+        <ion-select name="txtProjectcategory" formControlName="projectcategory" (ionChange)="projectCategoryChanged($event)" [disabled]="!isAuthorized">
+          <ion-option *ngFor="let projectCat of projectCategory" [value]="projectCat.Value">
+            {{projectCat.Value}}
+          </ion-option>
+        </ion-select>
+      </ion-item>
+      <p *ngIf="(!complexForm.controls.projectcategory.valid) && complexForm.controls.projectcategory.dirty" class="error">Please select Project Category</p>
+
+      <ion-item>
+        <ion-label floating>Project Start Date (DD/MM/YYYY) <span class="required">*</span> </ion-label>
+        <ion-datetime displayFormat="DD/MM/YYYY" name="txtProjectstart" formControlName="projectstart" (ionChange)="startDateChanged($event)"
+          [max]="maxYrs" [disabled]="!isAuthorized">
+        </ion-datetime>
+      </ion-item>
+      <p *ngIf="(!complexForm.controls.projectstart.valid) && complexForm.controls.projectstart.dirty" class="error">Please select Project Start Date</p>
+
+      <ion-item>
+        <ion-label floating>Project End Date (DD/MM/YYYY) <span class="required">*</span></ion-label>
+        <ion-datetime displayFormat="DD/MM/YYYY" name="txtProjectend" formControlName="projectend" (ionChange)="endDateChanged($event)"
+          [min]="minStrtDt" [max]="maxYrs" [disabled]="!isAuthorized">
+        </ion-datetime>
+      </ion-item>
+      <p *ngIf="(!complexForm.controls.projectend.valid) && complexForm.controls.projectend.dirty" class="error">Please select Project Start Date</p>
+
+      <ion-item>
+        <ion-label floating>Delivery Unit <span class="required">*</span></ion-label>
+        <ion-select name="selectDeliveyunit" formControlName="deliveryunit" (ionChange)="deliveryUnitChanged($event)" [disabled]="!isAuthorized">
+          <ion-option *ngFor="let deliveryunit of deliverUnits" [value]="deliveryunit.Value">
+            {{deliveryunit.Value}}
+          </ion-option>
+        </ion-select>
+      </ion-item>
+      <p *ngIf="(!complexForm.controls.deliveryunit.valid) && complexForm.controls.deliveryunit.dirty" class="error">Please select Delivery Unit</p>
+
+      <ion-item>
+        <ion-label floating>Delivery Model <span class="required">*</span></ion-label>
+        <ion-select name="selectDeliveymodel" formControlName="deliverymodel" (ionChange)="deliveryModelChanged($event)" [disabled]="!isAuthorized">
+          <ion-option *ngFor="let deliverymodel of deliverModels" [value]="deliverymodel.Value">
+            {{deliverymodel.Value}}
+          </ion-option>
+        </ion-select>
+      </ion-item>
+      <p *ngIf="(!complexForm.controls.deliverymodel.valid) && complexForm.controls.deliverymodel.dirty" class="error">Please select delivery model</p>
+
+      <!--Recommendation-->
+      <ion-item>
+        <ion-label floating>Account Manager<span class="required">*</span></ion-label>
+        <ion-input type="text" name="txtAccountManager" [disabled]="!isAuthorized" (input)="showSuggestion(1, $event)" (blur)="blurred()"
+          formControlName="accountmanager">
+        </ion-input>
+      </ion-item>
+      <p *ngIf="(!complexForm.controls.accountmanager.valid) && complexForm.controls.accountmanager.dirty" class="error">Please select Account Manager</p>
+      <ion-card class="suggestion-list" *ngIf="accManagerSuggestion">
+        <!--<button (click)="closeRecommendation()" ion-button clear class="card-close"><ion-icon color="primary" name="close"></ion-icon></button>-->
+        <ion-list>
+          <ion-item *ngFor="let manager of suggestionList; let index=index" (click)="accManagerSelected(manager, index)">
+            {{manager.Name}}
+          </ion-item>
+        </ion-list>
+      </ion-card>
+
+      <!--Recommendation-->
+      <ion-item>
+        <ion-label floating>Delivery Manager<span class="required">*</span></ion-label>
+        <ion-input type="text" name="txtDeliveryManager" [disabled]="!isAuthorized" (input)="showSuggestion(2, $event)" (blur)="blurred()"
+          formControlName="deliverymanager">
+        </ion-input>
+      </ion-item>
+      <p *ngIf="(!complexForm.controls.deliverymanager.valid) && complexForm.controls.deliverymanager.dirty" class="error">Please select Delivery Manager</p>
+      <ion-card class="suggestion-list" *ngIf="deliveryManagerSuggestion">
+        <!--<button (click)="closeRecommendation()" ion-button clear class="card-close"><ion-icon color="primary" name="close" ></ion-icon></button>-->
+        <ion-list>
+          <ion-item *ngFor="let manager of suggestionList; let index=index" (click)="deliveryManagerSelected(manager, index)">
+            {{manager.Name}}
+          </ion-item>
+        </ion-list>
+      </ion-card>
+
+      <ion-item *ngIf="isAuthorized">
+        <ion-label floating>Price Type <span class="required">*</span></ion-label>
+        <ion-select name="selectPriceType" formControlName="pricetype" [disabled]="!isAuthorized" (ionChange)="priceTypeChanged($event)">
+          <ion-option *ngFor="let price of priceType" [value]="price.Name">
+            {{price.Name}}
+          </ion-option>
+        </ion-select>
+      </ion-item>
+      <p *ngIf="(!complexForm.controls.pricetype.valid) && complexForm.controls.pricetype.dirty" class="error">Please select Project Manager</p>
+    </ion-list>
+
+    <div *ngIf="isAuthorized">
+      <ion-list *ngIf="selectedProjectDetails">
+        <ion-item color="light" (click)="addMembersClicked()">
+          <ion-label>Add Team Members
+            <ion-icon end name="arrow-dropright" class="right"></ion-icon>
+          </ion-label>
+        </ion-item>
+      </ion-list>
+      <ion-row *ngIf="teamMember.length>0" class="memberDetails">
+        <ion-col width-20>
+          <strong>SR.No.</strong>
+        </ion-col>
+        <ion-col width-60>
+          <strong>Members</strong>
+        </ion-col>
+        <ion-col width-20>
+        </ion-col>
+      </ion-row>
+      <ion-row *ngFor='let member of teamMember;let i = index;' class="memberDetails">
+        <ion-col width-20>
+          {{i+1}}
+        </ion-col>
+        <ion-col width-60>
+          {{member.Name}}
+        </ion-col>
+        <ion-col width-20>
+          <ion-icon name="trash" color="primary" (click)="onDeleteMembers(i, member)"></ion-icon>
+        </ion-col>
+      </ion-row>
+      <ion-row *ngIf="teamMember.length == 0" class="memberDetails">
+        No Members yet..
+      </ion-row>
+    </div>
+
+    <ion-list>
+      <ion-item *ngIf="isAuthorized">
+        <ion-label floating>Team Size</ion-label>
+        <ion-input type="number" formControlName="teamsize" (blur)="teamSizeChanged()"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label>Is Global Project</ion-label>
+        <ion-checkbox formControlName="isglobal" (ionChange)="isGlobalChanged()"></ion-checkbox>
+      </ion-item>
+
+      <ion-item *ngIf="isAuthorized">
+        <ion-label>Is Active</ion-label>
+        <ion-checkbox formControlName="active" (ionChange)="isActiveChanged()"></ion-checkbox>
+      </ion-item>
+
+      <ion-row *ngIf="isAuthorized && ((selectedProjectDetails | json) !== '{}')">
+        <ion-col width-50>
+          <button ion-button full [disabled]="!complexForm.valid" (click)="saveClicked(complexForm.value)">Save</button>
+        </ion-col>
+        <ion-col width-50>
+          <button ion-button full (click)="deactivateClicked(complexForm.value)">Cancel</button>
+        </ion-col>
+      </ion-row>
+      <div *ngIf="isAuthorized && ((selectedProjectDetails | json) === '{}')">
+        <!--<ion-item>-->
+        <button ion-button full [disabled]="!complexForm.valid" (click)="saveClicked(complexForm.value)">Save</button>
+        <!--</ion-item>-->
+      </div>
+
+    </ion-list>
+  </form>
+</ion-content>

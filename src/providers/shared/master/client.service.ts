@@ -6,7 +6,7 @@ import { Http } from '@angular/http';
 import { BaseService } from '../../index';
 
 /** Context for service calls */
-const CONTEXT = 'clientMaster';
+const CONTEXT = 'client';
 /** Service Definition */
 @Injectable()
 export class ClientService extends BaseService {
